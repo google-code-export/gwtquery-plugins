@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.gwtquery</groupId>
   <artifactId>gquery-plugin-archetype</artifactId>
-  <version>0.1-SNAPSHOT</version>
+  <version>0.1</version>
   <packaging>maven-archetype</packaging>
   <name>This archetype generates a maven/eclipse project for a new GwtQuery Plugin</name>
 
@@ -17,9 +15,9 @@
   </parent>
 
   <scm>
-    <connection>scm:svn:http://gwtquery-plugins.googlecode.com/svn/trunk/archetype</connection>
-    <developerConnection>scm:svn:https://gwtquery-plugins.googlecode.com/svn/trunk/archetype</developerConnection>
-    <url>http://code.google.com/p/gwtquery-plugins/source/browse/trunk/archetype</url>
+    <connection>scm:svn:http://gwtquery-plugins.googlecode.com/svn/tags/gquery-plugin-archetype-0.1</connection>
+    <developerConnection>scm:svn:https://gwtquery-plugins.googlecode.com/svn/tags/gquery-plugin-archetype-0.1</developerConnection>
+    <url>http://code.google.com/p/gwtquery-plugins/source/browse/tags/gquery-plugin-archetype-0.1</url>
   </scm>
 
   <developers>
