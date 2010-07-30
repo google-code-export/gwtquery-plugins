@@ -14,11 +14,19 @@
       <gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
       <gwtversion>2.0.3</gwtversion>
     </properties>
-    
+
     <repositories>
        <repository>
-         <id>gwtquery</id>
+         <id>central</id>
+         <url>http://repo1.maven.org/maven2</url>
+       </repository>
+       <repository>
+         <id>site</id>
          <url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
+       </repository>
+       <repository>
+         <id>m.g.o</id>
+         <url>http://maven.glassfish.org/content/groups/public/</url>
        </repository>
     </repositories>
 
