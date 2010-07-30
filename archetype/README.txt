@@ -8,6 +8,7 @@ $ mvn clean install
 - To use the archetype run:
 $ mvn archetype:generate  -DarchetypeGroupId=com.googlecode.gwtquery \
                           -DarchetypeArtifactId=gquery-plugin  \
+                          -DarchetypeVersion=0.3
                           -DartifactId=myplugin \
                           -DpluginName=MyPlugin 
 
