@@ -78,6 +78,7 @@ Then execute these commands to publish the artifact in the download page and in 
 }}}
 
 == Maintain the plugin ==
- * Be in touch with the people using your plugin and the gwtquery library participating in the gwtquery mailing list. 
- * Read the issues list and fix and close those related with your plugin.
- * Create a wiki page with the name of your plugin explaining how to use it, and put links to examples and javadocs.
+ * Be in touch with the people who is using your plugin, and the users of the gwtquery library participating in the gwtquery mailing list. 
+ * Read the issues list periodically  and fix those issues related with your plugin.
+ * Create and maintain a wiki page with the name of your plugin explaining how to use it, and put links to examples and javadocs.
+ * Release the plutin as soon as it is ready to use, after adding a new feature or a fix.
