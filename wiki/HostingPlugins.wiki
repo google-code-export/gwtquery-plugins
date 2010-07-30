@@ -44,7 +44,7 @@ Note that previously you had to ask for commit access.
 
 The password for google code is different to the one you use to read gmail. 
 
-If your browser is logged in gmail, you could see your password visiting this [url https://code.google.com/hosting/settings].
+If your browser is logged in gmail, you could see your password visiting this url:  https://code.google.com/hosting/settings.
 
 Please, be sure that the tests run before committing anything, and make good comments to your commits.
 
