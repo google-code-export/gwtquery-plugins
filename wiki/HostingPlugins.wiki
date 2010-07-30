@@ -39,7 +39,7 @@ After this you should be able to run the project in development mode and the gwt
 
 == Commit your plugin to the repository ==
 *Important:* before you commit any code, check that the LICENSE file is in the root folder of your plugin, and be sure you agree with the license.
-  
+
 Create a new folder in svn trunk, this folder should match the artifactId of your plugin, for instance:
  * https://gwtquery-plugins.googlecode.com/svn/trunk/myplugin
 Note that previously you had to ask for commit access. 
