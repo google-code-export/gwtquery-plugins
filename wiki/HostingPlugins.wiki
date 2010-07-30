@@ -2,15 +2,15 @@ Creating new plugins for gwtquery.
 
 !!! This page is not complete yet !!!
 
-We encourage plugin developers to create and host the plugins on googlecode. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin. 
+We encourage plugin developers to create and host the plugins on googlecode repositoory. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin. 
 
 == Request hosting ==
-Simply subscribe to the gwtquery mailing list and send an email to the list asking for commit access and describing your plugin.
+Simply subscribe to the gwtquery mailing list and send an email to the list asking for commit access and describing your plugin and specifying your gmail user id .
 
 == Steps to create a new plugin ==
-The following procedure describes how to create a new plugin from scratch using the gwtquery-plugin-archetype hosted on maven central repos.
+The following procedure describes how to create a new plugin from scratch using the gwtquery-plugin-archetype hosted on the maven central repository.
 
- * Assuming your have java and maven (2.2.1) installed and the command mvn is in your class-path, just run:
+ * Assuming your have java and maven (2.2.1) installed and the command mvn is in your path, just run:
 {{{
   mvn archetype:generate  \
       -DarchetypeGroupId=com.googlecode.gwtquery \
@@ -28,21 +28,22 @@ where `artifactId` represents the lower-case name of your plugin and `pluginName
 }}}
 
 == Importing the project in eclipse ==
-The archetype generates a project ready to use in eclipse, but before importing it you have to be sure that you have installed the following plugins:
+The archetype generates a project ready to use in eclipse, but before importing it you have to install the following plugins:
  * Google plugin for eclipse (update-site: [http://dl.google.com/eclipse/plugin/3.6])
  * Sonatype Maven plugin (update-site: [http://m2eclipse.sonatype.org/site/m2e])
- * Subversion plugin (update-site: [http://subclipse.tigris.org/update_1.6.x]
+ * Subversion plugin (update-site: [http://subclipse.tigris.org/update_1.6.x])
 Then you can import the project in your eclipse workspace:
  * File -> Import -> Existing Projects into Workspace
-Now you are ready to run the project in development mode
+After this you should be able to run the project in development mode and the gwt test unit.
  * Right click on the project -> Run as -> Web Application
  * Right click on the test class -> Run as -> GWT JUnit Test
 
-== Commit changes to the plugins repository ==
-Create a new folder in the repository, this folder should match the artifactId of your plugin, so in the example case the plugin svn path is:
+== Commit your plugin to the repository ==
+Create a new folder in svn trunk, this folder should match the artifactId of your plugin, for instance:
  * https://gwtquery-plugins.googlecode.com/svn/trunk/myplugin
-Note that previously you had to ask for commit access, and you need to know the password to commit with your gmail username. This password is different to the one usually you use to read the email. If your browser is logged in gmail, you sould be able to see your password in this [url https://code.google.com/hosting/settings].
-Please be sure that the tests run before committing anything, and make good comments to each commit.
+Note that previously you had to ask for commit access. 
+The password for google code is different to the one you use to read gmail. If your browser is logged in gmail, you could see your password visiting this [url https://code.google.com/hosting/settings].
+Please, be sure that the tests run before committing anything, and make good comments to your commits.
 
 == Releasing your plugin ==
 Use maven to release the plugin, but previously be sure that your $HOME/.m2/settings.xml file has the information needed to authenticate in googlecode site:
@@ -53,7 +54,18 @@ Use maven to release the plugin, but previously be sure that your $HOME/.m2/sett
             <password>your_password</password>
         </server>
 }}}
-Then execute these commands:
+Also add to the parent pom your developer information.
+{{{
+  <developers>
+    <developer>
+      <id>your_id</id>
+      <name>your full name</name>
+      <email>your email</email>
+      <organization>your organization</organization>
+    </developer>
+  </developers>
+}}}
+Then execute these commands to publish the artifact in the download page and in the project maven repository
 {{{
   mvn clean 
   mvn deploy
