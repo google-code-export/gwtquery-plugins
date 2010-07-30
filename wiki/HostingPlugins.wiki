@@ -10,12 +10,51 @@ Simply subscribe to the gwtquery mailing list and send an email to the list aski
 == Steps to create a new plugin ==
 The following procedure describes how to create a new plugin from scratch using the gwtquery-plugin-archetype hosted on maven central repos.
 
- # Assuming your have java and maven (2.2.1) installed and the command mvn is in your class-path, just run:
+ * Assuming your have java and maven (2.2.1) installed and the command mvn is in your class-path, just run:
 {{{
-  mvn archetype:gnerate  \
+  mvn archetype:generate  \
       -DarchetypeGroupId=com.googlecode.gwtquery \
       -DarchetypeArtifactId=gquery-plugin-archetype \
+      -DarchetypeVersion=0.1 \
       -DartifactId=myplugin -DpluginName=MyPlugin
 }}}
-where `artifactId` represents the uppercased name of your plugin and `pluginName` is the capitalized name of it.
- # Change to the plugin folder an
+where `artifactId` represents the lower-case name of your plugin and `pluginName` is the Capitalized name of it.
+ * Change to the plugin folder and check that everything is all right:
+{{{
+  cd myplugin
+  mvn install
+  cd sample
+  mvn gwt:run
+}}}
+
+== Importing the project in eclipse ==
+The archetype generates a project ready to use in eclipse, but before importing it you have to be sure that you have installed the following plugins:
+ * Google plugin for eclipse (update-site: [http://dl.google.com/eclipse/plugin/3.6])
+ * Sonatype Maven plugin (update-site: [http://m2eclipse.sonatype.org/site/m2e])
+ * Subversion plugin (update-site: [http://subclipse.tigris.org/update_1.6.x]
+Then you can import the project in your eclipse workspace:
+ * File -> Import -> Existing Projects into Workspace
+Now you are ready to run the project in development mode
+ * Right click on the project -> Run as -> Web Application
+ * Right click on the test class -> Run as -> GWT JUnit Test
+
+== Commit changes to the plugins repository ==
+Create a new folder in the repository, this folder should match the artifactId of your plugin, so in the example case the plugin svn path is:
+ * https://gwtquery-plugins.googlecode.com/svn/trunk/myplugin
+Note that previously you had to ask for commit access, and you need to know the password to commit with your gmail username. This password is different to the one usually you use to read the email. If your browser is logged in gmail, you sould be able to see your password in this [url https://code.google.com/hosting/settings].
+Please be sure that the tests run before committing anything, and make good comments to each commit.
+
+== Releasing your plugin ==
+Use maven to release the plugin, but previously be sure that your $HOME/.m2/settings.xml file has the information needed to authenticate in googlecode site:
+{{{
+        <server>
+            <id>googlecode</id>
+            <username>manuel.carrasco.m</username>
+            <password>j2x3u5b2</password>
+        </server>
+}}}
+Then execute these commands:
+{{{
+  mvn clean 
+  mvn deploy
+}}}
