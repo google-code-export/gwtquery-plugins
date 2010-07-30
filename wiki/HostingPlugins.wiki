@@ -17,7 +17,7 @@ The following procedure describes how to create a new plugin from scratch using 
       -DarchetypeVersion=0.3 \
       -DartifactId=myplugin -DpluginName=MyPlugin
 }}}
-where `artifactId` represents the lower-case name of your plugin and `pluginName` is the Capitalized name of it.
+where `artifactId` represents the lower-case name of your plugin and `pluginName` is the Camelized name of it.
  * The generated project has everything to start a new plugin: license, code, sample and test. Use this code as reference, and maintain the structure.
  * Change to the plugin folder and check that everything is all right:
 {{{
