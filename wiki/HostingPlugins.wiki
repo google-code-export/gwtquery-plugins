@@ -73,3 +73,7 @@ Then execute these commands to publish the artifact in the download page and in 
   mvn clean 
   mvn deploy
 }}}
+
+== Maintain the plugin ==
+ * Be in touch with the people using your plugin and the gwtquery library participating in the gwtquery mailing list. 
+ * Read the issues list and fix and close those related with your plugin.
