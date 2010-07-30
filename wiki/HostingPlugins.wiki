@@ -14,7 +14,7 @@ The following procedure describes how to create a new plugin from scratch using 
   mvn archetype:generate  \
       -DarchetypeGroupId=com.googlecode.gwtquery \
       -DarchetypeArtifactId=gquery-plugin-archetype \
-      -DarchetypeVersion=0.2 \
+      -DarchetypeVersion=0.3 \
       -DartifactId=myplugin -DpluginName=MyPlugin
 }}}
 where `artifactId` represents the lower-case name of your plugin and `pluginName` is the Capitalized name of it.
