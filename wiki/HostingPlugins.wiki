@@ -49,8 +49,8 @@ Use maven to release the plugin, but previously be sure that your $HOME/.m2/sett
 {{{
         <server>
             <id>googlecode</id>
-            <username>manuel.carrasco.m</username>
-            <password>j2x3u5b2</password>
+            <username>your_username</username>
+            <password>your_password</password>
         </server>
 }}}
 Then execute these commands:
