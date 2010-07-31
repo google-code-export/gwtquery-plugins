@@ -36,7 +36,7 @@ The archetype generates a project ready to use in eclipse, but before importing 
  * Subversion plugin (update-site: [http://subclipse.tigris.org/update_1.6.x])
 Then you can import the project in your eclipse workspace:
  * File -> Import -> Existing Projects into Workspace
-After this you should be able to run the project in development mode and the gwt test unit.
+After this you should be able to run the project in development mode and to run the gwt test unit.
  * Right click on the project -> Run as -> Web Application
  * Right click on the test class -> Run as -> GWT JUnit Test
 
