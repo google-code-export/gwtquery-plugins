@@ -41,7 +41,7 @@ After this you should be able to run the project in development mode and to run 
  * Right click on the test class -> Run as -> GWT JUnit Test
 
 = Commit your plugin to the repository =
-*Important:* before you commit any code, check that the LICENSE file is in the root folder of your plugin, and be sure you agree with the license.
+*Important:* before you commit any code, check that the LICENSE file is in the root folder of your plugin, and be sure you agree the license terms.
 
 Create a new folder in svn trunk, this folder should match the artifactId of your plugin, for instance:
  * https://gwtquery-plugins.googlecode.com/svn/trunk/myplugin
