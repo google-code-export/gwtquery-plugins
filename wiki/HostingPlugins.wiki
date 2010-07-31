@@ -1,4 +1,4 @@
-*Creating new plugins for gwtquery.*
+#summary Creating new plugins for gwtquery
 
 
 We encourage plugin developers to create and host the plugins on googlecode repositoory. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin. 
