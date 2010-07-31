@@ -6,7 +6,7 @@
 We encourage plugin developers to create and host the plugins on googlecode repositoory. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin. 
 
 = Request hosting =
-Simply subscribe to the gwtquery mailing list and send an email to the list asking for commit access and describing your plugin and specifying your gmail user id .
+Simply subscribe to the gwtquery mailing list and send an email to the list asking for commit access, describing briefly your plugin, and specifying your gmail user id .
 
 = Steps to create a new plugin =
 The following procedure describes how to create a new plugin from scratch using the gwtquery-plugin-archetype hosted on the maven central repository.
