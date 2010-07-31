@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<g:DecoratorPanel>
+	<g:HTMLPanel>
+		<table cellpadding="5" style="margin:5px;">
+			<tbody>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="filter" /></td>
+					<td><g:ListBox ui:field="filterListBox" /></td>
+					<td>What are the elements of the table that can be selected ?</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="appendTo" /></td>
+					<td><g:TextBox ui:field="appendToBox" /></td>
+					<td>Element where the lasso is append</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="disabled" /></td>
+					<td><g:CheckBox ui:field="disabledCheckBox" /></td>
+					<td>Enable or disable the selection process.</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="tolerance" /></td>
+					<td><g:ListBox ui:field="toleranceListBox" /></td>
+					<td> TOUCH : if the lasso touches the element, the element is selected <br/>FIT : the lasso has to entirely wrap the element if you want it to be selected.</td>
+				</tr>
+			</tbody>
+		</table>
+	</g:HTMLPanel>
+	</g:DecoratorPanel>
+</ui:UiBinder> 
