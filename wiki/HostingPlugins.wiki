@@ -73,7 +73,10 @@ Also add to the parent pom your developer information.
     </developer>
   </developers>
 }}}
-Then execute these commands to publish the artifact in the download page and in the project maven repository
+
+Next, verify that there are no local changes pending to commit to svn
+
+Finally execute these commands to publish the artifact in the download page and in the project maven repository
 {{{
   mvn clean 
   mvn deploy
