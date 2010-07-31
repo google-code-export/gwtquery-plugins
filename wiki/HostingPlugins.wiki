@@ -1,7 +1,8 @@
 #summary Creating new plugins for gwtquery
 
-
 We encourage plugin developers to create and host the plugins on googlecode repositoory. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin. 
+
+<wiki:toc max_depth="3" />
 
 == Request hosting ==
 Simply subscribe to the gwtquery mailing list and send an email to the list asking for commit access and describing your plugin and specifying your gmail user id .
