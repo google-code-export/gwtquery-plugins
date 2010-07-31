@@ -1,13 +1,14 @@
 #summary Creating new plugins for gwtquery
 
-We encourage plugin developers to create and host the plugins on googlecode repositoory. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin. 
-
 <wiki:toc max_depth="3" />
 
-== Request hosting ==
+= Introduction =
+We encourage plugin developers to create and host the plugins on googlecode repositoory. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin. 
+
+= Request hosting =
 Simply subscribe to the gwtquery mailing list and send an email to the list asking for commit access and describing your plugin and specifying your gmail user id .
 
-== Steps to create a new plugin ==
+= Steps to create a new plugin =
 The following procedure describes how to create a new plugin from scratch using the gwtquery-plugin-archetype hosted on the maven central repository.
 
  * Assuming your have java and maven (2.2.1) installed, and the command mvn is in your path, just run:
@@ -28,7 +29,7 @@ where `artifactId` represents the lower-case name of your plugin, and `pluginNam
   mvn gwt:run
 }}}
 
-== Importing the project in eclipse ==
+= Importing the project in eclipse =
 The archetype generates a project ready to use in eclipse, but before importing it you have to install the following plugins:
  * Google plugin for eclipse (update-site: [http://dl.google.com/eclipse/plugin/3.6])
  * Sonatype Maven plugin (update-site: [http://m2eclipse.sonatype.org/site/m2e])
@@ -39,7 +40,7 @@ After this you should be able to run the project in development mode and the gwt
  * Right click on the project -> Run as -> Web Application
  * Right click on the test class -> Run as -> GWT JUnit Test
 
-== Commit your plugin to the repository ==
+= Commit your plugin to the repository =
 *Important:* before you commit any code, check that the LICENSE file is in the root folder of your plugin, and be sure you agree with the license.
 
 Create a new folder in svn trunk, this folder should match the artifactId of your plugin, for instance:
@@ -52,7 +53,7 @@ If your browser is logged in gmail, you could see your password visiting this ur
 
 Please, be sure that the tests run before committing anything, and make good comments to your commits.
 
-== Releasing your plugin ==
+= Releasing your plugin =
 Use maven to release the plugin, but previously be sure that your $HOME/.m2/settings.xml file has the information needed to authenticate in googlecode site:
 {{{
         <server>
@@ -78,7 +79,7 @@ Then execute these commands to publish the artifact in the download page and in 
   mvn deploy
 }}}
 
-== Maintain the plugin ==
+= Maintain the plugin =
  * Be in touch with the people who is using your plugin, and the users of the gwtquery library participating in the gwtquery mailing list. 
  * Read the issues list periodically  and fix those issues related with your plugin.
  * Create and maintain a wiki page with the name of your plugin explaining how to use it, and put links to examples and javadocs.
