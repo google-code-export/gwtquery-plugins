@@ -9,7 +9,7 @@ Simply subscribe to the gwtquery mailing list and send an email to the list aski
 == Steps to create a new plugin ==
 The following procedure describes how to create a new plugin from scratch using the gwtquery-plugin-archetype hosted on the maven central repository.
 
- * Assuming your have java and maven (2.2.1) installed and the command mvn is in your path, just run:
+ * Assuming your have java and maven (2.2.1) installed, and the command mvn is in your path, just run:
 {{{
   mvn archetype:generate  \
       -DarchetypeGroupId=com.googlecode.gwtquery \
