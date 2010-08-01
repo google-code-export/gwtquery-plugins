@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+entryPointModules=gwtquery.plugins.helloworld.HelloWorldSample
+filesCopiedToWebInfLib=gwt-servlet.jar
