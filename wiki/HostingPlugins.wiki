@@ -13,10 +13,10 @@ There are two options to send a plugin to this project:
 In this case, you need the collaboration of a gwtquery-plugins committer.
 
  * Open a new ticket in the issue system http://code.google.com/p/gwtquery-plugins/issues/list
- * Describe your plugin, and anything needed to use it
- * Attach a compressed file with the code. Note that you could attach just the .jar ready to use, since a gwt library contains the sources and the public stuff.
- * Be sure that your file includes a valid [http://code.google.com/p/gwtquery/source/browse/trunk/LICENSE LICENSE] file.
- * Subscribe to the [http://groups.google.com/group/gwtquery gwtquery] mailing list and ask for a sponsor to release the plugin.
+ * In the ticket comments, describe your plugin, and anything needed to use it
+ * Attach to the issue a compressed file with the code. Note that you could attach just the .jar file, since a gwt library contains the sources and the public stuff.
+ * Check that your file includes a valid [http://code.google.com/p/gwtquery/source/browse/trunk/LICENSE LICENSE] file.
+ * Send a mail to the [http://groups.google.com/group/gwtquery gwtquery] mailing list asking for a sponsor to release the plugin.
 
 = Adding a plugin using maven and subversion =
 
