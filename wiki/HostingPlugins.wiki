@@ -55,6 +55,11 @@ After this you should be able to run the project in development mode and to run 
  * Right click on the project -> Run as -> Web Application
  * Right click on the test class -> Run as -> GWT JUnit Test
 
+== Code style conventions ==
+Although it is not mandatory, but like gwtquery does, all the code in the plugins repository should match the [http://code.google.com/intl/es/webtoolkit/makinggwtbetter.html#codestyle google-web-toolkit code styling rules]  
+
+Also good test-units and javadocs are welcome.
+
 == Commit your plugin to the repository ==
 *Important:* before you commit any code, check that the LICENSE file is in the root folder of your plugin, and be sure you agree the license terms.
 
@@ -87,11 +92,11 @@ Please, be sure that the tests run before committing anything, and make good com
 == Releasing your plugin ==
 Use maven to release the plugin, but previously be sure that your $HOME/.m2/settings.xml file has the information needed to authenticate in googlecode site:
 {{{
-        <server>
-            <id>googlecode</id>
-            <username>your_username</username>
-            <password>your_password</password>
-        </server>
+  <server>
+    <id>googlecode</id>
+    <username>your_username</username>
+    <password>your_password</password>
+  </server>
 }}}
 Also add to the parent pom your developer information.
 {{{
