@@ -1,15 +1,55 @@
+<!doctype html>
 <html>
-  <head>
-  </head>
-  <body>
-     <script type="text/javascript">
-       // a workaround for capturing and passing gwt.codesvr parameter in development mode
-       function goTo(location) {
-         window.location = location + window.location.search;
-       }
-       goTo('Selectable/SelectableSample.html');
-     </script>
-     <h2>Loading the demo of the Selectable plugin for GwtQuery</h2>
-  </body>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Selectable sample 3</title>
+<style type="text/css">
+.demo {
+	width: 580px;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 10px;
+	border: black solid 1px;
+}
+
+.ui-selectable-lasso {
+	border: black dotted 1px;
+}
+
+.ui-selecting {
+	background: #FECA40;
+}
+
+.ui-selected {
+	background: #F39814;
+	color: white;
+}
+
+.can-be-selected {
+	height: 60px;
+	width: 60px;
+}
+
+</style>
+
+
+<script type="text/javascript" language="javascript"
+	src="SelectableSample3.nocache.js"></script>
+</head>
+
+<body>
+<div class="demo">
+
+<h1>GWTQuery : Selectable plug-in (example 3)</h1>
+<p>You can use selectable plugin on your GWT Widgets.</p>
+<p>The table below is construct with the FlexTable widget. The cells are now selectable.</p>
+
+<div id="table"></div>
+<br />
+<br />
+<a href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/selectable/sample/src/main/java/gwtquery/plugins/selectable/client/SelectableSample3.java" target="_blank">Java source code</a></div>
+</body>
 </html>
+
+
 
