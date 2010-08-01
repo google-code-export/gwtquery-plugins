@@ -46,12 +46,10 @@ After this you should be able to run the project in development mode and to run 
  * Right click on the project -> Run as -> Web Application
  * Right click on the test class -> Run as -> GWT JUnit Test
 
-== Import your plugin to the repository ==
+== Commit your plugin to the repository ==
 *Important:* before you commit any code, check that the LICENSE file is in the root folder of your plugin, and be sure you agree the license terms.
 
-Create a new folder in svn trunk, this folder should match the artifactId of your plugin and not the plugin name, for instance:
- * https://gwtquery-plugins.googlecode.com/svn/trunk/helloworld
-Note that previously you had to ask for commit access. 
+Note that previously to send anything to the repo you had to ask for commit access. 
 
 The password for google code is different to the one you use to read gmail. 
 
@@ -59,21 +57,21 @@ If your browser is logged in gmail, you could see your password visiting this ur
 
 Please, be sure that the tests run before committing anything, and make good comments to your commits.
 
- # Importing the project using subversion plugin in eclipse
+ # Importing the project using the subversion plugin in eclipse
 {{{
   Right click on the project -> Team -> Share Project -> SVN ->
   https://gwtquery-plugins.googlecode.com/svn/trunk/ -> Use specified folder name ->
   helloworld -> SVN Perspective -> Right click on the project -> Commit
 }}}
 
- # Importing the project using svn command line
+ # Importing the project using the `svn` command
 {{{
  mvn clean
  cd myplugin
  svn mkdir --parents -m "Initial import." \
    https://gwtquery-plugins.googlecode.com/svn/trunk/myplugin
  svn checkout https://gwtquery-plugins.googlecode.com/svn/trunk/myplugin .
- svn --auto-props add * .??*
+ svn --auto-props add * .settings .project .classpath
  svn commit -m 'Initial import'
 }}}
 
