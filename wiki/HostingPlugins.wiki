@@ -18,6 +18,8 @@ In this case, you need the collaboration of a gwtquery-plugins committer.
  * Check that your file includes a valid [http://code.google.com/p/gwtquery/source/browse/trunk/LICENSE LICENSE] file.
  * Send a mail to the [http://groups.google.com/group/gwtquery gwtquery] mailing list asking for a sponsor to release the plugin.
 
+Finally when the plugin was released, you would be added as a contributor in the [http://code.google.com/p/gwtquery-plugins/people/list project people list]
+
 = Adding a plugin using maven and subversion =
 
 == Request hosting ==
