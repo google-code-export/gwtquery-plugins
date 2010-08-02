@@ -9,6 +9,11 @@ There are two options to send a plugin to this project:
  # Simply attach a file containing all your code to the issue system and announce it to the mailing list.
  # Or the official procedure which needs a few knowledge of subversion and maven.
 
+= License =
+All plugins hosted in this project must have a valid LICENSE file  compatible with the license of the gwtquery project. We recommend MIT, Apache v2.0, or GPLv3 based on your personal philosophy.
+
+Obviously you can change the copyright in the header of the LICENSE file putting whatever your want: your Name, Company, Organization, or just 'The gwtquery plugins team'.
+
 = Adding a plugin without knowing maven =
 In this case, you need the collaboration of a gwtquery-plugins committer.
 
@@ -63,9 +68,9 @@ Although it is not mandatory, but like gwtquery does, all the code in the plugin
 Also good test-units and javadocs are welcome.
 
 == Commit your plugin to the repository ==
-*Important:* before you commit any code, check that the LICENSE file is in the root folder of your plugin, and be sure you agree the license terms.
+Check that the LICENSE file is in the root folder of your plugin.
 
-Note that previously to send anything to the repo you had to ask for commit access. 
+Note that previously to send anything to the repository you had to ask for commit access. 
 
 The password for google code is different to the one you use to read gmail. 
 
