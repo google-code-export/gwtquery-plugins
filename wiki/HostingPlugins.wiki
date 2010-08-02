@@ -10,7 +10,7 @@ There are two options to send a plugin to this project:
  # Or the official procedure which needs a few knowledge of subversion and maven.
 
 = License =
-All plugins hosted in this project must have a valid LICENSE file  compatible with the license of the gwtquery project. We recommend MIT, Apache v2.0, or GPLv3 based on your personal philosophy.
+All plugins hosted in this project must have a valid LICENSE file  compatible with the license of the gwtquery project. We recommend MIT, Apache-v2.0, or GPLv3 based on your personal philosophy.
 
 Obviously you can change the copyright in the header of the LICENSE file putting whatever your want: your Name, Company, Organization, or just 'The gwtquery plugins team'.
 
