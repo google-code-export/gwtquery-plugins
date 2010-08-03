@@ -21,6 +21,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
@@ -251,6 +253,8 @@ public class Selectable extends GQuery {
   private int[] opos;
 
   private SelectableOptions options;
+  
+  private HandlerManager eventBus;
 
   public Selectable(GQuery gq) {
     super(gq);
@@ -268,18 +272,32 @@ public class Selectable extends GQuery {
   public Selectable(NodeList<Element> list) {
     super(list);
   }
-
-  public SelectableOptions getOptions() {
-    return options;
-  }
-
+  
   /**
    * Give the possibility of each children of each element to be selectable.
    * 
    * @return
    */
   public Selectable selectable() {
-    return selectable(new SelectableOptions());
+    return selectable(new SelectableOptions(), null);
+  }
+  
+  /**
+   * Give the possibility of each children of each element to be selectable.
+   * 
+   * @return
+   */
+  public Selectable selectable(SelectableOptions options) {
+    return selectable(options, null);
+  }
+  
+  /**
+   * Give the possibility of each children of each element to be selectable.
+   * 
+   * @return
+   */
+  public Selectable selectable(HandlerManager eventBus) {
+    return selectable(new SelectableOptions(), eventBus);
   }
 
   /**
@@ -288,8 +306,10 @@ public class Selectable extends GQuery {
    * 
    * @return
    */
-  public Selectable selectable(SelectableOptions options) {
+  public Selectable selectable(SelectableOptions options, HandlerManager eventBus) {
     this.options = options;
+    this.eventBus = eventBus;
+    lasso = new Lasso();
 
     for (Element e : elements()) {
       e.addClassName(CssClassNames.UI_SELECTABLE);
@@ -298,14 +318,10 @@ public class Selectable extends GQuery {
 
       initMouseHandler(e);
     }
-    lasso = new Lasso();
 
     return this;
   }
-
-  public void setOptions(SelectableOptions options) {
-    this.options = options;
-  }
+  
 
   /**
    * Remove "selectable" feature of elements
@@ -476,7 +492,7 @@ public class Selectable extends GQuery {
       SelectableItem si = $(e).data(SELECTABLE_ITEM_KEY, SelectableItem.class);
       si.unselect();
       si.setStartSelected(false);
-      trigger(null, options.getOnUnselected(), e);
+      trigger(new UnselectedEvent(e), options.getOnUnselected(), e);
     }
 
     GQuery selecting = $('.' + CssClassNames.UI_SELECTING, selectable);
@@ -484,7 +500,7 @@ public class Selectable extends GQuery {
       SelectableItem si = $(e).data(SELECTABLE_ITEM_KEY, SelectableItem.class);
       si.select();
       si.setStartSelected(true);
-      trigger(null, options.getOnSelected(), e);
+      trigger(new SelectedEvent(e), options.getOnSelected(), e);
     }
 
     trigger(null, options.getOnStopSelection(), selectable);
@@ -568,8 +584,10 @@ public class Selectable extends GQuery {
     return selectees;
   }
 
-  private void trigger(Event e, Function callback, Element element) {
-
+  private void trigger(GwtEvent<?> e, Function callback, Element element) {
+    if (eventBus != null){
+      eventBus.fireEvent(e);
+    }
     if (callback != null) {
       callback.f(element);
     }
