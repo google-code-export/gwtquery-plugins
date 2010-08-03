@@ -86,7 +86,14 @@
           <url>file:mavenrepo</url>
         </snapshotRepository>
     </distributionManagement>
-
+<developers>
+    <developer>
+      <id>julien.dramaix@gmail.com</id>
+      <name>Julien Dramaix</name>
+      <email>julien.dramaix@gmail.com</email>
+      <organization>Comexis</organization>
+    </developer>
+  </developers>
   <modules>
     <module>plugin</module>
     <module>sample</module>
