@@ -66,6 +66,8 @@ public class SelectableSample2 implements EntryPoint {
     @UiField
     CheckBox disabledCheckBox;
     @UiField
+    CheckBox multiSelectCheckBox;
+    @UiField
     ListBox toleranceListBox;
 
     public SelectableOptionsPanel(SelectableOptions o) {
@@ -84,6 +86,8 @@ public class SelectableSample2 implements EntryPoint {
       appendToBox.setValue(options.getAppendTo(), false);
 
       disabledCheckBox.setValue(options.isDisabled(), false);
+
+      multiSelectCheckBox.setValue(options.isMultiSelect(), false);
 
       toleranceListBox.addItem(Tolerance.TOUCH.name());
       toleranceListBox.addItem(Tolerance.FIT.name());
@@ -105,6 +109,11 @@ public class SelectableSample2 implements EntryPoint {
     @UiHandler(value = "disabledCheckBox")
     public void onDisabledChange(ValueChangeEvent<Boolean> e) {
       options.setDisabled(e.getValue());
+    }
+
+    @UiHandler(value = "multiSelectCheckBox")
+    public void onMultiSelectChange(ValueChangeEvent<Boolean> e) {
+      options.setMultiSelect(e.getValue());
     }
 
     @UiHandler(value = "toleranceListBox")

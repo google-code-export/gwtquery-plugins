@@ -17,6 +17,11 @@
 					<td>Element where the lasso is append</td>
 				</tr>
 				<tr style="vertical-align:top;">
+					<td><g:HTML text="MultiSelect" /></td>
+					<td><g:CheckBox ui:field="multiSelectCheckBox" /></td>
+					<td>Enable or disable the  selection of multiple item.</td>
+				</tr>
+				<tr style="vertical-align:top;">
 					<td><g:HTML text="disabled" /></td>
 					<td><g:CheckBox ui:field="disabledCheckBox" /></td>
 					<td>Enable or disable the selection process.</td>
