@@ -29,6 +29,11 @@ public class SelectableOptions {
    * initialising (first creating) the selectable. Default : 'false'
    */
   private boolean disabled;
+  
+  /**
+   * This determine whether the selection can select many element or only one.
+   */
+  private boolean multiSelect;
 
   /**
    * This determines whether to refresh (recalculate) the position and size of
@@ -125,6 +130,7 @@ public class SelectableOptions {
   public String getFilter() {
     return filter;
   }
+  
 
   public Function getOnSelected() {
     return onSelected;
@@ -162,6 +168,10 @@ public class SelectableOptions {
     return disabled;
   }
 
+  public boolean isMultiSelect() {
+    return multiSelect;
+  }
+  
   public void setAppendTo(String appendTo) {
     this.appendTo = appendTo;
   }
@@ -185,6 +195,10 @@ public class SelectableOptions {
   public void setFilter(String filter) {
     this.filter = filter;
   }
+  
+  public void setMultiSelect(boolean multiSelect) {
+    this.multiSelect = multiSelect;
+  } 
 
   public void setOnSelected(Function onSelected) {
     this.onSelected = onSelected;
@@ -222,6 +236,7 @@ public class SelectableOptions {
     filter = "*";
     tolerance = Tolerance.TOUCH;
     appendTo = GQuery.body.getTagName();
+    multiSelect=true;
   }
 
 }
