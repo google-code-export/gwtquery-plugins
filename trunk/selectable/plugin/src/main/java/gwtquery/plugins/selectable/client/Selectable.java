@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Google Inc.
+ * Copyright 2010 .
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -30,6 +30,12 @@ import com.google.gwt.query.client.Plugin;
 import com.google.gwt.user.client.Event;
 
 import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
+import gwtquery.plugins.selectable.client.event.SelectedEvent;
+import gwtquery.plugins.selectable.client.event.SelectingEvent;
+import gwtquery.plugins.selectable.client.event.SelectionStartEvent;
+import gwtquery.plugins.selectable.client.event.SelectionStopEvent;
+import gwtquery.plugins.selectable.client.event.UnselectedEvent;
+import gwtquery.plugins.selectable.client.event.UnselectingEvent;
 
 /**
  * Class implementing the JQuery-ui Selectable plugin.
@@ -386,7 +392,7 @@ public class Selectable extends GQuery {
         }
         if (!si.isSelecting()) {
           si.selecting();
-          trigger(null, options.getOnSelecting(), e);
+          trigger(new SelectingEvent(e), options.getOnSelecting(), e);
         }
       } else {
         if (si.isSelecting()) {
@@ -401,15 +407,16 @@ public class Selectable extends GQuery {
               // flag it as unselecting
               si.$element().addClass(CssClassNames.UI_UNSELECTING);
               si.setUnselecting(true);
+              trigger(new UnselectingEvent(e), options.getOnUnselecting(), e);
             }
-            trigger(null, options.getOnUnselecting(), e);
+           
           }
         }
 
         if (si.isSelected() && !(event.getMetaKey() || event.getCtrlKey())
             && !si.isStartSelected()) {
           si.unselecting();
-          trigger(null, options.getOnUnselecting(), e);
+          trigger(new UnselectingEvent(e), options.getOnUnselecting(), e);
 
         }
       }
@@ -425,7 +432,7 @@ public class Selectable extends GQuery {
       return;
     }
 
-    trigger(null, options.getOnStartSelection(), selectable);
+    trigger(new SelectionStartEvent(selectable), options.getOnStartSelection(), selectable);
 
     opos = new int[] { getPageX(event), getPageY(event) };
     lasso.show(opos[0], opos[1], options.getAppendTo());
@@ -443,7 +450,7 @@ public class Selectable extends GQuery {
       // if not meta-key or ctrl-keypressed, unselect elements
       if (!(event.getMetaKey() || event.getCtrlKey())) {
         si.unselecting();
-        trigger(null, options.getOnUnselecting(), e);
+        trigger(new UnselectingEvent(e), options.getOnUnselecting(), e);
       }
     }
 
@@ -456,7 +463,7 @@ public class Selectable extends GQuery {
             .data(SELECTABLE_ITEM_KEY, SelectableItem.class);
         if (si == null) { // old selectee
           e.removeClassName(CssClassNames.UI_SELECTED);
-          trigger(null, options.getOnUnselected(), e);
+          trigger(new UnselectedEvent(e), options.getOnUnselected(), e);
         }
       }
     }
@@ -474,10 +481,10 @@ public class Selectable extends GQuery {
             || !si.isSelected();
         if (doSelection) {
           si.selecting();
-          trigger(null, options.getOnSelecting(), e);
+          trigger(new SelectingEvent(e), options.getOnSelecting(), e);
         } else {
           si.unselecting();
-          trigger(null, options.getOnUnselecting(), e);
+          trigger(new UnselectingEvent(e), options.getOnUnselecting(), e);
         }
 
       }
@@ -503,7 +510,7 @@ public class Selectable extends GQuery {
       trigger(new SelectedEvent(e), options.getOnSelected(), e);
     }
 
-    trigger(null, options.getOnStopSelection(), selectable);
+    trigger(new SelectionStopEvent(selectable), options.getOnStopSelection(), selectable);
 
     lasso.hide();
 
