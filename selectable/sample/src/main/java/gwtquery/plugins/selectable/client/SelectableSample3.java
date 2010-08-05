@@ -20,7 +20,7 @@ import static gwtquery.plugins.selectable.client.Selectable.Selectable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.Function;
+import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -28,6 +28,11 @@ import com.google.gwt.user.client.ui.HTMLTable;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+
+import gwtquery.plugins.selectable.client.event.SelectedEvent;
+import gwtquery.plugins.selectable.client.event.UnselectedEvent;
+import gwtquery.plugins.selectable.client.event.SelectedEvent.SelectedEventHandler;
+import gwtquery.plugins.selectable.client.event.UnselectedEvent.UnselectedEventHandler;
 
 public class SelectableSample3 implements EntryPoint {
 
@@ -105,44 +110,64 @@ public class SelectableSample3 implements EntryPoint {
 
   }
 
-  public void onModuleLoad() {
+  private static class EventHandler implements SelectedEventHandler,
+      UnselectedEventHandler {
 
+    private HTMLTable table;
+
+    public EventHandler(HTMLTable table) {
+      this.table = table;
+    }
+
+    public void onSelected(SelectedEvent event) {
+      
+      UnselectedWidget w = (UnselectedWidget) getRelatedWidget(event.getSelectedElement());
+      SelectedWidget selected = new SelectedWidget(w);
+      table.setWidget(w.getRow(), w.getColumn(), selected);
+
+    }
+
+    public void onUnselected(UnselectedEvent event) {
+      SelectedWidget w = (SelectedWidget) getRelatedWidget(event.getUnselectedElement());
+      UnselectedWidget unselected = new UnselectedWidget(w);
+      table.setWidget(w.getRow(), w.getColumn(), unselected);
+
+    }
+    
+    private Widget getRelatedWidget(Element tableElement) {
+      String id = tableElement.getId();
+      int row = new Integer(id.substring(0, 1));
+      int column = new Integer(id.substring(2, 3));
+      return table.getWidget(row, column);
+    }
+
+  }
+
+  public void onModuleLoad() {
+    // create, init and attach the table
     final Grid table = new Grid(ROW_NUMBER, COLUMN_NUMBER);
     initTable(table);
     RootPanel.get("table").add(table);
-
+    
+    // create an instance of HandlerManager to bind events fired by the selectable plug-in
+    HandlerManager handlerManager = new HandlerManager(null);
+    // create an instance of EventHandler who manage the event when they will be fired
+    EventHandler handler = new EventHandler(table);
+    //bind events who interest us
+    handlerManager.addHandler(SelectedEvent.TYPE, handler);
+    handlerManager.addHandler(UnselectedEvent.TYPE, handler);
+    
     // the table is now attached to the DOM, we can use Gquery
     // init options
     SelectableOptions o = new SelectableOptions();
     o.setFilter(".can-be-selected");
-    o.setOnSelected(new Function() {
-      @Override
-      public void f(Element e) {
-        UnselectedWidget w = (UnselectedWidget) getRelatedWidget(e, table);
-        SelectedWidget selected = new SelectedWidget(w);
-        table.setWidget(w.getRow(), w.getColumn(), selected);
-      }
-    });
-    o.setOnUnselected(new Function() {
-      @Override
-      public void f(Element e) {
-        SelectedWidget w = (SelectedWidget) getRelatedWidget(e, table);
-        UnselectedWidget unselected = new UnselectedWidget(w);
-        table.setWidget(w.getRow(), w.getColumn(), unselected);
-      }
-    });
+
     // that all folks !
-    $(table.getElement()).as(Selectable).selectable(o);
+    $(table.getElement()).as(Selectable).selectable(o, handlerManager);
 
   }
 
-  private Widget getRelatedWidget(Element tableElement, final HTMLTable table) {
-    String id = tableElement.getId();
-    int row = new Integer(id.substring(0, 1));
-    int column = new Integer(id.substring(2, 3));
-    return table.getWidget(row, column);
-  }
-
+  
   private void initTable(Grid table) {
 
     for (int i = 0; i < ROW_NUMBER; i++) {
@@ -151,7 +176,7 @@ public class SelectableSample3 implements EntryPoint {
         table.setWidget(i, j, w);
       }
     }
-    
+
     table.setCellSpacing(5);
     table.setBorderWidth(1);
 
