@@ -259,7 +259,7 @@ public class Selectable extends GQuery {
   private int[] opos;
 
   private SelectableOptions options;
-  
+
   private HandlerManager eventBus;
 
   public Selectable(GQuery gq) {
@@ -278,7 +278,7 @@ public class Selectable extends GQuery {
   public Selectable(NodeList<Element> list) {
     super(list);
   }
-  
+
   /**
    * Give the possibility of each children of each element to be selectable.
    * 
@@ -287,7 +287,7 @@ public class Selectable extends GQuery {
   public Selectable selectable() {
     return selectable(new SelectableOptions(), null);
   }
-  
+
   /**
    * Give the possibility of each children of each element to be selectable.
    * 
@@ -296,7 +296,7 @@ public class Selectable extends GQuery {
   public Selectable selectable(SelectableOptions options) {
     return selectable(options, null);
   }
-  
+
   /**
    * Give the possibility of each children of each element to be selectable.
    * 
@@ -312,7 +312,8 @@ public class Selectable extends GQuery {
    * 
    * @return
    */
-  public Selectable selectable(SelectableOptions options, HandlerManager eventBus) {
+  public Selectable selectable(SelectableOptions options,
+      HandlerManager eventBus) {
     this.options = options;
     this.eventBus = eventBus;
     lasso = new Lasso();
@@ -327,7 +328,6 @@ public class Selectable extends GQuery {
 
     return this;
   }
-  
 
   /**
    * Remove "selectable" feature of elements
@@ -353,7 +353,7 @@ public class Selectable extends GQuery {
 
   protected void onSelection(Element selectable, Event event) {
 
-    if (options.isDisabled()) {
+    if (options.isDisabled() || !options.isMultiSelect()) {
       return;
     }
 
@@ -374,8 +374,8 @@ public class Selectable extends GQuery {
 
       boolean hit = false;
       if (Tolerance.TOUCH == options.getTolerance()) {
-        hit = !(si.getLeft() > x2 || si.getRight() < x1 
-            || si.getTop() > y2 || si.getBottom() < y1);
+        hit = !(si.getLeft() > x2 || si.getRight() < x1 || si.getTop() > y2 || si
+            .getBottom() < y1);
       } else if (Tolerance.FIT == options.getTolerance()) {
         hit = si.getLeft() > x1 && si.getRight() < x2 && si.getTop() > y1
             && si.getBottom() < y2;
@@ -396,8 +396,7 @@ public class Selectable extends GQuery {
         }
       } else {
         if (si.isSelecting()) {
-          if ((event.getMetaKey() || event.getCtrlKey())
-              && si.isStartSelected()) {
+          if (isMetaKeyEnabled(event) && si.isStartSelected()) {
             // keep previously selected element
             si.select();
           } else {
@@ -409,11 +408,11 @@ public class Selectable extends GQuery {
               si.setUnselecting(true);
               trigger(new UnselectingEvent(e), options.getOnUnselecting(), e);
             }
-           
+
           }
         }
 
-        if (si.isSelected() && !(event.getMetaKey() || event.getCtrlKey())
+        if (si.isSelected() && !isMetaKeyEnabled(event)
             && !si.isStartSelected()) {
           si.unselecting();
           trigger(new UnselectingEvent(e), options.getOnUnselecting(), e);
@@ -432,10 +431,13 @@ public class Selectable extends GQuery {
       return;
     }
 
-    trigger(new SelectionStartEvent(selectable), options.getOnStartSelection(), selectable);
+    trigger(new SelectionStartEvent(selectable), options.getOnStartSelection(),
+        selectable);
 
-    opos = new int[] { getPageX(event), getPageY(event) };
-    lasso.show(opos[0], opos[1], options.getAppendTo());
+    if (options.isMultiSelect()) {
+      opos = new int[] { getPageX(event), getPageY(event) };
+      lasso.show(opos[0], opos[1], options.getAppendTo());
+    }
 
     if (options.isAutoRefresh()) {
       refreshSelectees(selectable);
@@ -448,7 +450,7 @@ public class Selectable extends GQuery {
       SelectableItem si = $(e).data(SELECTABLE_ITEM_KEY, SelectableItem.class);
       si.setStartSelected(true);
       // if not meta-key or ctrl-keypressed, unselect elements
-      if (!(event.getMetaKey() || event.getCtrlKey())) {
+      if (!isMetaKeyEnabled(event)) {
         si.unselecting();
         trigger(new UnselectingEvent(e), options.getOnUnselecting(), e);
       }
@@ -456,7 +458,7 @@ public class Selectable extends GQuery {
 
     // remove old selected (case where filter was change before this
     // selection) if no meta-key was pressed
-    if (!(event.getMetaKey() || event.getCtrlKey())) {
+    if (!isMetaKeyEnabled(event)) {
       GQuery oldSelected = $('.' + CssClassNames.UI_SELECTED, selectable);
       for (Element e : oldSelected.elements()) {
         SelectableItem si = $(e)
@@ -477,8 +479,7 @@ public class Selectable extends GQuery {
       if (si != null) {
         // ok a selectable-item exists on the element...
         // it is a selectable element
-        boolean doSelection = !(event.getMetaKey() || event.getCtrlKey())
-            || !si.isSelected();
+        boolean doSelection = !isMetaKeyEnabled(event) || !si.isSelected();
         if (doSelection) {
           si.selecting();
           trigger(new SelectingEvent(e), options.getOnSelecting(), e);
@@ -510,9 +511,12 @@ public class Selectable extends GQuery {
       trigger(new SelectedEvent(e), options.getOnSelected(), e);
     }
 
-    trigger(new SelectionStopEvent(selectable), options.getOnStopSelection(), selectable);
+    trigger(new SelectionStopEvent(selectable), options.getOnStopSelection(),
+        selectable);
 
-    lasso.hide();
+    if (options.isMultiSelect()) {
+      lasso.hide();
+    }
 
   }
 
@@ -555,6 +559,11 @@ public class Selectable extends GQuery {
 
   }
 
+  private boolean isMetaKeyEnabled(Event event) {
+    return options.isMultiSelect()
+        && (event.getMetaKey() || event.getCtrlKey());
+  }
+
   private GQuery refreshSelectees(Element e) {
     GQuery $e = $(e);
 
@@ -592,7 +601,7 @@ public class Selectable extends GQuery {
   }
 
   private void trigger(GwtEvent<?> e, Function callback, Element element) {
-    if (eventBus != null){
+    if (eventBus != null) {
       eventBus.fireEvent(e);
     }
     if (callback != null) {
