@@ -1,0 +1,26 @@
+#summary Using of Selectable plug-in
+
+<wiki:toc max_depth="3" />
+
+= Overview =
+This plugin is a gwt clone of the [http://jqueryui.com/demos/selectable/ JQuery-ui selectable plugin]
+
+The Selectable plugin allows for elements to be selected by drawing a lasso with the mouse over the elements or by cliking on element. If you want to select non-contiguous element  just hold the Ctrl/Meta key.
+
+
+= Using the plugin =
+
+As for all gwtQuery plugin, just call the selectable plugin like that :
+{{{
+import static gwtquery.plugins.selectable.client.Selectable.Selectable;
+
+...
+
+$("#selectable").as(Selectable).selectable();
+}}}
+
+It calls the plugin with the default options. All children of element with id = selectable can be now selected.
+
+= The options =
+
+TBC
