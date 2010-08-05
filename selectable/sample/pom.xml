@@ -37,7 +37,7 @@
                     <style>${gwt.outputstyle}</style>
                     <gwtVersion>${gwtversion}</gwtVersion>
                     <soyc>false</soyc>
-                    <runTarget>Selectable/SelectableSample.html</runTarget>
+                    <runTarget>index.html</runTarget>
                     <hostedWebapp>src/main/webapp</hostedWebapp>
                 </configuration>
                 <executions>
@@ -53,7 +53,9 @@
               <artifactId>maven-clean-plugin</artifactId>
               <configuration>
                 <filesets>
-                  <fileset><directory>src/main/webapp/Selectable</directory></fileset>
+                  <fileset><directory>src/main/webapp/SelectableSample1</directory></fileset>
+                  <fileset><directory>src/main/webapp/SelectableSample2</directory></fileset>
+                  <fileset><directory>src/main/webapp/SelectableSample3</directory></fileset>
                   <fileset><directory>src/main/webapp/WEB-INF/classes</directory></fileset>
                   <fileset><directory>tomcat</directory></fileset>
                   <fileset><directory>www-test</directory></fileset>
