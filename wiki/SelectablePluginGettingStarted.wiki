@@ -1,7 +1,5 @@
 #summary Using of Selectable plug-in
-
 <wiki:toc max_depth="3" />
-
 = Overview =
 This plugin is a gwt clone of the [http://jqueryui.com/demos/selectable/ JQuery-ui selectable plugin]
 
@@ -23,4 +21,16 @@ It calls the plugin with the default options. All children of element with id = 
 
 = The options =
 
-TBC
+The plugin can be configured ! You just have to give an instance of the class `gwtquery.plugins.selectable.client.SelectableOptions` when you call the plugin :
+{{{
+import static gwtquery.plugins.selectable.client.Selectable.Selectable;
+import gwtquery.plugins.selectable.client.SelectableOptions;
+
+...
+
+SelectableOptions options = new SelectableOptions();
+//set the options you want
+...
+//call the plug-in with your options 
+("#selectable").as(Selectable).selectable(options); 
+}}}
