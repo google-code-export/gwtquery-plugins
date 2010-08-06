@@ -35,7 +35,7 @@ SelectableOptions options = new SelectableOptions();
 ("#selectable").as(Selectable).selectable(options); 
 }}}
 
-== SelectableOptions Object ==
+== `SelectableOptions` Object ==
 
 ||*Property*||*Type*||*Description*||*Default value*||*Comments*||
 ||disabled||boolean||Disables (true) or enables (false) the selectable. ||false||-|| 
