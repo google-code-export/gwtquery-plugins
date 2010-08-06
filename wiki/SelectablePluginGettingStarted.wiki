@@ -34,3 +34,24 @@ SelectableOptions options = new SelectableOptions();
 //call the plug-in with your options 
 ("#selectable").as(Selectable).selectable(options); 
 }}}
+
+== SelectableOptions Object ==
+
+||*Property*||*Type*||*Description*||*Default value*||*Comments*||
+||disabled||boolean||Disables (true) or enables (false) the selectable. ||false||-|| 
+||multiSelect||boolean||Determine whether the selection can select many element (true) or only one (false). ||true||This options doesn't exist in the jQuery-ui selectable plugin|| 
+||autoRefresh||boolean||This determines whether to refresh (recalculate) the position and size of each selectee (able to be selected) at the beginning of each select operation. ||true||If you have many many items, you may want to set this to false and call the refresh method  manually||
+||appendTo||String||Selector used to append the 'lasso' div. ||"body"||-|| 
+||filter||String||The matching child elements will be made selectees (able to be selected). ||"`*`"||-||
+||tolerance||Tolerance ||Tolerance to select an selectee (able to be selected)||TOUCH||Two possible value : <br />TOUCH : if the lasso touches the element, the element is selected ; <br />FIT : the lasso has to entirely wrap the element if you want it to be selected.|| 
+||delay||int||Time in milliseconds to define when the selecting should start. It helps preventing unwanted selections when clicking on an element ||0||*Not yet implemented*|| 
+||distance||int||Tolerance, in pixels, for when selecting should start. If specified, selecting will not start until after mouse is dragged beyond distance. ||0||*Not yet implemented*||
+||onSelected||Function||This callback function is called at the end of the select operation, on each element added to the selection.  ||null||-||
+||onSelecting||Function||This callback function is called during the select operation, on each element added to the selection. ||null||-||
+||onUnselected||Function||This callback function is called at the end of the select operation, on each element added to the selection. ||null||-||
+||onUnselecting||Function||This callback function is called during the select operation, on each element removed from the selection ||null||-||
+||onStartSelection||Function||This callback function is called when the selecting start||null||-||
+||onStopSelection||Function||This callback function is called at the end of the select operation.||null||-||
+
+
+ 
