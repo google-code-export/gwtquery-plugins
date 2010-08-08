@@ -19,7 +19,7 @@ $("#selectable").as(Selectable).selectable();
 
 It calls the plugin with the default options. All children of element with id = selectable can be now selected.
 
-=The options=
+=Settings=
 
 The plugin can be configured ! You just have to give an instance of the class `gwtquery.plugins.selectable.client.SelectableOptions` when you call the plugin :
 {{{
@@ -35,8 +35,10 @@ SelectableOptions options = new SelectableOptions();
 ("#selectable").as(Selectable).selectable(options); 
 }}}
 
+
 ==`SelectableOptions` Object==
 
+To configure the plugin, just set value you want in the different properties of the `SelectableOptions` instance you give to the plugin.
 The table below lists the different properties of the `SelectableOptions` object. Each property is reachable by its respective getter/setter.
 
 || *Property* || *Type* || *Description* || *Default value* || *Comments* ||
@@ -55,11 +57,11 @@ The table below lists the different properties of the `SelectableOptions` object
 ||onStartSelection||Function||This callback function is called when the selecting start||null||-||
 ||onStopSelection||Function||This callback function is called at the end of the select operation.||null||-||
 
-Please note that all properties can be changed during the working of the plugin. See the  [http://julien.comexis.eu/selectable/samples/SelectableSample2/Sample2.html Sample 2]
+Please note that all properties can be changed during the working of the plugin. See the  [http://julien.comexis.eu/selectable/samples/SelectableSample2/Sample2.html Sample 2] to test some settings of the plugin.
 
 =Events=
 
-As can be seen in the previous paragraph, the `SelectableOptions` object allows you to pass `Function` who will be invoked by the plugin during its working. In addition to invoke these functions, the plugin fires some event that you can listen. For that, we use the GWT event system. Just pass as argument a `HandlerManager` object when you call the plugin :
+As can be seen in the previous paragraph, the `SelectableOptions` object allows you to pass `Function` who will be invoked by the plugin during its working. In addition to invoke these functions, the plugin fires some event that you can listen. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `HandlerManager` object when you call the plugin :
 
 {{{
 import static com.google.gwt.query.client.GQuery.$;
@@ -115,4 +117,26 @@ Register now your implementation of `EventHandler` :
   
 }}}
 
-See [ the sample 3]
+The different events that you can listen are :
+{{{
+gwtquery.plugins.selectable.client.event.SelectedEvent;
+gwtquery.plugins.selectable.client.event.UnselectedEvent;
+gwtquery.plugins.selectable.client.event.SelectingEvent;
+gwtquery.plugins.selectable.client.event.UnselectingEvent;
+gwtquery.plugins.selectable.client.event.SelectionStart;
+gwtquery.plugins.selectable.client.event.Selection;
+}}}
+
+See [http://julien.comexis.eu/selectable/samples/SelectableSample3/Sample3.html the sample 3], it uses this system to change the widget in each cell depending of whether it is selected or not.
+
+=Samples=
+
+To better understand the plugin, three examples are available
+* Sample 1 : http://julien.comexis.eu/selectable/samples/SelectableSample1/Sample1.html
+This sample show how to set a simple html list selectable. It defines also some callback functions to display informations on the selection operation.
+
+* Sample 2 : http://julien.comexis.eu/selectable/samples/SelectableSample2/Sample2.html
+Play with different settings of the plugin.
+
+* Sample 3 : http://julien.comexis.eu/selectable/samples/SelectableSample3/Sample3.html
+Show how you can use this plugin with GWT widget and so use it in your GWT project.
