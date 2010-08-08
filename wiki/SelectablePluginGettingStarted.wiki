@@ -132,11 +132,11 @@ See [http://julien.comexis.eu/selectable/samples/SelectableSample3/Sample3.html 
 =Samples=
 
 To better understand the plugin, three examples are available
-* Sample 1 : http://julien.comexis.eu/selectable/samples/SelectableSample1/Sample1.html
+  * Sample 1 : http://julien.comexis.eu/selectable/samples/SelectableSample1/Sample1.html
 This sample show how to set a simple html list selectable. It defines also some callback functions to display informations on the selection operation.
 
-* Sample 2 : http://julien.comexis.eu/selectable/samples/SelectableSample2/Sample2.html
+  * Sample 2 : http://julien.comexis.eu/selectable/samples/SelectableSample2/Sample2.html
 Play with different settings of the plugin.
 
-* Sample 3 : http://julien.comexis.eu/selectable/samples/SelectableSample3/Sample3.html
-Show how you can use this plugin with GWT widget and so use it in your GWT project.
+  * Sample 3 : http://julien.comexis.eu/selectable/samples/SelectableSample3/Sample3.html
+Show how you can use this plugin to add selectable behaviour to GWT widgets and so use it in your GWT project.
