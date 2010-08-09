@@ -137,5 +137,9 @@ You can use the svn repository to store and put the static stuff of the demo (ht
  * Put the compiled gwt application there
  * Before committing the folder, set the adequate svn:mimetype of html files.
 {{{
- svn propset svn:mimetype text/html demos/*.html
+ svn propset svn:mimetype text/html demos/my_plugin_demo.html
+}}}
+ * Finally put the link to the page in the wiki page of your plugin. 
+{{{
+ http://gwtquery-plugins.googlecode.com/svn/trunk/my_plugin/demos/my_plugin_demo.html
 }}}
