@@ -130,3 +130,12 @@ Finally execute these commands to publish the artifact in the download page and 
  * Read the issues list periodically  and fix those issues related with your plugin.
  * Create and maintain a wiki page with the name of your plugin explaining how to use it, and put links to examples and javadocs.
  * Release the plutin as soon as it is ready to use, after adding a new feature or a fix.
+= Hosting Demos =
+It is a good idea maintain a web page showing the plugin in action. 
+You can use the svn repository to store and put the static stuff of the demo (html, js, images, etc).
+ * Create a folder in the plugin root called `demos`
+ * Put the compiled gwt application there
+ * Before committing the folder, set the adequate svn:mimetype of html files.
+{{{
+ svn propset svn:mimetype text/html demos/*.html
+}}}
