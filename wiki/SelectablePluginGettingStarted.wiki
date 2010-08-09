@@ -57,7 +57,7 @@ The table below lists the different properties of the `SelectableOptions` object
 ||onStartSelection||Function||This callback function is called when the selecting start||null||-||
 ||onStopSelection||Function||This callback function is called at the end of the select operation.||null||-||
 
-Please note that all properties can be changed during the working of the plugin. See the  [http://julien.comexis.eu/selectable/samples/SelectableSample2/Sample2.html Sample 2] to test some settings of the plugin.
+Please note that all properties can be changed during the working of the plugin. See the  [http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample2/Sample2.html Sample 2] to test some settings of the plugin.
 
 =Events=
 
@@ -127,16 +127,16 @@ gwtquery.plugins.selectable.client.event.SelectionStart;
 gwtquery.plugins.selectable.client.event.Selection;
 }}}
 
-See [http://julien.comexis.eu/selectable/samples/SelectableSample3/Sample3.html the sample 3], it uses this system to change the widget in each cell depending of whether it is selected or not.
+See [http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample3/Sample3.html the sample 3], it uses this system to change the widget in each cell depending of whether it is selected or not.
 
 =Samples=
 
 To better understand the plugin, three examples are available
-  * Sample 1 : http://julien.comexis.eu/selectable/samples/SelectableSample1/Sample1.html
+  * Sample 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample1/Sample1.html
 This sample show how to set a simple html list selectable. It defines also some callback functions to display informations on the selection operation.
 
-  * Sample 2 : http://julien.comexis.eu/selectable/samples/SelectableSample2/Sample2.html
+  * Sample 2 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample2/Sample2.html
 Play with different settings of the plugin.
 
-  * Sample 3 : http://julien.comexis.eu/selectable/samples/SelectableSample3/Sample3.html
+  * Sample 3 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample3/Sample3.html
 Show how you can use this plugin to add selectable behaviour to GWT widgets and so use it in your GWT project.
