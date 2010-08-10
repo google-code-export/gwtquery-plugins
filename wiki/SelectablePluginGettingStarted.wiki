@@ -1,6 +1,12 @@
-#summary Using of Selectable plug-in
+#summary How to use the selectable plugin !
 <wiki:toc max_depth="3" />
-=Overview=
+=Plugin Information=
+
+|| *Plugin name* ||Selectable||
+|| *Latest release* ||1.0-SNAPSHOT||
+|| *Latest release date* ||Aug 05||
+|| *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
+
 This plugin is a gwt clone of the [http://jqueryui.com/demos/selectable/ JQuery-ui selectable plugin]
 
 The Selectable plugin allows for elements to be selected by drawing a lasso with the mouse over the elements or by cliking on element. If you want to select non-contiguous element  just hold the Ctrl/Meta key.
