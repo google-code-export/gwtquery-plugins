@@ -3,8 +3,8 @@
 =Plugin Information=
 
 || *Plugin name* ||Selectable||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.0-SNAPSHOT.jar 1.0-SNAPSHOT]||
-|| *Latest release date* ||Aug 05||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.0.jar 1.0]||
+|| *Latest release date* ||Aug 10||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ASelectable Open issues]||
 
