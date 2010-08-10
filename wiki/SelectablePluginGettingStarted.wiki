@@ -6,11 +6,15 @@
 || *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.0-SNAPSHOT.jar 1.0-SNAPSHOT]||
 || *Latest release date* ||Aug 05||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
+|| *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ASelectable Open issues]||
 
 This plugin is a gwt clone of the [http://jqueryui.com/demos/selectable/ JQuery-ui selectable plugin]
 
 The Selectable plugin allows for elements to be selected by drawing a lasso with the mouse over the elements or by cliking on element. If you want to select non-contiguous element  just hold the Ctrl/Meta key.
 
+=Changelog=
+==v1.0==
+  * First release
 
 =Using the plugin=
 
