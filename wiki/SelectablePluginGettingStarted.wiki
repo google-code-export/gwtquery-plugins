@@ -3,7 +3,7 @@
 =Plugin Information=
 
 || *Plugin name* ||Selectable||
-|| *Latest release* ||1.0-SNAPSHOT||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.0-SNAPSHOT.jar 1.0-SNAPSHOT]||
 || *Latest release date* ||Aug 05||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 
