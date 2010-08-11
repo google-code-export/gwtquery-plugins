@@ -159,8 +159,8 @@ gwtquery.plugins.selectable.client.event.SelectedEvent;
 gwtquery.plugins.selectable.client.event.UnselectedEvent;
 gwtquery.plugins.selectable.client.event.SelectingEvent;
 gwtquery.plugins.selectable.client.event.UnselectingEvent;
-gwtquery.plugins.selectable.client.event.SelectionStart;
-gwtquery.plugins.selectable.client.event.Selection;
+gwtquery.plugins.selectable.client.event.SelectionStartEvent;
+gwtquery.plugins.selectable.client.event.SelectionStopEvent;
 }}}
 
 See [http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample3/Sample3.html the sample 3], it uses this system to change the widget in each cell depending of whether it is selected or not.
@@ -170,9 +170,7 @@ See [http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/Selectabl
 To better understand the plugin, three examples are available
   * Sample 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample1/Sample1.html
 This sample show how to set a simple html list selectable. It defines also some callback functions to display informations on the selection operation.
-
   * Sample 2 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample2/Sample2.html
 Play with different settings of the plugin.
-
   * Sample 3 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample3/Sample3.html
 Show how you can use this plugin to add selectable behaviour to GWT widgets and so use it in your GWT project.
