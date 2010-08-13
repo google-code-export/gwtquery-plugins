@@ -3,7 +3,9 @@
 <wiki:toc max_depth="3" />
 
 = Introduction =
-We encourage plugin developers to create and host the plugins on googlecode repositoory. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin.
+We encourage plugin developers to create and host the plugins on googlecode repository. This makes it easier for the community to help you more easily, as well as to have the community benefit from the plugin.
+
+If you still don't know how the [[http://code.google.com/p/gwtquery gquery] plugin system works, you should read [http://code.google.com/p/gwtquery/wiki/WritingPlugins the page].
 
 There are two options to send a plugin to this project:
  # Simply attach a file containing all your code to the issue system and announce it to the mailing list.
