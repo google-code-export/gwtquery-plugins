@@ -2,15 +2,15 @@
   <formats>
     <format>zip</format>
   </formats>
-  <baseDirectory>/selectable-1.0-SNAPSHOT</baseDirectory>
+  <baseDirectory>/selectable-1.0</baseDirectory>
   <files>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>plugin/target/selectable-plugin-1.0-SNAPSHOT.jar</source>
+     <source>plugin/target/selectable-plugin-1.0.jar</source>
    </file>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>sample/target/selectable-sample-1.0-SNAPSHOT.war</source>
+     <source>sample/target/selectable-sample-1.0.war</source>
    </file>
   </files>
   <fileSets>

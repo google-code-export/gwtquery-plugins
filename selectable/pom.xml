@@ -6,7 +6,7 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>selectable</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1</version>
 
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>
@@ -15,24 +15,31 @@
       <gwtversion>2.0.3</gwtversion>
     </properties>
     
-    <!--repositories>
+   <repositories>
        <repository>
-         <id>gwtquery</id>
+         <id>central</id>
+         <url>http://repo1.maven.org/maven2</url>
+       </repository>
+       <repository>
+         <id>site</id>
          <url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
        </repository>
-    </repositories-->
-     
+       <repository>
+         <id>m.g.o</id>
+         <url>http://maven.glassfish.org/content/groups/public/</url>
+       </repository>
+        <repository>
+         <id>plugins</id>
+         <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
+       </repository>
+       
+    </repositories>
 
     <pluginRepositories>
         <pluginRepository>
             <id>gcupload</id>
             <name>Repository for gcupload plugin</name>
             <url>http://gwtupload.googlecode.com/svn/mavenrepo</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>gwtquery</id>
-            <name>Repository for gwtquery plugin</name>
-            <url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
         </pluginRepository>
     </pluginRepositories>
 
@@ -60,6 +67,12 @@
             <groupId>com.google.gwt</groupId>
             <artifactId>gwtquery</artifactId>
             <version>${gQueryVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.gwtquery.plugins</groupId>
+            <artifactId>commonui-plugin</artifactId>
+            <version>1.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
