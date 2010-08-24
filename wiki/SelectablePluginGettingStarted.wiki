@@ -3,8 +3,8 @@
 =Plugin Information=
 
 || *Plugin name* ||Selectable||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.0.jar 1.0]||
-|| *Latest release date* ||Aug 10||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.1.jar 1.1]||
+|| *Latest release date* ||Aug 24||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ASelectable Open issues]||
 
@@ -13,17 +13,28 @@ This plugin is a gwt clone of the [http://jqueryui.com/demos/selectable/ JQuery-
 The Selectable plugin allows for elements to be selected by drawing a lasso with the mouse over the elements or by cliking on element. If you want to select non-contiguous element  just hold the Ctrl/Meta key.
 
 =Changelog=
+==v1.1==
+  * implementation of delay and distance options
+  * add dependency to commonui-plugin
 ==v1.0==
   * First release
 
 =Using the plugin=
 
-First of all you have to include the library in the classpath of your project. If you are using ant normally it is enough to download the library from the [http://code.google.com/p/gwtquery-plugins/downloads/list downloads page] and put it in the war/WEB-INF/lib folder. If you use maven, you have to add these blocks to your pom.xml
+==Dependency==
+
+Since version 1.1, the selectable plugin needs the common-ui library to work. If you are not using maven, just download the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.0.jar last version of the library] and put it in the war/WEB-INF/lib folder.
+
+==Configuration==
+
+First of all you have to include the library in the classpath of your project. If you are using ant normally it is enough to download the library from the [http://code.google.com/p/gwtquery-plugins/downloads/list downloads page] and put it in the war/WEB-INF/lib folder. 
+
+If you use maven, you have to add these blocks to your pom.xml
 {{{
    <repositories>
-       <repository>
-         <id>site</id>
-         <url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
+        <repository>
+         <id>plugins</id>
+         <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
        </repository>
    </repositories>
 
@@ -84,8 +95,8 @@ The table below lists the different properties of the `SelectableOptions` object
 ||appendTo||String||Selector used to append the 'lasso' div. ||"body"||-|| 
 ||filter||String||The matching child elements will be made selectees (able to be selected). ||"`*`"||-||
 ||tolerance||Tolerance ||Tolerance to select an selectee (able to be selected)||TOUCH||Two possible value : <br />TOUCH : if the lasso touches the element, the element is selected ; <br />FIT : the lasso has to entirely wrap the element if you want it to be selected.|| 
-||delay||int||Time in milliseconds to define when the selecting should start. It helps preventing unwanted selections when clicking on an element ||0||*Not yet implemented*|| 
-||distance||int||Tolerance, in pixels, for when selecting should start. If specified, selecting will not start until after mouse is dragged beyond distance. ||0||*Not yet implemented*||
+||delay||int||Time in milliseconds to define when the selecting should start. It helps preventing unwanted selections when clicking on an element ||0||Since v1.1|| 
+||distance||int||Tolerance, in pixels, for when selecting should start. If specified, selecting will not start until after mouse is dragged beyond distance. ||0||Since v1.1||
 ||onSelected||Function||This callback function is called at the end of the select operation, on each element added to the selection.  ||null||-||
 ||onSelecting||Function||This callback function is called during the select operation, on each element added to the selection. ||null||-||
 ||onUnselected||Function||This callback function is called at the end of the select operation, on each element added to the selection. ||null||-||
