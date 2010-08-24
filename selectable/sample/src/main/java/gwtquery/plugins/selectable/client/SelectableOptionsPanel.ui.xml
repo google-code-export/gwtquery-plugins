@@ -27,6 +27,16 @@
 					<td>Enable or disable the selection process.</td>
 				</tr>
 				<tr style="vertical-align:top;">
+					<td><g:HTML text="delay" /></td>
+					<td><g:TextBox ui:field="delayBox" /></td>
+					<td>Time in milliseconds to define when the selecting should start.</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="distance" /></td>
+					<td><g:TextBox ui:field="distanceBox" /></td>
+					<td>Tolerance, in pixels, for when selecting should start</td>
+				</tr>
+				<tr style="vertical-align:top;">
 					<td><g:HTML text="tolerance" /></td>
 					<td><g:ListBox ui:field="toleranceListBox" /></td>
 					<td> TOUCH : if the lasso touches the element, the element is selected <br/>FIT : the lasso has to entirely wrap the element if you want it to be selected.</td>

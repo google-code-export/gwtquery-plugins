@@ -64,6 +64,10 @@ public class SelectableSample2 implements EntryPoint {
     @UiField
     TextBox appendToBox;
     @UiField
+    TextBox delayBox;
+    @UiField
+    TextBox distanceBox;
+    @UiField
     CheckBox disabledCheckBox;
     @UiField
     CheckBox multiSelectCheckBox;
@@ -84,6 +88,10 @@ public class SelectableSample2 implements EntryPoint {
       filterListBox.setSelectedIndex(0);
 
       appendToBox.setValue(options.getAppendTo(), false);
+      
+      delayBox.setValue(""+options.getDelay(), false);
+      
+      distanceBox.setValue(""+options.getDistance(), false);
 
       disabledCheckBox.setValue(options.isDisabled(), false);
 
@@ -105,6 +113,16 @@ public class SelectableSample2 implements EntryPoint {
     public void onAppendToChange(ValueChangeEvent<String> e) {
       options.setAppendTo(e.getValue());
     }
+    
+    @UiHandler(value = "delayBox")
+    public void onDelayChange(ValueChangeEvent<String> e) {
+      options.setDelay(new Integer(e.getValue()));
+    }
+    
+    @UiHandler(value = "distanceBox")
+    public void onDistanceChange(ValueChangeEvent<String> e) {
+      options.setDistance(new Integer(e.getValue()));
+    }
 
     @UiHandler(value = "disabledCheckBox")
     public void onDisabledChange(ValueChangeEvent<Boolean> e) {
@@ -125,3 +143,4 @@ public class SelectableSample2 implements EntryPoint {
 
   }
 }
+
