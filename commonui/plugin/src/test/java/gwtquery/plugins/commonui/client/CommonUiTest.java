@@ -10,7 +10,4 @@ public class CommonUiTest extends GWTTestCase {
   public String getModuleName() {
     return "gwtquery.plugins.commonui.CommonUi";
   }
-
-  public void testCommonUiApply() {
-  }
 }
