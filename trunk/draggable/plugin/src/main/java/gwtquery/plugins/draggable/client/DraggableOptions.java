@@ -1,22 +1,47 @@
 package gwtquery.plugins.draggable.client;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.query.client.GQuery;
+
+import gwtquery.plugins.commonui.client.MouseOptions;
 
 public class DraggableOptions extends MouseOptions {
 
-  public static enum HelperType{
-    ORIGINAL, CLONE, ELEMENT;
+  public static enum HelperType {
+    ORIGINAL {
+      @Override
+      public GQuery createHelper(Element original, Element helper) {
+        return $(original);
+      }
+    },
+    CLONE {
+      @Override
+      public GQuery createHelper(Element original, Element helper) {
+        return $(original).clone();
+      }
+    },
+    ELEMENT {
+      @Override
+      public GQuery createHelper(Element original, Element helper) {
+        return $(helper);
+      }
+    };
+
+    public abstract GQuery createHelper(Element original, Element helper);
   }
-  
+
   private boolean addClasses;
   private String appendTo;
   private boolean axis;
-  private boolean connectToSortable;
+  // private boolean connectToSortable;
   private boolean containment;
   private String cursor;
   private boolean cursorAt;
+  private boolean disabled;
   private boolean grid;
-  private boolean handle;
+  private String handle;
   private Element helper;
   private HelperType helperType;
   private boolean iframeFix;
@@ -42,10 +67,14 @@ public class DraggableOptions extends MouseOptions {
     return cursor;
   }
 
+  public String getHandle() {
+    return handle;
+  }
+
   public Element getHelper() {
     return helper;
   }
-  
+
   public HelperType getHelperType() {
     return helperType;
   }
@@ -74,7 +103,6 @@ public class DraggableOptions extends MouseOptions {
     return snapTolerance;
   }
 
-
   public boolean isAddClasses() {
     return addClasses;
   }
@@ -83,9 +111,9 @@ public class DraggableOptions extends MouseOptions {
     return axis;
   }
 
-  public boolean isConnectToSortable() {
-    return connectToSortable;
-  }
+  /*
+   * public boolean isConnectToSortable() { return connectToSortable; }
+   */
 
   public boolean isContainment() {
     return containment;
@@ -95,12 +123,12 @@ public class DraggableOptions extends MouseOptions {
     return cursorAt;
   }
 
-  public boolean isGrid() {
-    return grid;
+  public boolean isDisabled() {
+    return disabled;
   }
 
-  public boolean isHandle() {
-    return handle;
+  public boolean isGrid() {
+    return grid;
   }
 
   public boolean isIframeFix() {
@@ -147,9 +175,10 @@ public class DraggableOptions extends MouseOptions {
     this.axis = axis;
   }
 
-  public void setConnectToSortable(boolean connectToSortable) {
-    this.connectToSortable = connectToSortable;
-  }
+  /*
+   * public void setConnectToSortable(boolean connectToSortable) {
+   * this.connectToSortable = connectToSortable; }
+   */
 
   public void setContainment(boolean containment) {
     this.containment = containment;
@@ -167,16 +196,20 @@ public class DraggableOptions extends MouseOptions {
     this.grid = grid;
   }
 
-  public void setHandle(boolean handle) {
-    this.handle = handle;
+  public void setDisabled(boolean disabled) {
+    this.disabled = disabled;
+  }
+
+  public void setHandle(String selector) {
+    this.handle = selector;
   }
 
   public void setHelper(Element helper) {
     this.helper = helper;
     this.helperType = HelperType.ELEMENT;
   }
-  
-  public void setHelperType(HelperType helperType) {
+
+  public void setHelper(HelperType helperType) {
     this.helperType = helperType;
   }
 
@@ -235,18 +268,18 @@ public class DraggableOptions extends MouseOptions {
   public void setzIndex(boolean zIndex) {
     this.zIndex = zIndex;
   }
-  
+
   @Override
   protected void initDefault() {
     super.initDefault();
     addClasses = true;
     appendTo = "parent";
     axis = false;
-    connectToSortable = false;
+    // connectToSortable = false;
     containment = false;
     cursorAt = false;
     grid = false;
-    handle = false;
+    handle = null;
     iframeFix = false;
     opacity = false;
     refreshPositions = false;
