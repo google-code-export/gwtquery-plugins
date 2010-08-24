@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 .
+ * Copyright 2010 The gwtquery plugins team.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,6 +16,15 @@
 
 package gwtquery.plugins.selectable.client;
 
+import gwtquery.plugins.commonui.client.MouseHandler;
+import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
+import gwtquery.plugins.selectable.client.event.SelectedEvent;
+import gwtquery.plugins.selectable.client.event.SelectingEvent;
+import gwtquery.plugins.selectable.client.event.SelectionStartEvent;
+import gwtquery.plugins.selectable.client.event.SelectionStopEvent;
+import gwtquery.plugins.selectable.client.event.UnselectedEvent;
+import gwtquery.plugins.selectable.client.event.UnselectingEvent;
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
@@ -29,21 +38,13 @@ import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
 import com.google.gwt.user.client.Event;
 
-import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
-import gwtquery.plugins.selectable.client.event.SelectedEvent;
-import gwtquery.plugins.selectable.client.event.SelectingEvent;
-import gwtquery.plugins.selectable.client.event.SelectionStartEvent;
-import gwtquery.plugins.selectable.client.event.SelectionStopEvent;
-import gwtquery.plugins.selectable.client.event.UnselectedEvent;
-import gwtquery.plugins.selectable.client.event.UnselectingEvent;
-
 /**
  * Class implementing the JQuery-ui Selectable plugin.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class Selectable extends GQuery {
+public class Selectable extends MouseHandler {
 
   private class SelectableItem {
 
@@ -322,9 +323,9 @@ public class Selectable extends GQuery {
       e.addClassName(CssClassNames.UI_SELECTABLE);
       $(e).data(CURRENT_FILTER_KEY, options.getFilter());
       refreshSelectees(e);
-
-      initMouseHandler(e);
     }
+
+    initMouseHandler(options);
 
     return this;
   }
@@ -349,6 +350,11 @@ public class Selectable extends GQuery {
 
     }
     return this;
+  }
+
+  @Override
+  protected String getPluginName() {
+    return "selectable";
   }
 
   protected void onSelection(Element selectable, Event event) {
@@ -425,7 +431,6 @@ public class Selectable extends GQuery {
   }
 
   protected void onSelectionStart(Element selectable, Event event) {
-    bindMouseEvent(selectable);
 
     if (options.isDisabled()) {
       return;
@@ -493,7 +498,6 @@ public class Selectable extends GQuery {
   }
 
   protected void onSelectionStop(Element selectable, Event event) {
-    unbindMouseEvent();
 
     GQuery unselecting = $('.' + CssClassNames.UI_UNSELECTING, selectable);
     for (Element e : unselecting.elements()) {
@@ -520,43 +524,22 @@ public class Selectable extends GQuery {
 
   }
 
-  private void bindMouseEvent(final Element selectable) {
-    $(document).mousemove(new Function() {
-      @Override
-      public boolean f(Event e) {
-        onSelection(selectable, e);
-        return false;
-      }
-    });
-    $(document).mouseup(new Function() {
-      @Override
-      public boolean f(Event e) {
-        onSelectionStop(selectable, e);
-        return false;
-      }
-    });
-
+  @Override
+  protected boolean mouseDrag(Element element, Event event) {
+    onSelection(element, event);
+    return false;
   }
 
-  private int getPageX(Event mouseEvent) {
-    int pageX = mouseEvent.getClientX() + document.getScrollLeft();
-    return pageX;
+  @Override
+  protected boolean mouseStart(Element element, Event event) {
+    onSelectionStart(element, event);
+    return true;
   }
 
-  private int getPageY(Event mouseEvent) {
-    int pageY = mouseEvent.getClientY() + document.getScrollTop();
-    return pageY;
-  }
-
-  private void initMouseHandler(final Element e) {
-    $(e).bind(Event.ONMOUSEDOWN, null, new Function() {
-      @Override
-      public boolean f(Event event) {
-        onSelectionStart(e, event);
-        return false;
-      }
-    });
-
+  @Override
+  protected boolean mouseStop(Element element, Event event) {
+    onSelectionStop(element, event);
+    return false;
   }
 
   private boolean isMetaKeyEnabled(Event event) {
@@ -607,11 +590,6 @@ public class Selectable extends GQuery {
     if (callback != null) {
       callback.f(element);
     }
-  }
-
-  private void unbindMouseEvent() {
-    $(document).unbind(Event.ONMOUSEUP);
-    $(document).unbind(Event.ONMOUSEMOVE);
   }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Google Inc.
+ * Copyright 2010 The gwtquery plugins team.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,7 +18,15 @@ package gwtquery.plugins.selectable.client;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
-public class SelectableOptions {
+import gwtquery.plugins.commonui.client.MouseOptions;
+
+/**
+ * Object containing all options for the Selectable plugin
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */
+public class SelectableOptions extends MouseOptions {
 
   public static enum Tolerance {
     TOUCH, FIT;
@@ -29,7 +37,7 @@ public class SelectableOptions {
    * initialising (first creating) the selectable. Default : 'false'
    */
   private boolean disabled;
-  
+
   /**
    * This determine whether the selection can select many element or only one.
    */
@@ -47,23 +55,6 @@ public class SelectableOptions {
    * Selector used to append the 'lasso' div Default : 'body'
    */
   private String appendTo; // maybe GQuery instead
-
-  /**
-   * Time in milliseconds to define when the selecting should start. It helps
-   * preventing unwanted selections when clicking on an element. Default : 0
-   * 
-   * NOT IMPLEMENTED YET !!!!
-   */
-  private int delay;
-
-  /**
-   * Tolerance, in pixels, for when selecting should start. If specified,
-   * selecting will not start until after mouse is dragged beyond distance.
-   * Default : 0
-   * 
-   * NOT IMPLEMENTED YET !!!!
-   */
-  private int distance;
 
   /**
    * The matching child elements will be made selectees (able to be selected)
@@ -119,18 +110,9 @@ public class SelectableOptions {
     return appendTo;
   }
 
-  public int getDelay() {
-    return delay;
-  }
-
-  public int getDistance() {
-    return distance;
-  }
-
   public String getFilter() {
     return filter;
   }
-  
 
   public Function getOnSelected() {
     return onSelected;
@@ -171,7 +153,7 @@ public class SelectableOptions {
   public boolean isMultiSelect() {
     return multiSelect;
   }
-  
+
   public void setAppendTo(String appendTo) {
     this.appendTo = appendTo;
   }
@@ -180,25 +162,17 @@ public class SelectableOptions {
     this.autoRefresh = autoRefresh;
   }
 
-  public void setDelay(int delay) {
-    this.delay = delay;
-  }
-
   public void setDisabled(boolean disabled) {
     this.disabled = disabled;
-  }
-
-  public void setDistance(int distance) {
-    this.distance = distance;
   }
 
   public void setFilter(String filter) {
     this.filter = filter;
   }
-  
+
   public void setMultiSelect(boolean multiSelect) {
     this.multiSelect = multiSelect;
-  } 
+  }
 
   public void setOnSelected(Function onSelected) {
     this.onSelected = onSelected;
@@ -228,15 +202,13 @@ public class SelectableOptions {
     this.tolerance = tolerance;
   }
 
-  private void initDefault() {
+  protected void initDefault() {
     disabled = false;
     autoRefresh = true;
-    delay = 0;
-    distance = 0;
     filter = "*";
     tolerance = Tolerance.TOUCH;
     appendTo = GQuery.body.getTagName();
-    multiSelect=true;
+    multiSelect = true;
   }
 
 }
