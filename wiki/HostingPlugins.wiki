@@ -55,7 +55,7 @@ where `artifactId` represents the lower-case name of your plugin, and `pluginNam
 
 == Importing the project in eclipse ==
 The archetype generates a project ready to use in eclipse, but before importing it you have to install the following plugins:
- * Google plugin for eclipse (update-site: [http://dl.google.com/eclipse/plugin/3.6])
+ * Google plugin for eclipse (update-site: [http://dl.google.com/eclipse/plugin/3.6], change to 3.5 for galileo)
  * Sonatype Maven plugin (update-site: [http://m2eclipse.sonatype.org/site/m2e])
  * Subversion plugin (update-site: [http://subclipse.tigris.org/update_1.6.x])
 Then you can import the project in your eclipse workspace:
