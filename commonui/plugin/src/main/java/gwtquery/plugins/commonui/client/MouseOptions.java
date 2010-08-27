@@ -1,35 +1,49 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.commonui.client;
-
-
 
 public class MouseOptions {
 
-  private String cancel;
-  
   /**
-   * Time in milliseconds to define when the selecting should start. It helps
+   * Prevents plugin working from starting on specified elements.
+   */
+  private String cancel;
+
+  /**
+   * Time in milliseconds to define when the plugin should start. It helps
    * preventing unwanted selections when clicking on an element. Default : 0
    * 
    */
   private int delay;
 
   /**
-   * Tolerance, in pixels, for when selecting should start. If specified,
-   * selecting will not start until after mouse is dragged beyond distance.
-   * Default : 0
+   * Tolerance, in pixels, for when plugin should start. If specified, selecting
+   * will not start until after mouse is dragged beyond distance. Default : 0
    * 
    */
   private int distance;
-  
+
   public MouseOptions() {
-   initDefault();
+    initDefault();
   }
-  
-  
+
   public String getCancel() {
     return cancel;
   }
-  
+
   public int getDelay() {
     return delay;
   }
@@ -37,23 +51,22 @@ public class MouseOptions {
   public int getDistance() {
     return distance;
   }
-  
+
   public void setCancel(String cancel) {
     this.cancel = cancel;
   }
-  
+
   public void setDelay(int delay) {
     this.delay = delay;
   }
-  
+
   public void setDistance(int distance) {
     this.distance = distance;
   }
-  
+
   protected void initDefault() {
     delay = 0;
     distance = 0;
   }
-  
-}
 
+}
