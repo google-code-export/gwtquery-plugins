@@ -91,6 +91,5 @@
 
   <modules>
     <module>plugin</module>
-    <module>sample</module>
   </modules>
 </project>
