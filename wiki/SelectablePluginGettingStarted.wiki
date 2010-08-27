@@ -43,7 +43,7 @@ If you use maven, you have to add these blocks to your pom.xml
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>selectable-plugin</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
             <version>1.0</version>
         </dependency>
     </dependencies>
