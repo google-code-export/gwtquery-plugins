@@ -22,6 +22,7 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
+import com.google.gwt.query.client.plugins.Events;
 import com.google.gwt.user.client.Event;
 
 /**
@@ -62,16 +63,15 @@ public abstract class MouseHandler extends GQuery {
   protected void initMouseHandler(MouseOptions options) {
     this.options = options;
 
-    // TODO add namespace when we bind events
     for (final Element e : elements()) {
 
-      $(e).bind(Event.ONMOUSEDOWN, null, new Function() {
+      $(e).as(Events.Events).bind(Event.ONMOUSEDOWN, getPluginName(), (Object)null, new Function() {
         @Override
         public boolean f(Event event) {
           return mouseDown(e, event);
 
         }
-      }).bind(Event.ONCLICK, null, new Function() {
+      }).bind(Event.ONCLICK, getPluginName(), (Object)null, new Function() {
         @Override
         public boolean f(Event event) {
           if (preventClickEvent) {
@@ -87,8 +87,7 @@ public abstract class MouseHandler extends GQuery {
   }
 
   protected void destroyMouseHandler() {
-    // TODO add namespace when we bind events
-    unbind(Event.ONMOUSEDOWN | Event.ONCLICK);
+    as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
   }
 
   /**
@@ -158,13 +157,14 @@ public abstract class MouseHandler extends GQuery {
   protected abstract boolean mouseStop(Element element, Event event);
 
   private void bindOtherMouseEvent(final Element element) {
-    $(document).mousemove(new Function() {
+    
+    $(document).as(Events.Events).bind(Event.ONMOUSEMOVE, getPluginName(), (Object)null, new Function() {
       @Override
       public boolean f(Event e) {
         mouseMove(element, e);
         return false;
       }
-    }).mouseup(new Function() {
+    }).bind(Event.ONMOUSEUP,getPluginName(), (Object)null,new Function() {
       @Override
       public boolean f(Event e) {
         mouseUp(element, e);
@@ -259,7 +259,6 @@ public abstract class MouseHandler extends GQuery {
 
   private boolean mouseUp(Element element, Event event) {
     unbindOtherMouseEvent();
-
     if (mouseStarted) {
       mouseStarted = false;
       preventClickEvent = (event.getCurrentEventTarget() == mouseDownEvent
@@ -286,9 +285,7 @@ public abstract class MouseHandler extends GQuery {
   }
 
   private void unbindOtherMouseEvent() {
-    // TODO use namespace
-    $(document).unbind(Event.ONMOUSEUP).unbind(Event.ONMOUSEMOVE);
-
+    $(document).as(Events.Events).unbind(Event.ONMOUSEUP | Event.ONMOUSEMOVE, getPluginName());
   }
 
 }
