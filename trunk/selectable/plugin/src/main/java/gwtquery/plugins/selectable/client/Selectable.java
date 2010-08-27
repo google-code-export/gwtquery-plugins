@@ -345,10 +345,9 @@ public class Selectable extends MouseHandler {
       }
       $this.removeClass(CssClassNames.UI_SELECTABLE, "ui-selectable-disabled");
       $this.removeData(SELECTEES_KEY).removeData(SELECTABLE_KEY);
-      // TODO use a namespace for the handler
-      $this.unbind(Event.ONMOUSEDOWN);
 
     }
+    destroyMouseHandler();
     return this;
   }
 
