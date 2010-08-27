@@ -140,8 +140,7 @@ public abstract class MouseHandler extends GQuery {
   protected abstract boolean mouseDrag(Element element, Event event);
 
   /**
-   * Method called when the mouse is clicked and the conditions on delay and
-   * distance are met.
+   * Method called when the mouse is clicked and all conditions for starting the plugin are met.
    * 
    * @param element
    * @param event
@@ -150,7 +149,7 @@ public abstract class MouseHandler extends GQuery {
   protected abstract boolean mouseStart(Element element, Event event);
 
   /**
-   * 
+   * Method called when the mouse button is released 
    * 
    * @param element
    * @param event
