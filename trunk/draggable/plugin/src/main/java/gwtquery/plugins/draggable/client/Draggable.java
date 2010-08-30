@@ -94,7 +94,7 @@ public class Draggable extends MouseHandler {
     
     //info from helper
     private String helperCssPosition; 
-    private LeftTopDimension helperScrollParent;
+    private GQuery helperScrollParent;
     private GQuery helperOffsetParent;
 
     public void setMarginCache(Element element) {
@@ -108,8 +108,9 @@ public class Draggable extends MouseHandler {
     public void registerValues(Element element, Event e) {
       helperCssPosition = helper.css("position");
       //TODO check if it's correct
-      helperScrollParent = new LeftTopDimension(helper.get(0).getParentElement().getScrollLeft(), helper.get(0).getParentElement().getScrollTop());
+      helperScrollParent = helper.as(GQueryUi).scrollParent();
       helperOffsetParent = helper.offsetParent();
+      
       
       setMarginCache(element);
       
@@ -120,7 +121,7 @@ public class Draggable extends MouseHandler {
       int offsetTop = absPosition.getTop() - margin.getTop();
       offset = new LeftTopDimension(offsetLeft, offsetTop);
 
-      click = new LeftTopDimension(getPageX(e) - offsetLeft, getPageY(e)
+      click = new LeftTopDimension(pageX(e) - offsetLeft, pageY(e)
           - offsetTop);
 
       parentOffset = calculateParentOffset(element);
