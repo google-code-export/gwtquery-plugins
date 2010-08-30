@@ -362,7 +362,7 @@ public class Selectable extends MouseHandler {
       return;
     }
 
-    lasso.draw(getPageX(event), getPageY(event));
+    lasso.draw(pageX(event), pageY(event));
 
     int x1 = lasso.element.getAbsoluteLeft(), y1 = lasso.element
         .getAbsoluteTop();
@@ -439,7 +439,7 @@ public class Selectable extends MouseHandler {
         selectable);
 
     if (options.isMultiSelect()) {
-      opos = new int[] { getPageX(event), getPageY(event) };
+      opos = new int[] { pageX(event), pageY(event) };
       lasso.show(opos[0], opos[1], options.getAppendTo());
     }
 
