@@ -1,4 +1,14 @@
 <module>
-    <inherits name='com.google.gwt.query.Query'/>
+	<inherits name='com.google.gwt.query.Query' />
+
+	<replace-with
+		class="gwtquery.plugins.commonui.client.GQueryUiImplIE">
+		<when-type-is
+			class="gwtquery.plugins.commonui.client.GQueryUiImpl" />
+		<any>
+			<when-property-is name="user.agent" value="ie6" />
+			<when-property-is name="user.agent" value="ie8" />
+		</any>
+	</replace-with>
 </module>
     
