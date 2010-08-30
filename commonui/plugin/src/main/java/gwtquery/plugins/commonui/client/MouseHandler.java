@@ -31,7 +31,7 @@ import com.google.gwt.user.client.Event;
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public abstract class MouseHandler extends GQuery {
+public abstract class MouseHandler extends GQueryUi {
 
   private boolean preventClickEvent = false;
   private boolean mouseStarted = false;
@@ -90,27 +90,7 @@ public abstract class MouseHandler extends GQuery {
     as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
   }
 
-  /**
-   * Simulate event.pageX from jQuery
-   * 
-   * @param mouseEvent
-   * @return the mouse x-position in the page
-   */
-  protected int getPageX(Event mouseEvent) {
-    int pageX = mouseEvent.getClientX() + document.getScrollLeft();
-    return pageX;
-  }
 
-  /**
-   * Simulate event.pageY from jQuery
-   * 
-   * @param mouseEvent
-   * @return the mouse y-position in the page
-   */
-  protected int getPageY(Event mouseEvent) {
-    int pageY = mouseEvent.getClientY() + document.getScrollTop();
-    return pageY;
-  }
 
   /**
    * Return a String identifying the plugin. This string is used as namespace
@@ -285,7 +265,9 @@ public abstract class MouseHandler extends GQuery {
   }
 
   private void unbindOtherMouseEvent() {
-    $(document).as(Events.Events).unbind(Event.ONMOUSEUP | Event.ONMOUSEMOVE, getPluginName());
+    //TODO waiting correction of issue 48
+    //$(document).as(Events.Events).unbind((Event.ONMOUSEUP | Event.ONMOUSEMOVE), getPluginName());
+    $(document).as(Events.Events).unbind(Event.ONMOUSEUP, getPluginName()).unbind(Event.ONMOUSEMOVE, getPluginName());
   }
 
 }
