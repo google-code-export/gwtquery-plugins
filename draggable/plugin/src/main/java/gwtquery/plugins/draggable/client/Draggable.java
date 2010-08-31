@@ -107,76 +107,57 @@ public class Draggable extends MouseHandler {
 
     public void registerValues(Element element, Event e) {
       helperCssPosition = helper.css("position");
-      //TODO check if it's correct
       helperScrollParent = helper.as(GQueryUi).scrollParent();
       helperOffsetParent = helper.offsetParent();
-      
       
       setMarginCache(element);
       
       absPosition = new LeftTopDimension(element.getOffsetLeft(), element
           .getOffsetTop());
 
-      int offsetLeft = absPosition.getLeft() - margin.getLeft();
-      int offsetTop = absPosition.getTop() - margin.getTop();
-      offset = new LeftTopDimension(offsetLeft, offsetTop);
+      offset = new LeftTopDimension(absPosition.getLeft() - margin.getLeft(), absPosition.getTop() - margin.getTop());
 
-      click = new LeftTopDimension(pageX(e) - offsetLeft, pageY(e)
-          - offsetTop);
+      click = new LeftTopDimension(pageX(e) - offset.left, pageY(e)
+          - offset.top);
 
       parentOffset = calculateParentOffset(element);
-      relativeOffset = calculateRelativeOffset(element);
+      relativeOffset = calculateRelativeHelperOffset(element);
 
     }
 
-    // This is a relative to absolute position minus the actual position
-    // calculation - only used for relative positioned helper
-    private LeftTopDimension calculateRelativeOffset(Element element) {
+    /*
+     *  This is a relative to absolute position minus the actual position
+     *  calculation - only used for relative positioned helper
+     */
+    private LeftTopDimension calculateRelativeHelperOffset(Element element) {
       if ("relative".equals(helperCssPosition)){
         Offset position = $(element).position();
-        //TODO continue this
-        /*return {
-          top: p.top - (parseInt(this.helper.css("top"),10) || 0) + this.scrollParent.scrollTop(),
-          left: p.left - (parseInt(this.helper.css("left"),10) || 0) + this.scrollParent.scrollLeft()
-        };*/
+        int top = (int) (position.top - GQUtils.cur(helper.get(0), "top", false)+helperScrollParent.scrollTop());
+        int left = (int) (position.left - GQUtils.cur(helper.get(0), "left", false)+ helperScrollParent.scrollLeft());
+        return new LeftTopDimension(left, top);
       }
       return new LeftTopDimension(0, 0);
     }
 
     private LeftTopDimension calculateParentOffset(Element element) {
-      // TODO Auto-generated method stub
+      Offset position = helperOffsetParent.offset();
+      
+      if("absolute".equals(helperCssPosition) && helperScrollParent.get(0) != $(document).get(0) && contains(helperScrollParent.get(0), helperOffsetParent.get(0))) {
+        position.add(helperScrollParent.scrollLeft(),helperScrollParent.scrollTop());
+      }
+      
+/*      TODO continue
+      if((this.offsetParent[0] == document.body) //This needs to be actually done for all browsers, since pageX/pageY includes this information
+          || (this.offsetParent[0].tagName && this.offsetParent[0].tagName.toLowerCase() == 'html' && $.browser.msie)) //Ugly IE fix
+            po = { top: 0, left: 0 };
+
+          return {
+            top: po.top + (parseInt(this.offsetParent.css("borderTopWidth"),10) || 0),
+            left: po.left + (parseInt(this.offsetParent.css("borderLeftWidth"),10) || 0)
+          };
+*/
       return null;
     }
-    
-    /*
-     * _getParentOffset: function() {
-
-    //Get the offsetParent and cache its position
-    this.offsetParent = this.helper.offsetParent();
-    var po = this.offsetParent.offset();
-
-    // This is a special case where we need to modify a offset calculated on start, since the following happened:
-    // 1. The position of the helper is absolute, so it's position is calculated based on the next positioned parent
-    // 2. The actual offset parent is a child of the scroll parent, and the scroll parent isn't the document, which means that
-    //    the scroll is included in the initial calculation of the offset of the parent, and never recalculated upon drag
-    if(this.cssPosition == 'absolute' && this.scrollParent[0] != document && $.ui.contains(this.scrollParent[0], this.offsetParent[0])) {
-      po.left += this.scrollParent.scrollLeft();
-      po.top += this.scrollParent.scrollTop();
-    }
-
-    if((this.offsetParent[0] == document.body) //This needs to be actually done for all browsers, since pageX/pageY includes this information
-    || (this.offsetParent[0].tagName && this.offsetParent[0].tagName.toLowerCase() == 'html' && $.browser.msie)) //Ugly IE fix
-      po = { top: 0, left: 0 };
-
-    return {
-      top: po.top + (parseInt(this.offsetParent.css("borderTopWidth"),10) || 0),
-      left: po.left + (parseInt(this.offsetParent.css("borderLeftWidth"),10) || 0)
-    };
-
-  },
-
-     */
-    
     
   }
   
