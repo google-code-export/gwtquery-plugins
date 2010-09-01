@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Event;
 
 import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.impl.DraggableImpl;
 
 /**
  * Draggable for GwtQuery
@@ -88,14 +89,19 @@ public class Draggable extends MouseHandler {
     private LeftTopDimension offset;
     private LeftTopDimension absPosition;
     // from where the click happened relative to the draggable element
-    private LeftTopDimension click;
+    private LeftTopDimension offsetClick;
     private LeftTopDimension parentOffset;
     private LeftTopDimension relativeOffset;
+    private int originalEventPageX;
+    private int originalEventPageY;
+    private LeftTopDimension position;
+    private LeftTopDimension originalPosition;
     
     //info from helper
     private String helperCssPosition; 
     private GQuery helperScrollParent;
     private GQuery helperOffsetParent;
+    private int[] containment;
 
     public void setMarginCache(Element element) {
       int marginLeft = (int) GQUtils.cur(element, "marginLeft", true);
@@ -105,7 +111,7 @@ public class Draggable extends MouseHandler {
 
     }
 
-    public void registerValues(Element element, Event e) {
+    public void initialize(Element element, Event e) {
       helperCssPosition = helper.css("position");
       helperScrollParent = helper.as(GQueryUi).scrollParent();
       helperOffsetParent = helper.offsetParent();
@@ -117,13 +123,68 @@ public class Draggable extends MouseHandler {
 
       offset = new LeftTopDimension(absPosition.getLeft() - margin.getLeft(), absPosition.getTop() - margin.getTop());
 
-      click = new LeftTopDimension(pageX(e) - offset.left, pageY(e)
+      offsetClick = new LeftTopDimension(pageX(e) - offset.left, pageY(e)
           - offset.top);
 
       parentOffset = calculateParentOffset(element);
       relativeOffset = calculateRelativeHelperOffset(element);
 
+      originalEventPageX = pageX(e);
+      originalEventPageY = pageY(e);
+      
+      position =  generatePosition(e);
+      originalPosition = new LeftTopDimension(position.left, position.top);
+      if (options.getContainment() != null){
+        containment = options.getContainment().calculate();
+      }
+      
     }
+    
+   
+
+    private boolean isOffsetParentIncludedInScrollParent(){
+      assert helperOffsetParent != null && helperScrollParent != null;
+      return helperScrollParent.get(0) != $(document).get(0) && contains(helperScrollParent.get(0), helperOffsetParent.get(0));
+    }
+
+    public void regeneratePosition(Event e){
+      position = generatePosition(e);
+      
+    }
+    
+    private LeftTopDimension generatePosition(Event e) {
+      GQuery scroll;
+
+      if("absolute".equals(helperCssPosition) && !(isOffsetParentIncludedInScrollParent()) ) {
+       scroll = helperOffsetParent;
+      }else{
+        scroll = helperScrollParent;
+      }
+      
+      String scrollTagName = scroll.get(0).getTagName();
+      boolean scrollIsRootNode = "html".equalsIgnoreCase(scrollTagName) || "body".equalsIgnoreCase(scrollTagName);
+      int pageX = pageX(e);
+      int pageY = pageY(e);
+      
+      if (originalPosition != null){ // test if don't calculate the initial position
+        //TODO check options
+      }
+      
+      int top = pageY
+        -offsetClick.top
+        -relativeOffset.top
+        -parentOffset.top
+        + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollTop() : scrollIsRootNode ? 0 : scroll.scrollTop()); 
+      int left = pageX
+        -offsetClick.left
+        -relativeOffset.left
+        -parentOffset.left
+        + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft() : scrollIsRootNode ? 0 : scroll.scrollLeft()); 
+
+      return null;
+    }
+    
+
 
     /*
      *  This is a relative to absolute position minus the actual position
@@ -142,21 +203,18 @@ public class Draggable extends MouseHandler {
     private LeftTopDimension calculateParentOffset(Element element) {
       Offset position = helperOffsetParent.offset();
       
-      if("absolute".equals(helperCssPosition) && helperScrollParent.get(0) != $(document).get(0) && contains(helperScrollParent.get(0), helperOffsetParent.get(0))) {
+      if("absolute".equals(helperCssPosition) && isOffsetParentIncludedInScrollParent()) {
         position.add(helperScrollParent.scrollLeft(),helperScrollParent.scrollTop());
       }
       
-/*      TODO continue
-      if((this.offsetParent[0] == document.body) //This needs to be actually done for all browsers, since pageX/pageY includes this information
-          || (this.offsetParent[0].tagName && this.offsetParent[0].tagName.toLowerCase() == 'html' && $.browser.msie)) //Ugly IE fix
-            po = { top: 0, left: 0 };
-
-          return {
-            top: po.top + (parseInt(this.offsetParent.css("borderTopWidth"),10) || 0),
-            left: po.left + (parseInt(this.offsetParent.css("borderLeftWidth"),10) || 0)
-          };
-*/
-      return null;
+      if  (impl.resetParentOffsetPosition(helperOffsetParent)){
+        position.left = 0;
+        position.top = 0;
+      }
+      
+      position.add((int)GQUtils.cur(helperOffsetParent.get(0), "borderLeftWidth", false), (int)GQUtils.cur(helperOffsetParent.get(0), "borderTopWidth", false));
+      return new LeftTopDimension(position.left, position.top);
+          
     }
     
   }
@@ -178,7 +236,7 @@ public class Draggable extends MouseHandler {
   private GQuery helper;
   private HelperDimension helperDimension;
   private DragOperationInfo dragOperationInfo;
-  
+  private DraggableImpl impl = GWT.create(DraggableImpl.class);
 
   public Draggable(GQuery gq) {
     super(gq);
@@ -260,13 +318,12 @@ public class Draggable extends MouseHandler {
     cacheHelperSize();
     
     dragOperationInfo = new DragOperationInfo();
-    dragOperationInfo.registerValues(draggable, event);
+    dragOperationInfo.initialize(draggable, event);
+   
     //TODO continue
     
     return false;
   }
-
- 
 
  
 
