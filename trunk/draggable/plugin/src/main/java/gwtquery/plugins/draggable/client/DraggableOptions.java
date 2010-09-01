@@ -32,11 +32,15 @@ public class DraggableOptions extends MouseOptions {
     public abstract GQuery createHelper(Element original, Element helper);
   }
 
+  
+  
+  public static final DraggableContainment PARENT = new DraggableContainment("parent");
+
   private boolean addClasses;
   private String appendTo;
   private boolean axis;
   // private boolean connectToSortable;
-  private boolean containment;
+  private DraggableContainment containment;
   private String cursor;
   private boolean cursorAt;
   private boolean disabled;
@@ -61,6 +65,10 @@ public class DraggableOptions extends MouseOptions {
 
   public String getAppendTo() {
     return appendTo;
+  }
+
+  public DraggableContainment getContainment() {
+    return containment;
   }
 
   public String getCursor() {
@@ -114,10 +122,6 @@ public class DraggableOptions extends MouseOptions {
   /*
    * public boolean isConnectToSortable() { return connectToSortable; }
    */
-
-  public boolean isContainment() {
-    return containment;
-  }
 
   public boolean isCursorAt() {
     return cursorAt;
@@ -180,9 +184,10 @@ public class DraggableOptions extends MouseOptions {
    * this.connectToSortable = connectToSortable; }
    */
 
-  public void setContainment(boolean containment) {
+  public void setContainment(DraggableContainment containment) {
     this.containment = containment;
   }
+  
 
   public void setCursor(String cursor) {
     this.cursor = cursor;
@@ -276,7 +281,7 @@ public class DraggableOptions extends MouseOptions {
     appendTo = "parent";
     axis = false;
     // connectToSortable = false;
-    containment = false;
+    containment = null;
     cursorAt = false;
     grid = false;
     handle = null;

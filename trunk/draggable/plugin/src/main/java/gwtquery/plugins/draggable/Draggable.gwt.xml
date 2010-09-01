@@ -1,4 +1,15 @@
 <module>
     <inherits name='gwtquery.plugins.commonui.CommonUi'/>
+    
+    <replace-with
+		class="gwtquery.plugins.draggable.client.impl.DraggableImplIE">
+		<when-type-is
+			class="gwtquery.plugins.draggable.client.impl.DraggableImpl" />
+		<any>
+			<when-property-is name="user.agent" value="ie6" />
+			<when-property-is name="user.agent" value="ie8" />
+		</any>
+	</replace-with>
+	
 </module>
     
