@@ -20,11 +20,9 @@ public class GQueryUi extends GQuery {
   
   private GQueryUiImpl impl = GWT.create(GQueryUiImpl.class);
   
-  public native static boolean contains(Node parent, Node descendant)/*-{
-    return (typeof parent.compareDocumentPosition != 'undefined') ? parent.compareDocumentPosition(descendant) & 16
-      : parent !== descendant && parent.contains(descendant);
-    
-  }-*/;
+  public static boolean contains(Element parent, Element descendant){
+    return parent.isOrHasChild(descendant);
+  }
   
   public GQueryUi() {
     super();
