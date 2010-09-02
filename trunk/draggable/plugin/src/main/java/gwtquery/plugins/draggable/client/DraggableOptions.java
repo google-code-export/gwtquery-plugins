@@ -3,6 +3,7 @@ package gwtquery.plugins.draggable.client;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
 import gwtquery.plugins.commonui.client.MouseOptions;
@@ -44,7 +45,7 @@ public class DraggableOptions extends MouseOptions {
   private String cursor;
   private boolean cursorAt;
   private boolean disabled;
-  private boolean grid;
+  private int[] grid;
   private String handle;
   private Element helper;
   private HelperType helperType;
@@ -62,6 +63,15 @@ public class DraggableOptions extends MouseOptions {
   private int snapTolerance;
   private boolean stack;
   private boolean zIndex;
+  /**
+   * This callback function is called at the starting of the drag operation
+   */
+  private Function onDragStart;
+
+  /**
+   * This callback function is called at the end of the drag operation.
+   */
+  private Function onDragStop;
 
   public String getAppendTo() {
     return appendTo;
@@ -74,6 +84,10 @@ public class DraggableOptions extends MouseOptions {
   public String getCursor() {
     return cursor;
   }
+  
+  public int[] getGrid() {
+    return grid;
+  }
 
   public String getHandle() {
     return handle;
@@ -85,6 +99,14 @@ public class DraggableOptions extends MouseOptions {
 
   public HelperType getHelperType() {
     return helperType;
+  }
+  
+  public Function getOnDragStart() {
+    return onDragStart;
+  }
+  
+  public Function getOnDragStop() {
+    return onDragStop;
   }
 
   public int getRevertDuration() {
@@ -129,10 +151,6 @@ public class DraggableOptions extends MouseOptions {
 
   public boolean isDisabled() {
     return disabled;
-  }
-
-  public boolean isGrid() {
-    return grid;
   }
 
   public boolean isIframeFix() {
@@ -197,7 +215,7 @@ public class DraggableOptions extends MouseOptions {
     this.cursorAt = cursorAt;
   }
 
-  public void setGrid(boolean grid) {
+  public void setGrid(int[] grid) {
     this.grid = grid;
   }
 
@@ -224,6 +242,14 @@ public class DraggableOptions extends MouseOptions {
 
   public void setOpacity(boolean opacity) {
     this.opacity = opacity;
+  }
+  
+  public void setOnDragStart(Function onDragStart) {
+    this.onDragStart = onDragStart;
+  }
+  
+  public void setOnDragStop(Function onDragStop) {
+    this.onDragStop = onDragStop;
   }
 
   public void setRefreshPositions(boolean refreshPositions) {
@@ -283,7 +309,7 @@ public class DraggableOptions extends MouseOptions {
     // connectToSortable = false;
     containment = null;
     cursorAt = false;
-    grid = false;
+    grid = null;
     handle = null;
     iframeFix = false;
     opacity = false;
