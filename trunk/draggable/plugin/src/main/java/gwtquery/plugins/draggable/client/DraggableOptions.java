@@ -32,14 +32,19 @@ public class DraggableOptions extends MouseOptions {
 
     public abstract GQuery createHelper(Element original, Element helper);
   }
+  
+  public static enum AxisOption{
+    Y_AXIS,X_AXIS,NONE;
+  }
 
   
   
   public static final DraggableContainment PARENT = new DraggableContainment("parent");
+  
 
   private boolean addClasses;
   private String appendTo;
-  private boolean axis;
+  private AxisOption axis;
   // private boolean connectToSortable;
   private DraggableContainment containment;
   private String cursor;
@@ -73,8 +78,20 @@ public class DraggableOptions extends MouseOptions {
    */
   private Function onDragStop;
 
+  /**
+   * This callback function is called during the drag operation.
+   */
+  private Function onDrag;
+
   public String getAppendTo() {
     return appendTo;
+  }
+  
+  public AxisOption getAxis() {
+    if (axis == null){
+      return AxisOption.NONE;
+    }
+    return axis;
   }
 
   public DraggableContainment getContainment() {
@@ -99,6 +116,10 @@ public class DraggableOptions extends MouseOptions {
 
   public HelperType getHelperType() {
     return helperType;
+  }
+  
+  public Function getOnDrag() {
+    return onDrag;
   }
   
   public Function getOnDragStart() {
@@ -135,10 +156,6 @@ public class DraggableOptions extends MouseOptions {
 
   public boolean isAddClasses() {
     return addClasses;
-  }
-
-  public boolean isAxis() {
-    return axis;
   }
 
   /*
@@ -193,7 +210,7 @@ public class DraggableOptions extends MouseOptions {
     this.appendTo = appendTo;
   }
 
-  public void setAxis(boolean axis) {
+  public void setAxis(AxisOption axis) {
     this.axis = axis;
   }
 
@@ -242,6 +259,10 @@ public class DraggableOptions extends MouseOptions {
 
   public void setOpacity(boolean opacity) {
     this.opacity = opacity;
+  }
+  
+  public void setOnDrag(Function onDrag) {
+    this.onDrag = onDrag;
   }
   
   public void setOnDragStart(Function onDragStart) {
@@ -305,7 +326,7 @@ public class DraggableOptions extends MouseOptions {
     super.initDefault();
     addClasses = true;
     appendTo = "parent";
-    axis = false;
+    axis = AxisOption.NONE;
     // connectToSortable = false;
     containment = null;
     cursorAt = false;
