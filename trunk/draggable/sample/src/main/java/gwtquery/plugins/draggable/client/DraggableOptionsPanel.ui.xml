@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<g:DecoratorPanel>
+	<g:HTMLPanel>
+		<table cellpadding="5" style="margin:5px;">
+			<tbody>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Helper type" /></td>
+					<td><g:ListBox ui:field="helperListBox" /></td>
+					<td>Allows for a helper element to be used for dragging display.</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="handle" /></td>
+					<td><g:CheckBox ui:field="handleCheckBox" /></td>
+					<td>Enabled or disabled the handle. </td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Axis" /></td>
+					<td><g:ListBox ui:field="axisListBox" /></td>
+					<td>axis constraints</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="disabled" /></td>
+					<td><g:CheckBox ui:field="disabledCheckBox" /></td>
+					<td>Enable or disable the selection process.</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="delay" /></td>
+					<td><g:TextBox ui:field="delayBox" /></td>
+					<td>Time in milliseconds to define when the selecting should start.</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="distance" /></td>
+					<td><g:TextBox ui:field="distanceBox" /></td>
+					<td>Tolerance, in pixels, for when selecting should start</td>
+				</tr>
+			</tbody>
+		</table>
+	</g:HTMLPanel>
+	</g:DecoratorPanel>
+</ui:UiBinder> 
