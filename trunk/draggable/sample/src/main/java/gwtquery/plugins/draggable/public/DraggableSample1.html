@@ -5,8 +5,8 @@
 <title>GwtQuery: Draggable plugin example 1</title>
 <style type="text/css">
 #iWantTobeDraggable {
-	width: 150px;
-	height: 150px;
+	width: 200px;
+	height: 200px;
 	padding: 0.5em;
 	border: black solid 1px;
 	background: #f6f6f6;
@@ -45,17 +45,19 @@
 draggable object by clicking on it with the mouse and dragging it
 anywhere within the viewport.</p>
 
-<div style="height: 500px;">
+<div style="height: 500px; border: 1px solid black; overflow: auto;">
 	<div id="iWantTobeDraggable" class="ui-widget-content">
 		<p>Drag me around</p>
+			<div style="margin-top: 10px;">Start called <span id="startCounter">0</span> times.</div>
+			<div>Drag called <span id="dragCounter">0</span> times.</div>
+			<div>Stop called <span id="stopCounter">0</span> times.</div>
 	</div>
 </div>
 
-<br />
-<br />
+
 <br />
 <a
-	href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/selectable/sample/src/main/java/gwtquery/plugins/selectable/client/SelectableSample3.java"
+	href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/draggable/sample/src/main/java/gwtquery/plugins/draggable/client/DraggableSample3.java"
 	target="_blank">Java source code</a></div>
 </body>
 </html>
