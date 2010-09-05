@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
@@ -61,6 +62,8 @@ public class DraggableSample2 implements EntryPoint {
     CheckBox disabledCheckBox;
     @UiField
     CheckBox handleCheckBox;
+    @UiField
+    TextBox opacityBox;
 
 
     public DraggableOptionsPanel(DraggableOptions o) {
@@ -89,6 +92,8 @@ public class DraggableSample2 implements EntryPoint {
       axisListBox.addItem(AxisOption.X_AXIS.name());
       axisListBox.addItem(AxisOption.Y_AXIS.name());
       axisListBox.setSelectedIndex(0);
+      
+      opacityBox.setValue(""+options.getOpacity());
 
     }
 
@@ -117,9 +122,32 @@ public class DraggableSample2 implements EntryPoint {
     
     @UiHandler(value = "distanceBox")
     public void onDistanceChange(ValueChangeEvent<String> e) {
-      options.setDistance(new Integer(e.getValue()));
+      Integer distance;
+      try{
+        distance = new Integer(e.getValue());
+      }catch (NumberFormatException ex){
+        Window.alert("Please specify a correct number for distance");
+        return;
+      }
+      options.setDistance(distance);
     }
 
+    @UiHandler(value = "opacityBox")
+    public void onOpacityChange(ValueChangeEvent<String> e) {
+      Float opacity;
+      try{
+        opacity = new Float(e.getValue());
+      }catch (NumberFormatException ex){
+        Window.alert("Please specify a correct number for opacity");
+        return;
+      }
+      if (opacity >1){
+        Window.alert("Opacity must be below than 1.");
+        return;
+      }
+      options.setOpacity(opacity);
+    }
+    
     @UiHandler(value = "disabledCheckBox")
     public void onDisabledChange(ValueChangeEvent<Boolean> e) {
       options.setDisabled(e.getValue());
