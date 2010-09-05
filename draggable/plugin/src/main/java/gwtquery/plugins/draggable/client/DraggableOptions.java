@@ -55,7 +55,7 @@ public class DraggableOptions extends MouseOptions {
   private Element helper;
   private HelperType helperType;
   private boolean iframeFix;
-  private boolean opacity;
+  private float opacity;
   private boolean refreshPositions;
   private boolean revert;
   private int revertDuration;
@@ -174,7 +174,7 @@ public class DraggableOptions extends MouseOptions {
     return iframeFix;
   }
 
-  public boolean isOpacity() {
+  public float getOpacity() {
     return opacity;
   }
 
@@ -257,7 +257,7 @@ public class DraggableOptions extends MouseOptions {
     this.iframeFix = iframeFix;
   }
 
-  public void setOpacity(boolean opacity) {
+  public void setOpacity(float opacity) {
     this.opacity = opacity;
   }
   
@@ -333,7 +333,7 @@ public class DraggableOptions extends MouseOptions {
     grid = null;
     handle = null;
     iframeFix = false;
-    opacity = false;
+    opacity = -1;
     refreshPositions = false;
     revert = false;
     scroll = true;
