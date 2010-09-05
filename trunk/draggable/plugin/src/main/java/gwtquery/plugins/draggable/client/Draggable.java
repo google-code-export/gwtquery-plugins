@@ -6,17 +6,11 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
-import com.google.gwt.query.client.plugins.Effects;
 import com.google.gwt.user.client.Event;
-
-import org.apache.xpath.functions.Function2Args;
-
-import java.util.Properties;
 
 import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
@@ -25,6 +19,9 @@ import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.impl.DraggableImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Draggable for GwtQuery
@@ -40,6 +37,46 @@ public class Draggable extends MouseHandler {
     String UI_DRAGGABLE_DISABLED = "ui-draggable-disabled";
     String UI_DRAGGABLE_DRAGGING = "ui-draggable-dragging";
 
+  }
+
+  private static interface PluginCaller {
+    void call(DraggablePlugin plugin);
+  }
+
+  private class StartCaller implements PluginCaller {
+    protected Element draggable;
+    protected Event e;
+
+    public StartCaller(Element draggable, Event e) {
+      this.draggable = draggable;
+      this.e = e;
+    }
+
+    public void call(DraggablePlugin plugin) {
+      plugin.onStart(Draggable.this, draggable, e);
+    }
+  }
+
+  private class StopCaller extends StartCaller {
+
+    public StopCaller(Element draggable, Event e) {
+      super(draggable, e);
+    }
+
+    public void call(DraggablePlugin plugin) {
+      plugin.onStop(Draggable.this, draggable, e);
+    }
+  }
+
+  private class DragCaller extends StartCaller {
+
+    public DragCaller(Element draggable, Event e) {
+      super(draggable, e);
+    }
+
+    public void call(DraggablePlugin plugin) {
+      plugin.onDrag(Draggable.this, draggable, e);
+    }
   }
 
   /**
@@ -349,7 +386,7 @@ public class Draggable extends MouseHandler {
   /**
    * A POJO used to store the top/left.
    */
-  private static class LeftTopDimension {
+  public static class LeftTopDimension {
     private int left;
     private int top;
 
@@ -375,6 +412,8 @@ public class Draggable extends MouseHandler {
 
   private static final String DRAGGABLE_KEY = "draggable";
 
+  private static Map<String, DraggablePlugin> draggablePlugins;
+
   // Register the plugin in GQuery
   static {
     GQuery.registerPlugin(Draggable.class, new Plugin<Draggable>() {
@@ -382,14 +421,23 @@ public class Draggable extends MouseHandler {
         return new Draggable(gq);
       }
     });
+    
+    registerDraggablePlugin(new OpacityPlugin());
   }
 
-  private DraggableOptions options;
-  private GQuery helper;
-  private HelperDimension helperDimension;
-  private DragOperationInfo dragOperationInfo;
-  private DraggableImpl impl = GWT.create(DraggableImpl.class);
-  private boolean cancelHelperRemoval = false;
+  public static void registerDraggablePlugin(DraggablePlugin plugin) {
+    if (draggablePlugins == null) {
+      draggablePlugins = new HashMap<String, DraggablePlugin>();
+    }
+    draggablePlugins.put(plugin.getName(), plugin);
+  }
+
+  DraggableOptions options;
+  GQuery helper;
+  HelperDimension helperDimension;
+  DragOperationInfo dragOperationInfo;
+  DraggableImpl impl = GWT.create(DraggableImpl.class);
+  boolean cancelHelperRemoval = false;
 
   public Draggable(Element element) {
     super(element);
@@ -478,6 +526,8 @@ public class Draggable extends MouseHandler {
     dragOperationInfo = new DragOperationInfo();
     dragOperationInfo.initialize(draggable, event);
 
+    callPlugins(new StartCaller(draggable, event));
+
     try {
       trigger(new DragStartEvent(draggable), options.getOnDragStart(),
           draggable);
@@ -494,19 +544,12 @@ public class Draggable extends MouseHandler {
     return true;
   }
 
+
   @Override
   protected boolean mouseStop(Element draggable, Event event) {
-    //TODO finish that
+    // TODO finish that
 
-    /*$(helper).as(Effects.Effects).animate(, options.getRevertDuration(), new Function() {
-          @Override
-          public void f(Element e) {
-            // TODO Auto-generated method stub
-            super.f(e);
-          }
-    });*/
-    draggable.getStyle().setTop(dragOperationInfo.position.top, Unit.PX);
-    draggable.getStyle().setLeft(dragOperationInfo.position.left, Unit.PX);
+    callPlugins(new StopCaller(draggable, event));
     
     trigger(new DragStopEvent(draggable), options.getOnDragStop(), draggable);
 
@@ -522,6 +565,12 @@ public class Draggable extends MouseHandler {
 
   }
 
+  private void callPlugins(PluginCaller caller) {
+    for (DraggablePlugin plugin : draggablePlugins.values()){
+      caller.call(plugin);
+    }
+  }
+  
   private void clear(Element draggable) {
     helper.removeClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
     if (helper.get(0) != draggable && !cancelHelperRemoval) {
@@ -582,6 +631,9 @@ public class Draggable extends MouseHandler {
     dragOperationInfo.generateAbsPosition();
 
     if (!noPropagation) {
+      
+      callPlugins(new DragCaller(draggable, event));
+      
       try {
         trigger(new DragEvent(draggable), options.getOnDrag(), draggable);
       } catch (StopDragException e) {
