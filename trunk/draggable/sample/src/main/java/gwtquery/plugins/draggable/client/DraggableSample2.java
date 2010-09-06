@@ -64,6 +64,13 @@ public class DraggableSample2 implements EntryPoint {
     CheckBox handleCheckBox;
     @UiField
     TextBox opacityBox;
+    @UiField
+    CheckBox scrollCheckBox;
+    @UiField
+    TextBox scrollSensivityBox;
+    @UiField
+    TextBox scrollSpeedBox;
+    
 
 
     public DraggableOptionsPanel(DraggableOptions o) {
@@ -94,7 +101,45 @@ public class DraggableSample2 implements EntryPoint {
       axisListBox.setSelectedIndex(0);
       
       opacityBox.setValue(""+options.getOpacity());
+      
+      scrollCheckBox.setValue(options.isScroll());
+      scrollSensivityBox.setValue(""+options.getScrollSensitivity());
+      scrollSpeedBox.setValue(""+options.getScrollSpeed());
 
+    }
+    
+    @UiHandler(value = "scrollCheckBox")
+    public void onScrollChange(ValueChangeEvent<Boolean> e) {
+      boolean scroll = e.getValue();
+      options.setScroll(scroll);
+      scrollSensivityBox.setEnabled(scroll);
+      scrollSpeedBox.setEnabled(scroll);
+      
+    }
+    
+    
+    @UiHandler(value = "scrollSensivityBox")
+    public void onScrollSensitivityChange(ValueChangeEvent<String> e) {
+      Integer scrollSensitivity;
+      try{
+        scrollSensitivity = new Integer(e.getValue());
+      }catch (NumberFormatException ex){
+        Window.alert("Please specify a correct number for scrollSensitivity");
+        return;
+      }
+      options.setScrollSensitivity(scrollSensitivity);
+    }
+    
+    @UiHandler(value = "scrollSpeedBox")
+    public void onScrollSpeedChange(ValueChangeEvent<String> e) {
+      Integer scrollSpeed;
+      try{
+        scrollSpeed = new Integer(e.getValue());
+      }catch (NumberFormatException ex){
+        Window.alert("Please specify a correct number for scrollSpeed");
+        return;
+      }
+      options.setScrollSpeed(scrollSpeed);
     }
 
     @UiHandler(value = "helperListBox")

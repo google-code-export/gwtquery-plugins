@@ -27,6 +27,21 @@
 					<td>Opacity of the element when it is dragging. Specify a number between 0 and 1. Set -1 to not change the initial opacity (default)</td>
 				</tr>
 				<tr style="vertical-align:top;">
+					<td><g:HTML text="Scroll" /></td>
+					<td><g:CheckBox ui:field="scrollCheckBox" /></td>
+					<td>Enable or disable automatic scrolling</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="scrollSensitivity" /></td>
+					<td><g:TextBox ui:field="scrollSensivityBox" /></td>
+					<td>Scroll sensitivity in pixels</td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="scrollSpeed" /></td>
+					<td><g:TextBox ui:field="scrollSpeedBox" /></td>
+					<td>Automatic scroll speed</td>
+				</tr>
+				<tr style="vertical-align:top;">
 					<td><g:HTML text="disabled" /></td>
 					<td><g:CheckBox ui:field="disabledCheckBox" /></td>
 					<td>Enable or disable the selection process.</td>
