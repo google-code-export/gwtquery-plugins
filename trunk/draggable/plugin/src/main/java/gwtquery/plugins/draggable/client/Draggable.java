@@ -19,6 +19,9 @@ import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.impl.DraggableImpl;
+import gwtquery.plugins.draggable.client.plugins.DraggablePlugin;
+import gwtquery.plugins.draggable.client.plugins.OpacityPlugin;
+import gwtquery.plugins.draggable.client.plugins.ScrollPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +56,7 @@ public class Draggable extends MouseHandler {
     }
 
     public void call(DraggablePlugin plugin) {
-      plugin.onStart(Draggable.this, draggable, e);
+      plugin.onStart(dragOperationInfo, draggable, e);
     }
   }
 
@@ -64,7 +67,7 @@ public class Draggable extends MouseHandler {
     }
 
     public void call(DraggablePlugin plugin) {
-      plugin.onStop(Draggable.this, draggable, e);
+      plugin.onStop(dragOperationInfo, draggable, e);
     }
   }
 
@@ -75,14 +78,14 @@ public class Draggable extends MouseHandler {
     }
 
     public void call(DraggablePlugin plugin) {
-      plugin.onDrag(Draggable.this, draggable, e);
+      plugin.onDrag(dragOperationInfo, draggable, e);
     }
   }
 
   /**
    * A POJO used to store all values we need to keep during drag operation
    */
-  private class DragOperationInfo {
+  public class DragOperationInfo {
 
     private LeftTopDimension margin;
 
@@ -102,6 +105,14 @@ public class Draggable extends MouseHandler {
     private GQuery helperScrollParent;
     private GQuery helperOffsetParent;
     private int[] containment;
+    private GQuery helper;
+    private DraggableOptions options;
+    
+    //can be instantiate only by Draggable plugin
+    DragOperationInfo(GQuery helper, DraggableOptions options) {
+      this.options = options;
+      this.helper = helper;
+    }
 
     public void generateAbsPosition() {
       GQuery scroll = getScrollParent();
@@ -349,10 +360,74 @@ public class Draggable extends MouseHandler {
           && contains(helperScrollParent.get(0), helperOffsetParent.get(0));
     }
 
-    private boolean isRootNode(Element e) {
-      String scrollTagName = e.getTagName();
-      return "html".equalsIgnoreCase(scrollTagName)
-          || "body".equalsIgnoreCase(scrollTagName);
+    public boolean isRootNode(Element e) {
+      String tagName = e.getTagName();
+      return "html".equalsIgnoreCase(tagName)
+          || "body".equalsIgnoreCase(tagName);
+    }
+
+    public LeftTopDimension getMargin() {
+      return margin;
+    }
+
+    public LeftTopDimension getOffset() {
+      return offset;
+    }
+
+    public LeftTopDimension getAbsPosition() {
+      return absPosition;
+    }
+
+    public LeftTopDimension getOffsetClick() {
+      return offsetClick;
+    }
+
+    public LeftTopDimension getParentOffset() {
+      return parentOffset;
+    }
+
+    public LeftTopDimension getRelativeOffset() {
+      return relativeOffset;
+    }
+
+    public int getOriginalEventPageX() {
+      return originalEventPageX;
+    }
+
+    public int getOriginalEventPageY() {
+      return originalEventPageY;
+    }
+
+    public LeftTopDimension getPosition() {
+      return position;
+    }
+
+    public LeftTopDimension getOriginalPosition() {
+      return originalPosition;
+    }
+
+    public String getHelperCssPosition() {
+      return helperCssPosition;
+    }
+
+    public GQuery getHelperScrollParent() {
+      return helperScrollParent;
+    }
+
+    public GQuery getHelperOffsetParent() {
+      return helperOffsetParent;
+    }
+
+    public int[] getContainment() {
+      return containment;
+    }
+
+    public GQuery getHelper() {
+      return helper;
+    }
+
+    public DraggableOptions getOptions() {
+      return options;
     }
 
   }
@@ -423,6 +498,7 @@ public class Draggable extends MouseHandler {
     });
     
     registerDraggablePlugin(new OpacityPlugin());
+    registerDraggablePlugin(new ScrollPlugin());
   }
 
   public static void registerDraggablePlugin(DraggablePlugin plugin) {
@@ -523,7 +599,7 @@ public class Draggable extends MouseHandler {
     createHelper(draggable, event);
     cacheHelperSize();
 
-    dragOperationInfo = new DragOperationInfo();
+    dragOperationInfo = new DragOperationInfo(helper, options);
     dragOperationInfo.initialize(draggable, event);
 
     callPlugins(new StartCaller(draggable, event));
@@ -567,7 +643,9 @@ public class Draggable extends MouseHandler {
 
   private void callPlugins(PluginCaller caller) {
     for (DraggablePlugin plugin : draggablePlugins.values()){
-      caller.call(plugin);
+      if (plugin.hasToBeExecuted(options)){
+        caller.call(plugin);
+      }
     }
   }
   
