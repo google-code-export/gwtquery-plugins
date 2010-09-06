@@ -2,10 +2,13 @@ package gwtquery.plugins.commonui.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Node;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
+import com.google.gwt.query.client.Plugin;
 import com.google.gwt.user.client.Event;
 
 /**
@@ -18,8 +21,19 @@ public class GQueryUi extends GQuery {
 
   public static Class<GQueryUi> GQueryUi = GQueryUi.class;
   
-  private GQueryUiImpl impl = GWT.create(GQueryUiImpl.class);
+  //Register the plugin in GQuery
+  static {
+    GQuery.registerPlugin(GQueryUi.class, new Plugin<GQueryUi>() {
+      public GQueryUi init(GQuery gq) {
+        return new GQueryUi(gq);
+      }
+    });
+  }
   
+  protected HandlerManager eventBus;
+  
+  private GQueryUiImpl impl = GWT.create(GQueryUiImpl.class);
+ 
   public static boolean contains(Element parent, Element descendant){
     return parent.isOrHasChild(descendant);
   }
@@ -50,7 +64,7 @@ public class GQueryUi extends GQuery {
    * @param mouseEvent
    * @return the mouse x-position in the page
    */
-  public int pageX(Event mouseEvent) {
+  public static int pageX(Event mouseEvent) {
     int pageX = mouseEvent.getClientX() + document.getScrollLeft();
     return pageX;
   }
@@ -61,7 +75,7 @@ public class GQueryUi extends GQuery {
    * @param mouseEvent
    * @return the mouse y-position in the page
    */
-  public int pageY(Event mouseEvent) {
+  public static int pageY(Event mouseEvent) {
     int pageY = mouseEvent.getClientY() + document.getScrollTop();
     return pageY;
   }
@@ -73,6 +87,22 @@ public class GQueryUi extends GQuery {
    */
   public GQuery scrollParent(){
    return impl.scrollParent(this);
+  }
+  
+  /**
+   * fire event and call callback function.
+   * 
+   * @param e
+   * @param callback
+   * @param element
+   */
+  protected void trigger(GwtEvent<?> e, Function callback, Element element) {
+    if (eventBus != null) {
+      eventBus.fireEvent(e);
+    }
+    if (callback != null) {
+      callback.f(element);
+    }
   }
 
 }
