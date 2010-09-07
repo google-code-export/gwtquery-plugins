@@ -14,11 +14,13 @@ import com.google.gwt.user.client.Event;
 
 import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
+import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.impl.DraggableImpl;
+import gwtquery.plugins.draggable.client.plugins.CursorPlugin;
 import gwtquery.plugins.draggable.client.plugins.DraggablePlugin;
 import gwtquery.plugins.draggable.client.plugins.OpacityPlugin;
 import gwtquery.plugins.draggable.client.plugins.ScrollPlugin;
@@ -158,10 +160,14 @@ public class Draggable extends MouseHandler {
 
       position = generatePosition(e);
       originalPosition = new LeftTopDimension(position.left, position.top);
-
+      
+      if (options.getCursorAt() != null){
+        adjustOffsetFromHelper(options.getCursorAt());
+      }
       calculateContainment();
 
     }
+
 
     public void regeneratePosition(Event e) {
       position = generatePosition(e);
@@ -174,6 +180,25 @@ public class Draggable extends MouseHandler {
 
       margin = new LeftTopDimension(marginLeft, marginTop);
 
+    }
+    
+    private void adjustOffsetFromHelper(CursorAt cursorAt) {
+      // TODO Auto-generated method stub
+      if (cursorAt.getLeft() != null){
+        offsetClick.left = cursorAt.getLeft().intValue() + margin.getLeft();
+      }
+      
+      if (cursorAt.getRight() != null){
+        offsetClick.left = helperDimension.getWidth() - cursorAt.getRight().intValue() + margin.getLeft();
+      }
+      
+      if (cursorAt.getTop() != null){
+        offsetClick.top = cursorAt.getTop().intValue() + margin.getTop();
+      }
+      
+      if (cursorAt.getBottom() != null){
+        offsetClick.top = helperDimension.getHeight() - cursorAt.getBottom().intValue() + margin.getTop();
+      }
     }
 
     private void calculateContainment() {
@@ -499,6 +524,7 @@ public class Draggable extends MouseHandler {
     
     registerDraggablePlugin(new OpacityPlugin());
     registerDraggablePlugin(new ScrollPlugin());
+    registerDraggablePlugin(new CursorPlugin());
   }
 
   public static void registerDraggablePlugin(DraggablePlugin plugin) {

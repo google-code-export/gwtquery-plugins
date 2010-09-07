@@ -3,6 +3,7 @@ package gwtquery.plugins.draggable.client;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
@@ -32,23 +33,74 @@ public class DraggableOptions extends MouseOptions {
 
     public abstract GQuery createHelper(Element original, Element helper);
   }
-  
-  public static enum AxisOption{
-    Y_AXIS,X_AXIS,NONE;
+
+  public static enum AxisOption {
+    Y_AXIS, X_AXIS, NONE;
   }
 
-  
-  
-  public static final DraggableContainment PARENT = new DraggableContainment("parent");
-  
+  /**
+   * Object use to specify the cursorAt options.
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   *
+   */
+  public static class CursorAt {
+
+    private Integer left;
+    private Integer right;
+    private Integer top;
+    private Integer bottom;
+
+    /**
+     * Specify coordinates by giving one or two parameters. 
+     * If you define more than twa argument, the bottom parameter has priority over the top parameter and the right parameter has priority over left parameter
+     * @param top
+     * @param left
+     * @param bottom
+     * @param right
+     */
+    public CursorAt(Integer top, Integer left, Integer bottom, Integer right) {
+      if (bottom != null) {
+        this.bottom = bottom;
+      }else if (top != null) {
+        this.top = top;
+      } 
+      
+      if (right != null) {
+        this.right = right;
+      }else if (left != null) {
+          this.left = left;
+      } 
+    }
+
+    public Integer getBottom() {
+      return bottom;
+    }
+
+    public Integer getLeft() {
+      return left;
+    }
+
+    public Integer getRight() {
+      return right;
+    }
+
+    public Integer getTop() {
+      return top;
+    }
+
+  }
+
+  public static final DraggableContainment PARENT = new DraggableContainment(
+      "parent");
 
   private boolean addClasses;
   private String appendTo;
   private AxisOption axis;
   // private boolean connectToSortable;
   private DraggableContainment containment;
-  private String cursor;
-  private boolean cursorAt;
+  private Cursor cursor;
+  private CursorAt cursorAt;
   private boolean disabled;
   private int[] grid;
   private String handle;
@@ -86,9 +138,9 @@ public class DraggableOptions extends MouseOptions {
   public String getAppendTo() {
     return appendTo;
   }
-  
+
   public AxisOption getAxis() {
-    if (axis == null){
+    if (axis == null) {
       return AxisOption.NONE;
     }
     return axis;
@@ -98,10 +150,14 @@ public class DraggableOptions extends MouseOptions {
     return containment;
   }
 
-  public String getCursor() {
+  public Cursor getCursor() {
     return cursor;
   }
   
+  public CursorAt getCursorAt() {
+    return cursorAt;
+  }
+
   public int[] getGrid() {
     return grid;
   }
@@ -117,15 +173,15 @@ public class DraggableOptions extends MouseOptions {
   public HelperType getHelperType() {
     return helperType;
   }
-  
+
   public Function getOnDrag() {
     return onDrag;
   }
-  
+
   public Function getOnDragStart() {
     return onDragStart;
   }
-  
+
   public Function getOnDragStop() {
     return onDragStop;
   }
@@ -161,10 +217,6 @@ public class DraggableOptions extends MouseOptions {
   /*
    * public boolean isConnectToSortable() { return connectToSortable; }
    */
-
-  public boolean isCursorAt() {
-    return cursorAt;
-  }
 
   public boolean isDisabled() {
     return disabled;
@@ -222,13 +274,12 @@ public class DraggableOptions extends MouseOptions {
   public void setContainment(DraggableContainment containment) {
     this.containment = containment;
   }
-  
 
-  public void setCursor(String cursor) {
+  public void setCursor(Cursor cursor) {
     this.cursor = cursor;
   }
 
-  public void setCursorAt(boolean cursorAt) {
+  public void setCursorAt(CursorAt cursorAt) {
     this.cursorAt = cursorAt;
   }
 
@@ -260,15 +311,15 @@ public class DraggableOptions extends MouseOptions {
   public void setOpacity(float opacity) {
     this.opacity = opacity;
   }
-  
+
   public void setOnDrag(Function onDrag) {
     this.onDrag = onDrag;
   }
-  
+
   public void setOnDragStart(Function onDragStart) {
     this.onDragStart = onDragStart;
   }
-  
+
   public void setOnDragStop(Function onDragStop) {
     this.onDragStop = onDragStop;
   }
@@ -329,7 +380,7 @@ public class DraggableOptions extends MouseOptions {
     axis = AxisOption.NONE;
     // connectToSortable = false;
     containment = null;
-    cursorAt = false;
+    cursorAt = null;
     grid = null;
     handle = null;
     iframeFix = false;
@@ -340,7 +391,7 @@ public class DraggableOptions extends MouseOptions {
     snap = false;
     stack = false;
     zIndex = false;
-    cursor = "auto";
+    cursor = Cursor.AUTO;
     helper = null;
     helperType = HelperType.ORIGINAL;
     scope = "default";
