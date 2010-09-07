@@ -5,6 +5,7 @@ import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.query.client.GQuery;
@@ -55,6 +56,8 @@ public class DraggableSample2 implements EntryPoint {
     @UiField
     ListBox axisListBox;
     @UiField
+    ListBox cursorListBox;
+    @UiField
     TextBox delayBox;
     @UiField
     TextBox distanceBox;
@@ -81,11 +84,14 @@ public class DraggableSample2 implements EntryPoint {
     }
 
     private void init() {
-
-      helperListBox.addItem(HelperType.ORIGINAL.name());
-      helperListBox.addItem(HelperType.CLONE.name());
-      helperListBox.addItem(HelperType.ELEMENT.name());
-      helperListBox.setSelectedIndex(0);
+      int i = 0;
+      for(HelperType h : HelperType.values()){
+        helperListBox.addItem(h.name());
+        if (h == options.getHelperType()){
+          helperListBox.setSelectedIndex(i);
+        }
+        i++;
+      }
       
       delayBox.setValue(""+options.getDelay(), false);
       
@@ -105,6 +111,15 @@ public class DraggableSample2 implements EntryPoint {
       scrollCheckBox.setValue(options.isScroll());
       scrollSensivityBox.setValue(""+options.getScrollSensitivity());
       scrollSpeedBox.setValue(""+options.getScrollSpeed());
+      
+      i=0;
+      for (Cursor c : Cursor.values()){
+        cursorListBox.addItem(c.name());
+        if (c == options.getCursor()){
+          cursorListBox.setSelectedIndex(i);
+          i++;
+        }
+      }
 
     }
     
@@ -154,6 +169,14 @@ public class DraggableSample2 implements EntryPoint {
       }
     }
 
+
+    @UiHandler(value = "cursorListBox")
+    public void onCursorChange(ChangeEvent e) {
+      Cursor c = Cursor.valueOf(cursorListBox.getValue(cursorListBox.getSelectedIndex()));
+      options.setCursor(c);
+      
+    }
+    
     @UiHandler(value = "axisListBox")
     public void onAxisChange(ChangeEvent e) {
       AxisOption axis = AxisOption.valueOf(axisListBox.getValue(axisListBox.getSelectedIndex()));
