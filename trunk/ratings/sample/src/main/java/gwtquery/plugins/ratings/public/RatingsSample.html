@@ -1,0 +1,99 @@
+<html>
+<head>
+<title>GwtQuery: Ratings plugin example</title>
+<style type="text/css">
+body {
+  font-family: Arial;
+  font-size: 12px;
+  
+}
+</style>
+    <script language="javascript" src="Ratings.nocache.js"></script>
+</head>
+<body>
+
+  <h2>What is this?</h2>
+  <p>
+      The <strong>Star Rating Plugin</strong> is a plugin
+      for the GwtQuery library that creates a non-obstrusive
+      star rating control based on a set of radio input boxes.
+  </p>
+  <h2>What does it do?</h2>
+  <ul>
+      <li>
+          It turns a collection of radio boxes into a neat star-rating
+          control.
+      </li>
+      <li>
+          It creates the interface based on standard form elements, which
+          means the
+          basic functionality will still be available even if Javascript
+          is disabled.
+      </li>
+      <li>
+          In read only mode (using the 'readOnly' option or
+          <code>disabled</code> property), the plugin is a neat way of
+          displaying star-like values without any additional code
+      </li>
+      <li>
+          The title of each star indicates the value you can set.
+      </li>
+      <li>
+          The cancel button allows uncheck the inputs.
+      </li>
+  </ul>
+
+  <h2>How do I use it?</h2>
+  <p>
+      Just add the <code><strong>star</strong></code> class to your radio
+      boxes
+  </p>
+  <input name="star1" type="radio" class="star" value="1"/>
+  <input name="star1" type="radio" class="star" value="2"/>
+  <input name="star1" type="radio" class="star" value="3"/>
+  <input name="star1" type="radio" class="star" value="4"/>
+  <input name="star1" type="radio" class="star" value="5"/>
+
+  <p>
+      Use the <code><strong>checked</strong></code> property to specify
+      the initial/default value of the control
+  </p>
+  <input name="star2" type="radio" class="star" value="bad"/>
+  <input name="star2" type="radio" class="star" value="acceptable"/>
+  <input name="star2" type="radio" class="star" value="good" checked="checked"/>
+  <input name="star2" type="radio" class="star" value="cool"/>
+  <input name="star2" type="radio" class="star" value="excellent"/>
+
+  <p>
+      Use the <code><strong>disabled</strong></code> property to use a
+      control for display purposes only
+  </p>
+  <input name="star3" type="radio" class="star" disabled="disabled"/>
+  <input name="star3" type="radio" class="star" disabled="disabled"/>
+  <input name="star3" type="radio" class="star" disabled="disabled" checked="checked"/>
+  <input name="star3" type="radio" class="star" disabled="disabled"/>
+  <input name="star3" type="radio" class="star" disabled="disabled"/>
+
+  <p>
+      Use the <code><strong>class</strong></code> property to configure star divisions.
+  </p>
+  <input name="adv1" type="radio" class="star {split:4}" value="0.00"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="0.25"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="0.50"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="0.75"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="1.00"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="1.25"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="1.50"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="1.75" checked="checked"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="2.00"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="2.25"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="2.50"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="2.75"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="3.00"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="3.25"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="3.50"/>
+  <input name="adv1" type="radio" class="star {split:4}" value="3.75"/>
+  
+</body>
+</html>
+    
