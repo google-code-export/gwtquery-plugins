@@ -10,12 +10,22 @@
 
 This plugin is a gwt port of the [http://www.fyneworks.com/jquery/star-rating/ jQuery Star Rating Plugin]
 
-The Ratings plugin is a plugin for the GwtQuery library that creates a non-obstrusive star rating control based on a set of radio input boxes. 
+== What does it do? ==
+The Ratings plugin is a plugin for the [http://code.google.com/p/gwtquery/ GwtQuery] library that creates a non-obstrusive star rating control based on a set of radio input boxes. 
+
+ * It turns a collection of radio boxes into a neat star-rating control.
+ * It creates the interface based on standard form elements, which means the
+basic functionality will still be available even if Javascript is disabled.
+ * In read only mode (using the 'readOnly' option or `disabled` property), the plugin is a neat way of
+displaying star-like values without any additional code.
+ * The title of each star indicates the value you can set.
+ * The cancel button allows uncheck the inputs.
 
 =Changelog=
 ==v1.0==
-  * First release, moved from gwtquery repo to gquery-plugins
-
+ * First release, moved from gwtquery repo to gquery-plugins
+ * Many fixes
+ 
 =Using the plugin=
 
 ==Configuration==
@@ -57,14 +67,7 @@ $("input.star").as(Ratings).rate()
 
 It enhances all inputs in your document, replacing them with nice starts.
 
-== What does it do? ==
- * It turns a collection of radio boxes into a neat star-rating control.
- * It creates the interface based on standard form elements, which means the
-basic functionality will still be available even if Javascript is disabled.
- * In read only mode (using the 'readOnly' option or `disabled` property), the plugin is a neat way of
-displaying star-like values without any additional code.
- * The title of each star indicates the value you can set.
- * The cancel button allows uncheck the inputs.
+
 
 == How do I use it? ==
  * Just add the `star` class to your radio inputs.
