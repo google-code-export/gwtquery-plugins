@@ -7,6 +7,16 @@
     <artifactId>ratings</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <description>This is a demo plugin maintained by GwtQuery team</description>
+
+    <developers>
+      <developer>
+        <id>manolo</id>
+        <name>Manuel Carrasco Moñino</name>
+        <email>manolo@apache.org</email>
+        <organization>ASF</organization>
+      </developer>
+    </developers>
 
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>
