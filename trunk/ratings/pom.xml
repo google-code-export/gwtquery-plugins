@@ -7,7 +7,7 @@
     <artifactId>ratings</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <description>This is a demo plugin maintained by GwtQuery team</description>
+    <description>This is a demo plugin and it is maintained by GwtQuery team</description>
 
     <developers>
       <developer>
