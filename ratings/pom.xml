@@ -6,7 +6,7 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>ratings</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <description>This is a demo plugin and it is maintained by GwtQuery team</description>
 
     <developers>
