@@ -376,7 +376,7 @@ public class Ratings extends GQuery {
       }
 
       // hide input element
-      // input.hide();
+      input.hide();
 
       if (control.getName() == null) {
         control.setName(input.attr("name"));
