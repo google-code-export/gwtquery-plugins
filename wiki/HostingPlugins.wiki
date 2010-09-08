@@ -119,13 +119,18 @@ Also add to the parent pom your developer information.
   </developers>
 }}}
 
+Remove the -SNAPSHOT sufix from your pom files
+
 Next, verify that there are no local changes pending to commit to svn
 
 Finally execute these commands to publish the artifact in the download page and in the project maven repository
 {{{
   mvn clean 
+  mvn package
   mvn deploy
 }}}
+
+Finally increase the version in your pom files to start a new development interation.
 
 = Maintain the plugin =
  * Be in touch with the people who is using your plugin, and the users of the gwtquery library participating in the gwtquery mailing list. 
