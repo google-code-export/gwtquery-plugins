@@ -37,7 +37,7 @@ public class Draggable extends MouseHandler {
    * Interface containing all css classes used in this plug-in
    * 
    */
-  private static interface CssClassNames {
+  static interface CssClassNames {
     String UI_DRAGGABLE = "ui-draggable";
     String UI_DRAGGABLE_DISABLED = "ui-draggable-disabled";
     String UI_DRAGGABLE_DRAGGING = "ui-draggable-dragging";
@@ -109,6 +109,7 @@ public class Draggable extends MouseHandler {
     private int[] containment;
     private GQuery helper;
     private DraggableOptions options;
+    private HelperDimension helperDimension;
     
     //can be instantiate only by Draggable plugin
     DragOperationInfo(GQuery helper, DraggableOptions options) {
@@ -183,7 +184,7 @@ public class Draggable extends MouseHandler {
     }
     
     private void adjustOffsetFromHelper(CursorAt cursorAt) {
-      // TODO Auto-generated method stub
+      
       if (cursorAt.getLeft() != null){
         offsetClick.left = cursorAt.getLeft().intValue() + margin.getLeft();
       }
@@ -455,12 +456,23 @@ public class Draggable extends MouseHandler {
       return options;
     }
 
+    public HelperDimension getHelperDimension() {
+      return helperDimension;
+    }
+    
+    public void setHelperDimension(HelperDimension helperDimension) {
+      this.helperDimension = helperDimension;
+    }
+    
+    public Draggable getDraggable() {
+      return Draggable.this;
+    }
   }
 
   /**
    * A POJO used to store the width/height values of an helper.
    */
-  private static class HelperDimension {
+   public static class HelperDimension {
     private int width = 0;
     private int height = 0;
 
@@ -536,7 +548,6 @@ public class Draggable extends MouseHandler {
 
   DraggableOptions options;
   GQuery helper;
-  HelperDimension helperDimension;
   DragOperationInfo dragOperationInfo;
   DraggableImpl impl = GWT.create(DraggableImpl.class);
   boolean cancelHelperRemoval = false;
@@ -623,9 +634,10 @@ public class Draggable extends MouseHandler {
   @Override
   protected boolean mouseStart(Element draggable, Event event) {
     createHelper(draggable, event);
-    cacheHelperSize();
-
     dragOperationInfo = new DragOperationInfo(helper, options);
+    
+    cacheHelperSize();
+    
     dragOperationInfo.initialize(draggable, event);
 
     callPlugins(new StartCaller(draggable, event));
@@ -662,7 +674,7 @@ public class Draggable extends MouseHandler {
 
   private void cacheHelperSize() {
     if (helper != null) {
-      helperDimension = new HelperDimension(helper);
+      dragOperationInfo.setHelperDimension(new HelperDimension(helper));
     }
 
   }

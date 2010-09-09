@@ -8,6 +8,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
 import gwtquery.plugins.commonui.client.MouseOptions;
+import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
 
 public class DraggableOptions extends MouseOptions {
 
@@ -34,6 +35,9 @@ public class DraggableOptions extends MouseOptions {
     public abstract GQuery createHelper(Element original, Element helper);
   }
 
+  public static enum SnapMode{
+    INNER,OUTER,BOTH;
+  }
   public static enum AxisOption {
     Y_AXIS, X_AXIS, NONE;
   }
@@ -107,7 +111,7 @@ public class DraggableOptions extends MouseOptions {
   private Element helper;
   private HelperType helperType;
   private boolean iframeFix;
-  private float opacity;
+  private Float opacity;
   private boolean refreshPositions;
   private boolean revert;
   private int revertDuration;
@@ -115,11 +119,11 @@ public class DraggableOptions extends MouseOptions {
   private boolean scroll;
   private int scrollSensitivity;
   private int scrollSpeed;
-  private boolean snap;
-  private String snapMode;
+  private GQuery snap;
+  private SnapMode snapMode;
   private int snapTolerance;
   private boolean stack;
-  private boolean zIndex;
+  private Integer zIndex;
   /**
    * This callback function is called at the starting of the drag operation
    */
@@ -201,8 +205,13 @@ public class DraggableOptions extends MouseOptions {
   public int getScrollSpeed() {
     return scrollSpeed;
   }
+  
+  public GQuery getSnap(){
+    return snap;
+  }
+  
 
-  public String getSnapMode() {
+  public SnapMode getSnapMode() {
     return snapMode;
   }
 
@@ -226,10 +235,14 @@ public class DraggableOptions extends MouseOptions {
     return iframeFix;
   }
 
-  public float getOpacity() {
+  public Float getOpacity() {
     return opacity;
   }
 
+  public Integer getZIndex() {
+    return zIndex;
+  }
+  
   public boolean isRefreshPositions() {
     return refreshPositions;
   }
@@ -243,16 +256,14 @@ public class DraggableOptions extends MouseOptions {
   }
 
   public boolean isSnap() {
-    return snap;
+    return snap != null;
   }
 
   public boolean isStack() {
     return stack;
   }
 
-  public boolean iszIndex() {
-    return zIndex;
-  }
+  
 
   public void setAddClasses(boolean addClasses) {
     this.addClasses = addClasses;
@@ -353,10 +364,26 @@ public class DraggableOptions extends MouseOptions {
   }
 
   public void setSnap(boolean snap) {
+    if(snap){
+      this.snap = $("."+CssClassNames.UI_DRAGGABLE);
+    }else{
+      this.snap = null;
+    }
+  }
+  
+  public void setSnap(GQuery snap) {
     this.snap = snap;
   }
+  
+  public void setSnap(String snapSelector) {
+    if(snapSelector != null && snapSelector.length()>0){
+      this.snap = $(snapSelector);
+    }else{
+      this.snap = null;
+    }
+  }
 
-  public void setSnapMode(String snapMode) {
+  public void setSnapMode(SnapMode snapMode) {
     this.snapMode = snapMode;
   }
 
@@ -368,7 +395,7 @@ public class DraggableOptions extends MouseOptions {
     this.stack = stack;
   }
 
-  public void setzIndex(boolean zIndex) {
+  public void setZIndex(Integer zIndex) {
     this.zIndex = zIndex;
   }
 
@@ -384,21 +411,21 @@ public class DraggableOptions extends MouseOptions {
     grid = null;
     handle = null;
     iframeFix = false;
-    opacity = -1;
+    opacity = null;
     refreshPositions = false;
     revert = false;
-    scroll = true;
-    snap = false;
     stack = false;
-    zIndex = false;
+    zIndex = null;
     cursor = Cursor.AUTO;
     helper = null;
     helperType = HelperType.ORIGINAL;
     scope = "default";
-    snapMode = "both";
     revertDuration = 500;
+    scroll = true;
     scrollSensitivity = 20;
     scrollSpeed = 20;
+    snap = null;
+    snapMode = SnapMode.BOTH;
     snapTolerance = 20;
   }
 
