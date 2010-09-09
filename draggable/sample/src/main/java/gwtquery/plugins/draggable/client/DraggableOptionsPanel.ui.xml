@@ -24,7 +24,7 @@
 				<tr style="vertical-align:top;">
 					<td><g:HTML text="Opacity" /></td>
 					<td><g:TextBox ui:field="opacityBox" /></td>
-					<td>Opacity of the element when it is dragging. Specify a number between 0 and 1. Set -1 to not change the initial opacity (default)</td>
+					<td>Opacity of the element when it is dragging. Specify a number between 0 and 1. Set nothing to not change the initial opacity (default)</td>
 				</tr>
 				<tr style="vertical-align:top;">
 					<td><g:HTML text="Helper type" /></td>

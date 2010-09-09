@@ -106,7 +106,9 @@ public class DraggableSample2 implements EntryPoint {
       axisListBox.addItem(AxisOption.Y_AXIS.name());
       axisListBox.setSelectedIndex(0);
       
-      opacityBox.setValue(""+options.getOpacity());
+      if (options.getOpacity() != null){
+        opacityBox.setValue(""+options.getOpacity());
+      }
       
       scrollCheckBox.setValue(options.isScroll());
       scrollSensivityBox.setValue(""+options.getScrollSensitivity());
@@ -202,12 +204,18 @@ public class DraggableSample2 implements EntryPoint {
 
     @UiHandler(value = "opacityBox")
     public void onOpacityChange(ValueChangeEvent<String> e) {
+      String opacityString = e.getValue();
+      
       Float opacity;
-      try{
-        opacity = new Float(e.getValue());
-      }catch (NumberFormatException ex){
-        Window.alert("Please specify a correct number for opacity");
-        return;
+      if (opacityString == null || opacityString.length() == 0){
+        opacity = null;
+      }else{
+        try{
+          opacity = new Float(e.getValue());
+        }catch (NumberFormatException ex){
+          Window.alert("Please specify a correct number for opacity");
+          return;
+        }
       }
       if (opacity >1){
         Window.alert("Opacity must be below than 1.");
