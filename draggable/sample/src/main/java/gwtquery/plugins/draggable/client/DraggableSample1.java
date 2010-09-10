@@ -17,14 +17,17 @@ public class DraggableSample1 implements EntryPoint {
   private int stopCounter = 0;
   
   public void onModuleLoad() {
+    //simpleDraggable div
+    DraggableOptions o = createOptionsForSimpleDraggable(); 
+    $("#simpleDraggable").as(Draggable).draggable(o);
     
-    DraggableOptions o = createOptions();
-    
-    $("#iWantTobeDraggable").as(Draggable).draggable(o);
-    
+    //three div inside div with id #set
+    DraggableOptions o2 = new DraggableOptions();
+    o2.setStack("#setOfDraggable div");
+    $("#setOfDraggable div").as(Draggable).draggable(o2);
   }
   
-  private DraggableOptions createOptions() {
+  private DraggableOptions createOptionsForSimpleDraggable() {
     DraggableOptions o = new DraggableOptions();
     o.setOnDragStart(new Function() {
       @Override
