@@ -24,6 +24,8 @@ import gwtquery.plugins.draggable.client.plugins.CursorPlugin;
 import gwtquery.plugins.draggable.client.plugins.DraggablePlugin;
 import gwtquery.plugins.draggable.client.plugins.OpacityPlugin;
 import gwtquery.plugins.draggable.client.plugins.ScrollPlugin;
+import gwtquery.plugins.draggable.client.plugins.StackPlugin;
+import gwtquery.plugins.draggable.client.plugins.ZIndexPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -537,6 +539,8 @@ public class Draggable extends MouseHandler {
     registerDraggablePlugin(new OpacityPlugin());
     registerDraggablePlugin(new ScrollPlugin());
     registerDraggablePlugin(new CursorPlugin());
+    registerDraggablePlugin(new ZIndexPlugin());
+    registerDraggablePlugin(new StackPlugin());
   }
 
   public static void registerDraggablePlugin(DraggablePlugin plugin) {
