@@ -122,7 +122,7 @@ public class DraggableOptions extends MouseOptions {
   private GQuery snap;
   private SnapMode snapMode;
   private int snapTolerance;
-  private boolean stack;
+  private GQuery stack;
   private Integer zIndex;
   /**
    * This callback function is called at the starting of the drag operation
@@ -218,6 +218,10 @@ public class DraggableOptions extends MouseOptions {
   public int getSnapTolerance() {
     return snapTolerance;
   }
+  
+  public GQuery getStack() {
+    return stack;
+  }
 
   public boolean isAddClasses() {
     return addClasses;
@@ -258,12 +262,6 @@ public class DraggableOptions extends MouseOptions {
   public boolean isSnap() {
     return snap != null;
   }
-
-  public boolean isStack() {
-    return stack;
-  }
-
-  
 
   public void setAddClasses(boolean addClasses) {
     this.addClasses = addClasses;
@@ -391,10 +389,14 @@ public class DraggableOptions extends MouseOptions {
     this.snapTolerance = snapTolerance;
   }
 
-  public void setStack(boolean stack) {
+  public void setStack(GQuery stack) {
     this.stack = stack;
   }
 
+  public void setStack(String selector) {
+    this.stack = $(selector);
+  }
+  
   public void setZIndex(Integer zIndex) {
     this.zIndex = zIndex;
   }
@@ -414,7 +416,7 @@ public class DraggableOptions extends MouseOptions {
     opacity = null;
     refreshPositions = false;
     revert = false;
-    stack = false;
+    stack = null;
     zIndex = null;
     cursor = Cursor.AUTO;
     helper = null;

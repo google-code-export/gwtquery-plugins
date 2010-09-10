@@ -28,7 +28,7 @@ public class OpacityPlugin implements DraggablePlugin {
   }
 
   public void onStart(DragOperationInfo info, Element draggableElement, Event e) {
-   float opacity = info.getOptions().getOpacity();
+   Float opacity = info.getOptions().getOpacity();
     
     GQuery $helper = info.getHelper();
   
@@ -52,8 +52,8 @@ public class OpacityPlugin implements DraggablePlugin {
   }
 
   public boolean hasToBeExecuted(DraggableOptions options) {
-    float opacity = options.getOpacity();
-    return opacity >= 0;
+    Float opacity = options.getOpacity();
+    return opacity != null && opacity.floatValue() >=0;
   }
 
 }
