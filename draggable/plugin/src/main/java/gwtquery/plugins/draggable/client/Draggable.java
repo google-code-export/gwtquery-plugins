@@ -169,7 +169,25 @@ public class Draggable extends MouseHandler {
       }
       calculateContainment();
 
+      //log();
     }
+    
+   /* private void log(){
+      GWT.log("helper :"+helper);
+      GWT.log("margin :"+ margin);
+      GWT.log("offset :"+ offset);
+      GWT.log("offsetClick :"+ offsetClick);
+      GWT.log("helperCssPosition :"+ helperCssPosition);
+      GWT.log("helperDimension :"+ helperDimension);
+      GWT.log("helperOffsetParent :"+ helperOffsetParent);
+      GWT.log("relativeOffset :"+ relativeOffset);
+     // GWT.log("helperScrollParent :"+ helperScrollParent);
+      GWT.log("position :"+ position);
+      GWT.log("originalPosition :"+ originalPosition);
+      GWT.log("originalEventPageX :"+ originalEventPageX);
+      GWT.log("originalEventPageY :"+ originalEventPageY);
+      
+    }*/
 
 
     public void regeneratePosition(Event e) {
@@ -292,11 +310,14 @@ public class Draggable extends MouseHandler {
     private LeftTopDimension calculateRelativeHelperOffset(Element element) {
       if ("relative".equals(helperCssPosition)) {
         Offset position = $(element).position();
+        //TODO : bug in JQuery if scroll parent is document.... (in firefox and cie) ...
+        //This fix seems to work... investigate on IE
+        GQuery scroll = (helperScrollParent.get(0) != document.cast() ? helperScrollParent : $(body));
         int top = (int) (position.top
-            - GQUtils.cur(helper.get(0), "top", false) + helperScrollParent
+            - GQUtils.cur(helper.get(0), "top", true) + scroll
             .scrollTop());
         int left = (int) (position.left
-            - GQUtils.cur(helper.get(0), "left", false) + helperScrollParent
+            - GQUtils.cur(helper.get(0), "left", true) + scroll
             .scrollLeft());
         return new LeftTopDimension(left, top);
       }
@@ -384,14 +405,12 @@ public class Draggable extends MouseHandler {
 
     private boolean isOffsetParentIncludedInScrollParent() {
       assert helperOffsetParent != null && helperScrollParent != null;
-      return helperScrollParent.get(0) != $(document).get(0)
+      return helperScrollParent.get(0) != document.cast()
           && contains(helperScrollParent.get(0), helperOffsetParent.get(0));
     }
 
     public boolean isRootNode(Element e) {
-      String tagName = e.getTagName();
-      return "html".equalsIgnoreCase(tagName)
-          || "body".equalsIgnoreCase(tagName);
+      return e == document.cast() || e == body;
     }
 
     public LeftTopDimension getMargin() {
@@ -479,7 +498,7 @@ public class Draggable extends MouseHandler {
     private int height = 0;
 
     public HelperDimension(GQuery helper) {
-      // TODO : check if border are really included in these dimensions
+      // TODO : check if border are really included in these dimensions -> ok for firefox and cie -> check on IE
       width = helper.get(0).getOffsetWidth();
       height = helper.get(0).getOffsetHeight();
 
@@ -625,7 +644,6 @@ public class Draggable extends MouseHandler {
 
   @Override
   protected boolean mouseCapture(Element draggable, Event event) {
-    // TODO : we can manage resizable object here
     return helper == null && !options.isDisabled()
         && isHandleClicked(draggable, event);
   }
@@ -642,6 +660,10 @@ public class Draggable extends MouseHandler {
     
     cacheHelperSize();
     
+    if (getDragAndDropManager().isHandleDroppable()){
+      getDragAndDropManager().setCurrentDraggable(draggable);
+    }
+    
     dragOperationInfo.initialize(draggable, event);
 
     callPlugins(new StartCaller(draggable, event));
@@ -655,6 +677,11 @@ public class Draggable extends MouseHandler {
     }
 
     cacheHelperSize();
+    
+    if (getDragAndDropManager().isHandleDroppable()){
+      getDragAndDropManager().prepareOffset(draggable, event);
+    }
+    
     helper.addClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
 
     mouseDragImpl(draggable, event, true);
@@ -665,8 +692,13 @@ public class Draggable extends MouseHandler {
 
   @Override
   protected boolean mouseStop(Element draggable, Event event) {
-    // TODO finish that
-
+    
+    boolean dropped = false;
+    if (getDragAndDropManager().isHandleDroppable()){
+      dropped = getDragAndDropManager().drop(draggable, event);
+    }
+    
+    // TODO implement revert options
     callPlugins(new StopCaller(draggable, event));
     
     trigger(new DragStopEvent(draggable), options.getOnDragStop(), draggable);
@@ -704,8 +736,7 @@ public class Draggable extends MouseHandler {
   private void createHelper(Element draggable, Event e) {
     helper = options.getHelperType().createHelper(draggable,
         options.getHelper());
-
-    if (helper.parents("body").length() == 0) {
+    if (!isHelperAttached()) {
       if ("parent".equals(options.getAppendTo())) {
         helper.appendTo(draggable.getParentNode());
       } else {
@@ -717,7 +748,24 @@ public class Draggable extends MouseHandler {
         && !helper.css("position").matches("(fixed|absolute)")) {
       helper.css("position", Position.ABSOLUTE.getCssName());
     }
-
+    
+  }
+  
+  
+  private boolean isHelperAttached(){
+    //normally this test helper.parents().filter("body").length() == 0 is sufficient but they are a bug in gwtquery in filter function
+    //return helper.parents().filter("body").length() == 0;
+    GQuery parents = helper.parents();
+    for (Element parent : parents.elements()){
+      if (parent == body){
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  private DraggableDroppableManager getDragAndDropManager(){
+    return DraggableDroppableManager.getInstance();
   }
 
   private boolean isHandleClicked(Element draggable, final Event event) {
@@ -762,18 +810,26 @@ public class Draggable extends MouseHandler {
       }
     }
 
-    moveHelper();
+    moveHelper(noPropagation);
 
+    if (getDragAndDropManager().isHandleDroppable()){
+      getDragAndDropManager().drag(draggable, event);
+    }
+    
     return false;
   }
 
-  private void moveHelper() {
+  /**
+   * 
+   * @param firstTime if true, the helper has to be positionned without take care to the axis options
+   */
+  private void moveHelper(boolean firstTime) {
     AxisOption axis = options.getAxis();
-    if (AxisOption.NONE == axis || AxisOption.X_AXIS == axis) {
+    if (AxisOption.NONE == axis || AxisOption.X_AXIS == axis || firstTime) {
       helper.get(0).getStyle().setLeft(dragOperationInfo.position.getLeft(),
           Unit.PX);
     }
-    if (AxisOption.NONE == axis || AxisOption.Y_AXIS == axis) {
+    if (AxisOption.NONE == axis || AxisOption.Y_AXIS == axis || firstTime) {
       helper.get(0).getStyle().setTop(dragOperationInfo.position.getTop(),
           Unit.PX);
     }
