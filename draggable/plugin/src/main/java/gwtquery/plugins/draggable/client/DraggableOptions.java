@@ -15,24 +15,24 @@ public class DraggableOptions extends MouseOptions {
   public static enum HelperType {
     ORIGINAL {
       @Override
-      public GQuery createHelper(Element original, Element helper) {
+      public GQuery createHelper(Element original, GQuery helperFromOptions) {
         return $(original);
       }
     },
     CLONE {
       @Override
-      public GQuery createHelper(Element original, Element helper) {
+      public GQuery createHelper(Element original, GQuery helperFromOptions) {
         return $(original).clone();
       }
     },
     ELEMENT {
       @Override
-      public GQuery createHelper(Element original, Element helper) {
-        return $(helper);
+      public GQuery createHelper(Element original, GQuery helperFromOptions) {
+        return helperFromOptions;
       }
     };
 
-    public abstract GQuery createHelper(Element original, Element helper);
+    public abstract GQuery createHelper(Element original, GQuery helperFromOptions);
   }
 
   public static enum SnapMode{
@@ -108,7 +108,7 @@ public class DraggableOptions extends MouseOptions {
   private boolean disabled;
   private int[] grid;
   private String handle;
-  private Element helper;
+  private GQuery helper;
   private HelperType helperType;
   private boolean iframeFix;
   private Float opacity;
@@ -170,7 +170,7 @@ public class DraggableOptions extends MouseOptions {
     return handle;
   }
 
-  public Element getHelper() {
+  public GQuery getHelper() {
     return helper;
   }
 
@@ -305,6 +305,16 @@ public class DraggableOptions extends MouseOptions {
   }
 
   public void setHelper(Element helper) {
+    this.helper = $(helper);
+    this.helperType = HelperType.ELEMENT;
+  }
+  
+  public void setHelper(String selector) {
+    this.helper = $(helper);
+    this.helperType = HelperType.ELEMENT;
+  }
+  
+  public void setHelper(GQuery helper) {
     this.helper = helper;
     this.helperType = HelperType.ELEMENT;
   }
