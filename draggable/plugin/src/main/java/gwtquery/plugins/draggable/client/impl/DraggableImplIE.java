@@ -7,7 +7,7 @@ public class DraggableImplIE extends DraggableImpl{
   
   @Override
   public boolean resetParentOffsetPosition(GQuery helperOffsetParent) {
-    return super.resetParentOffsetPosition(helperOffsetParent) || "html".equalsIgnoreCase(helperOffsetParent.get(0).getTagName());
+    return super.resetParentOffsetPosition(helperOffsetParent) || helperOffsetParent.get(0) == GQuery.document.cast();
   }
 
 }
