@@ -2,7 +2,7 @@ package gwtquery.plugins.draggable.client.impl;
 
 import com.google.gwt.query.client.GQuery;
 
-public class DraggableImplIE extends DraggableImpl{
+public class DraggableHandlerImplIE extends DraggableHandlerImpl{
 
   
   @Override
