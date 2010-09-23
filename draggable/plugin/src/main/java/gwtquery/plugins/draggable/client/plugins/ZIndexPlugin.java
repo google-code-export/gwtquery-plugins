@@ -4,8 +4,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.user.client.Event;
 
+import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.draggable.client.Draggable.DragOperationInfo;
                                                                                   
 /**                                                                               
  * This add-on manage the z-index for the helper while being dragged.         
@@ -22,23 +22,23 @@ public class ZIndexPlugin implements DraggablePlugin {
     return "zIndex";                                                              
   }                                                                               
                                                                                   
-  public void onDrag(DragOperationInfo info, Element draggableElement, Event e) { 
+  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) { 
   }                                                                               
                                                                                   
-  public void onStart(DragOperationInfo info, Element draggableElement, Event e) {
-    GQuery $helper = info.getHelper();                                                       
+  public void onStart(DraggableHandler handler, Element draggableElement, Event e) {
+    GQuery $helper = handler.getHelper();                                                       
     String oldZIndex = $helper.css(ZINDEX_CSS);                                     
     if (oldZIndex != null){                                                       
       $helper.data(OLD_ZINDEX_KEY, oldZIndex);                                      
     }                                                                             
-    $helper.css(ZINDEX_CSS, info.getOptions().getZIndex().toString());            
+    $helper.css(ZINDEX_CSS, handler.getOptions().getZIndex().toString());            
                                                                                   
                                                                                   
                                                                                   
   }                                                                               
                                                                                   
-  public void onStop(DragOperationInfo info, Element draggableElement, Event e) { 
-    GQuery $helper = info.getHelper();                                                       
+  public void onStop(DraggableHandler handler, Element draggableElement, Event e) { 
+    GQuery $helper = handler.getHelper();                                                       
     String oldZIndex = $helper.data(OLD_ZINDEX_KEY, String.class);                  
     $helper.css(ZINDEX_CSS, oldZIndex);                                             
   }                                                                               
