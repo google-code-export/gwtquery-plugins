@@ -2,9 +2,9 @@
     <inherits name='gwtquery.plugins.commonui.CommonUi'/>
     
     <replace-with
-		class="gwtquery.plugins.draggable.client.impl.DraggableImplIE">
+		class="gwtquery.plugins.draggable.client.impl.DraggableHandlerImplIE">
 		<when-type-is
-			class="gwtquery.plugins.draggable.client.impl.DraggableImpl" />
+			class="gwtquery.plugins.draggable.client.impl.DraggableHandlerImpl" />
 		<any>
 			<when-property-is name="user.agent" value="ie6" />
 			<when-property-is name="user.agent" value="ie8" />
