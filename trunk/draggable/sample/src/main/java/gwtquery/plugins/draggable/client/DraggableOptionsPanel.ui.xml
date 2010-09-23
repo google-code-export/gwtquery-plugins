@@ -27,7 +27,7 @@
 					<td>Opacity of the element when it is dragging. Specify a number between 0 and 1. Set nothing to not change the initial opacity (default)</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="Helper type" /></td>
+					<td><g:HTML text="Cursor" /></td>
 					<td><g:ListBox ui:field="cursorListBox" /></td>
 					<td>Cursor to display during drag operation.</td>
 				</tr>
