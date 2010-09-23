@@ -6,8 +6,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.user.client.Event;
 
+import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.draggable.client.Draggable.DragOperationInfo;
 import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 
 import java.util.ArrayList;
@@ -54,18 +54,18 @@ public class SnapPlugin implements DraggablePlugin {
   }
 
   @SuppressWarnings("unchecked")
-  public void onDrag(DragOperationInfo info, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
     
     List<SnapElement> snapElements = $(draggableElement).data(SNAP_ELEMENTS_KEY, ArrayList.class);
     
-    int snapTolerance = info.getOptions().getSnapTolerance();
-    SnapMode snapMode = info.getOptions().getSnapMode();
+    int snapTolerance = handler.getOptions().getSnapTolerance();
+    SnapMode snapMode = handler.getOptions().getSnapMode();
     
     //TODO check if it's not better to use absPosition ... (offset is never updated)
-    int helperLeft = info.getOffset().getLeft();
-    int helperRight = helperLeft + info.getHelperDimension().getWidth();
-    int helperTop = info.getOffset().getTop();
-    int helperBottom = helperTop + info.getHelperDimension().getHeight();
+    int helperLeft = handler.getOffset().getLeft();
+    int helperRight = helperLeft + handler.getHelperDimension().getWidth();
+    int helperTop = handler.getOffset().getTop();
+    int helperBottom = helperTop + handler.getHelperDimension().getHeight();
     
     for (SnapElement snapElement: snapElements){
       int snapElementLeft = snapElement.offset.left;
@@ -80,7 +80,7 @@ public class SnapPlugin implements DraggablePlugin {
         //no snapping !!
         /*if (snapElement.isSnapping()){
           //TODO trigger event sanpReleaseEvent...
-          //info.triggerEvent()
+          //handler.triggerEvent()
           snapElement.setSnapping(false);
           continue;
         }*/
@@ -126,10 +126,10 @@ public class SnapPlugin implements DraggablePlugin {
     }
   }
 
-  public void onStart(DragOperationInfo info, Element draggableElement, Event e) {
+  public void onStart(DraggableHandler handler, Element draggableElement, Event e) {
     List<SnapElement> snapElements = new ArrayList<SnapElement>();
     
-    for (Element element : info.getOptions().getSnap().elements()){
+    for (Element element : handler.getOptions().getSnap().elements()){
       if (element != draggableElement){
         //TODO outerWidth and outerHeight don't exist in GQuery ... use offsetWidth and offsetHeight of GWT
         snapElements.add(new SnapElement($(element).offset(), element.getOffsetWidth(), element.getOffsetHeight()));
@@ -139,7 +139,7 @@ public class SnapPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DragOperationInfo info, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
     //nothing to do
   }
 

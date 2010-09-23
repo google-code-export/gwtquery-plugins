@@ -5,8 +5,8 @@ import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.user.client.Event;
 
+import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.draggable.client.Draggable.DragOperationInfo;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -36,10 +36,10 @@ public class StackPlugin implements DraggablePlugin {
     return "stack";                                                              
   }                                                                               
                                                                                   
-  public void onDrag(DragOperationInfo info, Element draggableElement, Event e) { 
+  public void onDrag(DraggableHandler info, Element draggableElement, Event e) { 
   }                                                                               
                                                                                   
-  public void onStart(DragOperationInfo info, Element draggableElement, Event e) {
+  public void onStart(DraggableHandler info, Element draggableElement, Event e) {
 		
 		GQuery stackElements  = info.getOptions().getStack();
 		Element[] sortedElementArray = stackElements.elements();
@@ -60,7 +60,7 @@ public class StackPlugin implements DraggablePlugin {
     
   }                                                                               
                                                                                   
-  public void onStop(DragOperationInfo info, Element draggableElement, Event e) { 
+  public void onStop(DraggableHandler info, Element draggableElement, Event e) { 
   }                                                                               
                                                                                   
   public boolean hasToBeExecuted(DraggableOptions options) {                      

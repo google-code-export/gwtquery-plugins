@@ -9,8 +9,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 
 import gwtquery.plugins.commonui.client.GQueryUi;
+import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.draggable.client.Draggable.DragOperationInfo;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
 
 /**
@@ -27,9 +27,9 @@ public class ScrollPlugin implements DraggablePlugin {
     return "scroll";
   }
 
-  public void onDrag(DragOperationInfo info, Element draggableElement, Event e) {
-    DraggableOptions options = info.getOptions();
-    GQuery scrollParent = info.getHelperScrollParent();
+  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+    DraggableOptions options = handler.getOptions();
+    GQuery scrollParent = handler.getHelperScrollParent();
     Element scrollParentElement = scrollParent.get(0);
     if (scrollParentElement == null){
       return;
@@ -99,9 +99,9 @@ public class ScrollPlugin implements DraggablePlugin {
     
   }
 
-  public void onStart(DragOperationInfo info, Element draggableElement, Event e) {
+  public void onStart(DraggableHandler handler, Element draggableElement, Event e) {
     
-    GQuery scrollParent = info.getHelperScrollParent();
+    GQuery scrollParent = handler.getHelperScrollParent();
     Element scrollParentElement = scrollParent.get(0);
     if (scrollParentElement != null  && scrollParentElement != $(GQuery.document).get(0) && !"html".equalsIgnoreCase(scrollParentElement.getTagName())){
       Offset scrollParentOffset = scrollParent.offset();
@@ -109,7 +109,7 @@ public class ScrollPlugin implements DraggablePlugin {
     }
   }
 
-  public void onStop(DragOperationInfo info, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
     $(draggableElement).removeData(OVERFLOW_OFFSET_KEY);
 
   }
