@@ -164,8 +164,8 @@ public class DraggableSample2 implements EntryPoint {
       HelperType type = HelperType.valueOf(helperListBox.getValue(helperListBox.getSelectedIndex()));
       
       if (type == HelperType.ELEMENT){
-        GQuery helper = $("<div class=\"myHelper\">Helper</div>");
-        options.setHelper(helper.get(0));
+        GQuery helper = $("<div class=\"myHelper\" style=\"width: 150px;height: 150px;\">I'm a custom helper</div>");
+        options.setHelper(helper);
       }else{
         options.setHelper(type);
       }
