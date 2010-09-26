@@ -47,7 +47,7 @@ public class DraggableHandler {
       return "Top:" + top + "--Left:" + left;
     }
   }
-  
+
   private DraggableHandlerImpl impl = GWT.create(DraggableHandlerImpl.class);
 
   private LeftTopDimension margin;
@@ -106,14 +106,13 @@ public class DraggableHandler {
 
     setMarginCache(element);
 
-    absPosition = new LeftTopDimension(element.getOffsetLeft(), element
-        .getOffsetTop());
+    absPosition = new LeftTopDimension(element.getAbsoluteLeft(), element.getAbsoluteTop());
 
     offset = new LeftTopDimension(absPosition.getLeft() - margin.getLeft(),
         absPosition.getTop() - margin.getTop());
 
-    offsetClick = new LeftTopDimension(GQueryUi.pageX(e) - offset.left, GQueryUi.pageY(e)
-        - offset.top);
+    offsetClick = new LeftTopDimension(GQueryUi.pageX(e) - offset.left,
+        GQueryUi.pageY(e) - offset.top);
 
     parentOffset = calculateParentOffset(element);
     relativeOffset = calculateRelativeHelperOffset(element);
@@ -129,7 +128,7 @@ public class DraggableHandler {
     }
     calculateContainment();
 
-    // log();
+    log();
   }
 
   void createHelper(Element draggable, Event e) {
@@ -163,20 +162,14 @@ public class DraggableHandler {
     return false;
   }
 
-  /*
-   * private void log(){ GWT.log("helper :"+helper); GWT.log("margin :"+
-   * margin); GWT.log("offset :"+ offset); GWT.log("offsetClick :"+
-   * offsetClick); GWT.log("helperCssPosition :"+ helperCssPosition);
-   * GWT.log("helperDimension :"+ helperDimension);
-   * GWT.log("helperOffsetParent :"+ helperOffsetParent);
-   * GWT.log("relativeOffset :"+ relativeOffset); //
-   * GWT.log("helperScrollParent :"+ helperScrollParent); GWT.log("position :"+
-   * position); GWT.log("originalPosition :"+ originalPosition);
-   * GWT.log("originalEventPageX :"+ originalEventPageX);
-   * GWT.log("originalEventPageY :"+ originalEventPageY);
-   * 
-   * }
-   */
+  private void log() {
+    GWT.log("helper :" + helper);
+    GWT.log("margin :" + margin);
+    GWT.log("offset :" + offset);
+    GWT.log("abspostion :" + absPosition);
+    
+
+  }
 
   public void regeneratePosition(Event e) {
     position = generatePosition(e);
@@ -304,10 +297,13 @@ public class DraggableHandler {
       // This fix seems to work... investigate on IE
       GQuery scroll = (helperScrollParent.get(0) != document.cast() ? helperScrollParent
           : $(body));
-      int top = (int) (position.top - GQUtils.cur(helper.get(0), "top", true) + scroll
-          .scrollTop());
+      //TODO bug with helper with margin
+      int top = (int) (position.top - GQUtils.cur(helper.get(0), "top", true)/* + scroll
+          .scrollTop()*/-margin.top);
       int left = (int) (position.left
-          - GQUtils.cur(helper.get(0), "left", true) + scroll.scrollLeft());
+          - GQUtils.cur(helper.get(0), "left", true) /*+ scroll.scrollLeft()*/-margin.left);
+      
+      GWT.log("GQUtils.cur(helper.get(0), top, true) :"+GQUtils.cur(helper.get(0), "top", true) );
       return new LeftTopDimension(left, top);
     }
     return new LeftTopDimension(0, 0);
@@ -413,7 +409,8 @@ public class DraggableHandler {
   private boolean isOffsetParentIncludedInScrollParent() {
     assert helperOffsetParent != null && helperScrollParent != null;
     return helperScrollParent.get(0) != document.cast()
-        && GQueryUi.contains(helperScrollParent.get(0), helperOffsetParent.get(0));
+        && GQueryUi.contains(helperScrollParent.get(0), helperOffsetParent
+            .get(0));
   }
 
   /**
@@ -509,8 +506,8 @@ public class DraggableHandler {
   }
 
   public void setOptions(DraggableOptions options) {
-    this.options=options;
-    
+    this.options = options;
+
   }
 
 }
