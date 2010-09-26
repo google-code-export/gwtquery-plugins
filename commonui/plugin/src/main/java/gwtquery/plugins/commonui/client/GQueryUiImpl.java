@@ -32,7 +32,7 @@ public class GQueryUiImpl {
           GQuery $e = GQuery.$(e);
           //concatenate all overflow css rules
           String overflow = $e.css("overflow", true)+$e.css("overflow-x", true)+$e.css("overflow-y", true);
-          return overflow.matches("(auto|scroll)");
+          return overflow.contains("auto") || overflow.contains("scroll");
         }
       });
     }
