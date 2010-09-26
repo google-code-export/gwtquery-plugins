@@ -19,6 +19,29 @@ import com.google.gwt.user.client.Event;
  */
 public class GQueryUi extends GQuery {
 
+  public static class Dimension{
+      private int width = 0;
+      private int height = 0;
+
+      public Dimension(Element e) {
+        width = e.getOffsetWidth();
+        height = e.getOffsetHeight();
+      }
+      
+      public Dimension(int width, int height) {
+        this.width = width;
+        this.height = height;
+      }
+
+      public int getHeight() {
+        return height;
+      }
+
+      public int getWidth() {
+        return width;
+      }
+  }
+  
   public static Class<GQueryUi> GQueryUi = GQueryUi.class;
   
   //Register the plugin in GQuery
@@ -97,8 +120,12 @@ public class GQueryUi extends GQuery {
    * @param element
    */
   protected void trigger(GwtEvent<?> e, Function callback, Element element) {
-    if (eventBus != null) {
-      eventBus.fireEvent(e);
+    trigger(e, callback, element, eventBus);
+  }
+  
+  protected static void trigger(GwtEvent<?> e, Function callback, Element element, HandlerManager handlerManager){
+    if (handlerManager != null && e != null) {
+      handlerManager.fireEvent(e);
     }
     if (callback != null) {
       callback.f(element);
