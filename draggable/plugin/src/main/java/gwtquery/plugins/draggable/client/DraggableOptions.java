@@ -32,12 +32,14 @@ public class DraggableOptions extends MouseOptions {
       }
     };
 
-    public abstract GQuery createHelper(Element original, GQuery helperFromOptions);
+    public abstract GQuery createHelper(Element original,
+        GQuery helperFromOptions);
   }
 
-  public static enum SnapMode{
-    INNER,OUTER,BOTH;
+  public static enum SnapMode {
+    INNER, OUTER, BOTH;
   }
+
   public static enum AxisOption {
     Y_AXIS, X_AXIS, NONE;
   }
@@ -46,7 +48,7 @@ public class DraggableOptions extends MouseOptions {
    * Object use to specify the cursorAt options.
    * 
    * @author Julien Dramaix (julien.dramaix@gmail.com)
-   *
+   * 
    */
   public static class CursorAt {
 
@@ -56,8 +58,10 @@ public class DraggableOptions extends MouseOptions {
     private Integer bottom;
 
     /**
-     * Specify coordinates by giving one or two parameters. 
-     * If you define more than twa argument, the bottom parameter has priority over the top parameter and the right parameter has priority over left parameter
+     * Specify coordinates by giving one or two parameters. If you define more
+     * than twa argument, the bottom parameter has priority over the top
+     * parameter and the right parameter has priority over left parameter
+     * 
      * @param top
      * @param left
      * @param bottom
@@ -66,15 +70,15 @@ public class DraggableOptions extends MouseOptions {
     public CursorAt(Integer top, Integer left, Integer bottom, Integer right) {
       if (bottom != null) {
         this.bottom = bottom;
-      }else if (top != null) {
+      } else if (top != null) {
         this.top = top;
-      } 
-      
+      }
+
       if (right != null) {
         this.right = right;
-      }else if (left != null) {
-          this.left = left;
-      } 
+      } else if (left != null) {
+        this.left = left;
+      }
     }
 
     public Integer getBottom() {
@@ -119,7 +123,7 @@ public class DraggableOptions extends MouseOptions {
   private boolean scroll;
   private int scrollSensitivity;
   private int scrollSpeed;
-  private GQuery snap;
+  private String snap;
   private SnapMode snapMode;
   private int snapTolerance;
   private GQuery stack;
@@ -157,7 +161,7 @@ public class DraggableOptions extends MouseOptions {
   public Cursor getCursor() {
     return cursor;
   }
-  
+
   public CursorAt getCursorAt() {
     return cursorAt;
   }
@@ -205,11 +209,10 @@ public class DraggableOptions extends MouseOptions {
   public int getScrollSpeed() {
     return scrollSpeed;
   }
-  
-  public GQuery getSnap(){
+
+  public String getSnap() {
     return snap;
   }
-  
 
   public SnapMode getSnapMode() {
     return snapMode;
@@ -218,7 +221,7 @@ public class DraggableOptions extends MouseOptions {
   public int getSnapTolerance() {
     return snapTolerance;
   }
-  
+
   public GQuery getStack() {
     return stack;
   }
@@ -246,7 +249,7 @@ public class DraggableOptions extends MouseOptions {
   public Integer getZIndex() {
     return zIndex;
   }
-  
+
   public boolean isRefreshPositions() {
     return refreshPositions;
   }
@@ -308,12 +311,12 @@ public class DraggableOptions extends MouseOptions {
     this.helper = $(helper);
     this.helperType = HelperType.ELEMENT;
   }
-  
+
   public void setHelper(String selector) {
     this.helper = $(helper);
     this.helperType = HelperType.ELEMENT;
   }
-  
+
   public void setHelper(GQuery helper) {
     this.helper = helper;
     this.helperType = HelperType.ELEMENT;
@@ -372,23 +375,15 @@ public class DraggableOptions extends MouseOptions {
   }
 
   public void setSnap(boolean snap) {
-    if(snap){
-      this.snap = $("."+CssClassNames.UI_DRAGGABLE);
-    }else{
+    if (snap) {
+      this.snap = "." + CssClassNames.UI_DRAGGABLE;
+    } else {
       this.snap = null;
     }
   }
-  
-  public void setSnap(GQuery snap) {
-    this.snap = snap;
-  }
-  
+
   public void setSnap(String snapSelector) {
-    if(snapSelector != null && snapSelector.length()>0){
-      this.snap = $(snapSelector);
-    }else{
-      this.snap = null;
-    }
+    this.snap = snapSelector;
   }
 
   public void setSnapMode(SnapMode snapMode) {
@@ -406,7 +401,7 @@ public class DraggableOptions extends MouseOptions {
   public void setStack(String selector) {
     this.stack = $(selector);
   }
-  
+
   public void setZIndex(Integer zIndex) {
     this.zIndex = zIndex;
   }
