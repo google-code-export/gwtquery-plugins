@@ -2,7 +2,6 @@ package gwtquery.plugins.draggable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
-import static com.google.gwt.query.client.GQuery.document;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -12,6 +11,8 @@ import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.RootPanel;
 
 import gwtquery.plugins.commonui.client.GQueryUi;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
@@ -78,23 +79,35 @@ public class DraggableHandler {
     this.options = options;
   }
 
-  public void generateAbsPosition() {
+  /**
+   * convert a relative position to a absolute position and vice versa.
+   * 
+   * @param absolute
+   *          if true the position is convert to an absolute position, if false
+   *          it is convert in a relative position
+   * @param aPosition
+   *          position to convert
+   * @return
+   */
+  public LeftTopDimension convertPositionTo(boolean absolute,
+      LeftTopDimension aPosition) {
+    int mod = absolute ? 1: -1;
     GQuery scroll = getScrollParent();
     boolean scrollIsRootNode = isRootNode(scroll.get(0));
 
-    int top = position.top
-        + relativeOffset.top
-        + parentOffset.top
-        + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollTop()
-            : scrollIsRootNode ? 0 : scroll.scrollTop());
+    int top = aPosition.top
+        + relativeOffset.top * mod
+        + parentOffset.top * mod
+        - ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollTop()
+            : scrollIsRootNode ? 0 : scroll.scrollTop()) * mod;
 
-    int left = position.left
-        + relativeOffset.left
-        + parentOffset.left
-        + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft()
-            : scrollIsRootNode ? 0 : scroll.scrollLeft());
+    int left = aPosition.left
+        + relativeOffset.left * mod
+        + parentOffset.left * mod
+        - ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft()
+            : scrollIsRootNode ? 0 : scroll.scrollLeft()) * mod;
 
-    absPosition = new LeftTopDimension(left, top);
+    return new LeftTopDimension(left, top);
 
   }
 
@@ -104,9 +117,14 @@ public class DraggableHandler {
     helperScrollParent = helper.as(GQueryUi.GQueryUi).scrollParent();
     helperOffsetParent = helper.offsetParent();
 
+    if ("html".equalsIgnoreCase(helperOffsetParent.get(0).getTagName())) {
+      helperOffsetParent = $(body);
+    }
+
     setMarginCache(element);
 
-    absPosition = new LeftTopDimension(element.getAbsoluteLeft(), element.getAbsoluteTop());
+    absPosition = new LeftTopDimension(element.getAbsoluteLeft(), element
+        .getAbsoluteTop());
 
     offset = new LeftTopDimension(absPosition.getLeft() - margin.getLeft(),
         absPosition.getTop() - margin.getTop());
@@ -128,7 +146,6 @@ public class DraggableHandler {
     }
     calculateContainment();
 
-    log();
   }
 
   void createHelper(Element draggable, Event e) {
@@ -162,17 +179,10 @@ public class DraggableHandler {
     return false;
   }
 
-  private void log() {
-    GWT.log("helper :" + helper);
-    GWT.log("margin :" + margin);
-    GWT.log("offset :" + offset);
-    GWT.log("abspostion :" + absPosition);
-    
 
-  }
-
-  public void regeneratePosition(Event e) {
+  public void regeneratePositions(Event e) {
     position = generatePosition(e);
+    absPosition = convertPositionTo(true, position);
 
   }
 
@@ -218,7 +228,8 @@ public class DraggableHandler {
 
     if ("document".equals(dc.getContainment())
         || "window".equals(dc.getContainment())) {
-      GQuery $containement = "document".equals(dc.getContainment()) ? $(GQuery.document)
+      GQuery $containement = "document".equals(dc.getContainment()) ? $(GQuery.document
+          .getDocumentElement())
           : $(GQuery.window);
       containment = new int[] {
           0 - relativeOffset.left - parentOffset.left,
@@ -281,6 +292,7 @@ public class DraggableHandler {
     position.add((int) GQUtils.cur(helperOffsetParent.get(0),
         "borderLeftWidth", false), (int) GQUtils.cur(helperOffsetParent.get(0),
         "borderTopWidth", false));
+
     return new LeftTopDimension(position.left, position.top);
 
   }
@@ -295,15 +307,18 @@ public class DraggableHandler {
       // TODO : bug in JQuery if scroll parent is document.... (in firefox and
       // cie) ...
       // This fix seems to work... investigate on IE
-      GQuery scroll = (helperScrollParent.get(0) != document.cast() ? helperScrollParent
-          : $(body));
-      //TODO bug with helper with margin
-      int top = (int) (position.top - GQUtils.cur(helper.get(0), "top", true)/* + scroll
-          .scrollTop()*/-margin.top);
-      int left = (int) (position.left
-          - GQUtils.cur(helper.get(0), "left", true) /*+ scroll.scrollLeft()*/-margin.left);
+      //GQuery scroll = (!"html".equalsIgnoreCase(helperScrollParent.get(0)
+      //    .getTagName()) ? helperScrollParent : $(body));
       
-      GWT.log("GQUtils.cur(helper.get(0), top, true) :"+GQUtils.cur(helper.get(0), "top", true) );
+      int top = position.top 
+          -  (int)GQUtils.cur(helper.get(0), "top", true)
+          /* + scroll.scrollTop() */
+          - margin.top;
+      int left =  position.left
+          - (int)GQUtils.cur(helper.get(0), "left", true) 
+          /* + scroll.scrollLeft() */
+         - margin.left;
+      
       return new LeftTopDimension(left, top);
     }
     return new LeftTopDimension(0, 0);
@@ -393,7 +408,6 @@ public class DraggableHandler {
         - parentOffset.left
         + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft()
             : scrollIsRootNode ? 0 : scroll.scrollLeft());
-
     return new LeftTopDimension(left, top);
   }
 
@@ -408,7 +422,7 @@ public class DraggableHandler {
 
   private boolean isOffsetParentIncludedInScrollParent() {
     assert helperOffsetParent != null && helperScrollParent != null;
-    return helperScrollParent.get(0) != document.cast()
+    return !"html".equalsIgnoreCase(helperScrollParent.get(0).getTagName())
         && GQueryUi.contains(helperScrollParent.get(0), helperOffsetParent
             .get(0));
   }
@@ -430,7 +444,7 @@ public class DraggableHandler {
   }
 
   public boolean isRootNode(Element e) {
-    return e == document.cast() || e == body;
+    return "html".equalsIgnoreCase(e.getTagName()) || e == body;
   }
 
   public LeftTopDimension getMargin() {
@@ -508,6 +522,11 @@ public class DraggableHandler {
   public void setOptions(DraggableOptions options) {
     this.options = options;
 
+  }
+
+  public void setPosition(LeftTopDimension leftTopDimension) {
+    position = leftTopDimension;
+    
   }
 
 }
