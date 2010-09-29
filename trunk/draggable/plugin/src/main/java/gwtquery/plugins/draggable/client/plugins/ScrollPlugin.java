@@ -1,6 +1,7 @@
 package gwtquery.plugins.draggable.client.plugins;
 
 import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.document;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
@@ -9,6 +10,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 
 import gwtquery.plugins.commonui.client.GQueryUi;
+import gwtquery.plugins.draggable.client.DraggableDroppableManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
@@ -69,33 +71,31 @@ public class ScrollPlugin implements DraggablePlugin {
       }
       
     }else{
-      GQuery $document =  $(GQuery.document);
-      
-      if (AxisOption.NONE == axis || AxisOption.Y_AXIS == axis) {
-        if (GQueryUi.pageY(e) -$document.scrollTop() <scrollSensitivity){
-          $document.scrollTop($document.scrollTop() -scrollSpeed);
+          if (AxisOption.NONE == axis || AxisOption.Y_AXIS == axis) {
+        if (GQueryUi.pageY(e) -document.getScrollTop() <scrollSensitivity){
+        	document.setScrollTop(document.getScrollTop() -scrollSpeed);
           scrolled = true;
-        }else if (Window.getClientHeight()-(GQueryUi.pageY(e)-$document.scrollTop()) <scrollSensitivity){
-          $document.scrollTop($document.scrollTop() +scrollSpeed);
+        }else if (Window.getClientHeight()-(GQueryUi.pageY(e)-document.getScrollTop()) <scrollSensitivity){
+          document.setScrollTop(document.getScrollTop() +scrollSpeed);
           scrolled = true;
         }
       }
       
       if (AxisOption.NONE == axis || AxisOption.X_AXIS == axis) {
-        if (GQueryUi.pageX(e) -$document.scrollLeft() <scrollSensitivity){
-          $document.scrollLeft($document.scrollLeft() -scrollSpeed);
+        if (GQueryUi.pageX(e) -document.getScrollLeft() <scrollSensitivity){
+          document.setScrollLeft(document.getScrollLeft() -scrollSpeed);
           scrolled = true;
-        }else if (Window.getClientWidth() - (GQueryUi.pageX(e)-$document.scrollLeft()) <scrollSensitivity){
-          $document.scrollLeft($document.scrollLeft() +scrollSpeed);
+        }else if (Window.getClientWidth() - (GQueryUi.pageX(e)-document.getScrollLeft()) <scrollSensitivity){
+          document.setScrollLeft(document.getScrollLeft() +scrollSpeed);
           scrolled = true;
         }
       }
       
     }
     
-    // TODO
-    /*if(scrolled  && $.ui.ddmanager && !o.dropBehaviour)
-      $.ui.ddmanager.prepareOffsets(i, event);*/
+   if(scrolled  && DraggableDroppableManager.getInstance().isHandleDroppable()){
+	   DraggableDroppableManager.getInstance().prepareOffset(draggableElement, options, e);
+   }
     
   }
 
