@@ -18,6 +18,7 @@ import gwtquery.plugins.draggable.client.plugins.CursorPlugin;
 import gwtquery.plugins.draggable.client.plugins.DraggablePlugin;
 import gwtquery.plugins.draggable.client.plugins.OpacityPlugin;
 import gwtquery.plugins.draggable.client.plugins.ScrollPlugin;
+import gwtquery.plugins.draggable.client.plugins.SnapPlugin;
 import gwtquery.plugins.draggable.client.plugins.StackPlugin;
 import gwtquery.plugins.draggable.client.plugins.ZIndexPlugin;
 
@@ -103,6 +104,7 @@ public class Draggable extends MouseHandler {
     registerDraggablePlugin(new CursorPlugin());
     registerDraggablePlugin(new ZIndexPlugin());
     registerDraggablePlugin(new StackPlugin());
+    registerDraggablePlugin(new SnapPlugin());
   }
 
   public static void registerDraggablePlugin(DraggablePlugin plugin) {
@@ -112,7 +114,7 @@ public class Draggable extends MouseHandler {
     draggablePlugins.put(plugin.getName(), plugin);
   }
 
-  //for perfomance purpose cache the curent drag handler.
+  //for performance purpose cache the current drag handler.
   private DraggableHandler currentDragHandler;
   
   public Draggable(Element element) {
@@ -350,8 +352,7 @@ public class Draggable extends MouseHandler {
   private boolean mouseDragImpl(Element draggable, DraggableHandler dragHandler, Event event,
       boolean noPropagation) {
     
-    dragHandler.regeneratePosition(event);
-    dragHandler.generateAbsPosition();
+    dragHandler.regeneratePositions(event);
 
     if (!noPropagation) {
       
