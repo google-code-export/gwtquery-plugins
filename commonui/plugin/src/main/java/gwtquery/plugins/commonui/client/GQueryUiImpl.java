@@ -6,42 +6,50 @@ import com.google.gwt.query.client.Predicate;
 
 public class GQueryUiImpl {
 
-  public GQuery scrollParent(final GQueryUi gQueryUi) {
-    GQuery scrollParent;
-    
-    if (gQueryUi.css("position").matches("(fixed)")){
-      return GQuery.$(GQuery.document);
-    }
-    
-    if (scrollParentPositionTest(gQueryUi)){
-      scrollParent = gQueryUi.parents().filter(new Predicate() {
-        
-        public boolean f(Element e, int index) {
-          GQuery $e = GQuery.$(e);
-          String position = $e.css("position", true);
-          //concatenate all overflow css rules
-          String overflow = $e.css("overflow", true)+$e.css("overflow-x", true)+$e.css("overflow-y", true);
-          return position.matches("(relative|absolute|fixed)") && overflow.matches("(auto|scroll)");
-        }
-      });
-    
-    }else{
-      scrollParent = gQueryUi.parents().filter(new Predicate() {
-        
-        public boolean f(Element e, int index) {
-          GQuery $e = GQuery.$(e);
-          //concatenate all overflow css rules
-          String overflow = $e.css("overflow", true)+$e.css("overflow-x", true)+$e.css("overflow-y", true);
-          return overflow.contains("auto") || overflow.contains("scroll");
-        }
-      });
-    }
-    return scrollParent.length() > 0 ? new GQuery(scrollParent.get(0)) : GQuery.$(GQuery.document);
+	private final Element getViewportElement() {
+		return GQuery.document.isCSS1Compat() ? GQuery.document
+				.getDocumentElement() : GQuery.document.getBody();
+	}
 
-  }
-  
-  protected boolean scrollParentPositionTest(GQueryUi gQueryUi){
-    return gQueryUi.css("position").matches("(absolute)");
-  }
+	public GQuery scrollParent(final GQueryUi gQueryUi) {
+		GQuery scrollParent;
+
+		if ("fixed".equals(gQueryUi.css("position"))) {
+			return GQuery.$(getViewportElement());
+		}
+
+		if (scrollParentPositionTest(gQueryUi)) {
+			scrollParent = gQueryUi.parents().filter(new Predicate() {
+
+				public boolean f(Element e, int index) {
+					GQuery $e = GQuery.$(e);
+					String position = $e.css("position", true);
+					return ("relative".equals(position) || "absolute".equals(position) || "fixed".equals(position))
+							&& isOverflowEnabled($e);
+				}
+			});
+
+		} else {
+			scrollParent = gQueryUi.parents().filter(new Predicate() {
+
+				public boolean f(Element e, int index) {
+					return isOverflowEnabled(GQuery.$(e));
+				}
+			});
+		}
+		return scrollParent.length() > 0 ? new GQuery(scrollParent.get(0))
+				: GQuery.$(getViewportElement());
+
+	}
+
+	private boolean isOverflowEnabled(GQuery e) {
+		String overflow = e.css("overflow", true) + e.css("overflow-x", true)
+				+ e.css("overflow-y", true);
+		return overflow.contains("auto") || overflow.contains("scroll");
+	}
+
+	protected boolean scrollParentPositionTest(GQueryUi gQueryUi) {
+		return "absolute".equals(gQueryUi.css("position"));
+	}
 
 }

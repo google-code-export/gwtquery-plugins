@@ -5,7 +5,8 @@ public class GQueryUiImplIE extends GQueryUiImpl{
   
   @Override
   protected boolean scrollParentPositionTest(GQueryUi gQueryUi){
-    return gQueryUi.css("position").matches("(absolute|relative|static)");
+	 String position = gQueryUi.css("position");
+    return ("absolute".equals(position) || "relative".equals(position) || "static".equals(position));    
   }
 
 }
