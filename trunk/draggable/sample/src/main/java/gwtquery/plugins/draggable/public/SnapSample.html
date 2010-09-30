@@ -2,15 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>GwtQuery: Draggable plugin example 1</title>
+<title>GwtQuery Draggable plugin example : snap options</title>
 <style type="text/css">
 .ui-widget-content {
-	width: 200px;
-	height: 200px;
+	width: 150px;
+	height: 150px;
 	padding: 0.5em;
 	border: black solid 1px;
 	background: #f6f6f6;
 	margin: 0 10px 0 10px;
+	float: left;
 }
 
 .demo {
@@ -20,12 +21,15 @@
 	padding: 10px;
 	border: black solid 1px;
 }
-#SnapTarget{
-background-color: #CCCCCC;
+#SnapTarget {
+background-color:#CCCCCC;
 border:1px solid #AAAAAA;
 color:#222222;
 font-weight:bold;
-height: 140px;
+height:250px;
+margin-left:50px;
+padding:20px;
+width:500px;
 }
 
 </style>
@@ -38,7 +42,7 @@ height: 140px;
 <div class="demo">
 
 
-<h1>GWTQuery : Draggable plug-in (Snap sample)</h1>
+<h1>GwtQuery Draggable plugin example : snap options</h1>
 
 <ul style="padding-top: 10px; padding-bottom: 5px; list-style: none;">
 	<li style="float: left;">Sample 1 |&nbsp;</li>
@@ -50,7 +54,7 @@ height: 140px;
 	</li-->
 </ul>
 
-<p>nap the draggable to the inner or outer boundaries of a DOM element. Use the snap, snapMode (inner, outer, both), and snapTolerance (distance in pixels the draggable must be from the element when snapping is invoked) options.
+<p>Snap the draggable to the inner or outer boundaries of a DOM element. Use the snap, snapMode (inner, outer, both), and snapTolerance (distance in pixels the draggable must be from the element when snapping is invoked) options.
 
 Or snap the draggable to a grid. Set the dimensions of grid cells (height and width in pixels) with the grid option.</p>
 
