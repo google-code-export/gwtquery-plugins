@@ -11,8 +11,6 @@ import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.RootPanel;
 
 import gwtquery.plugins.commonui.client.GQueryUi;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
@@ -280,7 +278,7 @@ public class DraggableHandler {
 
     if ("absolute".equals(helperCssPosition)
         && isOffsetParentIncludedInScrollParent()) {
-      position.add(helperScrollParent.scrollLeft(), helperScrollParent
+      position = position.add(helperScrollParent.scrollLeft(), helperScrollParent
           .scrollTop());
     }
 
@@ -289,10 +287,10 @@ public class DraggableHandler {
       position.top = 0;
     }
 
-    position.add((int) GQUtils.cur(helperOffsetParent.get(0),
-        "borderLeftWidth", false), (int) GQUtils.cur(helperOffsetParent.get(0),
-        "borderTopWidth", false));
-
+    position = position.add((int) GQUtils.cur(helperOffsetParent.get(0),
+        "borderLeftWidth", true), (int) GQUtils.cur(helperOffsetParent.get(0),
+        "borderTopWidth", true));
+    
     return new LeftTopDimension(position.left, position.top);
 
   }
