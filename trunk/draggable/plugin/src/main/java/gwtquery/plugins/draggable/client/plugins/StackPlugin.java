@@ -1,7 +1,6 @@
 package gwtquery.plugins.draggable.client.plugins;                                
                                                                                   
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.user.client.Event;
 
@@ -23,14 +22,13 @@ public class StackPlugin implements DraggablePlugin {
 	private class ZIndexComparator implements Comparator<Element>{
 		
 		public int compare(Element element1, Element element2) {
-			int zIndex1 = (int)GQUtils.cur(element1, ZINDEX_CSS, false);
-			int zIndex2 = (int) GQUtils.cur(element2, ZINDEX_CSS, false);
+			int zIndex1 = new Integer(element1.getStyle().getZIndex());
+			int zIndex2 = new Integer(element2.getStyle().getZIndex());
 			return (zIndex1 - zIndex2);
 			
 		}
 	}
-	                            
-  private static String ZINDEX_CSS = "zIndex";                        
+	                                                    
                                                                                   
   public String getName() {                                                       
     return "stack";                                                              
@@ -49,7 +47,7 @@ public class StackPlugin implements DraggablePlugin {
 			return;
 		}
 		
-		int zIndexMin = (int)GQUtils.cur(sortedElementArray[0], "zIndex", false);
+		int zIndexMin =  new Integer(sortedElementArray[0].getStyle().getZIndex());
 		int i = 0;
 		for (Element el : sortedElementArray){
 			el.getStyle().setZIndex(zIndexMin+i);
