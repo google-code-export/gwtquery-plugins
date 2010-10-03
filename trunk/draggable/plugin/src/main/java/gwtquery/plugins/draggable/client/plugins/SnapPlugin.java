@@ -69,16 +69,13 @@ public class SnapPlugin implements DraggablePlugin {
     int helperRight = helperLeft + handler.getHelperDimension().getWidth();
     int helperTop = handler.getAbsPosition().getTop();
     int helperBottom = helperTop + handler.getHelperDimension().getHeight();
-    //GWT.log("helper data :left("+helperLeft+") right("+helperRight+") Top("+helperTop+") Bottom("+helperBottom+")");
     
     for (SnapElement snapElement: snapElements){
       int snapElementLeft = snapElement.getOffset().left;
       int snapElementRight = snapElementLeft + snapElement.getWidth();
       int snapElementTop = snapElement.getOffset().top;
       int snapElementBottom = snapElementTop + snapElement.getHeight();
-      
-      //GWT.log("snapelement data :left("+snapElementLeft+") right("+snapElementRight+") Top("+snapElementTop+") Bottom("+snapElementBottom+")");
-      
+        
       if(!( (snapElementLeft-snapTolerance < helperLeft && helperLeft < snapElementRight+snapTolerance && snapElementTop-snapTolerance < helperTop && helperTop < snapElementBottom+snapTolerance) || 
           (snapElementLeft-snapTolerance < helperLeft && helperLeft < snapElementRight+snapTolerance && snapElementTop-snapTolerance < helperBottom && helperBottom < snapElementBottom+snapTolerance) || 
           (snapElementLeft-snapTolerance < helperRight && helperRight < snapElementRight+snapTolerance && snapElementTop-snapTolerance < helperTop && helperTop < snapElementBottom+snapTolerance) || 
@@ -103,18 +100,14 @@ public class SnapPlugin implements DraggablePlugin {
         
         
         if (snapTop){
-          GWT.log("OUTER snapTop with "+snapElement);
           newTopDimension = handler.convertPositionTo(false, new LeftTopDimension(0, snapElementTop - handler.getHelperDimension().getHeight()));
         }else if (snapBottom){
-          GWT.log("OUTER snapBottom with "+snapElement);
           newTopDimension = handler.convertPositionTo(false, new LeftTopDimension(0, snapElementBottom));
         }
        
         if(snapLeft){
-          GWT.log("OUTER snapLeft with "+snapElement);
           newLeftDimension = handler.convertPositionTo(false, new LeftTopDimension(snapElementLeft - handler.getHelperDimension().getWidth(), 0)); 
         }else if (snapRight){
-          GWT.log("OUTER snapRight with "+snapElement);
           newLeftDimension = handler.convertPositionTo(false, new LeftTopDimension(snapElementRight, 0));
         }
       }
@@ -126,18 +119,14 @@ public class SnapPlugin implements DraggablePlugin {
         boolean snapRight = Math.abs(snapElementRight - helperRight) <= snapTolerance;
         
         if (snapTop){
-          GWT.log("INNER snapTop with "+snapElement);
           newTopDimension = handler.convertPositionTo(false, new LeftTopDimension(0, snapElementTop));
         }else if (snapBottom){
-          GWT.log("INNER snapBottom with "+snapElement);
           newTopDimension = handler.convertPositionTo(false, new LeftTopDimension(0, snapElementBottom - handler.getHelperDimension().getHeight()));
         }
         
         if(snapLeft){
-          GWT.log("INNER snapLeft with "+snapElement);
           newLeftDimension = handler.convertPositionTo(false, new LeftTopDimension(snapElementLeft, 0));
          }else if (snapRight){
-           GWT.log("INNER snapLeft with "+snapElement);
            newLeftDimension = handler.convertPositionTo(false, new LeftTopDimension(snapElementRight - handler.getHelperDimension().getWidth(), 0));
         }
       }
@@ -161,9 +150,8 @@ public class SnapPlugin implements DraggablePlugin {
 
   public void onStart(DraggableHandler handler, Element draggableElement, Event e) {
     List<SnapElement> snapElements = new ArrayList<SnapElement>();
-    GQuery snap = $(handler.getOptions().getSnap());
-    GWT.log("This element will snap with selector : "+handler.getOptions().getSnap());
-    GWT.log("This element will snap : "+snap);
+    GQuery snap = (handler.getOptions().getSnap_$() != null ? handler.getOptions().getSnap_$() : $(handler.getOptions().getSnap()));
+ 
     for (Element element : snap.elements()){
       if (element != draggableElement){
         //TODO outerWidth and outerHeight don't exist in GQuery ... Add an issue
