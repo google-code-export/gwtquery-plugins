@@ -124,10 +124,12 @@ public class DraggableOptions extends MouseOptions {
   private int scrollSensitivity;
   private int scrollSpeed;
   private String snap;
+  private GQuery $snap;
   private SnapMode snapMode;
   private int snapTolerance;
   private GQuery stack;
   private Integer zIndex;
+  
   /**
    * This callback function is called at the starting of the drag operation
    */
@@ -212,6 +214,10 @@ public class DraggableOptions extends MouseOptions {
 
   public String getSnap() {
     return snap;
+  }
+  
+  public GQuery getSnap_$(){
+    return $snap;
   }
 
   public SnapMode getSnapMode() {
@@ -384,6 +390,13 @@ public class DraggableOptions extends MouseOptions {
 
   public void setSnap(String snapSelector) {
     this.snap = snapSelector;
+    $snap = null;
+  }
+  
+  public void setSnap(GQuery $) {
+    $snap = $;
+    snap = null;
+    
   }
 
   public void setSnapMode(SnapMode snapMode) {
@@ -432,8 +445,11 @@ public class DraggableOptions extends MouseOptions {
     scrollSensitivity = 20;
     scrollSpeed = 20;
     snap = null;
+    $snap = null;
     snapMode = SnapMode.BOTH;
     snapTolerance = 20;
   }
+
+  
 
 }
