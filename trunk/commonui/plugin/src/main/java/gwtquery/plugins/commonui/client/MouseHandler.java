@@ -251,8 +251,10 @@ public abstract class MouseHandler extends GQueryUi {
 
   private boolean notHandleMouseDown(Element element, Event mouseDownEvent) {
     boolean isNotBoutonLeft = mouseDownEvent.getButton() != NativeEvent.BUTTON_LEFT;
-    boolean isElementCancel = $(mouseDownEvent).parents()
-        .add($(mouseDownEvent)).filter(options.getCancel()).length() > 1;
+    Element eventTarget = mouseDownEvent.getEventTarget().cast();
+
+    boolean isElementCancel = $(eventTarget).parents()
+        .add($(eventTarget)).filter(options.getCancel()).length() > 0;
 
     return isNotBoutonLeft || isElementCancel
         || !mouseCapture(element, mouseDownEvent);

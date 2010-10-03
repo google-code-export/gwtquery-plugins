@@ -20,7 +20,7 @@ public class MouseOptions {
   /**
    * Prevents plugin working from starting on specified elements.
    */
-  private String cancel;
+  private String[] cancel;
 
   /**
    * Time in milliseconds to define when the plugin should start. It helps
@@ -40,7 +40,7 @@ public class MouseOptions {
     initDefault();
   }
 
-  public String getCancel() {
+  public String[] getCancel() {
     return cancel;
   }
 
@@ -52,7 +52,7 @@ public class MouseOptions {
     return distance;
   }
 
-  public void setCancel(String cancel) {
+  public void setCancel(String... cancel) {
     this.cancel = cancel;
   }
 
@@ -67,6 +67,7 @@ public class MouseOptions {
   protected void initDefault() {
     delay = 0;
     distance = 0;
+    cancel = new String[]{"input", "option"};
   }
 
 }
