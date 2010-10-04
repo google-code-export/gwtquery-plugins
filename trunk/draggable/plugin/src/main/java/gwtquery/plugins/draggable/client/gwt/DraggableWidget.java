@@ -68,7 +68,7 @@ public class DraggableWidget<T extends Widget> extends Composite {
     return options.getAxis();
   }
 
-  public String getCancel() {
+  public String[] getCancel() {
     return options.getCancel();
   }
 
@@ -188,8 +188,8 @@ public class DraggableWidget<T extends Widget> extends Composite {
     options.setAxis(axis);
   }
 
-  public void setCancel(String cancel) {
-    options.setCancel(cancel);
+  public void setCancel(String... cancelSelector) {
+    options.setCancel(cancelSelector);
   }
 
   public void setContainment(DraggableContainment containment) {
