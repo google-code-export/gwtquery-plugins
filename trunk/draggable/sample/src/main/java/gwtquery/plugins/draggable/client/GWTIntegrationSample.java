@@ -1,3 +1,19 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 package gwtquery.plugins.draggable.client;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -6,13 +22,17 @@ import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -28,93 +48,41 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import java.util.Date;
 
 /**
- * Example code BasePlugin plugin for GwtQuery
- */
-public class GWTIntegrationSample implements EntryPoint {
+ * Sample of the integration of draggable plugin and GWT
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */public class GWTIntegrationSample implements EntryPoint {
 
-	
+  public void onModuleLoad() {
 
-	public void onModuleLoad() {
+    RootPanel.get("gwtIntegrationSampleDiv").add(
+        new DraggableWidget<MenuBar>(createMenuBar()));
 
-	  
-		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<DecoratorPanel>(createDecoratedForm()));
-		
-		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<Widget>(createDynamicTree()));
-		
-		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<TabPanel>(createTabPanel()));
-		
-		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<VerticalPanel>(createDatePanel()));
-		
+    RootPanel.get("gwtIntegrationSampleDiv").add(
+        new DraggableWidget<DecoratorPanel>(createDecoratedForm()));
 
-	}
-	
-	/**
-	 * Create a Dynamic tree.
-	 * The code come from the GWT show case : http://gwt.google.com/samples/Showcase/Showcase.html#!CwTree
-	 * @return
-	 * http://gwt.google.com/samples/Showcase/Showcase.html#!CwDecoratorPanel
-	 * @return
-	 */
-	private DecoratedTabPanel createTabPanel(){
-		// Create a tab panel
-	    DecoratedTabPanel tabPanel = new DecoratedTabPanel();
-	    tabPanel.setWidth("400px");
-	    tabPanel.setAnimationEnabled(true);
+    RootPanel.get("gwtIntegrationSampleDiv").add(
+        new DraggableWidget<Widget>(createDynamicTree()));
 
-	    // Add a home tab
-	    String[] tabTitles = {"Home", "GWT Logo", "More info"};
-	    HTML homeText = new HTML("Click one of the tabs to see more content. <br/> You can drag me now !");
-	    tabPanel.add(homeText, tabTitles[0]);
+    RootPanel.get("gwtIntegrationSampleDiv").add(
+        new DraggableWidget<TabPanel>(createTabPanel()));
 
-	    // Add a tab with an image
-	    /*VerticalPanel vPanel = new VerticalPanel();
-	    vPanel.add(new Image(Showcase.images.gwtLogo()));*/
-	    //TODO add gwt logo
-	    tabPanel.add(new HTML("TODO add GWT LOGO"), tabTitles[1]);
+    RootPanel.get("gwtIntegrationSampleDiv").add(
+        new DraggableWidget<VerticalPanel>(createDatePanel()));
+    
+    //That's all folks !
 
-	    // Add a tab
-	    HTML moreInfo = new HTML("Tabs are highly customizable using CSS.");
-	    tabPanel.add(moreInfo, tabTitles[2]);
+  }
 
-	    // Return the content
-	    tabPanel.selectTab(0);
-	    tabPanel.ensureDebugId("cwTabPanel");
-	    return tabPanel;
-
-	}
-	/**
-	 * Create a Decorated Form
-	 * The code come from the GWT show case : http://gwt.google.com/samples/Showcase/Showcase.html#!CwDecoratorPanel
-	 * 
-	 * @return
-	 */
-	private DecoratorPanel createDecoratedForm(){
-		// Create a table to layout the form options
-	    FlexTable layout = new FlexTable();
-	    layout.setCellSpacing(6);
-	    FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
-
-	    // Add a title to the form
-	    layout.setHTML(0, 0, "Enter Search Criteria(You can now drag me !)");
-	    cellFormatter.setColSpan(0, 0, 2);
-	    cellFormatter.setHorizontalAlignment(0, 0,
-	        HasHorizontalAlignment.ALIGN_CENTER);
-
-	    // Add some standard form options
-	    layout.setHTML(1, 0, "Name");
-	    layout.setWidget(1, 1, new TextBox());
-	    layout.setHTML(2, 0, "Description");
-	    layout.setWidget(2, 1, new TextBox());
-
-	    // Wrap the content in a DecoratorPanel
-	    DecoratorPanel decPanel = new DecoratorPanel();
-	    decPanel.setWidget(layout);
-	    return decPanel;
-
-	}
-	
-	private VerticalPanel createDatePanel(){
-	// Create a basic date picker
+  /**
+   * Create a Date picker. The code come from the GWT show case :
+   * http://gwt.google.com/samples/Showcase/Showcase.html#!CwDatePicker@
+   * 
+   * @return
+   */
+  private VerticalPanel createDatePanel() {
+    // Create a basic date picker
     DatePicker datePicker = new DatePicker();
     final Label text = new Label();
 
@@ -129,7 +97,7 @@ public class GWTIntegrationSample implements EntryPoint {
 
     // Set the default value
     datePicker.setValue(new Date(), true);
-    
+
     // Combine the widgets into a panel and return them
     VerticalPanel vPanel = new VerticalPanel();
     vPanel.add(new HTML("Permanent DatePicker:"));
@@ -137,54 +105,212 @@ public class GWTIntegrationSample implements EntryPoint {
     vPanel.add(datePicker);
     return vPanel;
 
-	}
+  }
 
-	/**
-	 * Create a Dynamic tree.
-	 * The code come from the GWT show case : http://gwt.google.com/samples/Showcase/Showcase.html#!CwTree
-	 * @return
-	 */
-	private Widget createDynamicTree() {
-		// Create a new tree
-		Tree dynamicTree = new Tree();
+  /**
+   * Create a Decorated Form The code come from the GWT show case :
+   * http://gwt.google.com/samples/Showcase/Showcase.html#!CwDecoratorPanel
+   * 
+   * @return
+   */
+  private DecoratorPanel createDecoratedForm() {
+    // Create a table to layout the form options
+    FlexTable layout = new FlexTable();
+    layout.setCellSpacing(6);
+    FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
 
-		// Add some default tree items
-		for (int i = 0; i < 5; i++) {
-			TreeItem item = dynamicTree.addItem("Item " + i);
+    // Add a title to the form
+    layout.setHTML(0, 0, "Enter Search Criteria(You can now drag me !)");
+    cellFormatter.setColSpan(0, 0, 2);
+    cellFormatter.setHorizontalAlignment(0, 0,
+        HasHorizontalAlignment.ALIGN_CENTER);
 
-			// Temporarily add an item so we can expand this node
-			item.addItem("");
-		}
+    // Add some standard form options
+    layout.setHTML(1, 0, "Name");
+    layout.setWidget(1, 1, new TextBox());
+    layout.setHTML(2, 0, "Description");
+    layout.setWidget(2, 1, new TextBox());
 
-		// Add a handler that automatically generates some children
-		dynamicTree.addOpenHandler(new OpenHandler<TreeItem>() {
-			public void onOpen(OpenEvent<TreeItem> event) {
-				TreeItem item = event.getTarget();
-				if (item.getChildCount() == 1) {
-					// Close the item immediately
-					item.setState(false, false);
+    // Wrap the content in a DecoratorPanel
+    DecoratorPanel decPanel = new DecoratorPanel();
+    decPanel.setWidget(layout);
+    return decPanel;
 
-					// Add a random number of children to the item
-					String itemText = item.getText();
-					int numChildren = Random.nextInt(5) + 2;
-					for (int i = 0; i < numChildren; i++) {
-						TreeItem child = item.addItem(itemText + "." + i);
-						child.addItem("");
-					}
+  }
 
-					// Remove the temporary item when we finish loading
-					item.getChild(0).remove();
+  /**
+   * Create a Dynamic tree. The code come from the GWT show case :
+   * http://gwt.google.com/samples/Showcase/Showcase.html#!CwTree
+   * 
+   * @return
+   */
+  private Widget createDynamicTree() {
+    // Create a new tree
+    Tree dynamicTree = new Tree();
 
-					// Reopen the item
-					item.setState(true, false);
-				}
-			}
-		});
+    // Add some default tree items
+    for (int i = 0; i < 5; i++) {
+      TreeItem item = dynamicTree.addItem("Item " + i);
 
-		// Return the tree (decorated)
-		 DecoratorPanel decPanel = new DecoratorPanel();
-		 decPanel.setWidget(dynamicTree);
-		return decPanel;
-	}
+      // Temporarily add an item so we can expand this node
+      item.addItem("");
+    }
+
+    // Add a handler that automatically generates some children
+    dynamicTree.addOpenHandler(new OpenHandler<TreeItem>() {
+      public void onOpen(OpenEvent<TreeItem> event) {
+        TreeItem item = event.getTarget();
+        if (item.getChildCount() == 1) {
+          // Close the item immediately
+          item.setState(false, false);
+
+          // Add a random number of children to the item
+          String itemText = item.getText();
+          int numChildren = Random.nextInt(5) + 2;
+          for (int i = 0; i < numChildren; i++) {
+            TreeItem child = item.addItem(itemText + "." + i);
+            child.addItem("");
+          }
+
+          // Remove the temporary item when we finish loading
+          item.getChild(0).remove();
+
+          // Reopen the item
+          item.setState(true, false);
+        }
+      }
+    });
+
+    // Return the tree (decorated)
+    DecoratorPanel decPanel = new DecoratorPanel();
+    decPanel.setWidget(dynamicTree);
+    return decPanel;
+  }
+
+  /**
+   * Create a menu bar. The code come from the GWT show case :
+   * http://gwt.google.com/samples/Showcase/Showcase.html#!CwMenuBar
+   * 
+   * @return
+   * 
+   */
+  private MenuBar createMenuBar() {
+    // Create a command that will execute on menu item selection
+    Command menuCommand = new Command() {
+      private int curPhrase = 0;
+      private final String[] phrases = new String[] {
+          "Thank you for selecting a menu item", "A fine selection indeed",
+          "Don't you have anything better to do than select menu items?",
+          "Try something else", "this is just a menu!", "Another wasted click" };
+
+      public void execute() {
+        Window.alert(phrases[curPhrase]);
+        curPhrase = (curPhrase + 1) % phrases.length;
+      }
+    };
+
+    // Create a menu bar
+    MenuBar menu = new MenuBar();
+    menu.setAutoOpen(false);
+    menu.setWidth("500px");
+    menu.setAnimationEnabled(true);
+
+    // Create a sub menu of recent documents
+    MenuBar recentDocsMenu = new MenuBar(true);
+    String[] recentDocs = new String[] { "Fishing in the desert.txt",
+        "How to tame a wild parrot", "Idiots Guide to Emu Farms" };
+    for (int i = 0; i < recentDocs.length; i++) {
+      recentDocsMenu.addItem(recentDocs[i], menuCommand);
+    }
+
+    // Create the file menu
+    MenuBar fileMenu = new MenuBar(true);
+    fileMenu.setAnimationEnabled(true);
+    menu.addItem(new MenuItem("File", fileMenu));
+    String[] fileOptions = new String[] { "New", "Open", "Close", "Recents",
+        "Exit" };
+
+    for (int i = 0; i < fileOptions.length; i++) {
+      if (i == 3) {
+        fileMenu.addSeparator();
+        fileMenu.addItem(fileOptions[i], recentDocsMenu);
+        fileMenu.addSeparator();
+      } else {
+        fileMenu.addItem(fileOptions[i], menuCommand);
+      }
+    }
+
+    // Create the edit menu
+    MenuBar editMenu = new MenuBar(true);
+    menu.addItem(new MenuItem("Edit", editMenu));
+    String[] editOptions = new String[] { "Undo", "Redo", "Copy", "Cut",
+        "Paste" };
+
+    for (int i = 0; i < editOptions.length; i++) {
+      editMenu.addItem(editOptions[i], menuCommand);
+    }
+
+    // Create the GWT menu
+    MenuBar gwtMenu = new MenuBar(true);
+    menu.addItem(new MenuItem("GWT", true, gwtMenu));
+    String[] gwtOptions = new String[] { "Download", "Examples", "Source code",
+        "GWT wit' the program" };
+
+    for (int i = 0; i < gwtOptions.length; i++) {
+      gwtMenu.addItem(gwtOptions[i], menuCommand);
+    }
+
+    // Create the help menu
+    MenuBar helpMenu = new MenuBar(true);
+    menu.addSeparator();
+    menu.addItem(new MenuItem("Help", helpMenu));
+    String[] helpOptions = new String[] { "Contents", "Fortune cookies",
+        "About GWT" };
+
+    for (int i = 0; i < helpOptions.length; i++) {
+      helpMenu.addItem(helpOptions[i], menuCommand);
+    }
+
+    // Return the menu
+    menu.ensureDebugId("cwMenuBar");
+    return menu;
+
+  }
+
+  /**
+   * Create a Dynamic tree. The code come from the GWT show case :
+   * http://gwt.google.com/samples/Showcase/Showcase.html#!CwTabPanel
+   * 
+   */
+  private DecoratedTabPanel createTabPanel() {
+    // Create a tab panel
+    DecoratedTabPanel tabPanel = new DecoratedTabPanel();
+    tabPanel.setWidth("400px");
+    tabPanel.setAnimationEnabled(true);
+
+    // Add a home tab
+    String[] tabTitles = { "Home", "GWT Logo", "More info" };
+    HTML homeText = new HTML(
+        "Click one of the tabs to see more content. <br/> You can drag me now !");
+    tabPanel.add(homeText, tabTitles[0]);
+
+    // Add a tab with an image
+    /*
+     * VerticalPanel vPanel = new VerticalPanel(); vPanel.add(new
+     * Image(Showcase.images.gwtLogo()));
+     */
+    // TODO add gwt logo
+    tabPanel.add(new HTML("TODO add GWT LOGO"), tabTitles[1]);
+
+    // Add a tab
+    HTML moreInfo = new HTML("Tabs are highly customizable using CSS.");
+    tabPanel.add(moreInfo, tabTitles[2]);
+
+    // Return the content
+    tabPanel.selectTab(0);
+    tabPanel.ensureDebugId("cwTabPanel");
+    return tabPanel;
+
+  }
 
 }
