@@ -36,10 +36,14 @@ public class GWTIntegrationSample implements EntryPoint {
 
 	public void onModuleLoad() {
 
-		RootPanel.get("gwtIntegrationSample").add(new DraggableWidget<DecoratorPanel>(createDecoratedForms()));
-		RootPanel.get("gwtIntegrationSample").add(new DraggableWidget<Widget>(createDynamicTree()));
-		RootPanel.get("gwtIntegrationSample").add(new DraggableWidget<TabPanel>(createTabPanel()));
-		RootPanel.get("gwtIntegrationSample").add(new DraggableWidget<VerticalPanel>(createDatePanel()));
+	  
+		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<DecoratorPanel>(createDecoratedForm()));
+		
+		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<Widget>(createDynamicTree()));
+		
+		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<TabPanel>(createTabPanel()));
+		
+		RootPanel.get("gwtIntegrationSampleDiv").add(new DraggableWidget<VerticalPanel>(createDatePanel()));
 		
 
 	}
@@ -84,7 +88,7 @@ public class GWTIntegrationSample implements EntryPoint {
 	 * 
 	 * @return
 	 */
-	private DecoratorPanel createDecoratedForms(){
+	private DecoratorPanel createDecoratedForm(){
 		// Create a table to layout the form options
 	    FlexTable layout = new FlexTable();
 	    layout.setCellSpacing(6);
