@@ -37,6 +37,8 @@ public abstract class MouseHandler extends GQueryUi {
   private boolean mouseStarted = false;
   private Duration mouseUpDuration;
   private Event mouseDownEvent;
+  private int mouseDownX;
+  private int mouseDownY;
   private MouseOptions options;
 
   public MouseHandler(GQuery gq) {
@@ -65,32 +67,33 @@ public abstract class MouseHandler extends GQueryUi {
 
     for (final Element e : elements()) {
 
-      $(e).as(Events.Events).bind(Event.ONMOUSEDOWN, getPluginName(), (Object)null, new Function() {
-        @Override
-        public boolean f(Event event) {
-          return mouseDown(e, event);
+      $(e).as(Events.Events).bind(Event.ONMOUSEDOWN, getPluginName(),
+          (Object) null, new Function() {
+            @Override
+            public boolean f(Event event) {
+              return mouseDown(e, event);
 
-        }
-      }).bind(Event.ONCLICK, getPluginName(), (Object)null, new Function() {
-        @Override
-        public boolean f(Event event) {
-          if (preventClickEvent) {
-            preventClickEvent = false;
-            event.stopPropagation();
-            return false;
-          }
-          return true;
-        }
-      });
+            }
+          }).bind(Event.ONCLICK, getPluginName(), (Object) null,
+          new Function() {
+            @Override
+            public boolean f(Event event) {
+              if (preventClickEvent) {
+                preventClickEvent = false;
+                event.stopPropagation();
+                return false;
+              }
+              return true;
+            }
+          });
     }
 
   }
 
   protected void destroyMouseHandler() {
-    as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
+    as(Events.Events)
+        .unbind(Event.ONMOUSEDOWN | Event.ONCLICK, getPluginName());
   }
-
-
 
   /**
    * Return a String identifying the plugin. This string is used as namespace
@@ -119,7 +122,8 @@ public abstract class MouseHandler extends GQueryUi {
   protected abstract boolean mouseDrag(Element element, Event event);
 
   /**
-   * Method called when the mouse is clicked and all conditions for starting the plugin are met.
+   * Method called when the mouse is clicked and all conditions for starting the
+   * plugin are met.
    * 
    * @param element
    * @param event
@@ -128,7 +132,7 @@ public abstract class MouseHandler extends GQueryUi {
   protected abstract boolean mouseStart(Element element, Event event);
 
   /**
-   * Method called when the mouse button is released 
+   * Method called when the mouse button is released
    * 
    * @param element
    * @param event
@@ -137,20 +141,22 @@ public abstract class MouseHandler extends GQueryUi {
   protected abstract boolean mouseStop(Element element, Event event);
 
   private void bindOtherMouseEvent(final Element element) {
-    
-    $(document).as(Events.Events).bind(Event.ONMOUSEMOVE, getPluginName(), (Object)null, new Function() {
-      @Override
-      public boolean f(Event e) {
-        mouseMove(element, e);
-        return false;
-      }
-    }).bind(Event.ONMOUSEUP,getPluginName(), (Object)null,new Function() {
-      @Override
-      public boolean f(Event e) {
-        mouseUp(element, e);
-        return false;
-      }
-    });
+
+    $(document).as(Events.Events).bind(Event.ONMOUSEMOVE, getPluginName(),
+        (Object) null, new Function() {
+          @Override
+          public boolean f(Event e) {
+            mouseMove(element, e);
+            return false;
+          }
+        }).bind(Event.ONMOUSEUP, getPluginName(), (Object) null,
+        new Function() {
+          @Override
+          public boolean f(Event e) {
+            mouseUp(element, e);
+            return false;
+          }
+        });
   }
 
   private boolean delayConditionMet() {
@@ -164,10 +170,8 @@ public abstract class MouseHandler extends GQueryUi {
 
   private boolean distanceConditionMet(Event event) {
     int neededDistance = options.getDistance();
-    int xMouseDistance = Math.abs(mouseDownEvent.getClientX()
-        - event.getClientX());
-    int yMouseDistance = Math.abs(mouseDownEvent.getClientY()
-        - event.getClientY());
+    int xMouseDistance = Math.abs(mouseDownX - event.getClientX());
+    int yMouseDistance = Math.abs(mouseDownY - event.getClientY());
     // in jQuery-ui we take the greater distance between x and y... not really
     // good !
     // int mouseDistance = Math.max(xMouseDistance, yMouseDistance);
@@ -187,6 +191,7 @@ public abstract class MouseHandler extends GQueryUi {
   }-*/;
 
   private boolean mouseDown(Element element, Event event) {
+
     // test if an other plugin handle the mouseStart
     if (isEventAlreadyHandled(event)) {
       return false;
@@ -253,8 +258,8 @@ public abstract class MouseHandler extends GQueryUi {
     boolean isNotBoutonLeft = mouseDownEvent.getButton() != NativeEvent.BUTTON_LEFT;
     Element eventTarget = mouseDownEvent.getEventTarget().cast();
 
-    boolean isElementCancel = $(eventTarget).parents()
-        .add($(eventTarget)).filter(options.getCancel()).length() > 0;
+    boolean isElementCancel = $(eventTarget).parents().add($(eventTarget))
+        .filter(options.getCancel()).length() > 0;
 
     return isNotBoutonLeft || isElementCancel
         || !mouseCapture(element, mouseDownEvent);
@@ -263,13 +268,17 @@ public abstract class MouseHandler extends GQueryUi {
 
   private void reset(Event mouseDownEvent) {
     this.mouseDownEvent = mouseDownEvent;
+    this.mouseDownX = mouseDownEvent.getClientX();
+    this.mouseDownY = mouseDownEvent.getClientY();
     this.mouseUpDuration = new Duration();
   }
 
   private void unbindOtherMouseEvent() {
-    //TODO waiting correction of issue 48
-    //$(document).as(Events.Events).unbind((Event.ONMOUSEUP | Event.ONMOUSEMOVE), getPluginName());
-    $(document).as(Events.Events).unbind(Event.ONMOUSEUP, getPluginName()).unbind(Event.ONMOUSEMOVE, getPluginName());
+    // TODO waiting correction of issue 48
+    // $(document).as(Events.Events).unbind((Event.ONMOUSEUP |
+    // Event.ONMOUSEMOVE), getPluginName());
+    $(document).as(Events.Events).unbind(Event.ONMOUSEUP, getPluginName())
+        .unbind(Event.ONMOUSEMOVE, getPluginName());
   }
 
 }
