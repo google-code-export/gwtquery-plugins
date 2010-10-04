@@ -23,7 +23,8 @@ import gwtquery.plugins.draggable.client.impl.DraggableHandlerImpl;
 public class DraggableHandler {
 
   /**
-   * A POJO used to store the top/left.
+   * A POJO used to store the top/left. 
+   * TODO When issue 49 (GQuery) will be resolved, use Offset class instead
    */
   public static class LeftTopDimension {
     private int left;
@@ -276,20 +277,26 @@ public class DraggableHandler {
   private LeftTopDimension calculateParentOffset(Element element) {
     Offset position = helperOffsetParent.offset();
 
+    //GWT.log("helperOffsetPArent" + helperOffsetParent);
+    
     if ("absolute".equals(helperCssPosition)
         && isOffsetParentIncludedInScrollParent()) {
       position = position.add(helperScrollParent.scrollLeft(), helperScrollParent
           .scrollTop());
     }
 
+    //GWT.log("impl.resetParentOffsetPosition(helperOffsetParent)" + impl.resetParentOffsetPosition(helperOffsetParent));
+    
     if (impl.resetParentOffsetPosition(helperOffsetParent)) {
       position.left = 0;
       position.top = 0;
     }
-
+    
     position = position.add((int) GQUtils.cur(helperOffsetParent.get(0),
         "borderLeftWidth", true), (int) GQUtils.cur(helperOffsetParent.get(0),
         "borderTopWidth", true));
+    
+    //GWT.log("position after"+position);
     
     return new LeftTopDimension(position.left, position.top);
 
@@ -309,11 +316,11 @@ public class DraggableHandler {
       //    .getTagName()) ? helperScrollParent : $(body));
       
       int top = position.top 
-          -  (int)GQUtils.cur(helper.get(0), "top", true)
+          -  (int)GQUtils.cur(helper.get(0), "top", false)
           /* + scroll.scrollTop() */
           - margin.top;
       int left =  position.left
-          - (int)GQUtils.cur(helper.get(0), "left", true) 
+          - (int)GQUtils.cur(helper.get(0), "left", false) 
           /* + scroll.scrollLeft() */
          - margin.left;
       
@@ -400,6 +407,7 @@ public class DraggableHandler {
         - parentOffset.top
         + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollTop()
             : scrollIsRootNode ? 0 : scroll.scrollTop());
+    
     int left = pageX
         - offsetClick.left
         - relativeOffset.left
