@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.draggable.client;
 
 import com.google.gwt.dom.client.Element;
@@ -41,6 +56,17 @@ public class Draggable extends MouseHandler {
 
   }
 
+  private class DragCaller extends StartCaller {
+
+    public DragCaller(Element draggable, Event e) {
+      super(draggable, e);
+    }
+
+    public void call(DraggablePlugin plugin) {
+      plugin.onDrag(getHandler(draggable), draggable, e);
+    }
+  }
+
   private static interface PluginCaller {
     void call(DraggablePlugin plugin);
   }
@@ -70,21 +96,6 @@ public class Draggable extends MouseHandler {
     }
   }
 
-  private class DragCaller extends StartCaller {
-
-    public DragCaller(Element draggable, Event e) {
-      super(draggable, e);
-    }
-
-    public void call(DraggablePlugin plugin) {
-      plugin.onDrag(getHandler(draggable), draggable, e);
-    }
-  }
-
-  
-  
-
-  
   public static final Class<Draggable> Draggable = Draggable.class;
 
   protected static final String DRAGGABLE_HANDLER_KEY = "draggableHandler";
@@ -98,7 +109,7 @@ public class Draggable extends MouseHandler {
         return new Draggable(gq);
       }
     });
-    
+
     registerDraggablePlugin(new OpacityPlugin());
     registerDraggablePlugin(new ScrollPlugin());
     registerDraggablePlugin(new CursorPlugin());
@@ -114,9 +125,9 @@ public class Draggable extends MouseHandler {
     draggablePlugins.put(plugin.getName(), plugin);
   }
 
-  //for performance purpose cache the current drag handler.
+  // for performance purpose cache the current drag handler.
   private DraggableHandler currentDragHandler;
-  
+
   public Draggable(Element element) {
     super(element);
   }
@@ -135,8 +146,8 @@ public class Draggable extends MouseHandler {
 
   public Draggable destroy() {
     for (Element e : elements()) {
-      $(e).removeData(DRAGGABLE_HANDLER_KEY).removeClass(CssClassNames.UI_DRAGGABLE,
-          CssClassNames.UI_DRAGGABLE_DISABLED,
+      $(e).removeData(DRAGGABLE_HANDLER_KEY).removeClass(
+          CssClassNames.UI_DRAGGABLE, CssClassNames.UI_DRAGGABLE_DISABLED,
           CssClassNames.UI_DRAGGABLE_DRAGGING);
     }
     destroyMouseHandler();
@@ -152,11 +163,11 @@ public class Draggable extends MouseHandler {
   }
 
   public Draggable draggable(DraggableOptions options, HandlerManager eventBus) {
-    
+
     this.eventBus = eventBus;
 
     initMouseHandler(options);
-    
+
     for (Element e : elements()) {
       if (options.getHelperType() == HelperType.ORIGINAL
           && !positionIsFixedAbsoluteOrRelative(e.getStyle().getPosition())) {
@@ -176,34 +187,38 @@ public class Draggable extends MouseHandler {
 
     return this;
   }
-  
+
   /**
    * Get the options for the first element.
+   * 
    * @return
    */
-  public DraggableOptions getOptions(){
-    
-    DraggableHandler handler = data(DRAGGABLE_HANDLER_KEY, DraggableHandler.class);
-    if (handler != null){
+  public DraggableOptions getOptions() {
+
+    DraggableHandler handler = data(DRAGGABLE_HANDLER_KEY,
+        DraggableHandler.class);
+    if (handler != null) {
       return handler.getOptions();
     }
-    
+
     return null;
   }
-  
+
   /**
    * Set the DraggableOptions on each element.
+   * 
    * @param options
    * @return
    */
- public Draggable setOptions(DraggableOptions options){
-    
-   for (Element e : elements()){
-     DraggableHandler handler = $(e).data(DRAGGABLE_HANDLER_KEY, DraggableHandler.class);
-     if (handler != null){
-       handler.setOptions(options);
-     }
-   }
+  public Draggable setOptions(DraggableOptions options) {
+
+    for (Element e : elements()) {
+      DraggableHandler handler = $(e).data(DRAGGABLE_HANDLER_KEY,
+          DraggableHandler.class);
+      if (handler != null) {
+        handler.setOptions(options);
+      }
+    }
     return this;
   }
 
@@ -226,17 +241,17 @@ public class Draggable extends MouseHandler {
   @Override
   protected boolean mouseStart(Element draggable, Event event) {
     reset();
-    
+
     DraggableHandler dragHandler = getHandler(draggable);
     DraggableOptions options = getOptions(draggable);
 
     dragHandler.createHelper(draggable, event);
     dragHandler.cacheHelperSize();
-    
-    if (getDragAndDropManager().isHandleDroppable()){
+
+    if (getDragAndDropManager().isHandleDroppable()) {
       getDragAndDropManager().setCurrentDraggable(draggable);
     }
-    
+
     dragHandler.initialize(draggable, event);
 
     callPlugins(new StartCaller(draggable, event), options);
@@ -250,31 +265,30 @@ public class Draggable extends MouseHandler {
     }
 
     dragHandler.cacheHelperSize();
-    
-    if (getDragAndDropManager().isHandleDroppable()){
+
+    if (getDragAndDropManager().isHandleDroppable()) {
       getDragAndDropManager().prepareOffset(draggable, options, event);
     }
-    
+
     getHelper(draggable).addClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
 
-    mouseDragImpl(draggable,dragHandler, event, true);
+    mouseDragImpl(draggable, dragHandler, event, true);
 
     return true;
   }
 
-
   @Override
   protected boolean mouseStop(Element draggable, Event event) {
     DraggableOptions options = getOptions(draggable);
-    
+
     boolean dropped = false;
-    if (getDragAndDropManager().isHandleDroppable()){
-      dropped = getDragAndDropManager().drop(draggable,options, event);
+    if (getDragAndDropManager().isHandleDroppable()) {
+      dropped = getDragAndDropManager().drop(draggable, options, event);
     }
-    
+
     // TODO implement revert options
     callPlugins(new StopCaller(draggable, event), options);
-    
+
     trigger(new DragStopEvent(draggable), options.getOnDragStop(), draggable);
 
     getHandler(draggable).clear(draggable);
@@ -282,46 +296,35 @@ public class Draggable extends MouseHandler {
     return false;
   }
 
-  
-
   private void callPlugins(PluginCaller caller, DraggableOptions options) {
-    for (DraggablePlugin plugin : draggablePlugins.values()){
-      if (plugin.hasToBeExecuted(options)){
+    for (DraggablePlugin plugin : draggablePlugins.values()) {
+      if (plugin.hasToBeExecuted(options)) {
         caller.call(plugin);
       }
     }
   }
-  
- 
 
-  private void reset(){
-    currentDragHandler = null;
+  private DraggableDroppableManager getDragAndDropManager() {
+    return DraggableDroppableManager.getInstance();
   }
-  
-  
-  private DraggableHandler getHandler(Element draggable){
-    
-    if (currentDragHandler == null){
-      currentDragHandler = $(draggable).data(DRAGGABLE_HANDLER_KEY, DraggableHandler.class);
+
+  private DraggableHandler getHandler(Element draggable) {
+
+    if (currentDragHandler == null) {
+      currentDragHandler = $(draggable).data(DRAGGABLE_HANDLER_KEY,
+          DraggableHandler.class);
     }
     return currentDragHandler;
   }
-  
-  private GQuery getHelper(Element draggable){
+
+  private GQuery getHelper(Element draggable) {
     DraggableHandler handler = getHandler(draggable);
     return handler != null ? handler.getHelper() : null;
   }
-  
-  private DraggableOptions getOptions(Element draggable){
+
+  private DraggableOptions getOptions(Element draggable) {
     DraggableHandler handler = getHandler(draggable);
     return handler != null ? handler.getOptions() : null;
-  }
-  
-  
-  
-  
-  private DraggableDroppableManager getDragAndDropManager(){
-    return DraggableDroppableManager.getInstance();
   }
 
   private boolean isHandleClicked(Element draggable, final Event event) {
@@ -349,17 +352,18 @@ public class Draggable extends MouseHandler {
   /**
    * implementation of mouse drag
    */
-  private boolean mouseDragImpl(Element draggable, DraggableHandler dragHandler, Event event,
-      boolean noPropagation) {
-    
+  private boolean mouseDragImpl(Element draggable,
+      DraggableHandler dragHandler, Event event, boolean noPropagation) {
+
     dragHandler.regeneratePositions(event);
 
     if (!noPropagation) {
-      
-      callPlugins(new DragCaller(draggable, event),dragHandler.getOptions());
-      
+
+      callPlugins(new DragCaller(draggable, event), dragHandler.getOptions());
+
       try {
-        trigger(new DragEvent(draggable), dragHandler.getOptions().getOnDrag(), draggable);
+        trigger(new DragEvent(draggable), dragHandler.getOptions().getOnDrag(),
+            draggable);
       } catch (StopDragException e) {
         mouseStop(draggable, event);
         return false;
@@ -368,17 +372,19 @@ public class Draggable extends MouseHandler {
 
     dragHandler.moveHelper(noPropagation);
 
-    if (getDragAndDropManager().isHandleDroppable()){
+    if (getDragAndDropManager().isHandleDroppable()) {
       getDragAndDropManager().drag(draggable, dragHandler.getOptions(), event);
     }
-    
+
     return false;
   }
-
-  
 
   private native boolean positionIsFixedAbsoluteOrRelative(String position) /*-{
     return (/^(?:r|a|f)/).test(position);
   }-*/;
+
+  private void reset() {
+    currentDragHandler = null;
+  }
 
 }
