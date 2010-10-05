@@ -25,8 +25,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DragStopEvent extends
-    GwtEvent<DragStopEvent.DragStopEventHandler> {
+public class DragStopEvent extends GwtEvent<DragStopEvent.DragStopEventHandler> {
 
   public interface DragStopEventHandler extends EventHandler {
     public void onDragStop(DragStopEvent event);

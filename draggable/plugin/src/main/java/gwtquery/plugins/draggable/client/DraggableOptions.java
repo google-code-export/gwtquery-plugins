@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.draggable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -11,34 +26,6 @@ import gwtquery.plugins.commonui.client.MouseOptions;
 import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
 
 public class DraggableOptions extends MouseOptions {
-
-  public static enum HelperType {
-    ORIGINAL {
-      @Override
-      public GQuery createHelper(Element original, GQuery helperFromOptions) {
-        return $(original);
-      }
-    },
-    CLONE {
-      @Override
-      public GQuery createHelper(Element original, GQuery helperFromOptions) {
-        return $(original).clone();
-      }
-    },
-    ELEMENT {
-      @Override
-      public GQuery createHelper(Element original, GQuery helperFromOptions) {
-        return helperFromOptions;
-      }
-    };
-
-    public abstract GQuery createHelper(Element original,
-        GQuery helperFromOptions);
-  }
-
-  public static enum SnapMode {
-    INNER, OUTER, BOTH;
-  }
 
   public static enum AxisOption {
     Y_AXIS, X_AXIS, NONE;
@@ -99,8 +86,38 @@ public class DraggableOptions extends MouseOptions {
 
   }
 
+  public static enum HelperType {
+    ORIGINAL {
+      @Override
+      public GQuery createHelper(Element original, GQuery helperFromOptions) {
+        return $(original);
+      }
+    },
+    CLONE {
+      @Override
+      public GQuery createHelper(Element original, GQuery helperFromOptions) {
+        return $(original).clone();
+      }
+    },
+    ELEMENT {
+      @Override
+      public GQuery createHelper(Element original, GQuery helperFromOptions) {
+        return helperFromOptions;
+      }
+    };
+
+    public abstract GQuery createHelper(Element original,
+        GQuery helperFromOptions);
+  }
+
+  public static enum SnapMode {
+    INNER, OUTER, BOTH;
+  }
+
   public static final DraggableContainment PARENT = new DraggableContainment(
       "parent");
+
+  public static final String DEFAULT_SCOPE = "default";
 
   private boolean addClasses;
   private String appendTo;
@@ -129,7 +146,7 @@ public class DraggableOptions extends MouseOptions {
   private int snapTolerance;
   private GQuery stack;
   private Integer zIndex;
-  
+
   /**
    * This callback function is called at the starting of the drag operation
    */
@@ -196,6 +213,10 @@ public class DraggableOptions extends MouseOptions {
     return onDragStop;
   }
 
+  public Float getOpacity() {
+    return opacity;
+  }
+
   public int getRevertDuration() {
     return revertDuration;
   }
@@ -215,8 +236,8 @@ public class DraggableOptions extends MouseOptions {
   public String getSnap() {
     return snap;
   }
-  
-  public GQuery getSnap_$(){
+
+  public GQuery getSnap_$() {
     return $snap;
   }
 
@@ -232,13 +253,17 @@ public class DraggableOptions extends MouseOptions {
     return stack;
   }
 
-  public boolean isAddClasses() {
-    return addClasses;
-  }
-
   /*
    * public boolean isConnectToSortable() { return connectToSortable; }
    */
+
+  public Integer getZIndex() {
+    return zIndex;
+  }
+
+  public boolean isAddClasses() {
+    return addClasses;
+  }
 
   public boolean isDisabled() {
     return disabled;
@@ -246,14 +271,6 @@ public class DraggableOptions extends MouseOptions {
 
   public boolean isIframeFix() {
     return iframeFix;
-  }
-
-  public Float getOpacity() {
-    return opacity;
-  }
-
-  public Integer getZIndex() {
-    return zIndex;
   }
 
   public boolean isRefreshPositions() {
@@ -301,12 +318,12 @@ public class DraggableOptions extends MouseOptions {
     this.cursorAt = cursorAt;
   }
 
-  public void setGrid(int[] grid) {
-    this.grid = grid;
-  }
-
   public void setDisabled(boolean disabled) {
     this.disabled = disabled;
+  }
+
+  public void setGrid(int[] grid) {
+    this.grid = grid;
   }
 
   public void setHandle(String selector) {
@@ -314,11 +331,6 @@ public class DraggableOptions extends MouseOptions {
   }
 
   public void setHelper(Element helper) {
-    this.helper = $(helper);
-    this.helperType = HelperType.ELEMENT;
-  }
-
-  public void setHelper(String selector) {
     this.helper = $(helper);
     this.helperType = HelperType.ELEMENT;
   }
@@ -332,12 +344,13 @@ public class DraggableOptions extends MouseOptions {
     this.helperType = helperType;
   }
 
-  public void setIframeFix(boolean iframeFix) {
-    this.iframeFix = iframeFix;
+  public void setHelper(String selector) {
+    this.helper = $(helper);
+    this.helperType = HelperType.ELEMENT;
   }
 
-  public void setOpacity(float opacity) {
-    this.opacity = opacity;
+  public void setIframeFix(boolean iframeFix) {
+    this.iframeFix = iframeFix;
   }
 
   public void setOnDrag(Function onDrag) {
@@ -350,6 +363,10 @@ public class DraggableOptions extends MouseOptions {
 
   public void setOnDragStop(Function onDragStop) {
     this.onDragStop = onDragStop;
+  }
+
+  public void setOpacity(float opacity) {
+    this.opacity = opacity;
   }
 
   public void setRefreshPositions(boolean refreshPositions) {
@@ -388,15 +405,15 @@ public class DraggableOptions extends MouseOptions {
     }
   }
 
-  public void setSnap(String snapSelector) {
-    this.snap = snapSelector;
-    $snap = null;
-  }
-  
   public void setSnap(GQuery $) {
     $snap = $;
     snap = null;
-    
+
+  }
+
+  public void setSnap(String snapSelector) {
+    this.snap = snapSelector;
+    $snap = null;
   }
 
   public void setSnapMode(SnapMode snapMode) {
@@ -439,7 +456,7 @@ public class DraggableOptions extends MouseOptions {
     cursor = Cursor.AUTO;
     helper = null;
     helperType = HelperType.ORIGINAL;
-    scope = "default";
+    scope = DEFAULT_SCOPE;
     revertDuration = 500;
     scroll = true;
     scrollSensitivity = 20;
@@ -449,7 +466,5 @@ public class DraggableOptions extends MouseOptions {
     snapMode = SnapMode.BOTH;
     snapTolerance = 20;
   }
-
-  
 
 }
