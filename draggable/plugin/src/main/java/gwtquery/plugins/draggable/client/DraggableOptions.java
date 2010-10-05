@@ -116,6 +116,10 @@ public class DraggableOptions extends MouseOptions {
 
   public static final DraggableContainment PARENT = new DraggableContainment(
       "parent");
+  public static final DraggableContainment DOCUMENT = new DraggableContainment(
+      "document");
+  public static final DraggableContainment WINDOW = new DraggableContainment(
+      "window");
 
   public static final String DEFAULT_SCOPE = "default";
 
