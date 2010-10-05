@@ -2,16 +2,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Draggable plug-in : GWT integration </title>
+<title>Draggable plug-in : GWT integration</title>
 <style type="text/css">
-
 .demo {
 	width: 700px;
 	margin-right: auto;
 	margin-left: auto;
 	padding: 10px;
 	border: black solid 1px;
-	position : relative;
+}
+
+.infoMessage {
+	background-color: #F7FDCB;
+	border: 1px solid #C2D071;
+	padding:5px;
+	width:200px;
+	margin: 10px auto;
 }
 </style>
 <script language="javascript" src="GWTIntegrationSample.nocache.js"></script>
@@ -23,24 +29,22 @@
 <div class="demo">
 
 
-<h1>Draggable plug-in : GWT integration </h1>
+<h1>Draggable plug-in : GWT integration</h1>
 
 <ul style="padding-top: 10px; padding-bottom: 5px; list-style: none;">
-	<li style="float: left;">
-		<a href="../DraggableSample1/Sample1.html">Sample 1</a>&nbsp;|&nbsp;
-	</li>
-	<li style="float: left;">Sample 2 |&nbsp;
-	</li>	
+	<li style="float: left;"><a
+		href="../DraggableSample1/Sample1.html">Sample 1</a>&nbsp;|&nbsp;</li>
+	<li style="float: left;">Sample 2 |&nbsp;</li>
 	<!-- li style="">
 		<a href="../SelectableSample3/Sample3.html">Sample 3</a>
 	</li-->
 </ul>
 
-<p>You can use this plugin to add a drag behaviour in your GWT Widget !</p>
+<p>This sample shows you how it is easier to make any GWT widget draggable. All GWT widgets in this page come from the GWT showcase and they are now draggable. Rearrange the page as you want ! <br/> 
+We listen the DragEvent and DragStopEvent to fill the information message. </p>
 
-<div id="gwtIntegrationSampleDiv">		
-
-</div>
+<div id="gwtIntegrationSampleMsg"></div>
+<div id="gwtIntegrationSampleDiv"></div>
 
 <br />
 <br />

@@ -16,6 +16,14 @@
 
 package gwtquery.plugins.draggable.client;
 
+import gwtquery.plugins.draggable.client.events.DragEvent;
+import gwtquery.plugins.draggable.client.events.DragStopEvent;
+import gwtquery.plugins.draggable.client.events.DragEvent.DragEventHandler;
+import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
+
+import java.util.Date;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
@@ -34,7 +42,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Tree;
 import com.google.gwt.user.client.ui.TreeItem;
@@ -43,40 +50,87 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.datepicker.client.DatePicker;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
-
-import java.util.Date;
-
 /**
  * Sample of the integration of draggable plugin and GWT
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
- */public class GWTIntegrationSample implements EntryPoint {
+ */
+public class GWTIntegrationSample implements EntryPoint {
+
+  /**
+   * Handler that catch DragEvent and DragStopEvent to fill the information message
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   *
+   */
+  private class DragHandlerImpl implements DragEventHandler,
+      DragStopEventHandler {
+
+    // only used to display msg
+    private String draggableDescription;
+
+    public DragHandlerImpl(String draggableDescription) {
+      this.draggableDescription = draggableDescription;
+    }
+
+    public void onDrag(DragEvent event) {
+      String msg = "Component " + draggableDescription + " is dragging";
+      infoMsg.setHTML(msg);
+
+    }
+
+    public void onDragStop(DragStopEvent event) {
+      infoMsg.setHTML(DEFAULT_MSG);
+
+    }
+
+  }
+
+  private static String DEFAULT_MSG = "No drag operation";
+  private HTML infoMsg;
+
+  public void addInfoMsg() {
+    infoMsg = new HTML(DEFAULT_MSG);
+    infoMsg.addStyleName("infoMessage");
+    RootPanel.get("gwtIntegrationSampleMsg").add(infoMsg);
+
+  }
+
+  public <T extends Widget> DraggableWidget<T> makeDraggable(T widget,
+      String draggableDescription) {
+
+    DraggableWidget<T> dragWidget = new DraggableWidget<T>(widget);
+
+    DragHandlerImpl dragHandler = new DragHandlerImpl(draggableDescription);
+    dragWidget.addDragHandler(dragHandler);
+    dragWidget.addDragStopHandler(dragHandler);
+
+    return dragWidget;
+
+  }
 
   public void onModuleLoad() {
 
-    RootPanel.get("gwtIntegrationSampleDiv").add(
-        new DraggableWidget<MenuBar>(createMenuBar()));
+    addInfoMsg();
 
     RootPanel.get("gwtIntegrationSampleDiv").add(
-        new DraggableWidget<DecoratorPanel>(createDecoratedForm()));
-
+        makeDraggable(createMenuBar(), "menu"));
     RootPanel.get("gwtIntegrationSampleDiv").add(
-        new DraggableWidget<Widget>(createDynamicTree()));
-
+        makeDraggable(createDecoratedForm(), "form"));
     RootPanel.get("gwtIntegrationSampleDiv").add(
-        new DraggableWidget<TabPanel>(createTabPanel()));
-
+        makeDraggable(createDynamicTree(), "tree"));
     RootPanel.get("gwtIntegrationSampleDiv").add(
-        new DraggableWidget<VerticalPanel>(createDatePanel()));
-    
-    //That's all folks !
+        makeDraggable(createTabPanel(), "tabPanel"));
+    RootPanel.get("gwtIntegrationSampleDiv").add(
+        makeDraggable(createDatePanel(), "datePicker"));
+
+    // That's all folks !
 
   }
 
   /**
-   * Create a Date picker. The code come from the GWT show case :
+   * Create a Date picker. The code comes from the GWT show case :
    * http://gwt.google.com/samples/Showcase/Showcase.html#!CwDatePicker@
    * 
    * @return
@@ -108,7 +162,7 @@ import java.util.Date;
   }
 
   /**
-   * Create a Decorated Form The code come from the GWT show case :
+   * Create a Decorated Form The code comes from the GWT show case :
    * http://gwt.google.com/samples/Showcase/Showcase.html#!CwDecoratorPanel
    * 
    * @return
@@ -120,7 +174,7 @@ import java.util.Date;
     FlexCellFormatter cellFormatter = layout.getFlexCellFormatter();
 
     // Add a title to the form
-    layout.setHTML(0, 0, "Enter Search Criteria(You can now drag me !)");
+    layout.setHTML(0, 0, "Enter Search Criteria");
     cellFormatter.setColSpan(0, 0, 2);
     cellFormatter.setHorizontalAlignment(0, 0,
         HasHorizontalAlignment.ALIGN_CENTER);
@@ -139,7 +193,7 @@ import java.util.Date;
   }
 
   /**
-   * Create a Dynamic tree. The code come from the GWT show case :
+   * Create a Dynamic tree. The code comes from the GWT show case :
    * http://gwt.google.com/samples/Showcase/Showcase.html#!CwTree
    * 
    * @return
@@ -188,7 +242,7 @@ import java.util.Date;
   }
 
   /**
-   * Create a menu bar. The code come from the GWT show case :
+   * Create a menu bar. The code comes from the GWT show case :
    * http://gwt.google.com/samples/Showcase/Showcase.html#!CwMenuBar
    * 
    * @return
@@ -278,7 +332,7 @@ import java.util.Date;
   }
 
   /**
-   * Create a Dynamic tree. The code come from the GWT show case :
+   * Create a Dynamic tree. The code comes from the GWT show case :
    * http://gwt.google.com/samples/Showcase/Showcase.html#!CwTabPanel
    * 
    */
