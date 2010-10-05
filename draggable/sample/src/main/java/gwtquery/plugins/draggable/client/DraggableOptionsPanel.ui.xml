@@ -4,62 +4,63 @@
 
 	<g:DecoratorPanel>
 	<g:HTMLPanel>
-		<table cellpadding="5" style="margin:5px;">
+		<table cellpadding="2" style="margin:5px;">
 			<tbody>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Drag disabled" /></td>
+					<td><g:CheckBox ui:field="disabledCheckBox" /></td>
+				</tr>
 				<tr style="vertical-align:top;">
 					<td><g:HTML text="Helper type" /></td>
 					<td><g:ListBox ui:field="helperListBox" /></td>
-					<td>Allows for a helper element to be used for dragging display.</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="handle" /></td>
-					<td><g:CheckBox ui:field="handleCheckBox" /></td>
-					<td>Enabled or disabled the handle. </td>
-				</tr>
-				<tr style="vertical-align:top;">
-					<td><g:HTML text="Axis" /></td>
-					<td><g:ListBox ui:field="axisListBox" /></td>
-					<td>axis constraints</td>
-				</tr>
-				<tr style="vertical-align:top;">
-					<td><g:HTML text="Opacity" /></td>
+					<td><g:HTML text="Helper opacity" /></td>
 					<td><g:TextBox ui:field="opacityBox" /></td>
-					<td>Opacity of the element when it is dragging. Specify a number between 0 and 1. Set nothing to not change the initial opacity (default)</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="Cursor" /></td>
+					<td><g:HTML text="Helper handle enabled" /></td>
+					<td><g:CheckBox ui:field="handleCheckBox" /></td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Cursor during drag" /></td>
 					<td><g:ListBox ui:field="cursorListBox" /></td>
-					<td>Cursor to display during drag operation.</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="Scroll" /></td>
+					<td><g:HTML text="Cursor position during drag" /></td>
+					<td><g:ListBox ui:field="cursorAtListBox" /></td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Axis constraint" /></td>
+					<td><g:ListBox ui:field="axisListBox" /></td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Containement constraint" /></td>
+					<td><g:ListBox ui:field="containmentListBox" /></td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Grid snapping" /></td>
+					<td><g:ListBox ui:field="gridListBox" /></td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Automatic scroll enabled" /></td>
 					<td><g:CheckBox ui:field="scrollCheckBox" /></td>
-					<td>Enable or disable automatic scrolling</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="scrollSensitivity" /></td>
+					<td><g:HTML text="Scroll sensitivity" /></td>
 					<td><g:TextBox ui:field="scrollSensivityBox" /></td>
-					<td>Scroll sensitivity in pixels</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="scrollSpeed" /></td>
+					<td><g:HTML text="Scroll speed" /></td>
 					<td><g:TextBox ui:field="scrollSpeedBox" /></td>
-					<td>Automatic scroll speed</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="disabled" /></td>
-					<td><g:CheckBox ui:field="disabledCheckBox" /></td>
-					<td>Enable or disable the selection process.</td>
-				</tr>
-				<tr style="vertical-align:top;">
-					<td><g:HTML text="delay" /></td>
+					<td><g:HTML text="Delay before start drag (in ms)" /></td>
 					<td><g:TextBox ui:field="delayBox" /></td>
-					<td>Time in milliseconds to define when the selecting should start.</td>
 				</tr>
 				<tr style="vertical-align:top;">
-					<td><g:HTML text="distance" /></td>
+					<td><g:HTML text="Distance before start drag (in px)" /></td>
 					<td><g:TextBox ui:field="distanceBox" /></td>
-					<td>Tolerance, in pixels, for when selecting should start</td>
 				</tr>
 			</tbody>
 		</table>

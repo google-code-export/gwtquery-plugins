@@ -37,12 +37,17 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
+import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Sample allows testing options
+ * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
- *
+ * 
  */
 public class DraggableSample2 implements EntryPoint {
 
@@ -56,6 +61,29 @@ public class DraggableSample2 implements EntryPoint {
     private static DraggableOptionsPanelUiBinder uiBinder = GWT
         .create(DraggableOptionsPanelUiBinder.class);
 
+    private static Map<String, DraggableContainment> contaimentOptions;
+    private static Map<String, CursorAt> cursorAtOptions;
+
+    static {
+      cursorAtOptions = new HashMap<String, CursorAt>();
+      cursorAtOptions.put("None", null);
+      cursorAtOptions.put("at top left", new CursorAt(0, 0, null, null));
+      cursorAtOptions.put("at top right", new CursorAt(0, null, null, 0));
+      cursorAtOptions.put("at bottom left", new CursorAt(null, 0, 0, null));
+      cursorAtOptions.put("at bottom right", new CursorAt(null, null, 0, 0));
+      cursorAtOptions.put("at center", new CursorAt(75, 75, null, null));
+
+      contaimentOptions = new HashMap<String, DraggableContainment>();
+      contaimentOptions.put("None", null);
+      contaimentOptions.put("parent", DraggableOptions.PARENT);
+      contaimentOptions.put("demo box", new DraggableContainment(".demo"));
+      contaimentOptions
+          .put(
+              "on a virtual box (position:left=300px,top=500px,height=width=300px) ",
+              new DraggableContainment(new int[] { 300, 500, 600, 800 }));
+
+    }
+
     private DraggableOptions options;
 
     @UiField
@@ -63,7 +91,13 @@ public class DraggableSample2 implements EntryPoint {
     @UiField
     ListBox axisListBox;
     @UiField
+    ListBox containmentListBox;
+    @UiField
+    ListBox cursorAtListBox;
+    @UiField
     ListBox cursorListBox;
+    @UiField
+    ListBox gridListBox;
     @UiField
     TextBox delayBox;
     @UiField
@@ -95,6 +129,30 @@ public class DraggableSample2 implements EntryPoint {
       options.setAxis(axis);
     }
 
+    @UiHandler(value = "containmentListBox")
+    public void onContainmentChange(ChangeEvent e) {
+      String containment = containmentListBox.getValue(containmentListBox
+          .getSelectedIndex());
+      if (containment != null && containment.length() > 0) {
+        options.setContainment(contaimentOptions.get(containment));
+      } else {
+        options.setContainment(null);
+      }
+
+    }
+
+    @UiHandler(value = "cursorAtListBox")
+    public void onCursorAtChange(ChangeEvent e) {
+      String cursorAt = cursorAtListBox.getValue(cursorAtListBox
+          .getSelectedIndex());
+      if (cursorAt != null && cursorAt.length() > 0) {
+        options.setCursorAt(cursorAtOptions.get(cursorAt));
+      } else {
+        options.setCursorAt(null);
+      }
+
+    }
+
     @UiHandler(value = "cursorListBox")
     public void onCursorChange(ChangeEvent e) {
       Cursor c = Cursor.valueOf(cursorListBox.getValue(cursorListBox
@@ -123,6 +181,18 @@ public class DraggableSample2 implements EntryPoint {
         return;
       }
       options.setDistance(distance);
+    }
+
+    @UiHandler(value = "gridListBox")
+    public void onGridChange(ChangeEvent e) {
+      String grid = gridListBox.getValue(gridListBox.getSelectedIndex());
+      if (grid != null && grid.length() > 0) {
+        String[] dimension = grid.split(",");
+        options.setGrid(new int[] { new Integer(dimension[0]),
+            new Integer(dimension[1]) });
+      } else {
+        options.setGrid(null);
+      }
     }
 
     @UiHandler(value = "helperListBox")
@@ -238,9 +308,31 @@ public class DraggableSample2 implements EntryPoint {
         cursorListBox.addItem(c.name());
         if (c == options.getCursor()) {
           cursorListBox.setSelectedIndex(i);
-          i++;
+        }
+        i++;
+      }
+
+      i = 0;
+      for (String s : contaimentOptions.keySet()) {
+        containmentListBox.addItem(s);
+        if (s.equals("None")) {
+          containmentListBox.setSelectedIndex(i);
         }
       }
+
+      i = 0;
+      for (String s : cursorAtOptions.keySet()) {
+        cursorAtListBox.addItem(s);
+        if (s.equals("None")) {
+          cursorAtListBox.setSelectedIndex(i);
+        }
+      }
+
+      gridListBox.addItem("None", null);
+      gridListBox.addItem("snap draggable to a 20x20 grid", "20,20");
+      gridListBox.addItem("snap draggable to a 40x40 grid", "40,40");
+      gridListBox.addItem("snap draggable to a 80x80 grid", "80,80");
+      gridListBox.addItem("snap draggable to a 100x100 grid", "100,100");
 
     }
 
