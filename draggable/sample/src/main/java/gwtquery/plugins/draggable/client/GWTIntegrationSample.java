@@ -59,10 +59,11 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 public class GWTIntegrationSample implements EntryPoint {
 
   /**
-   * Handler that catch DragEvent and DragStopEvent to fill the information message
+   * Handler that catch DragEvent and DragStopEvent to fill the information
+   * message
    * 
    * @author Julien Dramaix (julien.dramaix@gmail.com)
-   *
+   * 
    */
   private class DragHandlerImpl implements DragEventHandler,
       DragStopEventHandler {
