@@ -16,14 +16,6 @@
 package gwtquery.plugins.draggable.client.plugins;
 
 import static com.google.gwt.query.client.GQuery.$;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.GQUtils;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.user.client.Event;
-
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
@@ -31,6 +23,12 @@ import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.GQuery.Offset;
+import com.google.gwt.user.client.Event;
 
 /**
  * Add-on allow the draggable to snap other elements
@@ -198,18 +196,9 @@ public class SnapPlugin implements DraggablePlugin {
 
     for (Element element : snap.elements()) {
       if (element != draggableElement) {
-        // TODO outerWidth and outerHeight don't exist in GQuery ... Add an
-        // issue
-        int outerWidth = element.getClientWidth()
-            + (int) GQUtils.cur(element, "borderLeftWidth", true)
-            + (int) GQUtils.cur(element, "borderRightWidth", true);
-        int outerHeight = element.getClientHeight()
-            + (int) GQUtils.cur(element, "borderTopWidth", true)
-            + (int) GQUtils.cur(element, "borderBottomWidth", true);
-        GWT.log("snapelement data :outerWidth(" + outerWidth + ") outerHeight("
-            + outerHeight + ") element.getClientHeight()("
-            + element.getClientHeight() + ") element.getClientWidth()("
-            + element.getClientWidth() + ")");
+        // TODO outerWidth and outerHeight don't exist in GQuery ... Waiting issue 56
+        int outerWidth = element.getOffsetWidth();
+        int outerHeight = element.getClientHeight();
         snapElements.add(new SnapElement($(element).offset(), outerWidth,
             outerHeight));
       }
@@ -217,7 +206,7 @@ public class SnapPlugin implements DraggablePlugin {
     $(draggableElement).data(SNAP_ELEMENTS_KEY, snapElements);
 
   }
-
+  
   public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
     // nothing to do
   }
