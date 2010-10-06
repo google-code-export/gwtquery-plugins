@@ -26,6 +26,7 @@ import com.google.gwt.user.client.Event;
 
 import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
@@ -285,10 +286,18 @@ public class Draggable extends MouseHandler {
     if (getDragAndDropManager().isHandleDroppable()) {
       dropped = getDragAndDropManager().drop(draggable, options, event);
     }
+    
+    if (draggable == null || draggable.getParentNode() == null){
+      //original element is removed...
+      return false;
+    }
+    
+    RevertOption revertOption = options.getRevert();
+    if (revertOption.revert(dropped)){
+      getHandler(draggable).revertToOriginalPosition();   
+    }
 
-    // TODO implement revert options
     callPlugins(new StopCaller(draggable, event), options);
-
     trigger(new DragStopEvent(draggable), options.getOnDragStop(), draggable);
 
     getHandler(draggable).clear(draggable);
@@ -337,8 +346,7 @@ public class Draggable extends MouseHandler {
     }
 
     // OK, we have a valid handle, check if we are clicking on the handle object
-    // or one
-    // of its descendant
+    // or one of its descendants
     GQuery handleAndDescendant = $(options.getHandle(), draggable).find("*")
         .andSelf();
     for (Element e : handleAndDescendant.elements()) {
@@ -386,5 +394,5 @@ public class Draggable extends MouseHandler {
   private void reset() {
     currentDragHandler = null;
   }
-
+  
 }

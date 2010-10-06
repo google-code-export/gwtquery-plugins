@@ -22,10 +22,15 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.GQuery.Offset;
+import com.google.gwt.query.client.plugins.Effects;
+import com.google.gwt.query.client.plugins.PropertiesAnimation.Easing;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 
 import gwtquery.plugins.commonui.client.GQueryUi;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
@@ -224,7 +229,7 @@ public class DraggableHandler {
     originalEventPageX = GQueryUi.pageX(e);
     originalEventPageY = GQueryUi.pageY(e);
 
-    position = generatePosition(e);
+    position = generatePosition(e, true);
     originalPosition = new LeftTopDimension(position.left, position.top);
 
     if (options.getCursorAt() != null) {
@@ -255,9 +260,16 @@ public class DraggableHandler {
   }
 
   public void regeneratePositions(Event e) {
-    position = generatePosition(e);
+    position = generatePosition(e, false);
     absPosition = convertPositionTo(true, position);
 
+  }
+
+  public void revertToOriginalPosition() {
+    Properties oldPosition = Properties.create("{top:'"+originalPosition.top+"px',left:'"+originalPosition.left+"px'}");
+    helper.as(Effects.Effects).animate(oldPosition, options.getRevertDuration(), Easing.LINEAR, (Function[])null);
+ 
+    
   }
 
   public void setHelperDimension(Dimension helperDimension) {
@@ -340,79 +352,56 @@ public class DraggableHandler {
   }
 
   private void calculateContainment() {
-    DraggableContainment dc = options.getContainment();
-    if (dc == null) {
+    String containmentAsString = options.getContainment();
+    int[] containmentAsArray = options.getContainmentAsArray();
+    
+    if (containmentAsArray == null && containmentAsString == null) {
+      containment = null;
       return;
     }
 
-    if (dc.getContainmentAsArray() != null) {
-      containment = dc.getContainmentAsArray();
+    if (containmentAsArray != null) {
+      containment = containmentAsArray;
       return;
     }
 
-    if ("document".equals(dc.getContainment())
-        || "window".equals(dc.getContainment())) {
-      GQuery $containement = "document".equals(dc.getContainment()) ? $(GQuery.document
-          .getDocumentElement())
-          : $(GQuery.window);
+    if ( "window".equals(containmentAsString)) {
       containment = new int[] {
-          0 - relativeOffset.left - parentOffset.left,
-          0 - relativeOffset.top - parentOffset.top,
-          $containement.width() - helperDimension.getWidth() - margin.left,
-          ($containement.height() != 0 ? $containement.height() : body
-              .getParentElement().getScrollHeight())
-              - helperDimension.getHeight() - margin.top };
+          0 /*- relativeOffset.left - parentOffset.left*/,
+          0 /*- relativeOffset.top - parentOffset.top*/,
+          Window.getClientWidth() - helperDimension.getWidth() - margin.left,
+          Window.getClientHeight() - helperDimension.getHeight() - margin.top };
+
       return;
     }
 
     GQuery $containement;
-    if ("parent".equals(dc.getContainment())) {
+    if ("parent".equals(containmentAsString)) {
       $containement = $(helper.get(0).getParentElement());
-    } else {
-      $containement = $(dc.getContainment());
+    } else if ("document".equals(containmentAsString)){
+    	$containement =$("body");
+    }else {
+      $containement = $(containmentAsString);
     }
 
     Element ce = $containement.get(0);
     if (ce == null) {
       return;
     }
-    Offset co = $containement.offset();
-    boolean overflow = !$containement.css("overflow").equals("hidden");
-
-    containment = new int[] {
-        co.left + (int) GQUtils.cur(ce, "borderLeftWidth", false)
-            + (int) GQUtils.cur(ce, "paddingLeft", false) - margin.left,
-        co.top + (int) GQUtils.cur(ce, "borderTopWidth", false)
-            + (int) GQUtils.cur(ce, "paddingTop", false) - margin.top,
-        co.left
-            + (overflow ? Math.max(ce.getScrollWidth(), ce.getOffsetWidth())
-                : ce.getOffsetWidth())
-            - (int) GQUtils.cur(ce, "borderLeftWidth", false)
-            - (int) GQUtils.cur(ce, "paddingRight", false)
-            - helperDimension.getWidth() - margin.left,
-        co.top
-            + (overflow ? Math.max(ce.getScrollHeight(), ce.getOffsetHeight())
-                : ce.getOffsetHeight())
-            - (int) GQUtils.cur(ce, "borderTopWidth", false)
-            - (int) GQUtils.cur(ce, "paddingBottom", false)
-            - helperDimension.getHeight() - margin.top };
+    
+    containment = impl.calculateContainment( $containement.offset(), ce, margin, helperDimension, (!"hidden".equals($containement.css("overflow"))) );
 
   }
 
   private LeftTopDimension calculateParentOffset(Element element) {
     Offset position = helperOffsetParent.offset();
 
-    // GWT.log("helperOffsetPArent" + helperOffsetParent);
-
     if ("absolute".equals(helperCssPosition)
         && isOffsetParentIncludedInScrollParent()) {
       position = position.add(helperScrollParent.scrollLeft(),
           helperScrollParent.scrollTop());
     }
-
-    // GWT.log("impl.resetParentOffsetPosition(helperOffsetParent)" +
-    // impl.resetParentOffsetPosition(helperOffsetParent));
-
+    
     if (impl.resetParentOffsetPosition(helperOffsetParent)) {
       position.left = 0;
       position.top = 0;
@@ -421,8 +410,6 @@ public class DraggableHandler {
     position = position.add((int) GQUtils.cur(helperOffsetParent.get(0),
         "borderLeftWidth", true), (int) GQUtils.cur(helperOffsetParent.get(0),
         "borderTopWidth", true));
-
-    // GWT.log("position after"+position);
 
     return new LeftTopDimension(position.left, position.top);
 
@@ -435,18 +422,33 @@ public class DraggableHandler {
   private LeftTopDimension calculateRelativeHelperOffset(Element element) {
     if ("relative".equals(helperCssPosition)) {
       Offset position = $(element).position();
-      // TODO : bug in JQuery if scroll parent is document.... (in firefox and
-      // cie) ...
-      // This fix seems to work... investigate on IE
-      // GQuery scroll = (!"html".equalsIgnoreCase(helperScrollParent.get(0)
-      // .getTagName()) ? helperScrollParent : $(body));
-
-      int top = position.top - (int) GQUtils.cur(helper.get(0), "top", false)
-      /* + scroll.scrollTop() */
-      - margin.top;
+      Element helperElement = helper.get(0);
+      
+      // TODO : We should use the code in comments below. But  GQUtils.cur(helper.get(0), "top", true) return 
+      // wrong value in Safari... We have to investigate the problem... Temporary, we call cur() method with false
+      // but if top or left properties are set with other unit than px, we will meet problems.
+      int helperTop = (int) GQUtils.cur(helperElement, "top", false);
+      int helperLeft = (int) GQUtils.cur(helperElement, "left", false);
+      
+      /*
+      //problem in Opera : if element position = relative and no top property defined in style element
+      //QUtils.cur(helper.get(0), "top", true) doesn't return 0 but the real distance between the element 
+      //and its parent. It is not what we want !
+      
+      if (helperElement.getStyle().getTop() != null && helperElement.getStyle().getTop().length()>0){
+    	  //use GQUtils.cur() method with force boolean to true to retrieve value in px unit
+    	  helperTop = (int) GQUtils.cur(helper.get(0), "top", true);
+      }
+       //same remark
+      if (helperElement.getStyle().getLeft() != null && helperElement.getStyle().getLeft().length()>0){
+    	  helperLeft = (int) GQUtils.cur(helper.get(0), "left", true);
+      }
+      */
+      int top = position.top 
+      	- helperTop
+      	- margin.top;
       int left = position.left
-          - (int) GQUtils.cur(helper.get(0), "left", false)
-          /* + scroll.scrollLeft() */
+          - helperLeft
           - margin.left;
 
       return new LeftTopDimension(left, top);
@@ -454,16 +456,14 @@ public class DraggableHandler {
     return new LeftTopDimension(0, 0);
   }
 
-  private LeftTopDimension generatePosition(Event e) {
+  private LeftTopDimension generatePosition(Event e, boolean init) {
     GQuery scroll = getScrollParent();
     boolean scrollIsRootNode = isRootNode(scroll.get(0));
 
     int pageX = GQueryUi.pageX(e);
     int pageY = GQueryUi.pageY(e);
 
-    // test if calculate the initial position, if it's the case we don't have
-    // to check the options
-    if (originalPosition != null) {
+    if (!init) {
       if (containment != null && containment.length == 4) {
         if (GQueryUi.pageX(e) - offsetClick.left < containment[0]) {
           pageX = containment[0] + offsetClick.left;
@@ -495,7 +495,7 @@ public class DraggableHandler {
           pageY = !(isOutOfContainment1 || isOutOfContainment3) ? roundedTop
               : (!isOutOfContainment1) ? roundedTop - grid[1] : roundedTop
                   + grid[1];
-          pageY = !(isOutOfContainment0 || isOutOfContainment2) ? roundedLeft
+          pageX = !(isOutOfContainment0 || isOutOfContainment2) ? roundedLeft
               : (!isOutOfContainment0) ? roundedLeft - grid[0] : roundedLeft
                   + grid[0];
 
@@ -521,6 +521,17 @@ public class DraggableHandler {
         - parentOffset.left
         + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft()
             : scrollIsRootNode ? 0 : scroll.scrollLeft());
+   /* RootPanel.get().add(new HTML("pageX:"+pageX));
+    RootPanel.get().add(new HTML("offsetClick.left:"+offsetClick.left));
+    RootPanel.get().add(new HTML("relativeOffset.left:"+relativeOffset.left));
+    RootPanel.get().add(new HTML("parentOffset.left:"+parentOffset.left));
+    RootPanel.get().add(new HTML("fixed.equals(helperCssPosition):"+("fixed".equals(helperCssPosition))));
+    RootPanel.get().add(new HTML("-helperScrollParent.scrollLeft():"+(-helperScrollParent.scrollLeft())));
+    RootPanel.get().add(new HTML("scrollIsRootNode:"+scrollIsRootNode));
+    RootPanel.get().add(new HTML("scroll.scrollLeft():"+scroll.scrollLeft()));
+    
+    RootPanel.get().add(new HTML("-------------------------"));*/
+    
     return new LeftTopDimension(left, top);
   }
 
