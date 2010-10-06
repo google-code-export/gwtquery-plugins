@@ -110,16 +110,17 @@ public class DraggableOptions extends MouseOptions {
         GQuery helperFromOptions);
   }
 
+  public static enum RevertOption {
+    NEVER, ALWAYS, ON_VALID_DROP, ON_INVALID_DROP;
+
+    public boolean revert(boolean dropped) {
+      return this == ALWAYS || (this == ON_INVALID_DROP && !dropped) ||(this == ON_VALID_DROP && dropped);
+    }
+  }
+
   public static enum SnapMode {
     INNER, OUTER, BOTH;
   }
-
-  public static final DraggableContainment PARENT = new DraggableContainment(
-      "parent");
-  public static final DraggableContainment DOCUMENT = new DraggableContainment(
-      "document");
-  public static final DraggableContainment WINDOW = new DraggableContainment(
-      "window");
 
   public static final String DEFAULT_SCOPE = "default";
 
@@ -127,7 +128,8 @@ public class DraggableOptions extends MouseOptions {
   private String appendTo;
   private AxisOption axis;
   // private boolean connectToSortable;
-  private DraggableContainment containment;
+  private int[] containmentAsArray;
+  private String containment;
   private Cursor cursor;
   private CursorAt cursorAt;
   private boolean disabled;
@@ -138,7 +140,7 @@ public class DraggableOptions extends MouseOptions {
   private boolean iframeFix;
   private Float opacity;
   private boolean refreshPositions;
-  private boolean revert;
+  private RevertOption revert;
   private int revertDuration;
   private String scope;
   private boolean scroll;
@@ -177,8 +179,12 @@ public class DraggableOptions extends MouseOptions {
     return axis;
   }
 
-  public DraggableContainment getContainment() {
+  public String getContainment() {
     return containment;
+  }
+
+  public int[] getContainmentAsArray() {
+    return containmentAsArray;
   }
 
   public Cursor getCursor() {
@@ -219,6 +225,10 @@ public class DraggableOptions extends MouseOptions {
 
   public Float getOpacity() {
     return opacity;
+  }
+
+  public RevertOption getRevert() {
+    return revert;
   }
 
   public int getRevertDuration() {
@@ -281,10 +291,6 @@ public class DraggableOptions extends MouseOptions {
     return refreshPositions;
   }
 
-  public boolean isRevert() {
-    return revert;
-  }
-
   public boolean isScroll() {
     return scroll;
   }
@@ -310,8 +316,16 @@ public class DraggableOptions extends MouseOptions {
    * this.connectToSortable = connectToSortable; }
    */
 
-  public void setContainment(DraggableContainment containment) {
+  public void setContainment(int[] containment) {
+    this.containmentAsArray = containment;
+    // mutually exclusive
+    this.containment = null;
+  }
+
+  public void setContainment(String containment) {
     this.containment = containment;
+    // mutually exclusive
+    this.containmentAsArray = null;
   }
 
   public void setCursor(Cursor cursor) {
@@ -377,7 +391,7 @@ public class DraggableOptions extends MouseOptions {
     this.refreshPositions = refreshPositions;
   }
 
-  public void setRevert(boolean revert) {
+  public void setRevert(RevertOption revert) {
     this.revert = revert;
   }
 
@@ -446,27 +460,16 @@ public class DraggableOptions extends MouseOptions {
     addClasses = true;
     appendTo = "parent";
     axis = AxisOption.NONE;
-    // connectToSortable = false;
-    containment = null;
-    cursorAt = null;
-    grid = null;
-    handle = null;
     iframeFix = false;
-    opacity = null;
     refreshPositions = false;
-    revert = false;
-    stack = null;
-    zIndex = null;
+    revert = RevertOption.NEVER;
     cursor = Cursor.AUTO;
-    helper = null;
     helperType = HelperType.ORIGINAL;
     scope = DEFAULT_SCOPE;
     revertDuration = 500;
     scroll = true;
     scrollSensitivity = 20;
     scrollSpeed = 20;
-    snap = null;
-    $snap = null;
     snapMode = SnapMode.BOTH;
     snapTolerance = 20;
   }

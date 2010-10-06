@@ -17,11 +17,11 @@ package gwtquery.plugins.draggable.client.gwt;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.draggable.client.Draggable.Draggable;
-import gwtquery.plugins.draggable.client.DraggableContainment;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
@@ -130,10 +130,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 		return options.getCancel();
 	}
 
-	public DraggableContainment getContainment() {
-		return options.getContainment();
-	}
-
 	public Cursor getCursor() {
 		return options.getCursor();
 	}
@@ -172,6 +168,10 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 
 	public Float getOpacity() {
 		return options.getOpacity();
+	}
+
+	public RevertOption getRevert() {
+		return options.getRevert();
 	}
 
 	public int getRevertDuration() {
@@ -226,10 +226,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 		return options.isRefreshPositions();
 	}
 
-	public boolean isRevert() {
-		return options.isRevert();
-	}
-
 	public boolean isScroll() {
 		return options.isScroll();
 	}
@@ -254,7 +250,11 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 		options.setCancel(cancel);
 	}
 
-	public void setContainment(DraggableContainment containment) {
+	public void setContainment(int[] containment) {
+		options.setContainment(containment);
+	}
+	
+	public void setContainment(String containment) {
 		options.setContainment(containment);
 	}
 
@@ -305,7 +305,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 		options.setRefreshPositions(refreshPositions);
 	}
 
-	public void setRevert(boolean revert) {
+	public void setRevert(RevertOption revert) {
 		options.setRevert(revert);
 	}
 
