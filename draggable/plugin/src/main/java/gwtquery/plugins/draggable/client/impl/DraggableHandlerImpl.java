@@ -15,7 +15,13 @@
  */
 package gwtquery.plugins.draggable.client.impl;
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.GQuery.Offset;
+
+import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
 
 /**
  * 
@@ -26,6 +32,34 @@ public class DraggableHandlerImpl {
 
   public boolean resetParentOffsetPosition(GQuery helperOffsetParent) {
     return helperOffsetParent.get(0) == GQuery.body;
+  }
+
+  public int[] calculateContainment(Offset containerOffset,
+      Element containerElement, LeftTopDimension helperMargin,
+      Dimension helperDimension, boolean overflow) {
+    return new int[] {
+        containerOffset.left
+            + (int) GQUtils.cur(containerElement, "borderLeftWidth", true)
+            + (int) GQUtils.cur(containerElement, "paddingLeft", true)
+            - helperMargin.getLeft(),
+        containerOffset.top
+            + (int) GQUtils.cur(containerElement, "borderTopWidth", true)
+            + (int) GQUtils.cur(containerElement, "paddingTop", true)
+            - helperMargin.getTop(),
+        containerOffset.left
+            + (overflow ? Math.max(containerElement.getScrollWidth(),
+                containerElement.getOffsetWidth()) : containerElement
+                .getOffsetWidth())
+            - (int) GQUtils.cur(containerElement, "borderLeftWidth", true)
+            - (int) GQUtils.cur(containerElement, "paddingRight", true)
+            - helperDimension.getWidth() - helperMargin.getLeft(),
+        containerOffset.top
+            + (overflow ? Math.max(containerElement.getScrollHeight(),
+                containerElement.getOffsetHeight()) : containerElement
+                .getOffsetHeight())
+            - (int) GQUtils.cur(containerElement, "borderTopWidth", true)
+            - (int) GQUtils.cur(containerElement, "paddingBottom", true)
+            - helperDimension.getHeight() - helperMargin.getTop() };
   }
 
 }

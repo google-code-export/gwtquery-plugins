@@ -15,7 +15,13 @@
  */
 package gwtquery.plugins.draggable.client.impl;
 
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.GQuery.Offset;
+
+import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
 
 /**
  * Specific code for IE
@@ -31,4 +37,31 @@ public class DraggableHandlerImplIE extends DraggableHandlerImpl {
         || helperOffsetParent.get(0) == GQuery.document.cast();
   }
 
+  @Override
+  public int[] calculateContainment(Offset containerOffset,
+      Element containerElement, LeftTopDimension helperMargin,
+      Dimension helperDimension, boolean overflow) {
+    // don't substract margin in ie
+    return new int[] {
+        containerOffset.left
+            + (int) GQUtils.cur(containerElement, "borderLeftWidth", true)
+            + (int) GQUtils.cur(containerElement, "paddingLeft", true),
+        containerOffset.top
+            + (int) GQUtils.cur(containerElement, "borderTopWidth", true)
+            + (int) GQUtils.cur(containerElement, "paddingTop", true),
+        containerOffset.left
+            + (overflow ? Math.max(containerElement.getScrollWidth(),
+                containerElement.getOffsetWidth()) : containerElement
+                .getOffsetWidth())
+            - (int) GQUtils.cur(containerElement, "borderLeftWidth", true)
+            - (int) GQUtils.cur(containerElement, "paddingRight", true)
+            - helperDimension.getWidth(),
+        containerOffset.top
+            + (overflow ? Math.max(containerElement.getScrollHeight(),
+                containerElement.getOffsetHeight()) : containerElement
+                .getOffsetHeight())
+            - (int) GQUtils.cur(containerElement, "borderTopWidth", true)
+            - (int) GQUtils.cur(containerElement, "paddingBottom", true)
+            - helperDimension.getHeight()};
+  }
 }
