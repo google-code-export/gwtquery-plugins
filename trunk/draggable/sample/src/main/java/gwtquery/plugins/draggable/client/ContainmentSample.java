@@ -31,15 +31,15 @@ public class ContainmentSample implements EntryPoint {
   public void onModuleLoad() {
 
     DraggableOptions o = new DraggableOptions();
-    o.setContainment(new DraggableContainment("#box"));
+    o.setContainment("#box");
     $("#draggable").as(Draggable).draggable(o);
 
     o = new DraggableOptions();
-    o.setContainment(new DraggableContainment("#parentBox"));
+    o.setContainment("#parentBox");
     $("#draggable2").as(Draggable).draggable(o);
 
     o = new DraggableOptions();
-    o.setContainment(new DraggableContainment("#draggable3"));
+    o.setContainment("#draggable3");
     $("#draggable3 p").as(Draggable).draggable(o);
 
   }
