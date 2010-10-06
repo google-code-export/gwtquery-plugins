@@ -39,6 +39,7 @@ import com.google.gwt.user.client.ui.Widget;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +62,7 @@ public class DraggableSample2 implements EntryPoint {
     private static DraggableOptionsPanelUiBinder uiBinder = GWT
         .create(DraggableOptionsPanelUiBinder.class);
 
-    private static Map<String, DraggableContainment> contaimentOptions;
+    private static Map<String, Object> contaimentOptions;
     private static Map<String, CursorAt> cursorAtOptions;
 
     static {
@@ -73,14 +74,17 @@ public class DraggableSample2 implements EntryPoint {
       cursorAtOptions.put("at bottom right", new CursorAt(null, null, 0, 0));
       cursorAtOptions.put("at center", new CursorAt(75, 75, null, null));
 
-      contaimentOptions = new HashMap<String, DraggableContainment>();
+      contaimentOptions = new HashMap<String, Object>();
       contaimentOptions.put("None", null);
-      contaimentOptions.put("parent", DraggableOptions.PARENT);
-      contaimentOptions.put("demo box", new DraggableContainment(".demo"));
+      contaimentOptions.put("parent", "parent");
+      contaimentOptions.put("demo box", ".demo");
+      contaimentOptions.put("body", "body");
+      contaimentOptions.put("window", "window");
+      contaimentOptions.put("document", "document");
       contaimentOptions
           .put(
               "on a virtual box (position:left=300px,top=500px,height=width=300px) ",
-              new DraggableContainment(new int[] { 300, 500, 600, 800 }));
+              new int[] { 300, 500, 600, 800 });
 
     }
 
@@ -114,6 +118,10 @@ public class DraggableSample2 implements EntryPoint {
     TextBox scrollSensivityBox;
     @UiField
     TextBox scrollSpeedBox;
+    @UiField
+    ListBox revertListBox;
+    @UiField
+    TextBox revertDurationTextBox;
 
     public DraggableOptionsPanel(DraggableOptions o) {
       options = o;
@@ -133,23 +141,21 @@ public class DraggableSample2 implements EntryPoint {
     public void onContainmentChange(ChangeEvent e) {
       String containment = containmentListBox.getValue(containmentListBox
           .getSelectedIndex());
-      if (containment != null && containment.length() > 0) {
-        options.setContainment(contaimentOptions.get(containment));
-      } else {
-        options.setContainment(null);
+      Object realContainment = contaimentOptions.get(containment);
+      if (realContainment instanceof String){
+    	  options.setContainment((String)realContainment);
+      }else{
+    	  options.setContainment((int[]) realContainment);
       }
-
-    }
+     }
 
     @UiHandler(value = "cursorAtListBox")
     public void onCursorAtChange(ChangeEvent e) {
       String cursorAt = cursorAtListBox.getValue(cursorAtListBox
           .getSelectedIndex());
-      if (cursorAt != null && cursorAt.length() > 0) {
-        options.setCursorAt(cursorAtOptions.get(cursorAt));
-      } else {
-        options.setCursorAt(null);
-      }
+      
+      options.setCursorAt(cursorAtOptions.get(cursorAt));
+      
 
     }
 
@@ -186,12 +192,12 @@ public class DraggableSample2 implements EntryPoint {
     @UiHandler(value = "gridListBox")
     public void onGridChange(ChangeEvent e) {
       String grid = gridListBox.getValue(gridListBox.getSelectedIndex());
-      if (grid != null && grid.length() > 0) {
+      if ("None".equals(grid)){
+        options.setGrid(null);
+      }else {
         String[] dimension = grid.split(",");
         options.setGrid(new int[] { new Integer(dimension[0]),
             new Integer(dimension[1]) });
-      } else {
-        options.setGrid(null);
       }
     }
 
@@ -207,7 +213,7 @@ public class DraggableSample2 implements EntryPoint {
         options.setHelper(type);
       }
     }
-
+    
     @UiHandler(value = "handleCheckBox")
     public void onMultiSelectChange(ValueChangeEvent<Boolean> e) {
       if (e.getValue()) {
@@ -237,6 +243,29 @@ public class DraggableSample2 implements EntryPoint {
         return;
       }
       options.setOpacity(opacity);
+    }
+    
+    @UiHandler(value = "revertDurationTextBox")
+    public void onRevertDurationChange(ValueChangeEvent<String> e) {
+      String revertDuration = e.getValue();
+      Integer revertDurationInt;
+      if (revertDuration == null || revertDuration.length() == 0) {
+        revertDurationInt = null;
+      } else {
+        try {
+          revertDurationInt = new Integer(e.getValue());
+        } catch (NumberFormatException ex) {
+          Window.alert("Please specify a correct number for the revert duration");
+          return;
+        }
+      }
+      options.setRevertDuration(revertDurationInt);
+    }
+
+    @UiHandler(value = "revertListBox")
+    public void onRevertChange(ChangeEvent e) {
+      String revert = revertListBox.getValue(revertListBox.getSelectedIndex());
+      options.setRevert(RevertOption.valueOf(revert));
     }
 
     @UiHandler(value = "scrollCheckBox")
@@ -328,12 +357,18 @@ public class DraggableSample2 implements EntryPoint {
         }
       }
 
-      gridListBox.addItem("None", null);
+      gridListBox.addItem("None", "None");
       gridListBox.addItem("snap draggable to a 20x20 grid", "20,20");
       gridListBox.addItem("snap draggable to a 40x40 grid", "40,40");
       gridListBox.addItem("snap draggable to a 80x80 grid", "80,80");
       gridListBox.addItem("snap draggable to a 100x100 grid", "100,100");
-
+      
+      revertListBox.addItem("never", RevertOption.NEVER.name());
+      revertListBox.addItem("always", RevertOption.ALWAYS.name());
+      revertListBox.addItem("on valid drop (usefull with droppable plug-in)", RevertOption.ON_VALID_DROP.name());
+      revertListBox.addItem("on invalid drop (usefull with droppable plug-in)", RevertOption.ON_INVALID_DROP.name());
+      
+      revertDurationTextBox.setValue(""+options.getRevertDuration());
     }
 
   }

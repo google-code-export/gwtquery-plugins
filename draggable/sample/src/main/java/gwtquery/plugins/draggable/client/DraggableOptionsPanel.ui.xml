@@ -43,6 +43,14 @@
 					<td><g:ListBox ui:field="gridListBox" /></td>
 				</tr>
 				<tr style="vertical-align:top;">
+					<td><g:HTML text="Revert draggable" /></td>
+					<td><g:ListBox ui:field="revertListBox" /></td>
+				</tr>
+				<tr style="vertical-align:top;">
+					<td><g:HTML text="Revert duration (ms)" /></td>
+					<td><g:TextBox ui:field="revertDurationTextBox" /></td>
+				</tr>
+				<tr style="vertical-align:top;">
 					<td><g:HTML text="Automatic scroll enabled" /></td>
 					<td><g:CheckBox ui:field="scrollCheckBox" /></td>
 				</tr>
