@@ -24,7 +24,6 @@ import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
@@ -212,3 +211,4 @@ public class SnapPlugin implements DraggablePlugin {
   }
 
 }
+
