@@ -113,7 +113,7 @@ public class DraggableOptions extends MouseOptions {
   public static enum RevertOption {
     NEVER, ALWAYS, ON_VALID_DROP, ON_INVALID_DROP;
 
-    public boolean revert(boolean dropped) {
+    public boolean doRevert(boolean dropped) {
       return this == ALWAYS || (this == ON_INVALID_DROP && !dropped) ||(this == ON_VALID_DROP && dropped);
     }
   }
@@ -475,3 +475,4 @@ public class DraggableOptions extends MouseOptions {
   }
 
 }
+
