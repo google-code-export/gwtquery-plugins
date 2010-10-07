@@ -238,7 +238,7 @@ public class DraggableSample2 implements EntryPoint {
           return;
         }
       }
-      if (opacity > 1) {
+      if (opacity != null && opacity > 1) {
         Window.alert("Opacity must be below than 1.");
         return;
       }
@@ -347,6 +347,7 @@ public class DraggableSample2 implements EntryPoint {
         if (s.equals("None")) {
           containmentListBox.setSelectedIndex(i);
         }
+        i++;
       }
 
       i = 0;
@@ -355,6 +356,7 @@ public class DraggableSample2 implements EntryPoint {
         if (s.equals("None")) {
           cursorAtListBox.setSelectedIndex(i);
         }
+        i++;
       }
 
       gridListBox.addItem("None", "None");
@@ -362,11 +364,13 @@ public class DraggableSample2 implements EntryPoint {
       gridListBox.addItem("snap draggable to a 40x40 grid", "40,40");
       gridListBox.addItem("snap draggable to a 80x80 grid", "80,80");
       gridListBox.addItem("snap draggable to a 100x100 grid", "100,100");
+      gridListBox.setSelectedIndex(0);
       
       revertListBox.addItem("never", RevertOption.NEVER.name());
       revertListBox.addItem("always", RevertOption.ALWAYS.name());
       revertListBox.addItem("on valid drop (usefull with droppable plug-in)", RevertOption.ON_VALID_DROP.name());
       revertListBox.addItem("on invalid drop (usefull with droppable plug-in)", RevertOption.ON_INVALID_DROP.name());
+      revertListBox.setSelectedIndex(0);
       
       revertDurationTextBox.setValue(""+options.getRevertDuration());
     }
@@ -382,3 +386,4 @@ public class DraggableSample2 implements EntryPoint {
 
   }
 }
+
