@@ -120,13 +120,13 @@ public class GWTIntegrationSample implements EntryPoint {
     RootPanel.get("gwtIntegrationSampleDiv").add(
         makeDraggable(createDecoratedForm(), "form"));
     RootPanel.get("gwtIntegrationSampleDiv").add(
-        makeDraggable(createDynamicTree(), "tree"));
+        makeDraggable(createDatePanel(), "datePicker"));
     RootPanel.get("gwtIntegrationSampleDiv").add(
         makeDraggable(createTabPanel(), "tabPanel"));
     RootPanel.get("gwtIntegrationSampleDiv").add(
-        makeDraggable(createDatePanel(), "datePicker"));
-
-    // That's all folks !
+        makeDraggable(createDynamicTree(), "tree"));
+    
+    
 
   }
 
