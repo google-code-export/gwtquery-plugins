@@ -410,3 +410,4 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 	}
 
 }
+
