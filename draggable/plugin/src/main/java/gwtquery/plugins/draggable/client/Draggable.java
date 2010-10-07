@@ -19,6 +19,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
@@ -230,13 +231,16 @@ public class Draggable extends MouseHandler {
 
   @Override
   protected boolean mouseCapture(Element draggable, Event event) {
-    return getHelper(draggable) == null && !getOptions(draggable).isDisabled()
+    DraggableHandler handler = $(draggable).data(DRAGGABLE_HANDLER_KEY,
+        DraggableHandler.class);
+    return handler != null && handler.getHelper() == null
+        && !handler.getOptions().isDisabled()
         && isHandleClicked(draggable, event);
   }
 
   @Override
-  protected boolean mouseDrag(Element element, Event event) {
-    return mouseDragImpl(element, getHandler(element), event, false);
+  protected boolean mouseDrag(Element draggable, Event event) {
+    return mouseDragImpl(draggable, getHandler(draggable), event, false);
   }
 
   @Override
@@ -247,6 +251,7 @@ public class Draggable extends MouseHandler {
     DraggableOptions options = getOptions(draggable);
 
     dragHandler.createHelper(draggable, event);
+
     dragHandler.cacheHelperSize();
 
     if (getDragAndDropManager().isHandleDroppable()) {
@@ -279,22 +284,31 @@ public class Draggable extends MouseHandler {
   }
 
   @Override
-  protected boolean mouseStop(Element draggable, Event event) {
-    DraggableOptions options = getOptions(draggable);
+  protected boolean mouseStop(final Element draggable, final Event event) {
+    final DraggableOptions options = getOptions(draggable);
 
     boolean dropped = false;
     if (getDragAndDropManager().isHandleDroppable()) {
       dropped = getDragAndDropManager().drop(draggable, options, event);
     }
-    
-    if (draggable == null || draggable.getParentNode() == null){
-      //original element is removed...
+
+    if (draggable == null || draggable.getParentNode() == null) {
+      // original element is removed...
       return false;
     }
-    
+
     RevertOption revertOption = options.getRevert();
-    if (revertOption.revert(dropped)){
-      getHandler(draggable).revertToOriginalPosition();   
+    if (revertOption.doRevert(dropped)) {
+      getHandler(draggable).revertToOriginalPosition(new Function() {
+        @Override
+        public void f(Element e) {
+          callPlugins(new StopCaller(draggable, event), options);
+          trigger(new DragStopEvent(draggable), options.getOnDragStop(), draggable);
+
+          getHandler(draggable).clear(draggable);
+        }
+      });
+      return false;
     }
 
     callPlugins(new StopCaller(draggable, event), options);
@@ -394,5 +408,5 @@ public class Draggable extends MouseHandler {
   private void reset() {
     currentDragHandler = null;
   }
-  
+
 }
