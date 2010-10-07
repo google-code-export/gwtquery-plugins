@@ -265,9 +265,9 @@ public class DraggableHandler {
 
   }
 
-  public void revertToOriginalPosition() {
+  public void revertToOriginalPosition(Function function) {
     Properties oldPosition = Properties.create("{top:'"+originalPosition.top+"px',left:'"+originalPosition.left+"px'}");
-    helper.as(Effects.Effects).animate(oldPosition, options.getRevertDuration(), Easing.LINEAR, (Function[])null);
+    helper.as(Effects.Effects).animate(oldPosition, options.getRevertDuration(), Easing.LINEAR, function);
  
     
   }
@@ -325,8 +325,17 @@ public class DraggableHandler {
 
     if (options.getHelperType() != HelperType.ORIGINAL
         && !helper.css("position").matches("(fixed|absolute)")) {
-      helper.css("position", Position.ABSOLUTE.getCssName());
+      helper.css("position", Position.ABSOLUTE.getCssName());     
     }
+    
+    if (options.getHelperType() == HelperType.CLONE){
+    	 //in IE, the clone helper has the handler object as data !
+        // override it to avoid to delete handler object when the helper
+        //will be removed of the DOM
+    	//TODO investigate and maybe add an issue in GQuery to discuss about this problem !
+        helper.data(Draggable.DRAGGABLE_HANDLER_KEY,"");
+    }
+    		
 
   }
 
