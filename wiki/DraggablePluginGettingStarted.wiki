@@ -1,0 +1,19 @@
+#summary How to use the selectable plugin !
+<wiki:toc max_depth="3" />
+=Plugin Information=
+
+|| *Plugin name* ||Draggable||
+|| *Latest release* ||||
+|| *Latest release date* ||||
+|| *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
+|| *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADraggable Open issues]||
+
+This plugin is a gwt clone of the [http://jqueryui.com/demos/draggable/ JQuery-ui draggable plugin]
+
+The Draggable plugin allows to enable draggable functionality on any DOM element and GWT widget. 
+
+=Changelog=
+==v0.1==
+  * First release
+
+TBC
