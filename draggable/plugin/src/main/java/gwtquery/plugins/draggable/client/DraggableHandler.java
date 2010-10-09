@@ -305,7 +305,7 @@ public class DraggableHandler {
 
     helper.removeClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
     if (helper.get(0) != draggable && !cancelHelperRemoval) {
-      helper.remove();
+      impl.removeHelper(helper, options.getHelperType());    	
     }
     helper = null;
     cancelHelperRemoval = false;
@@ -328,15 +328,6 @@ public class DraggableHandler {
       helper.css("position", Position.ABSOLUTE.getCssName());     
     }
     
-    if (options.getHelperType() == HelperType.CLONE){
-    	 //in IE, the clone helper has the handler object as data !
-        // override it to avoid to delete handler object when the helper
-        //will be removed of the DOM
-    	//TODO investigate and maybe add an issue in GQuery to discuss about this problem !
-        helper.data(Draggable.DRAGGABLE_HANDLER_KEY,"");
-    }
-    		
-
   }
 
   private void adjustOffsetFromHelper(CursorAt cursorAt) {
@@ -574,3 +565,4 @@ public class DraggableHandler {
   }
 
 }
+
