@@ -2,8 +2,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Draggable plug-in : GWT integration</title>
+<title>GwtQuery: Stack sample</title>
 <style type="text/css">
+.ui-widget-content {
+	width: 200px;
+	height: 200px;
+	padding: 0.5em;
+	border: black solid 1px;
+	background: #f6f6f6;
+	padding: 0 10px 10px 0;
+	float:left;
+	display:inline;
+}
+
 .demo {
 	width: 700px;
 	margin-right: auto;
@@ -12,15 +23,14 @@
 	border: black solid 1px;
 }
 
-.infoMessage {
-	background-color: #F7FDCB;
-	border: 1px solid #C2D071;
-	padding:5px;
-	width:250px;
-	margin: 10px auto;
+#setOfDraggable {
+	clear: both;
+	float: left;
+	width: 368px;
+	height: 120px;
 }
 </style>
-<script language="javascript" src="GWTIntegrationSample.nocache.js"></script>
+<script language="javascript" src="StackSample.nocache.js"></script>
 </head>
 
 <body>
@@ -29,7 +39,7 @@
 <div class="demo">
 
 
-<h1>Draggable plug-in : GWT integration</h1>
+<h1>GWTQuery : Stack sample</h1>
 
 <ul style="padding: 10px 0px; list-style: none; display:block">
 	<li style="float: left;">
@@ -52,17 +62,28 @@
 	</li>
 </ul>
 
-<p>This sample shows you how it is easier to make any GWT widget draggable. All GWT widgets in this page come from the GWT showcase and they are now draggable. Rearrange the page as you want ! <br/> 
-We listen the DragEvent and DragStopEvent to fill the information message. </p>
 
-<div id="gwtIntegrationSampleMsg"></div>
-<div id="gwtIntegrationSampleDiv"></div>
+<p>To clarify which draggable is in play, bring the draggable in motion to front. Use the zIndex option to set a higher z-index for the helper, 
+if in play, or use the stack option to ensure that the last item dragged will appear on top of others in the same group on drag stop.</p>
 
-<br />
-<br />
+<div style="height: 800px; border: 1px solid black;  position:relative;">
+
+<div class="ui-widget-content">
+<p>We are draggables..</p>
+</div>
+
+<div class="ui-widget-content">
+<p>..whose z-indexes are controlled automatically..</p>
+</div>
+
+<div class="ui-widget-content">
+<p>..with the stack option.</p>
+</div>
+</div>
+
 <br />
 <a
-	href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/draggable/sample/src/main/java/gwtquery/plugins/draggable/client/GWTIntegrationSample.java"
+	href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/draggable/sample/src/main/java/gwtquery/plugins/draggable/client/StackSample.java"
 	target="_blank">Java source code</a></div>
 </body>
 </html>

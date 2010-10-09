@@ -46,14 +46,16 @@ public class SnapSample implements EntryPoint {
     $("#draggable3").as(Draggable).draggable(o);
 
     o = new DraggableOptions();
-    int[] grid = { 20, 20 };
-    o.setGrid(grid);
+    o.setSnap("#SnapTarget");
+    o.setSnapTolerance(100);
     $("#draggable4").as(Draggable).draggable(o);
-
+    
     o = new DraggableOptions();
-    int[] grid2 = { 80, 80 };
-    o.setGrid(grid2);
+    o.setSnap("#SnapTarget");
+    o.setSnapMode(SnapMode.INNER);
+    o.setSnapTolerance(50);
     $("#draggable5").as(Draggable).draggable(o);
+
 
   }
 

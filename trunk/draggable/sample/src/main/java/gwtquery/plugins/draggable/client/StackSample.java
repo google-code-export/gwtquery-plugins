@@ -19,8 +19,6 @@ import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.Function;
 
 /**
  * Simple sample
@@ -28,44 +26,12 @@ import com.google.gwt.query.client.Function;
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DraggableSample1 implements EntryPoint {
-
-  private int startCounter = 0;
-  private int dragCounter = 0;
-  private int stopCounter = 0;
+public class StackSample implements EntryPoint {
 
   public void onModuleLoad() {
-    // simpleDraggable div
-    DraggableOptions o = createOptionsForSimpleDraggable();
-    $("#simpleDraggable").as(Draggable).draggable(o);
-  }
-
-  private DraggableOptions createOptionsForSimpleDraggable() {
     DraggableOptions o = new DraggableOptions();
-    o.setOnDragStart(new Function() {
-      @Override
-      public void f(Element e) {
-        startCounter++;
-        $("#startCounter").html("" + startCounter);
-      }
-    });
-
-    o.setOnDrag(new Function() {
-      @Override
-      public void f(Element e) {
-        dragCounter++;
-        $("#dragCounter").html("" + dragCounter);
-      }
-    });
-
-    o.setOnDragStop(new Function() {
-      @Override
-      public void f(Element e) {
-        stopCounter++;
-        $("#stopCounter").html("" + stopCounter);
-      }
-    });
-    return o;
-
+    o.setStack(".ui-widget-content");
+    $(".ui-widget-content").as(Draggable).draggable(o);
   }
+
 }
