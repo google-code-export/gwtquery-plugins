@@ -15,13 +15,14 @@
  */
 package gwtquery.plugins.draggable.client.impl;
 
+import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
+import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
 
 /**
  * 
@@ -61,6 +62,10 @@ public class DraggableHandlerImpl {
             - (int) GQUtils.cur(containerElement, "paddingBottom", true)
             - helperDimension.getHeight() - helperMargin.getTop() };
   }
+
+	public void removeHelper(GQuery helper, HelperType helperType) {		 
+		helper.remove();		
+	}
 
 }
 

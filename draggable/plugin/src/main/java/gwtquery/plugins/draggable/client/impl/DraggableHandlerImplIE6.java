@@ -28,7 +28,7 @@ import com.google.gwt.query.client.GQuery.Offset;
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DraggableHandlerImplIE6 extends DraggableHandlerImpl {
+public class DraggableHandlerImplIE6 extends DraggableHandlerImplIE {
 
   @Override
   public int[] calculateContainment(Offset containerOffset,
@@ -57,5 +57,6 @@ public class DraggableHandlerImplIE6 extends DraggableHandlerImpl {
             - (int) GQUtils.cur(containerElement, "paddingBottom", true)
             - helperDimension.getHeight()};
   }
+  
 }
 

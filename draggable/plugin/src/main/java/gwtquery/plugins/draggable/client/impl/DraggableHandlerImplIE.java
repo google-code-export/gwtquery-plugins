@@ -15,6 +15,9 @@
  */
 package gwtquery.plugins.draggable.client.impl;
 
+import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 
 /**
@@ -25,10 +28,23 @@ import com.google.gwt.query.client.GQuery;
  */
 public class DraggableHandlerImplIE extends DraggableHandlerImpl {
 
-  @Override
-  public boolean resetParentOffsetPosition(GQuery helperOffsetParent) {
-    return super.resetParentOffsetPosition(helperOffsetParent)
-        || helperOffsetParent.get(0) == GQuery.document.cast();
-  }
-}
+	@Override
+	public boolean resetParentOffsetPosition(GQuery helperOffsetParent) {
+		return super.resetParentOffsetPosition(helperOffsetParent)
+				|| helperOffsetParent.get(0) == GQuery.document.cast();
+	}
 
+	@Override
+	public void removeHelper(GQuery helper, HelperType helperType) {
+		if (helperType == HelperType.CLONE) {
+			// in IE, the clone helper has the same hashcode than the draggable
+			// don't call remove method on it because all dragable's data will be cleared also.
+			// TODO maybe add an issue in GQuery to discuss about this problem !
+			//      problem comes maybe from GWT directly !
+			Element helperElement = helper.get(0);
+			helperElement.getParentNode().removeChild(helperElement);
+		} else {
+			super.removeHelper(helper, helperType);
+		}
+	}
+}
