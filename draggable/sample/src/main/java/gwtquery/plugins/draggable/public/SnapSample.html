@@ -10,7 +10,7 @@
 	padding: 0.5em;
 	border: black solid 1px;
 	background: #f6f6f6;
-	margin: 0 10px 0 10px;
+	margin: 0 10px 10px 0;
 	float: left;
 }
 
@@ -44,19 +44,29 @@ width:500px;
 
 <h1>GwtQuery Draggable plugin example : snap options</h1>
 
-<ul style="padding-top: 10px; padding-bottom: 5px; list-style: none;">
-	<li style="float: left;">Sample 1 |&nbsp;</li>
-	<!--  li style="float: left;">
-		<a href="../SelectableSample2/Sample2.html">Sample 2</a>&nbsp;|&nbsp;
+<ul style="padding: 10px 0px; list-style: none; display:block">
+	<li style="float: left;">
+		<a href="../DraggableSample1/DraggableSample1.html">To start</a>&nbsp;|&nbsp;
 	</li>
-	<li style="">
-		<a href="../SelectableSample3/Sample3.html">Sample 3</a>
-	</li-->
+	<li style="float: left;">
+		<a href="../DraggableSample2/DraggableSample2.html">Test the options</a>&nbsp;|&nbsp;
+	</li>
+	<li style="float: left;">
+		<a href="../SnapSample/SnapSample.html">Snap sample</a>&nbsp;|&nbsp;
+	</li>
+	<li style="float: left;">
+		<a href="../ContainmentSample/Containment.html">Containment sample</a>&nbsp;|&nbsp;
+	</li>
+	<li style="float: left;">
+		<a href="../StackSample/StackSample.html">Stack sample</a>&nbsp;|&nbsp;
+	</li>
+	<li style="float: left;">
+		<a href="../GWTIntegrationSample/GWTIntegrationSample.html">Integration with GWT</a>
+	</li>
 </ul>
 
-<p>Snap the draggable to the inner or outer boundaries of a DOM element. Use the snap, snapMode (inner, outer, both), and snapTolerance (distance in pixels the draggable must be from the element when snapping is invoked) options.
 
-Or snap the draggable to a grid. Set the dimensions of grid cells (height and width in pixels) with the grid option.</p>
+<p>Snap the draggable to the inner or outer boundaries of a DOM element. Use the snap, snapMode (inner, outer, both), and snapTolerance (distance in pixels the draggable must be from the element when snapping is invoked) options.</p>
 
 <div style="height: 800px; border: 1px solid black; overflow: auto;position:relative;padding:15px;">
 
@@ -80,11 +90,11 @@ Or snap the draggable to a grid. Set the dimensions of grid cells (height and wi
 </div>
 
 <div id="draggable4" class="draggable ui-widget-content">
-	<p>I snap to a 20 x 20 grid</p>
+	<p>I only snap to the big box. My snap tolerance is 100px</p>
 </div>
 
 <div id="draggable5" class="draggable ui-widget-content">
-	<p>I snap to a 80 x 80 grid</p>
+	<p>I only snap to the inner edges of the big box with a Snap tolerance : 50px</p>
 </div>
 
 
@@ -93,7 +103,7 @@ Or snap the draggable to a grid. Set the dimensions of grid cells (height and wi
 
 <br />
 <a
-	href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/draggable/sample/src/main/java/gwtquery/plugins/draggable/client/DraggableSample3.java"
+	href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/draggable/sample/src/main/java/gwtquery/plugins/draggable/client/SnapSample.java"
 	target="_blank">Java source code</a></div>
 </body>
 </html>

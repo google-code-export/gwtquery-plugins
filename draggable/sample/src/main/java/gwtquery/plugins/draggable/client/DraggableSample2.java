@@ -78,7 +78,7 @@ public class DraggableSample2 implements EntryPoint {
       contaimentOptions.put("None", null);
       contaimentOptions.put("parent", "parent");
       contaimentOptions.put("demo box", ".demo");
-      contaimentOptions.put("body", "body");
+      //contaimentOptions.put("body", "body");
       contaimentOptions.put("window", "window");
       contaimentOptions.put("document", "document");
       contaimentOptions
