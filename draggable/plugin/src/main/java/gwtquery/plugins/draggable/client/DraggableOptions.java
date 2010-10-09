@@ -383,7 +383,7 @@ public class DraggableOptions extends MouseOptions {
     this.onDragStop = onDragStop;
   }
 
-  public void setOpacity(float opacity) {
+  public void setOpacity(Float opacity) {
     this.opacity = opacity;
   }
 
