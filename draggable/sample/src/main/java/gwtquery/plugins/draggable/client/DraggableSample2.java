@@ -368,8 +368,8 @@ public class DraggableSample2 implements EntryPoint {
       
       revertListBox.addItem("never", RevertOption.NEVER.name());
       revertListBox.addItem("always", RevertOption.ALWAYS.name());
-      revertListBox.addItem("on valid drop (usefull with droppable plug-in)", RevertOption.ON_VALID_DROP.name());
-      revertListBox.addItem("on invalid drop (usefull with droppable plug-in)", RevertOption.ON_INVALID_DROP.name());
+      revertListBox.addItem("on valid drop (useful with droppable plug-in)", RevertOption.ON_VALID_DROP.name());
+      revertListBox.addItem("on invalid drop (useful with droppable plug-in)", RevertOption.ON_INVALID_DROP.name());
       revertListBox.setSelectedIndex(0);
       
       revertDurationTextBox.setValue(""+options.getRevertDuration());
