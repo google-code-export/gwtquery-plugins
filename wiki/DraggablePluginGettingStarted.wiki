@@ -3,7 +3,7 @@
 =Plugin Information=
 
 || *Plugin name* ||Draggable||
-|| *Latest release* ||||
+|| *Latest release* ||0.1||
 || *Latest release date* ||||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADraggable Open issues]||
@@ -15,5 +15,52 @@ The Draggable plugin allows to enable draggable functionality on any DOM element
 =Changelog=
 ==v0.1==
   * First release
+
+=Using the plugin=
+
+==Dependency==
+
+The draggable plugin needs the common-ui library to work. If you are not using maven, just download the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.1.jar last version of the library] and put it in the war/WEB-INF/lib folder.
+
+==Configuration==
+
+First of all you have to include the library in the classpath of your project. If you are using ant normally it is enough to download the library from the [http://code.google.com/p/gwtquery-plugins/downloads/list downloads page] and put it in the war/WEB-INF/lib folder. 
+
+If you use maven, you have to add these blocks to your pom.xml
+{{{
+   <repositories>
+        <repository>
+         <id>plugins</id>
+         <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
+       </repository>
+   </repositories>
+
+   <build>
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.gwtquery.plugins</groupId>
+            <artifactId>draggable-plugin</artifactId>
+            <scope>0.1</version>
+        </dependency>
+    </dependencies>
+   </build>
+}}}
+
+Then you need to inherit the plugin in your Module.gwt.xml file:
+{{{
+  <inherits name='gwtquery.plugins.draggable.Draggable'/>
+}}}
+
+And finally, as with all gwtQuery plugins, just call the selectable plugin like that :
+{{{
+import static gwtquery.plugins.draggable.client.Draggable.Draggable;
+
+...
+
+$("#iWantToDrag").as(Draggable).draggable();
+}}}
+
+It calls the plugin with the default options. The element who have 'iWantToDrag' as id is now draggable.
+
 
 TBC
