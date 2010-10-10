@@ -17,6 +17,17 @@ package gwtquery.plugins.draggable.client.gwt;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.draggable.client.Draggable.Draggable;
+
+import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.JSArray;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Widget;
+
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
@@ -32,16 +43,6 @@ import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHan
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
 
 import java.util.List;
-
-import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Wrapper widget that wrap an GWT widget and to drag it.
@@ -293,9 +294,9 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 		options.setHandle(selector);
 	}
 
-	public void setIframeFix(boolean iframeFix) {
+	/*public void setIframeFix(boolean iframeFix) {
 		options.setIframeFix(iframeFix);
-	}
+	}*/
 
 	public void setOpacity(float opacity) {
 		options.setOpacity(opacity);
