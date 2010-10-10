@@ -1,4 +1,4 @@
-#summary How to use the selectable plugin !
+#summary How to use the draggable plugin !
 <wiki:toc max_depth="3" />
 =Plugin Information=
 
