@@ -19,4 +19,16 @@
 		</any>
 	</replace-with>
 	
+	
+	
+	<replace-with
+		class="gwtquery.plugins.draggable.client.plugins.SnapPlugin.SnappingImplIE6">
+		<when-type-is
+			class="gwtquery.plugins.draggable.client.plugins.SnapPlugin.SnappingImpl" />
+		<any>
+			<when-property-is name="user.agent" value="ie6" />			
+		</any>
+	</replace-with>
+	
 </module>
+    
