@@ -78,7 +78,7 @@ DraggableOptions options = new DraggableOptions();
 (".iWantToDrag").as(Draggable).draggable(options); 
 }}}
 
-==`DraggableOptions` Object==
+==DraggableOptions Object==
 
 To configure the plugin, just set value you want in the different properties of the `DraggableOptions` instance you give to the plugin.
 The table below lists the different properties of the `DraggableOptions` object. Each property is reachable by its respective getter/setter.
@@ -112,4 +112,72 @@ The table below lists the different properties of the `DraggableOptions` object.
 ||snapTolerance||int|| The distance in pixels from the snap element edges at which snapping should occur.||20||-||
 ||stack||GQuery or String|| Controls the z-Index of the selected elements, always brings to front the dragged item.||null||-||
 ||zIndex||Integer|| z-index for the helper while being dragged.||null||-||
-TBC
+
+Please note that all properties can be changed during the working of the plugin. See the  [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html Sample 2] to test some settings of the plugin.
+
+=Events=
+
+As can be seen in the previous paragraph, the `DraggableOptions` object allows you to pass `Function` who will be invoked by the plugin during its working. In addition to invoke these functions, the plugin fires some event that you can listen. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `HandlerManager` object when you call the plugin :
+
+{{{
+import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.selectable.client.Draggable.Draggable;
+
+import com.google.gwt.event.shared.HandlerManager;
+
+ 
+  public void onModuleLoad() {
+    
+    ...
+    
+    // create an instance of HandlerManager to bind events fired by the selectable plug-in
+    HandlerManager handlerManager = new HandlerManager(null);
+
+
+    // call the plugin
+    $(".iWantToDrag").as(Draggable).draggable(new DraggableOptions(), handlerManager);
+
+  }
+
+
+}}}
+
+Register now your implementation of `EventHandler` :
+
+{{{
+  private static class MyEventHandler implements DragEventHandler,
+      DragStopEventHandler{
+    
+     public void onDrag(DragEvent event) {
+      String msg = "Component " + event.getDraggable().getId() + " is dragging";
+      infoMsg.setHTML(msg);
+
+    }
+
+    public void onDragStop(DragStopEvent event) {
+      infoMsg.setHTML("End of the drag operation");
+
+    }
+
+  }
+
+   ...
+  
+    MyEventHandler handler = new MyEventHandler();
+    //bind events who interest us
+    handlerManager.addHandler(DragEvent.TYPE, handler);
+    handlerManager.addHandler(DragStopEvent.TYPE, handler);
+  
+}}}
+
+The different events that you can listen are :
+{{{
+gwtquery.plugins.draggable.client.events.DragStartEvent;
+gwtquery.plugins.draggable.client.events.DragEvent;
+gwtquery.plugins.draggable.client.events.DragStopEvent;
+}}}
+
+=Samples=
+
+To better understand the plugin, samples are available
+  * Sample 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample1/DraggableSample1.html
