@@ -261,8 +261,6 @@ public class Selectable extends MouseHandler {
 
   private SelectableOptions options;
 
-  private HandlerManager eventBus;
-
   public Selectable(GQuery gq) {
     super(gq);
 
@@ -580,15 +578,6 @@ public class Selectable extends MouseHandler {
     }
     $e.data(SELECTEES_KEY, selectees);
     return selectees;
-  }
-
-  private void trigger(GwtEvent<?> e, Function callback, Element element) {
-    if (eventBus != null) {
-      eventBus.fireEvent(e);
-    }
-    if (callback != null) {
-      callback.f(element);
-    }
   }
 
 }
