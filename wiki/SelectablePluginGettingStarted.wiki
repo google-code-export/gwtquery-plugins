@@ -183,5 +183,11 @@ To better understand the plugin, three examples are available
 This sample show how to set a simple html list selectable. It defines also some callback functions to display informations on the selection operation.
   * Sample 2 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample2/Sample2.html
 Play with different settings of the plugin.
-  * Sample 3 : http://gwtquery-plugins.googlecode.com/svn/trunk/selectable/demos/SelectableSample3/Sample3.html
-Show how you can use this plugin to add selectable behaviour to GWT widgets and so use it in your GWT project.
+  * Snap sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/SnapSample/SnapSample.html
+See the snap options in action
+  * Containment sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/ContainmentSample/Containment.html
+Sample around the containment options
+  * Stack options : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/StackSample/StackSample.html
+See the stack option in action
+  * GWT integration : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/GWTIntegrationSample/GWTIntegrationSample.html
+This sample demonstrate how it is simple to add drag functionality to your GWT widget.
