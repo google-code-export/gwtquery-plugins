@@ -6,13 +6,13 @@
 	<groupId>com.googlecode.gwtquery.plugins</groupId>
 	<artifactId>commonui</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0</version>
+	<version>1.1</version>
 
 	<properties>
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
 		<gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
-		<gwtversion>2.0.4</gwtversion>
+		<gwtversion>2.0.3</gwtversion>
 	</properties>
 
 	<repositories>
