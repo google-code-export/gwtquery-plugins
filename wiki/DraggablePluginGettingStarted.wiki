@@ -181,14 +181,14 @@ gwtquery.plugins.draggable.client.events.DragStopEvent;
 
 To better understand the plugin, examples are available
   * Example 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample1/DraggableSample1.html
-  
+This example shows how to make a simple div draggable. It defines also some callback functions to display informations on the drag operation.  
   * Test the options : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html
 Play with the different options of the draggable plug-in and see the effect they have on the drag operation.
   * Snap sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/SnapSample/SnapSample.html
 Watch the snap options in action.
   * Containment sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/ContainmentSample/Containment.html
-This example show you how it's possible to constraint
+This example shows you how it's possible to constraint the drag area with the containment option.
   * Stack sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/StackSample/StackSample.html
-This sample show how the draggable plugin can handle the z-index to bring on top the current draggable item.
+This sample shows how the draggable plugin can handle the z-index to bring on top the current draggable item.
   * GWT integration : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/GWTIntegrationSample/GWTIntegrationSample.html
-This sample show how the draggable plugin can handle the z-index to bring on top the current draggable item.
+This sample shows how it is easier to add drag functionnality to any GWT widget. Simply in using the DraggableWidget wrapper !! This example shows also how to use event fired by the plugin.
