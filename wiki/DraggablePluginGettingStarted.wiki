@@ -10,7 +10,7 @@
 
 This plugin is a gwt clone of the [http://jqueryui.com/demos/draggable/ JQuery-ui draggable plugin]
 
-The Draggable plugin allows to enable draggable functionality on any DOM element and GWT widget. It makes the selected elements draggable by mouse.
+The Draggable plugin enables draggable functionality on any DOM element and GWT widget (it makes the selected element draggable by mouse).
 
 =Changelog=
 ==v0.1==
@@ -20,7 +20,7 @@ The Draggable plugin allows to enable draggable functionality on any DOM element
 
 ==Dependency==
 
-The draggable plugin needs the common-ui library to work. If you are not using maven, just download the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.1.jar last version of the library] and put it in the war/WEB-INF/lib folder.
+The draggable plugin needs the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.1.jar common-ui library]. If you are not using maven, just download the last version of the library and put it in the war/WEB-INF/lib folder.
 
 ==Configuration==
 
@@ -60,14 +60,14 @@ import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 $(".iWantToDrag").as(Draggable).draggable();
 }}}
 
-It calls the plugin with the default options. The elements having 'iWantToDrag' as css class name are now draggable.
+This calls the plugin with the default options. The elements with the css class name 'iWantToDrag' are now draggable.
 
 =Settings=
 
 The drag operation is fully configurable ! You just have to give an instance of the class `gwtquery.plugins.draggable.client.DraggableOptions` when you call the plugin :
 {{{
-import static gwtquery.plugins.selectable.client.Selectable.Selectable;
-import gwtquery.plugins.selectable.client.SelectableOptions;
+import static gwtquery.plugins.draggable.client.Draggable.Draggable;
+import gwtquery.plugins.draggable.client.DraggableOptions;
 
 ...
 
@@ -80,8 +80,8 @@ DraggableOptions options = new DraggableOptions();
 
 ==DraggableOptions Object==
 
-To configure the plugin, just set value you want in the different properties of the `DraggableOptions` instance you give to the plugin.
-The table below lists the different properties of the `DraggableOptions` object. Each property is reachable by its respective getter/setter.
+To configure the plugin, just set the properties you wish to configure in the `DraggableOptions`instance you pass to the plugin.
+The table below lists the different properties of the `DraggableOptions`object. Each property is accessible via getter/setter methods.
 
 || *Property* || *Type* || *Description* || *Default value* || *Comments* ||
 ||disabled||boolean||Disables (true) or enables (false) the drag operation. ||false||-|| 
@@ -113,11 +113,11 @@ The table below lists the different properties of the `DraggableOptions` object.
 ||stack||GQuery or String|| Controls the z-Index of the selected elements, always brings to front the dragged item.||null||-||
 ||zIndex||Integer|| z-index for the helper while being dragged.||null||-||
 
-Please note that all properties can be changed during the working of the plugin. See the  [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html Sample 2] to test some settings of the plugin.
+Please note that all properties can be modified after the plugin is instantiated. See the [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html Sample 2] to test some settings of the plugin
 
 =Events=
 
-As can be seen in the previous paragraph, the `DraggableOptions` object allows you to pass `Function` who will be invoked by the plugin during its working. In addition to invoke these functions, the plugin fires some event that you can listen. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `HandlerManager` object when you call the plugin :
+As can be seen in the previous paragraph, the `DraggableOptions` object allows you to pass `Function` who will be invoked by the plugin during the drag operation. In addition to invoke these functions, the plugin fires some event that you can listen for. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `HandlerManager` object when you call the plugin :
 
 {{{
 import static com.google.gwt.query.client.GQuery.$;
@@ -142,7 +142,7 @@ import com.google.gwt.event.shared.HandlerManager;
 
 }}}
 
-Register now your implementation of `EventHandler` :
+Now register your implementation of `EventHandler` :
 
 {{{
   private static class MyEventHandler implements DragEventHandler,
@@ -170,14 +170,25 @@ Register now your implementation of `EventHandler` :
   
 }}}
 
-The different events that you can listen are :
+The different events that you can listen for are :
 {{{
 gwtquery.plugins.draggable.client.events.DragStartEvent;
 gwtquery.plugins.draggable.client.events.DragEvent;
 gwtquery.plugins.draggable.client.events.DragStopEvent;
 }}}
 
-=Samples=
+=Examples=
 
-To better understand the plugin, samples are available
-  * Sample 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample1/DraggableSample1.html
+To better understand the plugin, examples are available
+  * Example 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample1/DraggableSample1.html
+  
+  * Test the options : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html
+Play with the different options of the draggable plug-in and see the effect they have on the drag operation.
+  * Snap sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/SnapSample/SnapSample.html
+Watch the snap options in action.
+  * Containment sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/ContainmentSample/Containment.html
+This example show you how it's possible to constraint
+  * Stack sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/StackSample/StackSample.html
+This sample show how the draggable plugin can handle the z-index to bring on top the current draggable item.
+  * GWT integration : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/GWTIntegrationSample/GWTIntegrationSample.html
+This sample show how the draggable plugin can handle the z-index to bring on top the current draggable item.
