@@ -15,7 +15,9 @@
  */
 package gwtquery.plugins.draggable.client.impl;
 
+import static com.google.gwt.query.client.GQuery.$;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 
@@ -66,6 +68,44 @@ public class DraggableHandlerImpl {
 	public void removeHelper(GQuery helper, HelperType helperType) {		 
 		helper.remove();		
 	}
+
+  public LeftTopDimension calculateRelativeHelperOffset(Element element,
+      DraggableHandler draggableHandler) {
+    
+    LeftTopDimension position = new LeftTopDimension(element.getOffsetLeft(), element.getOffsetTop());
+    Element helperElement = draggableHandler.getHelper().get(0);
+    LeftTopDimension margin = draggableHandler.getMargin();
+    
+    // TODO : We should use the code in comments below. But  GQUtils.cur(helper.get(0), "top", true) return 
+    // wrong value in Safari... We have to investigate the problem... Temporary, we call cur() method with false
+    // but if top or left properties are set with other unit than px, we will meet problems.
+    int helperTop = (int) GQUtils.cur(helperElement, "top", false);
+    int helperLeft = (int) GQUtils.cur(helperElement, "left", false);
+    
+    /*
+    //problem in Opera : if element position = relative and no top property defined in style element
+    //QUtils.cur(helper.get(0), "top", true) doesn't return 0 but the real distance between the element 
+    //and its parent. It is not what we want !
+    
+    if (helperElement.getStyle().getTop() != null && helperElement.getStyle().getTop().length()>0){
+      //use GQUtils.cur() method with force boolean to true to retrieve value in px unit
+      helperTop = (int) GQUtils.cur(helper.get(0), "top", true);
+    }
+     //same remark
+    if (helperElement.getStyle().getLeft() != null && helperElement.getStyle().getLeft().length()>0){
+      helperLeft = (int) GQUtils.cur(helper.get(0), "left", true);
+    }
+    */
+    int top = position.getTop() 
+      - helperTop
+      - margin.getTop();
+    int left = position.getLeft()
+        - helperLeft
+        - margin.getLeft();
+
+    return new LeftTopDimension(left, top);
+    
+  }
 
 }
 
