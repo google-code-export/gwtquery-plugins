@@ -179,19 +179,18 @@ gwtquery.plugins.draggable.client.events.DragStopEvent;
 
 =Integration with GWT=
 
-The draggable plugin can be used to make any GWT widget draggable !! You just have to wrap your widget in a `DraggableWidget` object and it will automatically draggable. This `DraggableWidget` object allows GWT devellopers to use the plugin without any knowledge about GQuery.
+The draggable plugin can be used to make any GWT widget draggable !! You just have to wrap your widget in a `DraggableWidget` object and it will be automatically draggable. This `DraggableWidget` object allows GWT devellopers to use the plugin without any knowledge about GQuery.
 
 {{{
 
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
-import com.google.gwt.user.client.ui.Widget;
 ...
 
 public class MyGWTApplication implements EntryPoint {
 
   public void onModuleLoad() {
-    //create your widget and assume it is a DecoratedTabPanel
-    DecoratedTabPanelmyWidget = createMyWidget();
+    //create your widget and let's assume it is a DecoratedTabPanel
+    DecoratedTabPanel myWidget = createMyWidget();
     
     //make it draggable
     DraggableWidget<DecoratedTabPanel>  myDraggableWidget = new DraggableWidget<DecoratedTabPanel>(myWidget);
