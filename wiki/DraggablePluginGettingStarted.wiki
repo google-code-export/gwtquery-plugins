@@ -20,7 +20,7 @@ The Draggable plugin enables draggable functionality on any DOM element and GWT 
 
 ==Dependency==
 
-The draggable plugin needs the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.1.jar common-ui library]. If you are not using maven, just download the last version of the library and put it in the war/WEB-INF/lib folder.
+The draggable plugin needs the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.2.jar common-ui library]. If you are not using maven, just download the last version of the library and put it in the war/WEB-INF/lib folder.
 
 ==Configuration==
 
