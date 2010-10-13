@@ -388,7 +388,7 @@ public class DraggableHandler {
     }
     
     Element ce = $containement.get(0);
-    if (ce == null || !isElementAttached($containement)) {
+    if (ce == null) {
       return;
     }
 
