@@ -164,6 +164,7 @@ public class DraggableOptions extends MouseOptions {
   private Function onDragStart;
   private Function onDragStop;
   private Function onDrag;
+  private GQuery $containment;
 
   public String getAppendTo() {
     return appendTo;
@@ -182,6 +183,10 @@ public class DraggableOptions extends MouseOptions {
 
   public int[] getContainmentAsArray() {
     return containmentAsArray;
+  }
+  
+  public GQuery getContainmentAsGQuery() {
+    return $containment;
   }
 
   public Cursor getCursor() {
@@ -316,7 +321,7 @@ public class DraggableOptions extends MouseOptions {
    * the same container as the draggable.
    * 
    * @param appendTo
-   *          the selector defining the elmement where the helper will be added
+   *          the selector defining the element where the helper will be added
    */
   public void setAppendTo(String appendTo) {
     this.appendTo = appendTo;
@@ -374,7 +379,28 @@ public class DraggableOptions extends MouseOptions {
     // mutually exclusive
     this.containmentAsArray = null;
   }
-
+  
+  /**
+   * Constrains dragging to within the bounds of the specified element (called
+   * the container) defining by the selector.
+   * 
+   * @param containment
+   *          selector defining the container element. Possible string values: a
+   *          css selector 'parent' the container will be the parent element of
+   *          the element, 'document' the container will the document, 'window'
+   *          the container will be the browser area
+   * @see sample at
+   *      http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo
+   *      /DraggableSample2/DraggableSample2.html
+   * 
+   */
+  public void setContainment(GQuery containment) {
+    this.$containment = containment;
+    // mutually exclusive
+    this.containmentAsArray = null;
+    this.containment = null;
+  }
+  
   /**
    * Specify the css cursor to use during the drag operation.
    * 
@@ -395,7 +421,7 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * Disables (true) or enables (false) the draggable.
+   * Disables (true) or enables (false) the drag operation.
    * 
    * @param disabled
    */
@@ -552,9 +578,6 @@ public class DraggableOptions extends MouseOptions {
     this.opacity = opacity;
   }
 
-  public void setRefreshPositions(boolean refreshPositions) {
-    this.refreshPositions = refreshPositions;
-  }
 
   /**
    * Set the revert options
