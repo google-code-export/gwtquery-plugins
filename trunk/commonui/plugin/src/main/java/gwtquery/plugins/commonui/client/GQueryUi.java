@@ -86,10 +86,14 @@ public class GQueryUi extends GQuery {
    * 
    * @param mouseEvent
    * @return the mouse x-position in the page
+   * @deprecated use {@link gwtquery.plugins.commonui.client.Event.pageX}
    */
   public static int pageX(Event mouseEvent) {
-    int pageX = mouseEvent.getClientX() + document.getScrollLeft();
-    return pageX;
+	  if (mouseEvent instanceof gwtquery.plugins.commonui.client.Event){
+		  return ((gwtquery.plugins.commonui.client.Event)mouseEvent).pageX();
+	  }
+    
+	  return gwtquery.plugins.commonui.client.Event.create(mouseEvent).pageX();
   }
 
   /**
@@ -97,10 +101,14 @@ public class GQueryUi extends GQuery {
    * 
    * @param mouseEvent
    * @return the mouse y-position in the page
+   * @deprecated use {@link gwtquery.plugins.commonui.client.Event.pageY}
    */
   public static int pageY(Event mouseEvent) {
-    int pageY = mouseEvent.getClientY() + document.getScrollTop();
-    return pageY;
+	  if (mouseEvent instanceof gwtquery.plugins.commonui.client.Event){
+		  return ((gwtquery.plugins.commonui.client.Event)mouseEvent).pageY();
+	  }
+    
+	  return gwtquery.plugins.commonui.client.Event.create(mouseEvent).pageY();
   }
   
   /**
