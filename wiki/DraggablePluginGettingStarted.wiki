@@ -3,8 +3,8 @@
 =Plugin Information=
 
 || *Plugin name* ||Draggable||
-|| *Latest release* ||0.1||
-|| *Latest release date* ||||
+|| *Latest release* ||1.0||
+|| *Latest release date* ||Oct 13 2010||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADraggable Open issues]||
 
@@ -51,7 +51,9 @@ Then you need to inherit the plugin in your Module.gwt.xml file:
   <inherits name='gwtquery.plugins.draggable.Draggable'/>
 }}}
 
-And finally, as with all gwtQuery plugins, just call the selectable plugin like that :
+==Call the plugin==
+
+Simply, as with all gwtQuery plugins, just call the selectable plugin like that :
 {{{
 import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
@@ -61,6 +63,15 @@ $(".iWantToDrag").as(Draggable).draggable();
 }}}
 
 This calls the plugin with the default options. The elements with the css class name 'iWantToDrag' are now draggable.
+
+==Disabled the plugin==
+
+To remove the draggable functionality completely, just call the `destroy()` method of the plugin.
+
+{{{
+$(".iWantToDrag").as(Draggable).destroy();
+}}}
+
 
 =Settings=
 
@@ -75,7 +86,22 @@ DraggableOptions options = new DraggableOptions();
 //set the options you want... See next paragraph
 ...
 //call the plug-in with your options 
-(".iWantToDrag").as(Draggable).draggable(options); 
+$(".iWantToDrag").as(Draggable).draggable(options); 
+}}}
+
+
+To retrieve the current options of a draggable element just call the `options()` method.
+
+{{{
+DraggableOptions options = $(".iWantToDrag").as(Draggable).options();
+}}}
+
+And for change the options
+
+
+{{{
+//reinitialise default options
+$(".iWantToDrag").as(Draggable).options(new DraggableOptions());
 }}}
 
 ==DraggableOptions Object==
