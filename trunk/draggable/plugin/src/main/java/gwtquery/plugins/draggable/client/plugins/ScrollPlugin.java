@@ -21,10 +21,9 @@ import static com.google.gwt.query.client.GQuery.document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 
-import gwtquery.plugins.commonui.client.GQueryUi;
+import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableDroppableManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -70,12 +69,12 @@ public class ScrollPlugin implements DraggablePlugin {
       if (AxisOption.NONE == axis || AxisOption.Y_AXIS == axis) {
         // test if we have to scroll down...
         if ((overflowOffset.top + scrollParentElement.getOffsetHeight())
-            - GQueryUi.pageY(e) < scrollSensitivity) {
+            - e.pageY() < scrollSensitivity) {
           scrollParentElement.setScrollTop(scrollParentElement.getScrollTop()
               + scrollSpeed);
           scrolled = true;
           // test if we have to scroll up...
-        } else if (GQueryUi.pageY(e) - overflowOffset.top < scrollSensitivity) {
+        } else if (e.pageY() - overflowOffset.top < scrollSensitivity) {
           scrollParentElement.setScrollTop(scrollParentElement.getScrollTop()
               - scrollSpeed);
           scrolled = true;
@@ -85,12 +84,12 @@ public class ScrollPlugin implements DraggablePlugin {
       if (AxisOption.NONE == axis || AxisOption.X_AXIS == axis) {
         // test if we have to scroll left...
         if ((overflowOffset.left + scrollParentElement.getOffsetWidth())
-            - GQueryUi.pageX(e) < scrollSensitivity) {
+            - e.pageX() < scrollSensitivity) {
           scrollParentElement.setScrollLeft(scrollParentElement.getScrollLeft()
               + scrollSpeed);
           scrolled = true;
           // test if we have to scroll right...
-        } else if (GQueryUi.pageX(e) - overflowOffset.left < scrollSensitivity) {
+        } else if (e.pageX() - overflowOffset.left < scrollSensitivity) {
           scrollParentElement.setScrollLeft(scrollParentElement.getScrollLeft()
               - scrollSpeed);
           scrolled = true;
@@ -99,22 +98,22 @@ public class ScrollPlugin implements DraggablePlugin {
 
     } else {
       if (AxisOption.NONE == axis || AxisOption.Y_AXIS == axis) {
-        if (GQueryUi.pageY(e) - document.getScrollTop() < scrollSensitivity) {
+        if (e.pageY() - document.getScrollTop() < scrollSensitivity) {
           document.setScrollTop(document.getScrollTop() - scrollSpeed);
           scrolled = true;
         } else if (Window.getClientHeight()
-            - (GQueryUi.pageY(e) - document.getScrollTop()) < scrollSensitivity) {
+            - (e.pageY() - document.getScrollTop()) < scrollSensitivity) {
           document.setScrollTop(document.getScrollTop() + scrollSpeed);
           scrolled = true;
         }
       }
 
       if (AxisOption.NONE == axis || AxisOption.X_AXIS == axis) {
-        if (GQueryUi.pageX(e) - document.getScrollLeft() < scrollSensitivity) {
+        if (e.pageX() - document.getScrollLeft() < scrollSensitivity) {
           document.setScrollLeft(document.getScrollLeft() - scrollSpeed);
           scrolled = true;
         } else if (Window.getClientWidth()
-            - (GQueryUi.pageX(e) - document.getScrollLeft()) < scrollSensitivity) {
+            - (e.pageX() - document.getScrollLeft()) < scrollSensitivity) {
           document.setScrollLeft(document.getScrollLeft() + scrollSpeed);
           scrolled = true;
         }
