@@ -17,6 +17,14 @@ package gwtquery.plugins.draggable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
+import gwtquery.plugins.commonui.client.Event;
+import gwtquery.plugins.commonui.client.GQueryUi;
+import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
+import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
+import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
+import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.impl.DraggableHandlerImpl;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -29,16 +37,7 @@ import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.Effects;
 import com.google.gwt.query.client.plugins.PropertiesAnimation.Easing;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-
-import gwtquery.plugins.commonui.client.GQueryUi;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
-import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
-import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
-import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
-import gwtquery.plugins.draggable.client.impl.DraggableHandlerImpl;
 
 public class DraggableHandler {
 
@@ -220,14 +219,14 @@ public class DraggableHandler {
     offset = new LeftTopDimension(absPosition.getLeft() - margin.getLeft(),
         absPosition.getTop() - margin.getTop());
 
-    offsetClick = new LeftTopDimension(GQueryUi.pageX(e) - offset.left,
-        GQueryUi.pageY(e) - offset.top);
+    offsetClick = new LeftTopDimension(e.pageX() - offset.left, e.pageY()
+        - offset.top);
 
     parentOffset = calculateParentOffset(element);
     relativeOffset = calculateRelativeHelperOffset(element);
 
-    originalEventPageX = GQueryUi.pageX(e);
-    originalEventPageY = GQueryUi.pageY(e);
+    originalEventPageX = e.pageX();
+    originalEventPageY = e.pageY();
 
     position = generatePosition(e, true);
     originalPosition = new LeftTopDimension(position.left, position.top);
@@ -266,10 +265,11 @@ public class DraggableHandler {
   }
 
   public void revertToOriginalPosition(Function function) {
-    Properties oldPosition = Properties.create("{top:'"+originalPosition.top+"px',left:'"+originalPosition.left+"px'}");
-    helper.as(Effects.Effects).animate(oldPosition, options.getRevertDuration(), Easing.LINEAR, function);
- 
-    
+    Properties oldPosition = Properties.create("{top:'" + originalPosition.top
+        + "px',left:'" + originalPosition.left + "px'}");
+    helper.as(Effects.Effects).animate(oldPosition,
+        options.getRevertDuration(), Easing.LINEAR, function);
+
   }
 
   public void setHelperDimension(Dimension helperDimension) {
@@ -305,7 +305,7 @@ public class DraggableHandler {
 
     helper.removeClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
     if (helper.get(0) != draggable && !cancelHelperRemoval) {
-      impl.removeHelper(helper, options.getHelperType());    	
+      impl.removeHelper(helper, options.getHelperType());
     }
     helper = null;
     cancelHelperRemoval = false;
@@ -315,7 +315,7 @@ public class DraggableHandler {
   void createHelper(Element draggable, Event e) {
     helper = options.getHelperType().createHelper(draggable,
         options.getHelper());
-    if (!isHelperAttached()) {
+    if (!isElementAttached(helper)) {
       if ("parent".equals(options.getAppendTo())) {
         helper.appendTo(draggable.getParentNode());
       } else {
@@ -325,9 +325,9 @@ public class DraggableHandler {
 
     if (options.getHelperType() != HelperType.ORIGINAL
         && !helper.css("position").matches("(fixed|absolute)")) {
-      helper.css("position", Position.ABSOLUTE.getCssName());     
+      helper.css("position", Position.ABSOLUTE.getCssName());
     }
-    
+
   }
 
   private void adjustOffsetFromHelper(CursorAt cursorAt) {
@@ -354,8 +354,10 @@ public class DraggableHandler {
   private void calculateContainment() {
     String containmentAsString = options.getContainment();
     int[] containmentAsArray = options.getContainmentAsArray();
-    
-    if (containmentAsArray == null && containmentAsString == null) {
+    GQuery $containement = options.getContainmentAsGQuery();
+
+    if (containmentAsArray == null && containmentAsString == null
+        && $containement == null) {
       containment = null;
       return;
     }
@@ -365,31 +367,33 @@ public class DraggableHandler {
       return;
     }
 
-    if ( "window".equals(containmentAsString)) {
-      containment = new int[] {
-          0 /*- relativeOffset.left - parentOffset.left*/,
-          0 /*- relativeOffset.top - parentOffset.top*/,
-          Window.getClientWidth() - helperDimension.getWidth() - margin.left,
-          Window.getClientHeight() - helperDimension.getHeight() - margin.top };
+    if (containmentAsString != null) {
+      if ("window".equals(containmentAsString)) {
+        containment = new int[] {
+            0 /*- relativeOffset.left - parentOffset.left*/,
+            0 /*- relativeOffset.top - parentOffset.top*/,
+            Window.getClientWidth() - helperDimension.getWidth() - margin.left,
+            Window.getClientHeight() - helperDimension.getHeight() - margin.top };
 
-      return;
-    }
+        return;
+      }
 
-    GQuery $containement;
-    if ("parent".equals(containmentAsString)) {
-      $containement = $(helper.get(0).getParentElement());
-    } else if ("document".equals(containmentAsString)){
-    	$containement =$("body");
-    }else {
-      $containement = $(containmentAsString);
-    }
-
-    Element ce = $containement.get(0);
-    if (ce == null) {
-      return;
+      if ("parent".equals(containmentAsString)) {
+        $containement = $(helper.get(0).getParentElement());
+      } else if ("document".equals(containmentAsString)) {
+        $containement = $("body");
+      } else {
+        $containement = $(containmentAsString);
+      }
     }
     
-    containment = impl.calculateContainment( $containement.offset(), ce, margin, helperDimension, (!"hidden".equals($containement.css("overflow"))) );
+    Element ce = $containement.get(0);
+    if (ce == null || !isElementAttached($containement)) {
+      return;
+    }
+
+    containment = impl.calculateContainment(this, $containement.offset(), ce,
+        (!"hidden".equals($containement.css("overflow"))));
 
   }
 
@@ -401,7 +405,7 @@ public class DraggableHandler {
       position = position.add(helperScrollParent.scrollLeft(),
           helperScrollParent.scrollTop());
     }
-    
+
     if (impl.resetParentOffsetPosition(helperOffsetParent)) {
       position.left = 0;
       position.top = 0;
@@ -430,21 +434,21 @@ public class DraggableHandler {
     GQuery scroll = getScrollParent();
     boolean scrollIsRootNode = isRootNode(scroll.get(0));
 
-    int pageX = GQueryUi.pageX(e);
-    int pageY = GQueryUi.pageY(e);
+    int pageX = e.pageX();
+    int pageY = e.pageY();
 
     if (!init) {
       if (containment != null && containment.length == 4) {
-        if (GQueryUi.pageX(e) - offsetClick.left < containment[0]) {
+        if (e.pageX() - offsetClick.left < containment[0]) {
           pageX = containment[0] + offsetClick.left;
         }
-        if (GQueryUi.pageY(e) - offsetClick.top < containment[1]) {
+        if (e.pageY() - offsetClick.top < containment[1]) {
           pageY = containment[1] + offsetClick.top;
         }
-        if (GQueryUi.pageX(e) - offsetClick.left > containment[2]) {
+        if (e.pageX() - offsetClick.left > containment[2]) {
           pageX = containment[2] + offsetClick.left;
         }
-        if (GQueryUi.pageY(e) - offsetClick.top > containment[3]) {
+        if (e.pageY() - offsetClick.top > containment[3]) {
           pageY = containment[3] + offsetClick.top;
         }
       }
@@ -491,7 +495,7 @@ public class DraggableHandler {
         - parentOffset.left
         + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft()
             : scrollIsRootNode ? 0 : scroll.scrollLeft());
-     return new LeftTopDimension(left, top);
+    return new LeftTopDimension(left, top);
   }
 
   private GQuery getScrollParent() {
@@ -503,11 +507,11 @@ public class DraggableHandler {
     }
   }
 
-  private boolean isHelperAttached() {
+  private boolean isElementAttached(GQuery $element) {
     // normally this test helper.parents().filter("body").length() == 0 is
     // sufficient but they are a bug in gwtquery in filter function
     // return helper.parents().filter("body").length() == 0;
-    GQuery parents = helper.parents();
+    GQuery parents = $element.parents();
     for (Element parent : parents.elements()) {
       if (parent == body) {
         return true;
@@ -524,4 +528,3 @@ public class DraggableHandler {
   }
 
 }
-
