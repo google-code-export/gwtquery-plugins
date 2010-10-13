@@ -48,3 +48,4 @@ public class DraggableHandlerImplIE extends DraggableHandlerImpl {
 		}
 	}
 }
+
