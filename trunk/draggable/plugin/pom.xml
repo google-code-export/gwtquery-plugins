@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.googlecode.gwtquery.plugins</groupId>
         <artifactId>draggable</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <name>Draggable plugin for gQuery</name>
@@ -40,7 +40,7 @@
          <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>commonui-plugin</artifactId>
-            <version>1.1</version>
+            <version>${gCommonUiVersion}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
