@@ -16,7 +16,7 @@
 package gwtquery.plugins.draggable.client.impl;
 
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
+import gwtquery.plugins.draggable.client.DraggableHandler;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQUtils;
@@ -31,10 +31,10 @@ import com.google.gwt.query.client.GQuery.Offset;
 public class DraggableHandlerImplIE6 extends DraggableHandlerImplIE {
 
   @Override
-  public int[] calculateContainment(Offset containerOffset,
-      Element containerElement, LeftTopDimension helperMargin,
-      Dimension helperDimension, boolean overflow) {
-    // don't substract margin in ie
+  public int[] calculateContainment(DraggableHandler draggableHandler, Offset containerOffset,
+	      Element containerElement,  boolean overflow) {
+	  Dimension helperDimension = draggableHandler.getHelperDimension();
+    // don't substract margin in ie 6 and 7
     return new int[] {
         containerOffset.left
             + (int) GQUtils.cur(containerElement, "borderLeftWidth", true)
@@ -59,4 +59,5 @@ public class DraggableHandlerImplIE6 extends DraggableHandlerImplIE {
   }
   
 }
+
 
