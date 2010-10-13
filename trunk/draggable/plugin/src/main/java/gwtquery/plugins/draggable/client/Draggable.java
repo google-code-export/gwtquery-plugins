@@ -15,16 +15,7 @@
  */
 package gwtquery.plugins.draggable.client;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
-import com.google.gwt.query.client.Plugin;
-import com.google.gwt.user.client.Event;
-
+import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
@@ -41,6 +32,15 @@ import gwtquery.plugins.draggable.client.plugins.ZIndexPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.JSArray;
+import com.google.gwt.query.client.Plugin;
 
 /**
  * Draggable for GwtQuery
@@ -120,6 +120,11 @@ public class Draggable extends MouseHandler {
     registerDraggablePlugin(new SnapPlugin());
   }
 
+  /**
+   * Register a draggable plugin that will be called during the drag operation
+   * 
+   * @param plugin
+   */
   public static void registerDraggablePlugin(DraggablePlugin plugin) {
     if (draggablePlugins == null) {
       draggablePlugins = new HashMap<String, DraggablePlugin>();
@@ -146,6 +151,11 @@ public class Draggable extends MouseHandler {
     super(list);
   }
 
+  /**
+   * Remove the draggable behavior to the elements
+   * 
+   * @return
+   */
   public Draggable destroy() {
     for (Element e : elements()) {
       $(e).removeData(DRAGGABLE_HANDLER_KEY).removeClass(
@@ -156,14 +166,35 @@ public class Draggable extends MouseHandler {
     return this;
   }
 
+  /**
+   * Selected elements will be now draggable
+   * 
+   * @return
+   */
   public Draggable draggable() {
     return draggable(new DraggableOptions(), null);
   }
 
+  /**
+   * Selected elements will be now draggable
+   * 
+   * @param options
+   *          options to use during the drag operation
+   * @return
+   */
   public Draggable draggable(DraggableOptions options) {
     return draggable(options, null);
   }
 
+  /**
+   * Selected elements will be now draggable
+   * 
+   * @param options
+   *          options to use during the drag operation
+   * @param eventBus
+   *          The eventBus to use to fire events.
+   * @return
+   */
   public Draggable draggable(DraggableOptions options, HandlerManager eventBus) {
 
     this.eventBus = eventBus;
@@ -195,7 +226,7 @@ public class Draggable extends MouseHandler {
    * 
    * @return
    */
-  public DraggableOptions getOptions() {
+  public DraggableOptions options() {
 
     DraggableHandler handler = data(DRAGGABLE_HANDLER_KEY,
         DraggableHandler.class);
@@ -212,7 +243,7 @@ public class Draggable extends MouseHandler {
    * @param options
    * @return
    */
-  public Draggable setOptions(DraggableOptions options) {
+  public Draggable options(DraggableOptions options) {
 
     for (Element e : elements()) {
       DraggableHandler handler = $(e).data(DRAGGABLE_HANDLER_KEY,
@@ -303,7 +334,8 @@ public class Draggable extends MouseHandler {
         @Override
         public void f(Element e) {
           callPlugins(new StopCaller(draggable, event), options);
-          trigger(new DragStopEvent(draggable), options.getOnDragStop(), draggable);
+          trigger(new DragStopEvent(draggable), options.getOnDragStop(),
+              draggable);
 
           getHandler(draggable).clear(draggable);
         }
