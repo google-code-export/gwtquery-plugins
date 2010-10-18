@@ -1,0 +1,7 @@
+<module>
+	<inherits name='gwtquery.plugins.draggable.Draggable' />
+
+	<replace-with class="gwtquery.plugins.droppable.client.DraggableDroppableManagerImpl">
+		<when-type-is class="gwtquery.plugins.draggable.client.DraggableDroppableManager" />
+	</replace-with>
+</module>
