@@ -13,7 +13,7 @@ This plugin is a gwt clone of the [http://jqueryui.com/demos/draggable/ JQuery-u
 The Draggable plugin enables draggable functionality on any DOM element and GWT widget (it makes the selected element draggable by mouse).
 
 =Changelog=
-==v0.1==
+==v1.0==
   * First release
 
 =Using the plugin=
