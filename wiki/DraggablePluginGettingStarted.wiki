@@ -115,13 +115,13 @@ The table below lists the different properties of the `DraggableOptions`object. 
 ||distance||int||Tolerance, in pixels, for when the drag should start. If specified, drag will not start until after mouse is dragged beyond distance. ||0||-||
 ||addClasses||boolean||If set to false, will prevent the ui-draggable class from being added. This may be desired as a performance optimization when calling .draggable() init on many hundreds of elements.||true||-||
 ||appendTo||String||The element selected by the appendTo option will be used as the draggable helper's container during dragging. By default, the helper is appended to the same container as the draggable.||null||-||  
-||axis||!AxisOption||Constrains dragging to either the horizontal (AxisOption.X_AXIS) or vertical (AxisOption.Y_AXIS) axis.||AxisOption.NONE||-||  
+||axis||!AxisOption||Constrains dragging to either the horizontal (!AxisOption.X_AXIS) or vertical (!AxisOption.Y_AXIS) axis.||!AxisOption.NONE||-||  
 ||containment||String or int[]||Constrains dragging to within the bounds of the specified region or element||null||-||  
 ||cursor||Cursor||Specify the css cursor to use during the drag operation.||Cursor.AUTO||-|| 
 ||cursorAt||!CursorAt||Moves the dragging helper so the cursor always appears to drag from the same position.||null||-|| 
 ||grid||int[]||Snaps the dragging helper to a grid. The array of int defining the dimension of the cell of the snap grid.||null||-|| 
 ||handle||String||Restricts drag start when the user clicks on the specified element(s).||null||-||  
-||helper||String or Element or GQuery or !HelperType||Allows to use a dom element or a clone of the draggable or the draggable itself for dragging display||HelperType.ORIGNAL||By default, the draggable itself will be used. Using clone or dom element will not move the original draggable. These options are useful in combination with the droppable plug-in|| 
+||helper||String or Element or GQuery or !HelperType||Allows to use a dom element or a clone of the draggable or the draggable itself for dragging display||!HelperType.ORIGNAL||By default, the draggable itself will be used. Using clone or dom element will not move the original draggable. These options are useful in combination with the droppable plug-in|| 
 ||onDrag||Function||The callback function called when the drag operation is dragging ||null||-|| 
 ||onDragStart||Function||The callback function called when the drag operation starts ||null||-|| 
 ||onDragStop||Function||The callback function called when the drag operation ends ||null||-|| 
