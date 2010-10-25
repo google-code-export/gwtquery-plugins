@@ -19,35 +19,37 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * Event fired when a draggable element is over a droppable element.
+ * Event fired when the draggable element out the droppable element.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DroppableOverEvent extends
-    AbstractDroppableEvent<DroppableOverEvent.DroppableOverEventHandler> {
+public class OutDroppableEvent extends
+    AbstractDroppableEvent<OutDroppableEvent.OutDroppableEventHandler> {
 
-  public interface DroppableOverEventHandler extends EventHandler {
-    public void onDroppableOver(DroppableOverEvent event);
+  public interface OutDroppableEventHandler extends EventHandler {
+    public void onOutDroppable(OutDroppableEvent event);
   }
 
-  public static Type<DroppableOverEventHandler> TYPE = new Type<DroppableOverEventHandler>();
+  public static Type<OutDroppableEventHandler> TYPE = new Type<OutDroppableEventHandler>();
 
-  public DroppableOverEvent() {	
+  public OutDroppableEvent() {	
+  }
+  
+  public OutDroppableEvent(Element droppable, Element draggable) {
+	super(droppable, draggable);
   }
 
-  public DroppableOverEvent(Element droppable, Element draggable) {
-	  super(droppable, draggable);
-  }
+
 
   @Override
-  public Type<DroppableOverEventHandler> getAssociatedType() {
+  public Type<OutDroppableEventHandler> getAssociatedType() {
     return TYPE;
   }
 
   @Override
-  protected void dispatch(DroppableOverEventHandler handler) {
-    handler.onDroppableOver(this);
+  protected void dispatch(OutDroppableEventHandler handler) {
+    handler.onOutDroppable(this);
   }
 
 }

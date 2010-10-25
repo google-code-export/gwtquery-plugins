@@ -5,21 +5,24 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
+import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
+
 public abstract class AbstractDroppableEvent<H extends EventHandler> extends
 		GwtEvent<H> {
 
-	private DragDropInfo draggableInfo;
+	private DragAndDropContext draggableInfo;
 
 	public AbstractDroppableEvent() {
 	
 	}
 	
 	public AbstractDroppableEvent(Element droppable, Element draggable) {
-		this.draggableInfo = new DragDropInfo(draggable, droppable);
+		this.draggableInfo = new DragAndDropContext(draggable, droppable);
 	}
 	
 	
-	public DragDropInfo getDragDropInfo() {
+	public DragAndDropContext getDragDropInfo() {
 		return draggableInfo;
 	}
 
@@ -30,7 +33,7 @@ public abstract class AbstractDroppableEvent<H extends EventHandler> extends
 		return null;
 	}
 
-	public void setDragDropInfo(DragDropInfo draggableInfo) {
+	public void setDragDropInfo(DragAndDropContext draggableInfo) {
 		this.draggableInfo = draggableInfo;
 	}
 
@@ -41,4 +44,18 @@ public abstract class AbstractDroppableEvent<H extends EventHandler> extends
 		}
 		return null;
 	}
+	
+	public DraggableWidget<?> getDraggableWidget(){
+    if (getDraggable() != null){
+      return DraggableWidget.get(getDraggable());
+    }
+    return null;
+  }
+	
+	public DroppableWidget<?> getDroppableWidget(){
+    if (getDroppable() != null){
+      return DroppableWidget.get(getDroppable());
+    }
+    return null;
+  }
 }
