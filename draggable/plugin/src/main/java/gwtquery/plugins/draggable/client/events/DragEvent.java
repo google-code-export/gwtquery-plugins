@@ -19,6 +19,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
+
 /**
  * Event fired when the drag operation stops.
  * 
@@ -47,6 +49,13 @@ public class DragEvent extends
 
   public Element getDraggable() {
     return draggable;
+  }
+  
+  public DraggableWidget<?> getDraggableWidget(){
+    if (draggable != null){
+      return DraggableWidget.get(draggable);
+    }
+    return null;
   }
 
   @Override
