@@ -15,6 +15,8 @@
  */
 package gwtquery.plugins.draggable.client.plugins;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
@@ -22,6 +24,7 @@ import com.google.gwt.query.client.GQuery;
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
+import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 
 /**
  * This add-on handle opacity of the helper
@@ -61,14 +64,17 @@ public class OpacityPlugin implements DraggablePlugin {
   }
 
   public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
-    GQuery $helper = handler.getHelper();
-
-    if ($helper.data(OLD_OPACITY_KEY) == null) {
+    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(draggableElement);
+    if ($element == null || $element.length() == 0){
       return;
     }
-    double oldOpacity = $helper.data(OLD_OPACITY_KEY, Double.class);
-    $helper.css(OPACITY_CSS_KEY, "" + oldOpacity);
-    $helper.removeData(OLD_OPACITY_KEY);
+
+    if ($element.data(OLD_OPACITY_KEY) == null) {
+      return;
+    }
+    double oldOpacity = $element.data(OLD_OPACITY_KEY, Double.class);
+    $element.css(OPACITY_CSS_KEY, "" + oldOpacity);
+    $element.removeData(OLD_OPACITY_KEY);
 
   }
 
