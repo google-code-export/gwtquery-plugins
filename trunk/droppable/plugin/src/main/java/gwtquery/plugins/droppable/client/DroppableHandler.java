@@ -3,7 +3,6 @@ package gwtquery.plugins.droppable.client;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.query.client.GQuery;
@@ -70,7 +69,6 @@ public class DroppableHandler {
   }
 
   public void deactivate(Element droppable, Event e) {
-    GWT.log("Deactivate droppable" + droppable);
     if (options.getActiveClass() != null) {
       droppable.removeClassName(options.getActiveClass());
     }
@@ -95,7 +93,7 @@ public class DroppableHandler {
       if (!alreadyDrop && intersect(draggable)) {
         drop = doDrop(droppable, draggable, e);
       }
-      
+
       if (isDraggableAccepted(droppable, draggable)) {
         isOut = true;
         isOver = false;
@@ -147,7 +145,7 @@ public class DroppableHandler {
   }
 
   public void over(Element droppable, Event e) {
-    GWT.log("over");
+
     Element currentDraggable = DraggableDroppableManager.getInstance()
         .getCurrentDraggable();
 
@@ -157,14 +155,7 @@ public class DroppableHandler {
 
     if (isDraggableAccepted(droppable, currentDraggable)) {
       if (options.getHoverClass() != null) {
-        //add hover class in front of other class name
-        /*String className = droppable.getClassName();
-        String hoverClassName = options.getHoverClass();
-        if (!className.contains(hoverClassName)){
-          droppable.setClassName(hoverClassName+" "+className);
-        }*/
         droppable.addClassName(options.getHoverClass());
-        
       }
       trigger(new OverDroppableEvent(), options.getOnOver(), droppable,
           currentDraggable);
@@ -336,7 +327,6 @@ public class DroppableHandler {
     } else if (isIntersect && !isOver) {
       c = PositionStatus.IS_OVER;
     }
-    GWT.log("PositionStatus :"+c);
     if (c == null) {
       return;
     }
