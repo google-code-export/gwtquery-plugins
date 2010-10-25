@@ -3,6 +3,7 @@ package gwtquery.plugins.droppable.client;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.query.client.GQuery;
@@ -20,10 +21,10 @@ import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
 import gwtquery.plugins.droppable.client.events.AbstractDroppableEvent;
 import gwtquery.plugins.droppable.client.events.ActivateDroppableEvent;
 import gwtquery.plugins.droppable.client.events.DeactivateDroppableEvent;
-import gwtquery.plugins.droppable.client.events.DragDropInfo;
+import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 import gwtquery.plugins.droppable.client.events.DropEvent;
-import gwtquery.plugins.droppable.client.events.DroppableOutEvent;
-import gwtquery.plugins.droppable.client.events.DroppableOverEvent;
+import gwtquery.plugins.droppable.client.events.OutDroppableEvent;
+import gwtquery.plugins.droppable.client.events.OverDroppableEvent;
 
 /**
  * 
@@ -31,10 +32,11 @@ import gwtquery.plugins.droppable.client.events.DroppableOverEvent;
  * 
  */
 public class DroppableHandler {
-  
-  private static enum PositionStatus{
+
+  private static enum PositionStatus {
     IS_OVER, IS_OUT;
   }
+
   public static DroppableHandler getInstance(Element droppable) {
     return $(droppable).data(DROPPABLE_HANDLER_KEY, DroppableHandler.class);
   }
@@ -68,7 +70,7 @@ public class DroppableHandler {
   }
 
   public void deactivate(Element droppable, Event e) {
-
+    GWT.log("Deactivate droppable" + droppable);
     if (options.getActiveClass() != null) {
       droppable.removeClassName(options.getActiveClass());
     }
@@ -89,14 +91,16 @@ public class DroppableHandler {
 
     boolean drop = false;
 
-    if (!options.isDisabled() && visible)
+    if (!options.isDisabled() && visible) {
       if (!alreadyDrop && intersect(draggable)) {
         drop = doDrop(droppable, draggable, e);
       }
-    if (isDraggableAccepted(droppable, draggable)) {
-      isOut = true;
-      isOver = false;
-      deactivate(droppable, e);
+      
+      if (isDraggableAccepted(droppable, draggable)) {
+        isOut = true;
+        isOver = false;
+        deactivate(droppable, e);
+      }
     }
     return drop;
   }
@@ -137,12 +141,13 @@ public class DroppableHandler {
       if (options.getHoverClass() != null) {
         droppable.removeClassName(options.getHoverClass());
       }
-      trigger(new DroppableOutEvent(), options.getOnOut(), droppable,
+      trigger(new OutDroppableEvent(), options.getOnOut(), droppable,
           currentDraggable);
     }
   }
 
   public void over(Element droppable, Event e) {
+    GWT.log("over");
     Element currentDraggable = DraggableDroppableManager.getInstance()
         .getCurrentDraggable();
 
@@ -152,9 +157,16 @@ public class DroppableHandler {
 
     if (isDraggableAccepted(droppable, currentDraggable)) {
       if (options.getHoverClass() != null) {
+        //add hover class in front of other class name
+        /*String className = droppable.getClassName();
+        String hoverClassName = options.getHoverClass();
+        if (!className.contains(hoverClassName)){
+          droppable.setClassName(hoverClassName+" "+className);
+        }*/
         droppable.addClassName(options.getHoverClass());
+        
       }
-      trigger(new DroppableOverEvent(), options.getOnOver(), droppable,
+      trigger(new OverDroppableEvent(), options.getOnOver(), droppable,
           currentDraggable);
     }
 
@@ -294,15 +306,14 @@ public class DroppableHandler {
 
   private void trigger(AbstractDroppableEvent<?> e, DroppableFunction callback,
       Element droppable, Element draggable) {
-    DragDropInfo draggableInfo = new DragDropInfo(draggable, droppable);
+    DragAndDropContext context = new DragAndDropContext(draggable, droppable);
 
     if (eventBus != null && e != null) {
-      e.setDragDropInfo(draggableInfo);
+      e.setDragDropInfo(context);
       eventBus.fireEvent(e);
     }
     if (callback != null) {
-      // TODO use a proper callback function for droppable ?
-      callback.f(droppable, draggableInfo);
+      callback.f(context);
     }
   }
 
@@ -313,57 +324,58 @@ public class DroppableHandler {
   }
 
   public void drag(Element droppable, Element draggable, Event e) {
-    if (options.isDisabled() || greedyChild || !visible){
+    if (options.isDisabled() || greedyChild || !visible) {
       return;
     }
-    
+
     boolean isIntersect = intersect(draggable);
     PositionStatus c = null;
-    
-    if (!isIntersect && isOver){
+
+    if (!isIntersect && isOver) {
       c = PositionStatus.IS_OUT;
-    }else if (isIntersect && !isOver){
-      c =PositionStatus.IS_OVER;
+    } else if (isIntersect && !isOver) {
+      c = PositionStatus.IS_OVER;
     }
-    
-    if (c == null){
+    GWT.log("PositionStatus :"+c);
+    if (c == null) {
       return;
     }
-    
+
     DroppableHandler parentDroppableHandler = null;
     GQuery droppableParents = null;
-    if (options.isGreedy()){
-      //TODO maybe filter the parent with droppable data instead of test on css class name
-      droppableParents =$(droppable).parents("."+CssClassNames.UI_DROPPABLE);
-      if (droppableParents.length() > 0){
-        parentDroppableHandler = DroppableHandler.getInstance(droppableParents.get(0));
-        parentDroppableHandler.greedyChild = (c == PositionStatus.IS_OVER); 
+    if (options.isGreedy()) {
+      // TODO maybe filter the parent with droppable data instead of test on css
+      // class name
+      droppableParents = $(droppable).parents("." + CssClassNames.UI_DROPPABLE);
+      if (droppableParents.length() > 0) {
+        parentDroppableHandler = DroppableHandler.getInstance(droppableParents
+            .get(0));
+        parentDroppableHandler.greedyChild = (c == PositionStatus.IS_OVER);
       }
     }
-    
-    if (parentDroppableHandler != null && c == PositionStatus.IS_OVER){
+
+    if (parentDroppableHandler != null && c == PositionStatus.IS_OVER) {
       parentDroppableHandler.isOver = false;
       parentDroppableHandler.isOut = true;
       parentDroppableHandler.out(droppableParents.get(0), e);
     }
-    
-    if (c == PositionStatus.IS_OUT){
+
+    if (c == PositionStatus.IS_OUT) {
       isOut = true;
       isOver = false;
-      out(droppable,e);
-    }else {
+      out(droppable, e);
+    } else {
       isOver = true;
       isOut = false;
       over(droppable, e);
     }
-    
-    if (parentDroppableHandler != null && c == PositionStatus.IS_OUT){
+
+    if (parentDroppableHandler != null && c == PositionStatus.IS_OUT) {
       parentDroppableHandler.isOut = false;
       parentDroppableHandler.isOver = true;
       parentDroppableHandler.over(droppableParents.get(0), e);
     }
-    
-    
+
   }
 
 }

@@ -139,3 +139,4 @@ public class DraggableDroppableManagerImpl extends DraggableDroppableManager {
     droppables.add(droppable);
   }
 }
+
