@@ -35,6 +35,7 @@ public class CursorPlugin implements DraggablePlugin {
 
   private static String OLD_CURSOR_KEY = "oldCursor";
   private static String CURSOR_CSS = "cursor";
+  private boolean isStarting=false;
 
   public String getName() {
     return "cursor";
@@ -50,12 +51,15 @@ public class CursorPlugin implements DraggablePlugin {
 
   public void onStart(DraggableHandler handler, Element draggableElement,
       Event e) {
-    GQuery $body = $(body);
-    String oldCursor = $body.css(CURSOR_CSS);
-    if (oldCursor != null) {
-      $body.data(OLD_CURSOR_KEY, oldCursor);
+    if (!isStarting){
+      isStarting = true;
+      GQuery $body = $(body);
+      String oldCursor = $body.css(CURSOR_CSS);
+      if (oldCursor != null) {
+        $body.data(OLD_CURSOR_KEY, oldCursor);
+      }
+      $body.css(CURSOR_CSS, handler.getOptions().getCursor().getCssName());
     }
-    $body.css(CURSOR_CSS, handler.getOptions().getCursor().getCssName());
 
   }
 
@@ -63,6 +67,7 @@ public class CursorPlugin implements DraggablePlugin {
     GQuery $body = $(body);
     String oldCursor = $body.data(OLD_CURSOR_KEY, String.class);
     $body.css(CURSOR_CSS, oldCursor);
+    isStarting=false;
   }
 
 }

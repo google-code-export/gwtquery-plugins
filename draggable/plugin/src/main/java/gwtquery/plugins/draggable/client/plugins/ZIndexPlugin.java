@@ -15,12 +15,16 @@
  */
 package gwtquery.plugins.draggable.client.plugins;
 
+import static com.google.gwt.query.client.GQuery.$;
+
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
+import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 
 /**
  * This add-on manage the z-index for the helper while being dragged.
@@ -46,19 +50,26 @@ public class ZIndexPlugin implements DraggablePlugin {
 
   public void onStart(DraggableHandler handler, Element draggableElement,
       Event e) {
-    GQuery $helper = handler.getHelper();
-    String oldZIndex = $helper.css(ZINDEX_CSS);
-    if (oldZIndex != null) {
-      $helper.data(OLD_ZINDEX_KEY, oldZIndex);
+    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(draggableElement);
+    if ($element == null || $element.length() == 0){
+      return;
     }
-    $helper.css(ZINDEX_CSS, handler.getOptions().getZIndex().toString());
+    String oldZIndex = $element.css(ZINDEX_CSS);
+    if (oldZIndex != null) {
+      $element.data(OLD_ZINDEX_KEY, oldZIndex);
+    }
+    $element.css(ZINDEX_CSS, handler.getOptions().getZIndex().toString());
 
   }
 
   public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
-    GQuery $helper = handler.getHelper();
-    String oldZIndex = $helper.data(OLD_ZINDEX_KEY, String.class);
-    $helper.css(ZINDEX_CSS, oldZIndex);
+    //helper can be null if the draggableElement was unloaded and after loaded
+    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(draggableElement);
+    if ($element == null || $element.length() == 0){
+      return;
+    }
+    String oldZIndex = $element.data(OLD_ZINDEX_KEY, String.class);
+    $element.css(ZINDEX_CSS, oldZIndex);
   }
 
 }
