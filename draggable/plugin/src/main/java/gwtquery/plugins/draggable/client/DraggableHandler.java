@@ -17,6 +17,8 @@ package gwtquery.plugins.draggable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
+import static gwtquery.plugins.draggable.client.Draggable.DRAGGABLE_HANDLER_KEY;
+
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.GQueryUi;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
@@ -65,6 +67,10 @@ public class DraggableHandler {
     public String toString() {
       return "Top:" + top + "--Left:" + left;
     }
+  }
+
+  public static DraggableHandler getInstance(Element draggable) {
+    return $(draggable).data(DRAGGABLE_HANDLER_KEY, DraggableHandler.class);
   }
 
   private DraggableHandlerImpl impl = GWT.create(DraggableHandlerImpl.class);
@@ -302,7 +308,9 @@ public class DraggableHandler {
   }
 
   void clear(Element draggable) {
-
+    if (helper == null) {
+      return;
+    }
     helper.removeClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
     if (helper.get(0) != draggable && !cancelHelperRemoval) {
       impl.removeHelper(helper, options.getHelperType());
@@ -386,7 +394,7 @@ public class DraggableHandler {
         $containement = $(containmentAsString);
       }
     }
-    
+
     Element ce = $containement.get(0);
     if (ce == null) {
       return;
