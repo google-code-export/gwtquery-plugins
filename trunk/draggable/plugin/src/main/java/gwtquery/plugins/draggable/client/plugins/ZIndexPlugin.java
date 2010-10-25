@@ -17,7 +17,6 @@ package gwtquery.plugins.draggable.client.plugins;
 
 import static com.google.gwt.query.client.GQuery.$;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 
