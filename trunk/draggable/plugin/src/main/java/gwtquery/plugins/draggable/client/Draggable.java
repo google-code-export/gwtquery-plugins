@@ -15,7 +15,6 @@
  */
 package gwtquery.plugins.draggable.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
@@ -278,9 +277,7 @@ public class Draggable extends MouseHandler {
   @Override
   protected boolean mouseStart(Element draggable, Event event) {
     reset();
-    
-    GWT.log("On mouse start :: mouseStart");
-
+  
     DraggableHandler dragHandler = getHandler(draggable);
     DraggableOptions options = getOptions(draggable);
 
@@ -300,7 +297,7 @@ public class Draggable extends MouseHandler {
       trigger(new DragStartEvent(draggable), options.getOnDragStart(),
           draggable);
     } catch (StopDragException e) {
-      dragHandler.clear(draggable);
+      mouseStop(draggable, event);
       return false;
     }
 
