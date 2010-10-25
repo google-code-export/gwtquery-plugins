@@ -89,7 +89,9 @@ public abstract class MouseHandler extends GQueryUi {
   }
 
   protected void destroyMouseHandler() {
-    as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
+    //TODO waiting correction of issue 48
+    //as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
+    as(Events.Events).unbind(Event.ONMOUSEDOWN ,getPluginName()).unbind(Event.ONCLICK, getPluginName());
   }
 
 
