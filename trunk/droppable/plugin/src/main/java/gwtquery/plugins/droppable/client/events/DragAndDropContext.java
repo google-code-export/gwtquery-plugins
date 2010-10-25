@@ -5,7 +5,12 @@ import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
 
 import com.google.gwt.dom.client.Element;
 
-public class DragDropInfo {
+/**
+ * TODO If we use DraggableWidget and that draggable are detached and attached the DraggableHandler is new ...
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ *
+ */
+public class DragAndDropContext {
 	
 	private Element draggable;
 	private Element helper;
@@ -13,7 +18,7 @@ public class DragDropInfo {
 	private LeftTopDimension draggableOffset;
 	private Element droppable;
 	
-	public DragDropInfo(Element draggable, Element droppable) {
+	public DragAndDropContext(Element draggable, Element droppable) {
 		this.draggable = draggable;
 		this.droppable = droppable;
 		init();
@@ -21,7 +26,9 @@ public class DragDropInfo {
 	
 	private void init(){
 		DraggableHandler handler = DraggableHandler.getInstance(draggable);
-		helper = handler.getHelper().get(0);
+		if (handler.getHelper() != null){
+		  helper = handler.getHelper().get(0);
+		}
 		helperPosition = handler.getPosition();
 		draggableOffset = handler.getAbsPosition();
 	}

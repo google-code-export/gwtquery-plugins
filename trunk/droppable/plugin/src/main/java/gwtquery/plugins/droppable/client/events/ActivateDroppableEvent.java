@@ -3,13 +3,13 @@ package gwtquery.plugins.droppable.client.events;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
-public class ActivateDroppableEvent extends AbstractDroppableEvent<ActivateDroppableEvent.DropActivateEventHandler> {
+public class ActivateDroppableEvent extends AbstractDroppableEvent<ActivateDroppableEvent.ActivateDroppableEventHandler> {
 	
-	public interface DropActivateEventHandler extends EventHandler {
+	public interface ActivateDroppableEventHandler extends EventHandler {
 		public void onActivateDroppable(ActivateDroppableEvent event);
 	}
 
-	public static Type<DropActivateEventHandler> TYPE = new Type<DropActivateEventHandler>();
+	public static Type<ActivateDroppableEventHandler> TYPE = new Type<ActivateDroppableEventHandler>();
 
 	public ActivateDroppableEvent() {	
 	}
@@ -20,12 +20,12 @@ public class ActivateDroppableEvent extends AbstractDroppableEvent<ActivateDropp
 
 
 	@Override
-	public Type<DropActivateEventHandler> getAssociatedType() {
+	public Type<ActivateDroppableEventHandler> getAssociatedType() {
 		return TYPE;
 	}
 
 	@Override
-	protected void dispatch(DropActivateEventHandler handler) {
+	protected void dispatch(ActivateDroppableEventHandler handler) {
 		handler.onActivateDroppable(this);
 	}
 }
