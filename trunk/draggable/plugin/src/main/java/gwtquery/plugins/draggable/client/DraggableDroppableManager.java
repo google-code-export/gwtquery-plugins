@@ -17,7 +17,7 @@ package gwtquery.plugins.draggable.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.user.client.Event;
+import gwtquery.plugins.commonui.client.Event;
 
 import java.util.Collection;
 
@@ -30,16 +30,16 @@ public class DraggableDroppableManager {
     return INSTANCE;
   }
 
-  public void drag(Element draggable, DraggableOptions options, Event e) {
-  };
+  public void drag(Element draggable, Event e) {
+  }
 
-  public boolean drop(Element draggable, DraggableOptions options, Event e) {
+  public boolean drop(Element draggable, Event e) {
     return false;
-  };
+  }
 
   public Element getCurrentDraggable() {
     return null;
-  };
+  }
 
   public Collection<Element> getDroppablesByScope(String scope) {
     return null;
@@ -49,7 +49,7 @@ public class DraggableDroppableManager {
     return false;
   }
 
-  public void prepareOffset(Element draggable, DraggableOptions options, Event e) {
+  public void prepareOffset(Element draggable, Event e) {
   }
 
   public void setCurrentDraggable(Element draggable) {
