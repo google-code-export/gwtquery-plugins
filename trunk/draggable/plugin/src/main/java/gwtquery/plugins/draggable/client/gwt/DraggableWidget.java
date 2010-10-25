@@ -18,6 +18,7 @@ package gwtquery.plugins.draggable.client.gwt;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HandlerManager;
@@ -25,6 +26,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
+import com.google.gwt.query.client.plugins.EventsListener;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -54,6 +57,12 @@ import java.util.List;
  */
 public class DraggableWidget<T extends Widget> extends Composite implements
     HasAllDragHandler {
+
+  private final static String DRAGGABLE_WIDGET_KEY = "__draggableWidget";
+
+  public static DraggableWidget<?> get(Element e) {
+    return $(e).data(DRAGGABLE_WIDGET_KEY, DraggableWidget.class);
+  }
 
   private DraggableOptions options;
   private HandlerManager dragHandlerManager;
@@ -155,7 +164,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     return options;
   }
 
-
   /**
    * Get the wrapped original widget
    * 
@@ -165,7 +173,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   public T getOriginalWidget() {
     return (T) getWidget();
   }
-
 
   /**
    * Return the drag and drop scope. A draggable widget with the same scope
@@ -596,13 +603,22 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   @Override
   protected void onLoad() {
     super.onLoad();
-    $(getElement()).as(Draggable).draggable(options, ensureDragHandlers());
+    // force using of EventListener from GQuery !
+    EventsListener gQueryEventListener = EventsListener
+        .getInstance(getElement());
+    if (DOM.getEventListener(getElement()) != gQueryEventListener) {
+      DOM.setEventListener(getElement(), gQueryEventListener);
+    }
+
+    $(getElement()).as(Draggable).draggable(options, ensureDragHandlers()).data(DRAGGABLE_WIDGET_KEY, this);
   }
 
   @Override
   protected void onUnload() {
     super.onUnload();
-    $(getElement()).as(Draggable).destroy();
+    // TODO check if we need to destroy or not the draggable because, we lose
+    // draggablehandler and cie
+    $(getElement()).as(Draggable).destroy().removeData(DRAGGABLE_WIDGET_KEY);
   }
 
 }
