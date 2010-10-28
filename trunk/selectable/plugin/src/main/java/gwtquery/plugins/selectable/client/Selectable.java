@@ -16,6 +16,17 @@
 
 package gwtquery.plugins.selectable.client;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.JSArray;
+import com.google.gwt.query.client.Plugin;
+
+import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
 import gwtquery.plugins.selectable.client.event.SelectedEvent;
@@ -24,19 +35,6 @@ import gwtquery.plugins.selectable.client.event.SelectionStartEvent;
 import gwtquery.plugins.selectable.client.event.SelectionStopEvent;
 import gwtquery.plugins.selectable.client.event.UnselectedEvent;
 import gwtquery.plugins.selectable.client.event.UnselectingEvent;
-
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
-import com.google.gwt.query.client.Plugin;
-import com.google.gwt.user.client.Event;
 
 /**
  * Class implementing the JQuery-ui Selectable plugin.
@@ -360,7 +358,7 @@ public class Selectable extends MouseHandler {
       return;
     }
 
-    lasso.draw(pageX(event), pageY(event));
+    lasso.draw(event.pageX(), event.pageY());
 
     int x1 = lasso.element.getAbsoluteLeft(), y1 = lasso.element
         .getAbsoluteTop();
@@ -437,7 +435,7 @@ public class Selectable extends MouseHandler {
         selectable);
 
     if (options.isMultiSelect()) {
-      opos = new int[] { pageX(event), pageY(event) };
+      opos = new int[] { event.pageX(), event.pageY() };
       lasso.show(opos[0], opos[1], options.getAppendTo());
     }
 
