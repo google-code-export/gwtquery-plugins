@@ -195,11 +195,9 @@ public class SnapPlugin implements DraggablePlugin {
 
     for (Element element : snap.elements()) {
       if (element != draggableElement) {
-        // TODO outerWidth and outerHeight don't exist in GQuery ... Waiting issue 56
-        int outerWidth = element.getOffsetWidth();
-        int outerHeight = element.getClientHeight();
-        snapElements.add(new SnapElement($(element).offset(), outerWidth,
-            outerHeight));
+        GQuery $element = $(element);
+        snapElements.add(new SnapElement($element.offset(), $element.outerWidth(),
+            $element.outerHeight()));
       }
     }
     $(draggableElement).data(SNAP_ELEMENTS_KEY, snapElements);
