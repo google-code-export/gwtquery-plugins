@@ -1,76 +1,76 @@
 package gwtquery.plugins.droppable.client.events;
 
-import gwtquery.plugins.draggable.client.DraggableHandler;
-import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
-
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.query.client.GQuery.Offset;
+
+import gwtquery.plugins.draggable.client.DraggableHandler;
 
 /**
- * TODO If we use DraggableWidget and that draggable are detached and attached the DraggableHandler is new ...
+ * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
- *
+ * 
  */
 public class DragAndDropContext {
-	
-	private Element draggable;
-	private Element helper;
-	private LeftTopDimension helperPosition;
-	private LeftTopDimension draggableOffset;
-	private Element droppable;
-	
-	public DragAndDropContext(Element draggable, Element droppable) {
-		this.draggable = draggable;
-		this.droppable = droppable;
-		init();
-	}
-	
-	private void init(){
-		DraggableHandler handler = DraggableHandler.getInstance(draggable);
-		if (handler.getHelper() != null){
-		  helper = handler.getHelper().get(0);
-		}
-		helperPosition = handler.getPosition();
-		draggableOffset = handler.getAbsPosition();
-	}
 
-	public Element getDraggable() {
-		return draggable;
-	}
+  private Element draggable;
+  private Element helper;
+  private Offset helperPosition;
+  private Offset draggableOffset;
+  private Element droppable;
 
-	public Element getHelper() {
-		return helper;
-	}
+  public DragAndDropContext(Element draggable, Element droppable) {
+    this.draggable = draggable;
+    this.droppable = droppable;
+    init();
+  }
 
-	public LeftTopDimension getHelperPosition() {
-		return helperPosition;
-	}
+  private void init() {
+    DraggableHandler handler = DraggableHandler.getInstance(draggable);
+    if (handler.getHelper() != null) {
+      helper = handler.getHelper().get(0);
+    }
+    helperPosition = handler.getPosition();
+    draggableOffset = handler.getAbsPosition();
+  }
 
-	public LeftTopDimension getDraggableOffset() {
-		return draggableOffset;
-	}
+  public Element getDraggable() {
+    return draggable;
+  }
 
-	public void setDraggable(Element draggable) {
-		this.draggable = draggable;
-	}
+  public Element getHelper() {
+    return helper;
+  }
 
-	public void setHelper(Element helper) {
-		this.helper = helper;
-	}
+  public Offset getHelperPosition() {
+    return helperPosition;
+  }
 
-	public void setHelperPosition(LeftTopDimension helperPosition) {
-		this.helperPosition = helperPosition;
-	}
+  public Offset getDraggableOffset() {
+    return draggableOffset;
+  }
 
-	public void setDraggableOffset(LeftTopDimension draggableOffset) {
-		this.draggableOffset = draggableOffset;
-	}
-	
-	public Element getDroppable() {
-		return droppable;
-	}
-	
-	public void setDroppable(Element droppable) {
-		this.droppable = droppable;
-	}
+  public void setDraggable(Element draggable) {
+    this.draggable = draggable;
+  }
+
+  public void setHelper(Element helper) {
+    this.helper = helper;
+  }
+
+  public void setHelperPosition(Offset helperPosition) {
+    this.helperPosition = helperPosition;
+  }
+
+  public void setDraggableOffset(Offset draggableOffset) {
+    this.draggableOffset = draggableOffset;
+  }
+
+  public Element getDroppable() {
+    return droppable;
+  }
+
+  public void setDroppable(Element droppable) {
+    this.droppable = droppable;
+  }
 
 }

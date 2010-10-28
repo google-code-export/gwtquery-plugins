@@ -7,6 +7,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
@@ -213,7 +215,7 @@ public class DroppableHandler {
     return false;
   }
 
-  private boolean doDrop(Element droppable, Element draggable, Event e) {
+  private boolean doDrop(final Element droppable,final Element draggable, Event e) {
 
     if (draggable == null || draggable == droppable) {
       return false;
@@ -233,7 +235,16 @@ public class DroppableHandler {
       if (options.getHoverClass() != null) {
         droppable.removeClassName(options.getHoverClass());
       }
-      trigger(new DropEvent(), options.getOnDrop(), droppable, draggable);
+      
+      // we will use a deferredComand to trigger the drop event a the end of the drag and drop operation !!
+      //it's to ensure that the rest of the dnd operation will be done witout perturbation (e.g. on the drop event we can remove the draggable..)
+      DeferredCommand.addCommand(new Command() { 
+        public void execute() {
+          trigger(new DropEvent(), options.getOnDrop(), droppable, draggable);
+          
+        }
+      });
+      
 
     }
 
@@ -247,10 +258,10 @@ public class DroppableHandler {
     }
     DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
 
-    int draggableLeft = dragHandler.getAbsPosition().getLeft();
+    int draggableLeft = dragHandler.getAbsPosition().left;
     int draggableRight = draggableLeft
         + dragHandler.getHelperDimension().getWidth();
-    int draggableTop = dragHandler.getAbsPosition().getTop();
+    int draggableTop = dragHandler.getAbsPosition().top;
     int draggableBottom = draggableTop
         + dragHandler.getHelperDimension().getHeight();
 
@@ -273,8 +284,8 @@ public class DroppableHandler {
           && droppableTop < draggableTop + dragHelperHalfHeight
           && droppableBottom > draggableTop + dragHelperHalfHeight;
     case POINTER:
-      int pointerLeft = draggableLeft + dragHandler.getOffsetClick().getLeft();
-      int pointerTop = draggableTop + dragHandler.getOffsetClick().getTop();
+      int pointerLeft = draggableLeft + dragHandler.getOffsetClick().left;
+      int pointerTop = draggableTop + dragHandler.getOffsetClick().top;
       return pointerLeft > droppableLeft && pointerLeft < droppableRight
           && pointerTop > droppableTop && pointerTop < droppableBottom;
 
