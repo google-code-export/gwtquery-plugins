@@ -24,7 +24,6 @@ import com.google.gwt.query.client.GQuery.Offset;
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.draggable.client.DraggableHandler.LeftTopDimension;
 import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 
 import java.util.ArrayList;
@@ -83,9 +82,9 @@ public class SnapPlugin implements DraggablePlugin {
     int snapTolerance = handler.getOptions().getSnapTolerance();
     SnapMode snapMode = handler.getOptions().getSnapMode();
 
-    int helperLeft = handler.getAbsPosition().getLeft();
+    int helperLeft = handler.getAbsPosition().left;
     int helperRight = helperLeft + handler.getHelperDimension().getWidth();
-    int helperTop = handler.getAbsPosition().getTop();
+    int helperTop = handler.getAbsPosition().top;
     int helperBottom = helperTop + handler.getHelperDimension().getHeight();
 
     for (SnapElement snapElement : snapElements) {
@@ -118,8 +117,8 @@ public class SnapPlugin implements DraggablePlugin {
 
         continue;
       }
-      LeftTopDimension newTopDimension = null;
-      LeftTopDimension newLeftDimension = null;
+      Offset newTopDimension = null;
+      Offset newLeftDimension = null;
       if (SnapMode.INNER != snapMode) {
         boolean snapTop = Math.abs(snapElementTop - helperBottom) <= snapTolerance;
         boolean snapBottom = Math.abs(snapElementBottom - helperTop) <= snapTolerance;
@@ -128,20 +127,20 @@ public class SnapPlugin implements DraggablePlugin {
 
         if (snapTop) {
           newTopDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(0, snapElementTop
+              new Offset(0, snapElementTop
                   - handler.getHelperDimension().getHeight()));
         } else if (snapBottom) {
           newTopDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(0, snapElementBottom));
+              new Offset(0, snapElementBottom));
         }
 
         if (snapLeft) {
           newLeftDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(snapElementLeft
+              new Offset(snapElementLeft
                   - handler.getHelperDimension().getWidth(), 0));
         } else if (snapRight) {
           newLeftDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(snapElementRight, 0));
+              new Offset(snapElementRight, 0));
         }
       }
 
@@ -153,35 +152,35 @@ public class SnapPlugin implements DraggablePlugin {
 
         if (snapTop) {
           newTopDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(0, snapElementTop));
+              new Offset(0, snapElementTop));
         } else if (snapBottom) {
           newTopDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(0, snapElementBottom
+              new Offset(0, snapElementBottom
                   - handler.getHelperDimension().getHeight()));
         }
 
         if (snapLeft) {
           newLeftDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(snapElementLeft, 0));
+              new Offset(snapElementLeft, 0));
         } else if (snapRight) {
           newLeftDimension = handler.convertPositionTo(false,
-              new LeftTopDimension(snapElementRight
+              new Offset(snapElementRight
                   - handler.getHelperDimension().getWidth(), 0));
         }
       }
 
       if (newTopDimension != null) {
-        int newTop = newTopDimension.getTop() - handler.getMargin().getTop();
-        int newLeft = handler.getPosition().getLeft();
-        handler.setPosition(new LeftTopDimension(newLeft, newTop));
+        int newTop = newTopDimension.top- handler.getMargin().top;
+        int newLeft = handler.getPosition().left;
+        handler.setPosition(new Offset(newLeft, newTop));
 
       }
 
       if (newLeftDimension != null) {
-        int newTop = handler.getPosition().getTop();
-        int newLeft = newLeftDimension.getLeft()
-            - handler.getMargin().getLeft();
-        handler.setPosition(new LeftTopDimension(newLeft, newTop));
+        int newTop = handler.getPosition().top;
+        int newLeft = newLeftDimension.left
+            - handler.getMargin().left;
+        handler.setPosition(new Offset(newLeft, newTop));
 
       }
 

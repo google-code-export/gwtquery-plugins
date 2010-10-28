@@ -43,50 +43,24 @@ import com.google.gwt.user.client.Window;
 
 public class DraggableHandler {
 
-  /**
-   * A POJO used to store the top/left. TODO When issue 49 (GQuery) will be
-   * resolved, use Offset class instead
-   */
-  public static class LeftTopDimension {
-    private int left;
-    private int top;
-
-    public LeftTopDimension(int left, int top) {
-      this.left = left;
-      this.top = top;
-    }
-
-    public int getLeft() {
-      return left;
-    }
-
-    public int getTop() {
-      return top;
-    }
-
-    public String toString() {
-      return "Top:" + top + "--Left:" + left;
-    }
-  }
-
   public static DraggableHandler getInstance(Element draggable) {
     return $(draggable).data(DRAGGABLE_HANDLER_KEY, DraggableHandler.class);
   }
 
   private DraggableHandlerImpl impl = GWT.create(DraggableHandlerImpl.class);
 
-  private LeftTopDimension margin;
+  private Offset margin;
 
-  private LeftTopDimension offset;
-  private LeftTopDimension absPosition;
+  private Offset offset;
+  private Offset absPosition;
   // from where the click happened relative to the draggable element
-  private LeftTopDimension offsetClick;
-  private LeftTopDimension parentOffset;
-  private LeftTopDimension relativeOffset;
+  private Offset offsetClick;
+  private Offset parentOffset;
+  private Offset relativeOffset;
   private int originalEventPageX;
   private int originalEventPageY;
-  private LeftTopDimension position;
-  private LeftTopDimension originalPosition;
+  private Offset position;
+  private Offset originalPosition;
 
   // info from helper
   private String helperCssPosition;
@@ -113,8 +87,8 @@ public class DraggableHandler {
    *          position to convert
    * @return
    */
-  public LeftTopDimension convertPositionTo(boolean absolute,
-      LeftTopDimension aPosition) {
+  public Offset convertPositionTo(boolean absolute,
+      Offset aPosition) {
     int mod = absolute ? 1 : -1;
     GQuery scroll = getScrollParent();
     boolean scrollIsRootNode = isRootNode(scroll.get(0));
@@ -135,11 +109,11 @@ public class DraggableHandler {
         - ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft()
             : scrollIsRootNode ? 0 : scroll.scrollLeft()) * mod;
 
-    return new LeftTopDimension(left, top);
+    return new Offset(left, top);
 
   }
 
-  public LeftTopDimension getAbsPosition() {
+  public Offset getAbsPosition() {
     return absPosition;
   }
 
@@ -167,15 +141,15 @@ public class DraggableHandler {
     return helperScrollParent;
   }
 
-  public LeftTopDimension getMargin() {
+  public Offset getMargin() {
     return margin;
   }
 
-  public LeftTopDimension getOffset() {
+  public Offset getOffset() {
     return offset;
   }
 
-  public LeftTopDimension getOffsetClick() {
+  public Offset getOffsetClick() {
     return offsetClick;
   }
 
@@ -191,19 +165,19 @@ public class DraggableHandler {
     return originalEventPageY;
   }
 
-  public LeftTopDimension getOriginalPosition() {
+  public Offset getOriginalPosition() {
     return originalPosition;
   }
 
-  public LeftTopDimension getParentOffset() {
+  public Offset getParentOffset() {
     return parentOffset;
   }
 
-  public LeftTopDimension getPosition() {
+  public Offset getPosition() {
     return position;
   }
 
-  public LeftTopDimension getRelativeOffset() {
+  public Offset getRelativeOffset() {
     return relativeOffset;
   }
 
@@ -219,13 +193,13 @@ public class DraggableHandler {
 
     setMarginCache(element);
 
-    absPosition = new LeftTopDimension(element.getAbsoluteLeft(), element
+    absPosition = new Offset(element.getAbsoluteLeft(), element
         .getAbsoluteTop());
 
-    offset = new LeftTopDimension(absPosition.getLeft() - margin.getLeft(),
-        absPosition.getTop() - margin.getTop());
+    offset = new Offset(absPosition.left - margin.left,
+        absPosition.top - margin.top);
 
-    offsetClick = new LeftTopDimension(e.pageX() - offset.left, e.pageY()
+    offsetClick = new Offset(e.pageX() - offset.left, e.pageY()
         - offset.top);
 
     parentOffset = calculateParentOffset(element);
@@ -235,7 +209,7 @@ public class DraggableHandler {
     originalEventPageY = e.pageY();
 
     position = generatePosition(e, true);
-    originalPosition = new LeftTopDimension(position.left, position.top);
+    originalPosition = new Offset(position.left, position.top);
 
     if (options.getCursorAt() != null) {
       adjustOffsetFromHelper(options.getCursorAt());
@@ -257,10 +231,10 @@ public class DraggableHandler {
   public void moveHelper(boolean firstTime) {
     AxisOption axis = options.getAxis();
     if (AxisOption.NONE == axis || AxisOption.X_AXIS == axis || firstTime) {
-      helper.get(0).getStyle().setLeft(position.getLeft(), Unit.PX);
+      helper.get(0).getStyle().setLeft(position.left, Unit.PX);
     }
     if (AxisOption.NONE == axis || AxisOption.Y_AXIS == axis || firstTime) {
-      helper.get(0).getStyle().setTop(position.getTop(), Unit.PX);
+      helper.get(0).getStyle().setTop(position.top, Unit.PX);
     }
   }
 
@@ -286,7 +260,7 @@ public class DraggableHandler {
     int marginLeft = (int) GQUtils.cur(element, "marginLeft", true);
     int marginTop = (int) GQUtils.cur(element, "marginTop", true);
 
-    margin = new LeftTopDimension(marginLeft, marginTop);
+    margin = new Offset(marginLeft, marginTop);
 
   }
 
@@ -295,8 +269,8 @@ public class DraggableHandler {
 
   }
 
-  public void setPosition(LeftTopDimension leftTopDimension) {
-    position = leftTopDimension;
+  public void setPosition(Offset Offset) {
+    position = Offset;
 
   }
 
@@ -341,21 +315,21 @@ public class DraggableHandler {
   private void adjustOffsetFromHelper(CursorAt cursorAt) {
 
     if (cursorAt.getLeft() != null) {
-      offsetClick.left = cursorAt.getLeft().intValue() + margin.getLeft();
+      offsetClick.left = cursorAt.getLeft().intValue() + margin.left;
     }
 
     if (cursorAt.getRight() != null) {
       offsetClick.left = helperDimension.getWidth()
-          - cursorAt.getRight().intValue() + margin.getLeft();
+          - cursorAt.getRight().intValue() + margin.left;
     }
 
     if (cursorAt.getTop() != null) {
-      offsetClick.top = cursorAt.getTop().intValue() + margin.getTop();
+      offsetClick.top = cursorAt.getTop().intValue() + margin.top;
     }
 
     if (cursorAt.getBottom() != null) {
       offsetClick.top = helperDimension.getHeight()
-          - cursorAt.getBottom().intValue() + margin.getTop();
+          - cursorAt.getBottom().intValue() + margin.top;
     }
   }
 
@@ -405,7 +379,7 @@ public class DraggableHandler {
 
   }
 
-  private LeftTopDimension calculateParentOffset(Element element) {
+  private Offset calculateParentOffset(Element element) {
     Offset position = helperOffsetParent.offset();
 
     if ("absolute".equals(helperCssPosition)
@@ -423,7 +397,7 @@ public class DraggableHandler {
         "borderLeftWidth", true), (int) GQUtils.cur(helperOffsetParent.get(0),
         "borderTopWidth", true));
 
-    return new LeftTopDimension(position.left, position.top);
+    return new Offset(position.left, position.top);
 
   }
 
@@ -431,14 +405,14 @@ public class DraggableHandler {
    * This is a relative to absolute position minus the actual position
    * calculation - only used for relative positioned helper
    */
-  private LeftTopDimension calculateRelativeHelperOffset(Element element) {
+  private Offset calculateRelativeHelperOffset(Element element) {
     if ("relative".equals(helperCssPosition)) {
       return impl.calculateRelativeHelperOffset(element, this);
     }
-    return new LeftTopDimension(0, 0);
+    return new Offset(0, 0);
   }
 
-  private LeftTopDimension generatePosition(Event e, boolean init) {
+  private Offset generatePosition(Event e, boolean init) {
     GQuery scroll = getScrollParent();
     boolean scrollIsRootNode = isRootNode(scroll.get(0));
 
@@ -503,7 +477,7 @@ public class DraggableHandler {
         - parentOffset.left
         + ("fixed".equals(helperCssPosition) ? -helperScrollParent.scrollLeft()
             : scrollIsRootNode ? 0 : scroll.scrollLeft());
-    return new LeftTopDimension(left, top);
+    return new Offset(left, top);
   }
 
   private GQuery getScrollParent() {

@@ -23,6 +23,8 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.DeferredCommand;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.MouseHandler;
@@ -335,8 +337,8 @@ public class Draggable extends MouseHandler {
         @Override
         public void f(Element e) {
           callPlugins(new StopCaller(draggable, event), options);
-          trigger(new DragStopEvent(draggable), options.getOnDragStop(),
-              draggable);
+          triggerDragStop(draggable, options);
+          
           
           getHandler(draggable).clear(draggable);
         }
@@ -345,7 +347,7 @@ public class Draggable extends MouseHandler {
     }
 
     callPlugins(new StopCaller(draggable, event), options);
-    trigger(new DragStopEvent(draggable), options.getOnDragStop(), draggable);
+    triggerDragStop(draggable, options);
 
     getHandler(draggable).clear(draggable);
 
@@ -440,6 +442,22 @@ public class Draggable extends MouseHandler {
 
   private void reset() {
     currentDragHandler = null;
+  }
+  
+  /**
+   * Use a deferred command to be sure that this event is trigger after the possible drop event.
+   * @param draggable
+   * @param options
+   */
+  private void triggerDragStop(final Element draggable, final DraggableOptions options){
+    DeferredCommand.addCommand(new Command() {
+      
+      public void execute() {
+        trigger(new DragStopEvent(draggable), options.getOnDragStop(),
+            draggable);
+        
+      }
+    });
   }
 
 }
