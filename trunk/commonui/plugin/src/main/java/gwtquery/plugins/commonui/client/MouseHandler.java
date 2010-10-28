@@ -89,9 +89,7 @@ public abstract class MouseHandler extends GQueryUi {
   }
 
   protected void destroyMouseHandler() {
-    //TODO waiting correction of issue 48
-    //as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
-    as(Events.Events).unbind(Event.ONMOUSEDOWN ,getPluginName()).unbind(Event.ONCLICK, getPluginName());
+    as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
   }
 
 
@@ -274,9 +272,7 @@ public abstract class MouseHandler extends GQueryUi {
   }
 
   private void unbindOtherMouseEvent() {
-    //TODO waiting correction of issue 48
-    //$(document).as(Events.Events).unbind((Event.ONMOUSEUP | Event.ONMOUSEMOVE), getPluginName());
-    $(document).as(Events.Events).unbind(Event.ONMOUSEUP, getPluginName()).unbind(Event.ONMOUSEMOVE, getPluginName());
+    $(document).as(Events.Events).unbind((Event.ONMOUSEUP | Event.ONMOUSEMOVE), getPluginName());
   }
 
 }
