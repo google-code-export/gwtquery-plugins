@@ -218,8 +218,6 @@ public class Draggable extends MouseHandler {
       $(e).data(DRAGGABLE_HANDLER_KEY, handler);
     }
 
-    initMouseHandler(options);
-
     return this;
   }
 
