@@ -616,8 +616,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   @Override
   protected void onUnload() {
     super.onUnload();
-    // TODO check if we need to destroy or not the draggable because, we lose
-    // draggablehandler and cie
     $(getElement()).as(Draggable).destroy().removeData(DRAGGABLE_WIDGET_KEY);
   }
 
