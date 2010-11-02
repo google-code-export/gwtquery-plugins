@@ -1,0 +1,119 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>GwtQuery: Droppable plugin example 1</title>
+<style type="text/css">
+body {
+	color: black;
+	font-family: Arial Unicode MS, Arial, sans-serif;
+	font-size: small;
+}
+
+.draggable {
+	width: 120px;
+	height: 100px;
+	padding: 0.5em;
+	border: black solid 1px;
+	background: #f6f6f6;
+}
+
+.demo {
+	width: 700px;
+	height: 900px;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 10px;
+	border: black solid 1px;
+}
+
+.main-droppable {
+	width: 250px;
+	height: 250px;
+	padding: 0.5em;
+	margin: 10px;
+	background-color: #CCCCCC;
+	border: 1px solid #AAAAAA;
+    position:relative;
+}
+
+.second-droppable {
+	width: 150px;
+	height: 150px;
+	padding: 0.5em;
+	margin: 10px auto 0 auto;
+	background-color: #CCCCCC;
+	border: 1px solid #AAAAAA;
+    position:relative;
+}
+
+.orange-background {
+	background-color: #F6A828;
+	border: 1px solid #E78F08;
+	color: white;
+}
+
+.yellow-background {
+	background-color: #FFE45C;
+	border: 1px solid #FED22F;
+	color: #363636;
+}
+
+.white-background {
+	background-color: white;
+	border: 1px solid #FED22F;
+	color: #FBF9EE;
+}
+
+.setupButton {
+	position: absolute;
+	bottom: 3px;
+	right: 3px;
+}
+.logEventPanel{
+    padding:5px;
+    border: 1px solid black;
+}
+.logEventPanelActionBar{
+ margin-right: 5px;
+ margin-bottom : 5px
+ float:left;
+ }
+
+</style>
+<script language="javascript" src="TestOptionsSample.nocache.js"></script>
+</head>
+<body>
+<div class="demo">
+<h1>GWTQuery : Droppable plug-in (example 1)</h1>
+<!-- ul style="padding: 10px 0px; list-style: none; display: block">          <li style="float: left;"><a                  href="../DraggableSample1/DraggableSample1.html">To start</a>&nbsp;|&nbsp;          </li>          <li style="float: left;"><a                  href="../DraggableSample2/DraggableSample2.html">Test the options</a>&nbsp;|&nbsp;          </li>          <li style="float: left;"><a href="../SnapSample/SnapSample.html">Snap          sample</a>&nbsp;|&nbsp;</li>          <li style="float: left;"><a                  href="../ContainmentSample/Containment.html">Containment sample</a>&nbsp;|&nbsp;          </li>          <li style="float: left;"><a href="../StackSample/StackSample.html">Stack          sample</a>&nbsp;|&nbsp;</li>          <li style="float: left;"><a                  href="../GWTIntegrationSample/GWTIntegrationSample.html">Integration          with GWT</a></li>  </ul -->
+<p>Drop functionality.</p>
+<div id="logEventWindow"></div>
+
+<div style="float: right; margin-right: 20px;">
+<div id="mainDroppable1" class="main-droppable">
+<p>I'm the main droppable 1</p>
+<div id="secondDroppable1" class="second-droppable">
+<p>I'm the second droppable 1</p>
+</div>
+</div>
+<div id="mainDroppable2" class="main-droppable">
+<p>I'm the main droppable 2</p>
+<div id="secondDroppable2" class="second-droppable">
+<p>I'm the second droppable 2</p>
+</div>
+</div>
+</div>
+<div style="margin-left: 10px;">
+<div id="draggable1" class="draggable">
+<p>I'm the draggable 1</p>
+</div>
+<div id="draggable2" class="draggable">
+<p>I'm the draggable 2</p>
+</div>
+</div>
+</div>
+<br />
+<a href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/draggable/sample/src/main/java/gwtquery/plugins/draggable/client/DraggableSample1.java" target="_blank">Java source code</a>
+</body>
+</html>

@@ -10,27 +10,71 @@ body {
 	font-size: small;
 }
 
+.draggable {
+	width: 120px;
+	height: 100px;
+	padding: 0.5em;
+	border: black solid 1px;
+	background: #f6f6f6;
+}
+
 .demo {
-	width: 750px;
+	width: 700px;
+	height: 900px;
 	margin-right: auto;
 	margin-left: auto;
 	padding: 10px;
 	border: black solid 1px;
 }
 
+.droppable {
+	width: 300px;
+	height: 300px;
+	padding: 0.5em;
+	margin: 10px;
+	background-color: #CCCCCC;
+	border: 1px solid #AAAAAA;
+    position:relative;
+    float: right;
+     margin-right: 20px;
+}
+
+.orange-background {
+	background-color: #F6A828;
+	border: 1px solid #E78F08;
+	color: white;
+}
+
+.yellow-background {
+	background-color: #FFE45C;
+	border: 1px solid black;
+	color: #363636;
+}
+
+.white-background {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+}
+
 </style>
-<script language="javascript" src="DraughtsSample.nocache.js"></script>
+<script language="javascript" src="SimpleSample.nocache.js"></script>
 </head>
 <body>
 <div class="demo">
-<h1>Play to draughts with GWT and GQuery !</h1>
+<h1>GWTQuery Droppable plug-in : simple example</h1>
 <!-- ul style="padding: 10px 0px; list-style: none; display: block">          <li style="float: left;"><a                  href="../DraggableSample1/DraggableSample1.html">To start</a>&nbsp;|&nbsp;          </li>          <li style="float: left;"><a                  href="../DraggableSample2/DraggableSample2.html">Test the options</a>&nbsp;|&nbsp;          </li>          <li style="float: left;"><a href="../SnapSample/SnapSample.html">Snap          sample</a>&nbsp;|&nbsp;</li>          <li style="float: left;"><a                  href="../ContainmentSample/Containment.html">Containment sample</a>&nbsp;|&nbsp;          </li>          <li style="float: left;"><a href="../StackSample/StackSample.html">Stack          sample</a>&nbsp;|&nbsp;</li>          <li style="float: left;"><a                  href="../GWTIntegrationSample/GWTIntegrationSample.html">Integration          with GWT</a></li>  </ul -->
-<div id="score" style="float:right;"></div>
-<div id="draughts"></div>
+<p>Drop functionality.</p>
+
+<div id="droppable" class="droppable">
+<p>I'm a drop target</p>
+</div>
+
+<div id="draggable" class="draggable">
+<p>I'm the draggable</p>
+</div>
 </div>
 <br />
-<a
-	href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/droppable/sample/src/main/java/gwtquery/plugins/droppable/client/DraughtsSample.java"
-	target="_blank">Java source code</a></div>
+<a href="http://code.google.com/p/gwtquery-plugins/source/browse/trunk/draggable/sample/src/main/java/gwtquery/plugins/draggable/client/DraggableSample1.java" target="_blank">Java source code</a>
 </body>
 </html>
