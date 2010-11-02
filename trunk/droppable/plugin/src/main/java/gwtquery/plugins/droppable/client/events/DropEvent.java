@@ -34,7 +34,6 @@ public class DropEvent extends
 	public static Type<DropEventHandler> TYPE = new Type<DropEventHandler>();
 
 	public DropEvent() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public DropEvent(Element droppable, Element draggable) {
