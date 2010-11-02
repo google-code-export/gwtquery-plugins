@@ -1,0 +1,19 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<g:HTMLPanel>
+
+		<g:Button ui:field="windowToogleButton" addStyleNames="logEventPanelActionBar">Hide
+			log window</g:Button>
+		<g:Button ui:field="clearLogButton" addStyleNames="logEventPanelActionBar">Clear log history</g:Button>
+		<g:CheckBox ui:field="enableDragMove" addStyleNames="logEventPanelActionBar">Enable logging of
+			drag move events</g:CheckBox>
+
+		<div
+			style=" height: 200px;width:690px;border:1px solid black;overflow:auto;margin-top:5px;"
+			ui:field="logEventWindow" />
+
+	</g:HTMLPanel>
+
+</ui:UiBinder>  
