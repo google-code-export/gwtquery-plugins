@@ -15,16 +15,17 @@
  */
 package gwtquery.plugins.draggable.client;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HasHandlers;
+import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.MouseHandler;
@@ -187,6 +188,17 @@ public class Draggable extends MouseHandler {
   public Draggable draggable(DraggableOptions options) {
     return draggable(options, null);
   }
+  
+  /**
+   * Selected elements will be now draggable
+   * 
+   *@param eventBus
+   *          The eventBus to use to fire events.
+   * @return
+   */
+  public Draggable draggable(HasHandlers eventBus) {
+    return draggable(new DraggableOptions(), eventBus);
+  }
 
   /**
    * Selected elements will be now draggable
@@ -197,7 +209,7 @@ public class Draggable extends MouseHandler {
    *          The eventBus to use to fire events.
    * @return
    */
-  public Draggable draggable(DraggableOptions options, HandlerManager eventBus) {
+  public Draggable draggable(DraggableOptions options, HasHandlers eventBus) {
 
     this.eventBus = eventBus;
 
@@ -296,9 +308,14 @@ public class Draggable extends MouseHandler {
     try {
       trigger(new DragStartEvent(draggable), options.getOnDragStart(),
           draggable);
-    } catch (StopDragException e) {
-      mouseStop(draggable, event);
-      return false;
+    } catch (UmbrellaException e) {
+      for (Throwable t : e.getCauses()){
+        if (t instanceof StopDragException){
+          mouseStop(draggable, event);
+          return false;
+        }
+      }
+     
     }
 
     dragHandler.cacheHelperSize();
@@ -419,9 +436,14 @@ public class Draggable extends MouseHandler {
       try {
         trigger(new DragEvent(draggable), dragHandler.getOptions().getOnDrag(),
             draggable);
-      } catch (StopDragException e) {
-        mouseStop(draggable, event);
-        return false;
+      } catch (UmbrellaException e) {
+        for (Throwable t : e.getCauses()){
+          if (t instanceof StopDragException){
+            mouseStop(draggable, event);
+            return false;
+          }
+        }
+       
       }
     }
 
@@ -448,7 +470,7 @@ public class Draggable extends MouseHandler {
    * @param options
    */
   private void triggerDragStop(final Element draggable, final DraggableOptions options){
-    DeferredCommand.addCommand(new Command() {
+    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
       
       public void execute() {
         trigger(new DragStopEvent(draggable), options.getOnDragStop(),
