@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
@@ -53,7 +53,7 @@ public class GQueryUi extends GQuery {
     });
   }
   
-  protected HandlerManager eventBus;
+  protected HasHandlers eventBus;
   
   private GQueryUiImpl impl = GWT.create(GQueryUiImpl.class);
  
@@ -131,7 +131,7 @@ public class GQueryUi extends GQuery {
     trigger(e, callback, element, eventBus);
   }
   
-  protected static void trigger(GwtEvent<?> e, Function callback, Element element, HandlerManager handlerManager){
+  protected static void trigger(GwtEvent<?> e, Function callback, Element element, HasHandlers handlerManager){
     if (handlerManager != null && e != null) {
       handlerManager.fireEvent(e);
     }
