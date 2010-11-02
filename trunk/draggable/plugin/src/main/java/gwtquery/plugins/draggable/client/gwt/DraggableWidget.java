@@ -20,9 +20,10 @@ import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
@@ -65,7 +66,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   private DraggableOptions options;
-  private HandlerManager dragHandlerManager;
+  private SimpleEventBus dragHandlerManager;
 
   /**
    * Constructor
@@ -590,13 +591,12 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     return ensureDragHandlers().addHandler(type, handler);
   }
 
-  protected HandlerManager ensureDragHandlers() {
-    return dragHandlerManager == null ? dragHandlerManager = new HandlerManager(
-        this)
+  protected EventBus ensureDragHandlers() {
+    return dragHandlerManager == null ? dragHandlerManager = new SimpleEventBus()
         : dragHandlerManager;
   }
 
-  protected HandlerManager getDragHandlerManager() {
+  protected EventBus getDragHandlerManager() {
     return dragHandlerManager;
   }
 
