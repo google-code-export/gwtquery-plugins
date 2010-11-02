@@ -1,9 +1,7 @@
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static com.google.gwt.query.client.plugins.Effects.Effects;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.user.client.ui.Grid;
@@ -21,19 +19,16 @@ import java.util.List;
 
 public class CheckerBoard extends Grid {
 
-  public static CheckerBoard getInstance() {
-    return INSTANCE;
-  }
 
   private static final Css CSS = DraughtsResources.INSTANCE.css();
-  private static final CheckerBoard INSTANCE = new CheckerBoard();
 
   public static final int SQUARE_NUMBER = 8;
   public static final int PIECE_NUMBER = 12;
+  public static final String CHECKERBOARD_CLASS_NAME="."+CSS.checkerBoard();
 
   private List<DroppableSquare> droppableSquareList = new ArrayList<DroppableSquare>();
 
-  private CheckerBoard() {
+  public CheckerBoard() {
     super(SQUARE_NUMBER, SQUARE_NUMBER);
     initBoard();
   }
@@ -101,9 +96,9 @@ public class CheckerBoard extends Grid {
     }
     
     Piece first = pieces.remove(0);
-    $(first.getElement()).as(Effects).fadeIn(100, new Function(){
+    $(first).fadeIn(100, new Function(){
       @Override
-      public void f(Element e) {
+      public void f() {
         fadeIn(pieces);
       }
     });

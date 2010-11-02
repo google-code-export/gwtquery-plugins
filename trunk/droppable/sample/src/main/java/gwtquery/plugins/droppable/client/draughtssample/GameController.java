@@ -1,6 +1,8 @@
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
+import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.CHECKERBOARD_CLASS_NAME;
 
 import com.google.gwt.user.client.Timer;
 
@@ -116,7 +118,7 @@ public class GameController implements PieceMoveEventHandler,
   }
 
   public void startGame() {
-    CheckerBoard checkerBoard = CheckerBoard.getInstance();
+    CheckerBoard checkerBoard = getCheckerBoard();
     checkerBoard.fillBoard();
     checkerBoard.lock();
     EVENT_BUS.fireEvent(new PlayerChangeEvent(currentPlayer));
@@ -144,7 +146,7 @@ public class GameController implements PieceMoveEventHandler,
 
     List<Position> nextPossibleMove = currentPiece.getPossibleMove();
     for (Position p : nextPossibleMove) {
-      CheckerBoard.getInstance().authorizeMove(currentPiece, p);
+      getCheckerBoard().authorizeMove(currentPiece, p);
     }
     return nextPossibleMove.size() > 0;
   }
@@ -189,7 +191,7 @@ public class GameController implements PieceMoveEventHandler,
 
   private boolean maybeMultipleJumpingIsPossible(final Piece m) {
     List<Position> nextJumps = m.getNextJumps();
-    CheckerBoard cb = CheckerBoard.getInstance();
+    CheckerBoard cb = getCheckerBoard();
 
     cb.lock();
     if (!nextJumps.isEmpty()) {
@@ -242,9 +244,9 @@ public class GameController implements PieceMoveEventHandler,
     Player p = getPlayerAt(maybeEated);
 
     if (p != null && m.getPlayer() != p) {
-      Piece eatPiece = pieceByPosition.remove(maybeEated);
-      eatPiece.die();
-      EVENT_BUS.fireEvent(new PieceEatedEvent(eatPiece));
+      Piece jumpedPiece = pieceByPosition.remove(maybeEated);
+      jumpedPiece.die();
+      EVENT_BUS.fireEvent(new PieceEatedEvent(jumpedPiece));
       return true;
     }
     return false;
@@ -253,7 +255,7 @@ public class GameController implements PieceMoveEventHandler,
 
   public void playerChange() {
       tooglePlayer();
-      CheckerBoard.getInstance().lock();
+      getCheckerBoard().lock();
       if (calcuteNextMoving()){
         EVENT_BUS.fireEvent(new PlayerChangeEvent(currentPlayer));
       }
@@ -298,10 +300,15 @@ public class GameController implements PieceMoveEventHandler,
   }
 
   public void restartGame() {
-    CheckerBoard.getInstance().clear();
+    getCheckerBoard().clear();
     reset();
     startGame();
 
+  }
+  
+  private CheckerBoard getCheckerBoard(){
+    return (CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget();
+    
   }
 
 }

@@ -1,16 +1,12 @@
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static com.google.gwt.query.client.plugins.Effects.Effects;
+import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.CHECKERBOARD_CLASS_NAME;
 import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.user.client.ui.HTML;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
@@ -18,6 +14,9 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.draughtssample.GameController.Player;
 import gwtquery.plugins.droppable.client.draughtssample.GameController.Position;
 import gwtquery.plugins.droppable.client.draughtssample.events.PieceKingedEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Piece extends HTML {
 
@@ -49,11 +48,13 @@ public class Piece extends HTML {
     // set the opacity of the piece during the drag
     draggablePiece.setOpacity((float) 0.8);
     // the piece cannot be drag outside the checkerboard
-    draggablePiece.setContainment(CheckerBoard.getInstance());
+    draggablePiece.setContainment($(CHECKERBOARD_CLASS_NAME).widget());
     // set cursor in the middle of the piece
     draggablePiece.setCursorAt(new CursorAt(25, 25, null, null));
     // set the cursor to use during the drag
     draggablePiece.setCursor(Cursor.MOVE);
+    
+    draggablePiece.setDistance(0);
     
     //register the GameController for dragStart and drag stop event
     GameController gc = GameController.getInstance();
@@ -145,10 +146,10 @@ public class Piece extends HTML {
 
   public void die() {
     // use GQuery to fade out the piece
-    $(getElement()).as(Effects).fadeOut(300, new Function() {
+    $(this).fadeOut(300, new Function() {
       @Override
-      public void f(Element e) {
-        CheckerBoard.getInstance().getCell(position.getY(), position.getX())
+      public void f() {
+        ((CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget()).getCell(position.getY(), position.getX())
             .clear();
         position = null;
       }

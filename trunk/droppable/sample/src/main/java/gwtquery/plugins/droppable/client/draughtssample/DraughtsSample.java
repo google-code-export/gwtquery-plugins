@@ -13,7 +13,7 @@ public class DraughtsSample implements EntryPoint {
 	public void onModuleLoad() {
 		DraughtsResources.INSTANCE.css().ensureInjected();		
 	
-		RootPanel.get("draughts").add(CheckerBoard.getInstance());
+		RootPanel.get("draughts").add(new CheckerBoard());
 		RootPanel.get("score").add(new ScorePanel());
 		
 		GameController gameController = GameController.getInstance();

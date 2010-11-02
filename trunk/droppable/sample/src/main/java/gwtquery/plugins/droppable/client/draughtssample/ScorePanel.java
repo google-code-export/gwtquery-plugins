@@ -39,10 +39,10 @@ public class ScorePanel extends Composite implements PlayerChangeEventHandler, P
   @UiField
   Button restartButton;
   
-  private int whitePieceNbr = PIECE_NUMBER;
-  private int redPieceNbr = PIECE_NUMBER;
-  private int whiteKingNbr = 0;
-  private int redKingNbr = 0;
+  private int whitePieceNbr;
+  private int redPieceNbr;
+  private int whiteKingNbr;
+  private int redKingNbr;
   
   
 	private static ScorePanelUiBinder uiBinder = GWT
@@ -66,6 +66,10 @@ public class ScorePanel extends Composite implements PlayerChangeEventHandler, P
   }
 
   private void init() {
+    whitePieceNbr = PIECE_NUMBER;
+    redPieceNbr = PIECE_NUMBER;
+    whiteKingNbr = 0;
+    redKingNbr = 0;
     redKingNbrLabel.setText(""+redKingNbr);
     redPieceNbrLabel.setText(""+redPieceNbr);
     whiteKingNbrLabel.setText(""+whiteKingNbr);
@@ -123,5 +127,6 @@ public class ScorePanel extends Composite implements PlayerChangeEventHandler, P
   @UiHandler(value = { "restartButton" })
   public void onRestartButtonClicked(ClickEvent e){
     GameController.getInstance().restartGame();
+    init();
   }
 }
