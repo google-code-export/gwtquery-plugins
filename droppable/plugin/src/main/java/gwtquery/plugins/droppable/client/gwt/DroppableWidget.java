@@ -19,9 +19,10 @@ import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.droppable.client.Droppable.Droppable;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.plugins.EventsListener;
 import com.google.gwt.user.client.DOM;
@@ -66,7 +67,7 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   
   private DroppableOptions options;
   private String childrenSelector;
-  private HandlerManager dropHandlerManager;
+  private EventBus dropHandlerManager;
 
   /**
    * Constructor
@@ -172,13 +173,12 @@ public class DroppableWidget<T extends Widget> extends Composite implements
     return ensureDropHandlers().addHandler(type, handler);
   }
 
-  protected HandlerManager ensureDropHandlers() {
-    return dropHandlerManager == null ? dropHandlerManager = new HandlerManager(
-        this)
+  protected EventBus ensureDropHandlers() {
+    return dropHandlerManager == null ? dropHandlerManager = new SimpleEventBus()
         : dropHandlerManager;
   }
 
-  protected HandlerManager getDropHandlerManager() {
+  protected EventBus getDropHandlerManager() {
     return dropHandlerManager;
   }
 
