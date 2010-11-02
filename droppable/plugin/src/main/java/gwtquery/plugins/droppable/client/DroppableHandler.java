@@ -3,12 +3,12 @@ package gwtquery.plugins.droppable.client;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
@@ -47,12 +47,12 @@ public class DroppableHandler {
   private boolean greedyChild = false;
   private DroppableOptions options;
   private Dimension droppableDimension;
-  private HandlerManager eventBus;
+  private HasHandlers eventBus;
   private boolean visible = false;
 
   private Offset droppableOffset;
 
-  public DroppableHandler(DroppableOptions options, HandlerManager eventBus) {
+  public DroppableHandler(DroppableOptions options, HasHandlers eventBus) {
     this.options = options;
     this.eventBus = eventBus;
 
@@ -74,6 +74,9 @@ public class DroppableHandler {
     if (options.getActiveClass() != null) {
       droppable.removeClassName(options.getActiveClass());
     }
+    if (options.getHoverClass() != null) {
+      droppable.removeClassName(options.getHoverClass());
+    }
     Element draggable = DraggableDroppableManager.getInstance()
         .getCurrentDraggable();
     if (draggable != null) {
@@ -83,8 +86,8 @@ public class DroppableHandler {
 
   }
 
-  public boolean drop(Element droppable, Element draggable, Event e,
-      boolean alreadyDrop) {
+  public boolean drop(final Element droppable, final Element draggable,
+      Event e, boolean alreadyDrop) {
     if (options == null) {
       return false;
     }
@@ -92,11 +95,26 @@ public class DroppableHandler {
     boolean drop = false;
 
     if (!options.isDisabled() && visible) {
-      if (!alreadyDrop && intersect(draggable)) {
-        drop = doDrop(droppable, draggable, e);
+      if (intersect(draggable)
+          && !checkChildrenIntersection(droppable, draggable)
+          && isDraggableAccepted(droppable, draggable)) {
+        // we will use a deferredComand to trigger the drop event a the end of
+        // the drag and drop operation !!
+        // it's to ensure that the rest of the dnd operation will be done
+        // without perturbation
+        // (e.g. on the drop event we can remove the draggable..)
+        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+          
+          public void execute() {
+            trigger(new DropEvent(), options.getOnDrop(), droppable, draggable);
+            
+          }
+        });
+        drop = true;
+
       }
 
-      if (isDraggableAccepted(droppable, draggable)) {
+      if (drop || isDraggableAccepted(droppable, draggable)) {
         isOut = true;
         isOver = false;
         deactivate(droppable, e);
@@ -213,43 +231,6 @@ public class DroppableHandler {
 
     }
     return false;
-  }
-
-  private boolean doDrop(final Element droppable,final Element draggable, Event e) {
-
-    if (draggable == null || draggable == droppable) {
-      return false;
-    }
-
-    if (checkChildrenIntersection(droppable, draggable)) {
-      // This droppable is greddy, a children of this droppable is also
-      // droppable and intersect the draggable !
-      // the drop will be done on this child
-      return false;
-    }
-
-    if (isDraggableAccepted(droppable, draggable)) {
-      if (options.getActiveClass() != null) {
-        droppable.removeClassName(options.getActiveClass());
-      }
-      if (options.getHoverClass() != null) {
-        droppable.removeClassName(options.getHoverClass());
-      }
-      
-      // we will use a deferredComand to trigger the drop event a the end of the drag and drop operation !!
-      //it's to ensure that the rest of the dnd operation will be done witout perturbation (e.g. on the drop event we can remove the draggable..)
-      DeferredCommand.addCommand(new Command() { 
-        public void execute() {
-          trigger(new DropEvent(), options.getOnDrop(), droppable, draggable);
-          
-        }
-      });
-      
-
-    }
-
-    return true;
-
   }
 
   private boolean intersect(Element draggable) {
