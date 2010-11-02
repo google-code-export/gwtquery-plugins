@@ -19,15 +19,6 @@ import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
 import static gwtquery.plugins.draggable.client.Draggable.DRAGGABLE_HANDLER_KEY;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.GQueryUi;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
-import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
-import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
-import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
-import gwtquery.plugins.draggable.client.impl.DraggableHandlerImpl;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
@@ -40,6 +31,15 @@ import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.Effects;
 import com.google.gwt.query.client.plugins.PropertiesAnimation.Easing;
 import com.google.gwt.user.client.Window;
+
+import gwtquery.plugins.commonui.client.Event;
+import gwtquery.plugins.commonui.client.GQueryUi;
+import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
+import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
+import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
+import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.impl.DraggableHandlerImpl;
 
 public class DraggableHandler {
 
@@ -208,7 +208,7 @@ public class DraggableHandler {
     originalEventPageX = e.pageX();
     originalEventPageY = e.pageY();
 
-    position = generatePosition(e, true);
+    position = impl.getCssPosition(element);
     originalPosition = new Offset(position.left, position.top);
 
     if (options.getCursorAt() != null) {
@@ -239,14 +239,14 @@ public class DraggableHandler {
   }
 
   public void regeneratePositions(Event e) {
-    position = generatePosition(e, false);
+    position = generatePosition(e);
     absPosition = convertPositionTo(true, position);
 
   }
 
   public void revertToOriginalPosition(Function function) {
-    Properties oldPosition = Properties.create("{top:'" + originalPosition.top
-        + "px',left:'" + originalPosition.left + "px'}");
+    Properties oldPosition = Properties.create("{top:'" + String.valueOf(originalPosition.top)
+        + "px',left:'" + String.valueOf(originalPosition.left) + "px'}");
     helper.as(Effects.Effects).animate(oldPosition,
         options.getRevertDuration(), Easing.LINEAR, function);
 
@@ -412,55 +412,54 @@ public class DraggableHandler {
     return new Offset(0, 0);
   }
 
-  private Offset generatePosition(Event e, boolean init) {
+  private Offset generatePosition(Event e) {
+
     GQuery scroll = getScrollParent();
     boolean scrollIsRootNode = isRootNode(scroll.get(0));
 
     int pageX = e.pageX();
     int pageY = e.pageY();
 
-    if (!init) {
+    if (containment != null && containment.length == 4) {
+      if (e.pageX() - offsetClick.left < containment[0]) {
+        pageX = containment[0] + offsetClick.left;
+      }
+      if (e.pageY() - offsetClick.top < containment[1]) {
+        pageY = containment[1] + offsetClick.top;
+      }
+      if (e.pageX() - offsetClick.left > containment[2]) {
+        pageX = containment[2] + offsetClick.left;
+      }
+      if (e.pageY() - offsetClick.top > containment[3]) {
+        pageY = containment[3] + offsetClick.top;
+      }
+    }
+
+    if (options.getGrid() != null) {
+      int[] grid = options.getGrid();
+      int roundedTop = originalEventPageY
+          + Math.round((pageY - originalEventPageY) / grid[1]) * grid[1];
+      int roundedLeft = originalEventPageX
+          + Math.round((pageX - originalEventPageX) / grid[0]) * grid[0];
+
       if (containment != null && containment.length == 4) {
-        if (e.pageX() - offsetClick.left < containment[0]) {
-          pageX = containment[0] + offsetClick.left;
-        }
-        if (e.pageY() - offsetClick.top < containment[1]) {
-          pageY = containment[1] + offsetClick.top;
-        }
-        if (e.pageX() - offsetClick.left > containment[2]) {
-          pageX = containment[2] + offsetClick.left;
-        }
-        if (e.pageY() - offsetClick.top > containment[3]) {
-          pageY = containment[3] + offsetClick.top;
-        }
+        boolean isOutOfContainment0 = roundedLeft - offsetClick.left < containment[0];
+        boolean isOutOfContainment1 = roundedTop - offsetClick.top < containment[1];
+        boolean isOutOfContainment2 = roundedLeft - offsetClick.left > containment[2];
+        boolean isOutOfContainment3 = roundedTop - offsetClick.top > containment[3];
+
+        pageY = !(isOutOfContainment1 || isOutOfContainment3) ? roundedTop
+            : (!isOutOfContainment1) ? roundedTop - grid[1] : roundedTop
+                + grid[1];
+        pageX = !(isOutOfContainment0 || isOutOfContainment2) ? roundedLeft
+            : (!isOutOfContainment0) ? roundedLeft - grid[0] : roundedLeft
+                + grid[0];
+
+      } else {
+        pageY = roundedTop;
+        pageX = roundedLeft;
       }
 
-      if (options.getGrid() != null) {
-        int[] grid = options.getGrid();
-        int roundedTop = originalEventPageY
-            + Math.round((pageY - originalEventPageY) / grid[1]) * grid[1];
-        int roundedLeft = originalEventPageX
-            + Math.round((pageX - originalEventPageX) / grid[0]) * grid[0];
-
-        if (containment != null && containment.length == 4) {
-          boolean isOutOfContainment0 = roundedLeft - offsetClick.left < containment[0];
-          boolean isOutOfContainment1 = roundedTop - offsetClick.top < containment[1];
-          boolean isOutOfContainment2 = roundedLeft - offsetClick.left > containment[2];
-          boolean isOutOfContainment3 = roundedTop - offsetClick.top > containment[3];
-
-          pageY = !(isOutOfContainment1 || isOutOfContainment3) ? roundedTop
-              : (!isOutOfContainment1) ? roundedTop - grid[1] : roundedTop
-                  + grid[1];
-          pageX = !(isOutOfContainment0 || isOutOfContainment2) ? roundedLeft
-              : (!isOutOfContainment0) ? roundedLeft - grid[0] : roundedLeft
-                  + grid[0];
-
-        } else {
-          pageY = roundedTop;
-          pageX = roundedLeft;
-        }
-
-      }
 
     }
 
