@@ -167,6 +167,14 @@ public class DroppableWidget<T extends Widget> extends Composite implements
     this.options.setScope(scope);
     this.childrenSelector = childrenSelector;
   }
+  
+  /**
+   * Add possibility to extend this widget
+   * As DroppableWidget is a {@link Composite}, don't forget to call the initWidget() method
+   */
+  protected DroppableWidget(){
+    options = new DroppableOptions();
+  }
 
   protected final <H extends EventHandler> HandlerRegistration addDropHandler(
       H handler, Type<H> type) {
