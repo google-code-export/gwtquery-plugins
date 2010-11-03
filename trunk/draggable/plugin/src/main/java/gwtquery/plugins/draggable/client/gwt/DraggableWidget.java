@@ -67,6 +67,17 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 
   private DraggableOptions options;
   private SimpleEventBus dragHandlerManager;
+  
+  /**
+   * Constructor allowing extending of this class
+   * 
+   *  Don't forget to call initWidget method !
+   */
+  protected DraggableWidget(){
+    this.options = new DraggableOptions();
+    
+    
+  }
 
   /**
    * Constructor
@@ -618,5 +629,4 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     super.onUnload();
     $(getElement()).as(Draggable).destroy().removeData(DRAGGABLE_WIDGET_KEY);
   }
-
 }
