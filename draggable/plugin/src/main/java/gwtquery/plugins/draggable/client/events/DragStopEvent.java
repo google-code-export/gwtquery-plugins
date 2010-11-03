@@ -17,9 +17,6 @@ package gwtquery.plugins.draggable.client.events;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
 /**
  * Event fired when the drag operation stops.
@@ -27,7 +24,7 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DragStopEvent extends GwtEvent<DragStopEvent.DragStopEventHandler> {
+public class DragStopEvent extends AbstractDraggableEvent<DragStopEvent.DragStopEventHandler> {
 
   public interface DragStopEventHandler extends EventHandler {
     public void onDragStop(DragStopEvent event);
@@ -35,26 +32,14 @@ public class DragStopEvent extends GwtEvent<DragStopEvent.DragStopEventHandler> 
 
   public static Type<DragStopEventHandler> TYPE = new Type<DragStopEventHandler>();
 
-  private Element draggable;
 
-  public DragStopEvent(Element e) {
-    draggable = e;
+  public DragStopEvent(Element draggable, Element helper) {
+    super(draggable, helper);
   }
 
   @Override
   public Type<DragStopEventHandler> getAssociatedType() {
     return TYPE;
-  }
-
-  public Element getDraggable() {
-    return draggable;
-  }
-  
-  public DraggableWidget<?> getDraggableWidget(){
-    if (draggable != null){
-      return DraggableWidget.get(draggable);
-    }
-    return null;
   }
 
   @Override
