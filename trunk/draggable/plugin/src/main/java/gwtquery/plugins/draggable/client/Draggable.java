@@ -306,7 +306,7 @@ public class Draggable extends MouseHandler {
     callPlugins(new StartCaller(draggable, event), options);
 
     try {
-      trigger(new DragStartEvent(draggable), options.getOnDragStart(),
+      trigger(new DragStartEvent(draggable, dragHandler.getHelper().get(0)), options.getOnDragStart(),
           draggable);
     } catch (UmbrellaException e) {
       for (Throwable t : e.getCauses()){
@@ -334,7 +334,8 @@ public class Draggable extends MouseHandler {
   @Override
   protected boolean mouseStop(final Element draggable, final Event event) {
     
-    final DraggableOptions options = getOptions(draggable);
+    final DraggableHandler handler = getHandler(draggable);
+    final DraggableOptions options = handler.getOptions();
     
     boolean dropped = false;
     if (getDragAndDropManager().isHandleDroppable()) {
@@ -352,7 +353,7 @@ public class Draggable extends MouseHandler {
         @Override
         public void f(Element e) {
           callPlugins(new StopCaller(draggable, event), options);
-          triggerDragStop(draggable, options);
+          triggerDragStop(draggable,handler.getHelper().get(0), options);
           
           
           getHandler(draggable).clear(draggable);
@@ -362,7 +363,7 @@ public class Draggable extends MouseHandler {
     }
 
     callPlugins(new StopCaller(draggable, event), options);
-    triggerDragStop(draggable, options);
+    triggerDragStop(draggable,handler.getHelper().get(0), options);
 
     getHandler(draggable).clear(draggable);
 
@@ -434,7 +435,7 @@ public class Draggable extends MouseHandler {
       callPlugins(new DragCaller(draggable, event), dragHandler.getOptions());
 
       try {
-        trigger(new DragEvent(draggable), dragHandler.getOptions().getOnDrag(),
+        trigger(new DragEvent(draggable, dragHandler.getHelper().get(0)), dragHandler.getOptions().getOnDrag(),
             draggable);
       } catch (UmbrellaException e) {
         for (Throwable t : e.getCauses()){
@@ -469,11 +470,11 @@ public class Draggable extends MouseHandler {
    * @param draggable
    * @param options
    */
-  private void triggerDragStop(final Element draggable, final DraggableOptions options){
+  private void triggerDragStop(final Element draggable, final Element helper, final DraggableOptions options){
     Scheduler.get().scheduleDeferred(new ScheduledCommand() {
       
       public void execute() {
-        trigger(new DragStopEvent(draggable), options.getOnDragStop(),
+        trigger(new DragStopEvent(draggable, helper), options.getOnDragStop(),
             draggable);
         
       }
