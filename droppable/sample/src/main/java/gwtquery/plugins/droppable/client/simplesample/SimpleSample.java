@@ -50,7 +50,7 @@ public class SimpleSample implements EntryPoint {
       
       public void f(DragAndDropContext context) {
         $("p", context.getDroppable()).html(
-            "The element " + context.getDraggable().getId() + " is over me");
+            "The element " + context.getDraggable().getId() + " is over me and can be dropped");
 
       }
     });
