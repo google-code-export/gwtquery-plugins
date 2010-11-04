@@ -38,10 +38,12 @@ import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
+import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.events.HasAllDragHandler;
+import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent.BeforeDragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragEvent.DragEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
@@ -132,6 +134,15 @@ public class DraggableWidget<T extends Widget> extends Composite implements
    */
   public DraggableWidget(T w, String scope) {
     this(w, new DraggableOptions(), scope);
+  }
+  
+  /**
+   * Add a handler object that will manage the {@link BeforeDragStartEvent} event. this
+   * kind of event is fired before the initialization of the drag operation.
+   */
+  public HandlerRegistration addBeforeDragHandler(
+      BeforeDragStartEventHandler handler) {
+    return addDragHandler(handler, BeforeDragStartEvent.TYPE);
   }
 
   /**
@@ -629,4 +640,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     super.onUnload();
     $(getElement()).as(Draggable).destroy().removeData(DRAGGABLE_WIDGET_KEY);
   }
+
+ 
 }

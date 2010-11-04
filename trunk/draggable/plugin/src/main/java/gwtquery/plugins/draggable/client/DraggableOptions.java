@@ -161,6 +161,7 @@ public class DraggableOptions extends MouseOptions {
   private int snapTolerance;
   private GQuery stack;
   private Integer zIndex;
+  private Function onBeforeDragStart;
   private Function onDragStart;
   private Function onDragStop;
   private Function onDrag;
@@ -211,6 +212,10 @@ public class DraggableOptions extends MouseOptions {
 
   public HelperType getHelperType() {
     return helperType;
+  }
+  
+  public Function getOnBeforeDragStart() {
+    return onBeforeDragStart;
   }
 
   public Function getOnDrag() {
@@ -528,9 +533,17 @@ public class DraggableOptions extends MouseOptions {
     this.helperType = HelperType.ELEMENT;
   }
 
-  /*
-   * public void setIframeFix(boolean iframeFix) { this.iframeFix = iframeFix; }
+  /**
+   * Give a callback function called before the initialization of the drag operation.
+   * 
+   * @param onDragStart
+   *          function called before the initialization of the drag operation. The draggable
+   *          plugin will invoke the f(Element e) method on this function object
+   *          with e being the draggable (not the helper)
    */
+  public void setOnBeforeDragStart(Function onBeforeDragStart) {
+    this.onBeforeDragStart = onBeforeDragStart;
+  }
 
   /**
    * Give a callback function called when the drag operation is dragging.
@@ -755,5 +768,7 @@ public class DraggableOptions extends MouseOptions {
     snapMode = SnapMode.BOTH;
     snapTolerance = 20;
   }
+
+ 
 
 }

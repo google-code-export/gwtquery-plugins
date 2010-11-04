@@ -15,13 +15,26 @@
  */
 package gwtquery.plugins.draggable.client.events;
 
+import com.google.gwt.event.shared.HandlerRegistration;
+
+import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent.BeforeDragStartEventHandler;
+
 /**
- * This is a convenience interface that includes all drag handlers defined by
- * the draggable plug-in
+ * A widget that implements this interface provides registration for
+ * {@link BeforeDragStartEventHandler} instances.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public interface HasAllDragHandler extends HasDragHandler, HasDragStartHandler,
-    HasDragStopHandler, HasBeforeDragStartHandler {
+public interface HasBeforeDragStartHandler {
+
+  /**
+   * Adds a {@link BeforeDragStartEventHandler} handler.
+   * 
+   * @param handler
+   *          the before drag handler
+   * @return {@link BeforeDragStartEventHandler} used to remove this handler
+   */
+  HandlerRegistration addBeforeDragHandler(BeforeDragStartEventHandler handler);
+
 }
