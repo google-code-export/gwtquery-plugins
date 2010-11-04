@@ -35,13 +35,13 @@ public class GreddySample implements EntryPoint {
     options.setGreedy(greedy);
     options.setOnDrop(new DroppableFunction() {
       public void f(DragAndDropContext context) {
-        $("p", context.getDroppable()).html("The draggable was dropped on me");
+        $("#"+context.getDroppable().getId()+" > p").html("The draggable was dropped on me");
         context.getDroppable().addClassName("orange-background");
       }
     });
     options.setOnActivate(new DroppableFunction() {
       public void f(DragAndDropContext context) {
-        $("p", context.getDroppable()).html("I'm the "+context.getDroppable().getId()+ " and I'm "+(greedy?"greddy":"not greddy"));
+        $("#"+context.getDroppable().getId()+" > p").html("I'm the "+context.getDroppable().getId()+ " and I'm "+(greedy?"greddy":"not greddy"));
         context.getDroppable().removeClassName("orange-background");
       }
     });
