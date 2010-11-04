@@ -31,6 +31,7 @@ import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
+import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
@@ -289,10 +290,21 @@ public class Draggable extends MouseHandler {
   @Override
   protected boolean mouseStart(Element draggable, Event event) {
     reset();
-  
     DraggableHandler dragHandler = getHandler(draggable);
     DraggableOptions options = getOptions(draggable);
-
+    
+    try {
+      trigger(new BeforeDragStartEvent(draggable), options.getOnBeforeDragStart(),
+          draggable);
+    } catch (UmbrellaException e) {
+      for (Throwable t : e.getCauses()){
+        if (t instanceof StopDragException){
+          return false;
+        }
+      }
+     
+    }
+  
     dragHandler.createHelper(draggable, event);
 
     dragHandler.cacheHelperSize();
