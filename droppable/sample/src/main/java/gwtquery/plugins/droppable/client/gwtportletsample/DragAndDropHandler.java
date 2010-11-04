@@ -4,7 +4,6 @@ import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.query.client.Function;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -20,7 +19,7 @@ import gwtquery.plugins.droppable.client.events.OutDroppableEvent.OutDroppableEv
 import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppableEventHandler;
 
 public class DragAndDropHandler implements DropEventHandler,
-    OverDroppableEventHandler, OutDroppableEventHandler, DragEventHandler {
+    OverDroppableEventHandler, OutDroppableEventHandler,  DragEventHandler{
 
   private HandlerRegistration dragHandlerRegistration;
   private FlowPanel panel;
@@ -38,14 +37,8 @@ public class DragAndDropHandler implements DropEventHandler,
 
   public void onDrop(DropEvent event) {
     final DraggableWidget<?> draggable = event.getDraggableWidget();
-    $(draggable).fadeOut(200, new Function() {
-      @Override
-      public void f() {
-        panel.insert(draggable, placeHolderIndex);
-        reset();
-        $(draggable).fadeIn(200);
-      }
-    });
+    panel.insert(draggable, placeHolderIndex);
+    reset();
 
   }
 
@@ -55,15 +48,20 @@ public class DragAndDropHandler implements DropEventHandler,
 
   public void onOverDroppable(OverDroppableEvent event) {
     DraggableWidget<?> draggable = event.getDraggableWidget();
-    createPlaceHolder(draggable);
+    createPlaceHolder(draggable,panel.getWidgetIndex(draggable));
     dragHandlerRegistration = draggable.addDragHandler(this);
   }
 
-  private void createPlaceHolder(Widget draggable) {
+  private void createPlaceHolder(Widget draggable, int initialPosition) {
     placeHolder = new SimplePanel();
     placeHolder.addStyleName("placeHolder");
     placeHolder.setHeight("" + $(draggable).height() + "px");
     placeHolder.setWidth("" + $(draggable).width() + "px");
+    
+    if (initialPosition != -1){
+      panel.insert(placeHolder, initialPosition);
+      placeHolderIndex = initialPosition;
+    }
   }
 
   private int getBeforeInsertIndex(Element draggableHelper) {
@@ -108,4 +106,6 @@ public class DragAndDropHandler implements DropEventHandler,
     dragHandlerRegistration = null;
     placeHolderIndex = -1;
   }
+  
+
 }

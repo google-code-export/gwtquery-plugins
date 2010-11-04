@@ -3,7 +3,6 @@ package gwtquery.plugins.droppable.client.gwtportletsample;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.IsWidget;
 
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
@@ -17,8 +16,8 @@ public class DroppablePanel extends DroppableWidget<FlowPanel> {
     setupDrop();
   }
 
-  public void add(IsWidget w) {
-    innerPanel.add(w);
+  public void add(Portlet p) {
+    innerPanel.add(p);
   }
 
   private void init() {
