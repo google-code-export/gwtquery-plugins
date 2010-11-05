@@ -18,6 +18,7 @@ package gwtquery.plugins.draggable.client.plugins;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.query.client.GQuery;
 
 import gwtquery.plugins.commonui.client.Event;
@@ -53,7 +54,8 @@ public class ZIndexPlugin implements DraggablePlugin {
     if ($element == null || $element.length() == 0){
       return;
     }
-    String oldZIndex = $element.css(ZINDEX_CSS);
+    //String oldZIndex = $element.css(ZINDEX_CSS);
+    String oldZIndex = getZIndex($element.get(0).getStyle());
     if (oldZIndex != null) {
       $element.data(OLD_ZINDEX_KEY, oldZIndex);
     }
@@ -70,5 +72,17 @@ public class ZIndexPlugin implements DraggablePlugin {
     String oldZIndex = $element.data(OLD_ZINDEX_KEY, String.class);
     $element.css(ZINDEX_CSS, oldZIndex);
   }
+  
+  /**
+   * Force the zIndex property to be a String object
+   * Under IE, the zIndex property is returned as an Integer
+   * See Issue 5548 of GWT
+   * 
+   * @param style
+   * @return
+   */
+  private native String getZIndex(Style style) /*-{
+    return ""+style["zIndex"];
+  }-*/;
 
 }
