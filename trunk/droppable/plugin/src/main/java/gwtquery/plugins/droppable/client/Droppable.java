@@ -23,7 +23,7 @@ import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
 
 import gwtquery.plugins.commonui.client.GQueryUi;
-import gwtquery.plugins.draggable.client.DraggableDroppableManager;
+import gwtquery.plugins.draggable.client.DragAndDropManager;
 
 /**
  * Droppable plugin for GwtQuery
@@ -76,14 +76,14 @@ public class Droppable extends GQueryUi {
 
 	public Droppable droppable(DroppableOptions o, HasHandlers eventBus) {
 
-		DraggableDroppableManager ddm = DraggableDroppableManager.getInstance();
+		DragAndDropManager ddm = DragAndDropManager.getInstance();
 
 		for (Element e : elements()) {
 			DroppableHandler di = new DroppableHandler(o, eventBus);
 			di.setDroppableDimension(new Dimension(e));
 			$(e).data(DROPPABLE_HANDLER_KEY, di);
 
-			ddm.setDroppable(e, o.getScope());
+			ddm.addDroppable(e, o.getScope());
 
 			e.addClassName(CssClassNames.UI_DROPPABLE);
 
@@ -93,7 +93,7 @@ public class Droppable extends GQueryUi {
 	}
 
 	public Droppable destroy() {
-		DraggableDroppableManager ddm = DraggableDroppableManager.getInstance();
+		DragAndDropManager ddm = DragAndDropManager.getInstance();
 		for (Element e : elements()) {
 			DroppableHandler infos = DroppableHandler.getInstance(e);
 			ddm.getDroppablesByScope(infos.getOptions().getScope()).remove(e);
@@ -129,7 +129,7 @@ public class Droppable extends GQueryUi {
 			DroppableHandler handler = DroppableHandler.getInstance(e);
 			if (handler != null) {
 				String oldScope = handler.getOptions().getScope();
-				DraggableDroppableManager dndManager =DraggableDroppableManager.getInstance();
+				DragAndDropManager dndManager =DragAndDropManager.getInstance();
 				dndManager.getDroppablesByScope(oldScope).remove(e);
 				dndManager.getDroppablesByScope(newScope).add(e);
 				handler.getOptions().setScope(newScope);
@@ -137,4 +137,6 @@ public class Droppable extends GQueryUi {
 		}
 		return this;
 	}
+	
+	
 }

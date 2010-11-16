@@ -27,7 +27,7 @@ import com.google.gwt.query.client.GQuery.Offset;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.DraggableDroppableManager;
+import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.droppable.client.Droppable.CssClassNames;
@@ -77,7 +77,7 @@ public class DroppableHandler {
     if (options.getActiveClass() != null) {
       droppable.addClassName(options.getActiveClass());
     }
-    Element draggable = DraggableDroppableManager.getInstance()
+    Element draggable = DragAndDropManager.getInstance()
         .getCurrentDraggable();
     if (draggable != null) {
       trigger(new ActivateDroppableEvent(), options.getOnActivate(), droppable,
@@ -92,7 +92,7 @@ public class DroppableHandler {
     if (options.getHoverClass() != null) {
       droppable.removeClassName(options.getHoverClass());
     }
-    Element draggable = DraggableDroppableManager.getInstance()
+    Element draggable = DragAndDropManager.getInstance()
         .getCurrentDraggable();
     if (draggable != null) {
       trigger(new DeactivateDroppableEvent(), options.getOnDeactivate(),
@@ -163,7 +163,7 @@ public class DroppableHandler {
   }
 
   public void out(Element droppable, Event e) {
-    Element currentDraggable = DraggableDroppableManager.getInstance()
+    Element currentDraggable = DragAndDropManager.getInstance()
         .getCurrentDraggable();
 
     if (currentDraggable == null || currentDraggable == droppable) {
@@ -181,7 +181,7 @@ public class DroppableHandler {
 
   public void over(Element droppable, Event e) {
 
-    Element currentDraggable = DraggableDroppableManager.getInstance()
+    Element currentDraggable = DragAndDropManager.getInstance()
         .getCurrentDraggable();
 
     if (currentDraggable == null || currentDraggable == droppable) {
@@ -270,8 +270,8 @@ public class DroppableHandler {
     // FIT, INTERSECT, POINTER, TOUCH;
     switch (tolerance) {
     case FIT:
-      return droppableLeft < draggableLeft && draggableRight < droppableRight
-          && droppableTop < draggableTop && draggableBottom < droppableBottom;
+      return droppableLeft <= draggableLeft && draggableRight <= droppableRight
+          && droppableTop <= draggableTop && draggableBottom <= droppableBottom;
     case INTERSECT:
       float dragHelperHalfWidth = dragHandler.getHelperDimension().getWidth() / 2;
       float dragHelperHalfHeight = dragHandler.getHelperDimension().getHeight() / 2;
@@ -307,7 +307,9 @@ public class DroppableHandler {
     DragAndDropContext context = new DragAndDropContext(draggable, droppable);
 
     if (eventBus != null && e != null) {
-      e.setDragDropInfo(context);
+      if (e.getDragDropInfo() == null){
+        e.setDragDropInfo(context);
+      }
       eventBus.fireEvent(e);
     }
     if (callback != null) {
