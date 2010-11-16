@@ -22,9 +22,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableCell;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
-import gwtquery.plugins.droppable.client.gwt.DroppableCell;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 /**
