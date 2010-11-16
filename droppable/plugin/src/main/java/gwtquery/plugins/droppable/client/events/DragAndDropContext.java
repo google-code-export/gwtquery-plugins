@@ -15,6 +15,9 @@
  */
 package gwtquery.plugins.droppable.client.events;
 
+import static com.google.gwt.query.client.GQuery.$;
+import static gwtquery.plugins.droppable.client.gwt.DragAndDropCellWidgetUtils.VALUE_KEY;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery.Offset;
 
@@ -87,5 +90,34 @@ public class DragAndDropContext {
   public void setDroppable(Element droppable) {
     this.droppable = droppable;
   }
+  
+  /**
+   * Return the data value associated to the current draggable element if and
+   * only if this one is coming from a {@link DraggableCell} This method returns
+   * null if the current drag and drop operation doesn't concerns a
+   * {@link DraggableCell}
+   * 
+   * @param <T>
+   *          the class of the data
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public <T> T getDraggableData() {
+    return (T) $(getDraggable()).data(VALUE_KEY);
+  }
 
+  /**
+   * Return the data value associated to the drop element if and only if this
+   * one is coming from a {@link DroppableCell} This method returns null if the
+   * current drag and drop operation doesn't concerns a {@link DroppableCell}
+   * 
+   * @param <T>
+   *          the class of the data
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public <T> T getDroppableData() {
+    return (T) $(getDroppable()).data(VALUE_KEY);
+
+  }
 }
