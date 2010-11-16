@@ -22,7 +22,7 @@ public class GFinder implements EntryPoint {
     cellBrowser.getElement().setId("fileBrowser");
     cellBrowser.setAnimationEnabled(true);
     cellBrowser.addStyleName(Resource.INSTANCE.css().finder());
-    cellBrowser.setDefaultColumnWidth(300);
+    cellBrowser.setDefaultColumnWidth(250);
     
     cellBrowser.addDropHandler(new DropEventHandler() {
       

@@ -3,6 +3,7 @@ package gwtquery.plugins.droppable.client.gfindersample;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
+import com.google.gwt.resources.client.ImageResource;
 
 public interface Resource extends ClientBundle {
 
@@ -18,6 +19,9 @@ public interface Resource extends ClientBundle {
 
   @Source("style.css")
   public Css css();
+  
+  public ImageResource folder();
+  public ImageResource file();
 
 
 }
