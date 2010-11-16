@@ -1,19 +1,19 @@
 package gwtquery.plugins.droppable.client.gwt;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.cellview.client.CellList.Resources;
 import com.google.gwt.view.client.ProvidesKey;
-import com.google.gwt.view.client.SelectionModel;
 
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
@@ -183,62 +183,23 @@ public class DragAndDropCellList<T> extends CellList<T> {
   @Override
   protected void onUnload() {
 
-    Element childContainer = getChildContainer();
-    DragAndDropCellWidgetUtils dndUtils = DragAndDropCellWidgetUtils.get();
-    for (int i = 0; i < childContainer.getChildCount(); i++) {
-      dndUtils.cleanCell((Element) childContainer.getChild(i).cast());
-    }
+    cleanAllCells();
     super.onUnload();
   }
 
-  @Override
-  protected void renderRowValues(SafeHtmlBuilder sb, List<T> values, int start,
-      SelectionModel<? super T> selectionModel) {
-    // GWT.log("Render "+blop+" from "+start+" with a list with size :"+values.size());
-    // lets the super class do its job.
-    super.renderRowValues(sb, values, start, selectionModel);
+  protected void addDragAndDropBehaviour(List<T> values, int start) {
 
-    // make all cell draggable and/or droppable
     int end = start + values.size();
+    
+    for (int rowIndex = start; rowIndex < end; rowIndex++) {
+      T value = values.get(rowIndex-start);
+      Element newCell = getRowElement(rowIndex);
 
-    for (int i = start; i < end; i++) {
-      final T value = values.get(i - start);
-      addDragAndDropBehaviour(i, value);
-
+      DragAndDropCellWidgetUtils.get().maybeMakeDraggableOrDroppable(newCell,
+          value, cellDragAndDropBehaviour, draggableOptions, droppableOptions,
+          ensureDrangAndDropHandlers());
     }
 
-  }
-
-  protected void addDragAndDropBehaviour(final int rowIndex, final T value) {
-
-    final Element oldCell = getRowElementWithoutRowBoundsCheck(rowIndex);
-
-    // make the new cell draggable and droppable
-    // use a deferred command to be sure that the new cell is attached to the
-    // dom
-    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-      public void execute() {
-        DragAndDropCellWidgetUtils dndUtils = DragAndDropCellWidgetUtils.get();
-
-        dndUtils.cleanCell(oldCell);
-
-        Element newCell = getRowElement(rowIndex);
-
-        dndUtils.maybeMakeDraggableOrDroppable(newCell, value,
-            cellDragAndDropBehaviour, draggableOptions, droppableOptions,
-            ensureDrangAndDropHandlers());
-
-      }
-    });
-
-  }
-
-  private Element getRowElementWithoutRowBoundsCheck(int indexOnPage) {
-    if (indexOnPage >= 0 && getChildContainer().getChildCount() > indexOnPage) {
-      return getChildContainer().getChild(indexOnPage).cast();
-    }
-    return null;
   }
 
   public CellDragAndDropBehaviour<T> getCellDragAndDropBehaviour() {
@@ -268,7 +229,8 @@ public class DragAndDropCellList<T> extends CellList<T> {
 
   protected final <H extends EventHandler> HandlerRegistration addDragAndDropHandler(
       H handler, Type<H> type) {
-    GWT.log("add handler "+handler+" to eventbus :"+ensureDrangAndDropHandlers());
+    GWT.log("add handler " + handler + " to eventbus :"
+        + ensureDrangAndDropHandlers());
     return ensureDrangAndDropHandlers().addHandler(type, handler);
   }
 
@@ -338,6 +300,48 @@ public class DragAndDropCellList<T> extends CellList<T> {
 
   void setDragAndDropHandlerManager(EventBus eventBus) {
     this.dragAndDropHandlerManager = eventBus;
+  }
+
+  @Override
+  protected void replaceAllChildren(List<T> values, SafeHtml html) {
+    // first clean old cell before remove it
+    cleanAllCells();
+
+    // lets the super class replace all child
+    super.replaceAllChildren(values, html);
+
+ 
+    // make the new cell draggable or droppable
+    addDragAndDropBehaviour(values, 0);
+
+  }
+
+  @Override
+  protected void replaceChildren(List<T> values, int start, SafeHtml html) {
+    // clean cell has being replaced
+    int end = start + values.size();
+    for (int rowIndex = start; rowIndex < end; rowIndex++) {
+      Element oldCell = getRowElement(rowIndex);
+      DragAndDropCellWidgetUtils.get().cleanCell(oldCell);
+    }
+
+    // lets the super class replace all child
+    super.replaceChildren(values, start, html);
+
+    // make the new cell draggable or droppable
+    addDragAndDropBehaviour(values, start);
+    
+    
+  }
+
+  protected void cleanAllCells() {
+    $(getChildContainer()).children().each(new Function() {
+      @Override
+      public void f(Element div) {
+        DragAndDropCellWidgetUtils.get().cleanCell(div);
+      }
+    });
+
   }
 
 }

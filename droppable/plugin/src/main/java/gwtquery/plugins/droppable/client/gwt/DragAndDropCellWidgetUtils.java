@@ -34,13 +34,14 @@ public class DragAndDropCellWidgetUtils {
   }
 
   void cleanCell(Element cell) {
+    
     if (cell == null) {
       return;
     }
-
+    
     GQuery $cell = $(cell);
 
-    GWT.log("clean old cell" + cell.hashCode());
+    //GWT.log("clean old cell" + cell.hashCode());
 
     if (DraggableHandler.getInstance(cell) != null) {
       // GWT.log("clean darggable cell");
@@ -60,7 +61,6 @@ public class DragAndDropCellWidgetUtils {
       DraggableOptions draggableOptions, DroppableOptions droppableOptions,
       EventBus eventBus) {
     
-    
 
     GQuery $cell = $(cell);
 
@@ -68,7 +68,7 @@ public class DragAndDropCellWidgetUtils {
         .isDraggable(value))
         && DraggableHandler.getInstance(cell) == null) {
       //GWT.log("make new cell " + cell.hashCode() + " draggable");
-      GWT.log("make dragable new cell " + cell.hashCode()+ " with eventBus "+eventBus+ "and handlers inside it");
+      //GWT.log("make dragable new cell " + cell.hashCode()+ " with value "+value);
       $cell.as(Draggable).draggable(draggableOptions, eventBus);
     }
 
@@ -76,7 +76,7 @@ public class DragAndDropCellWidgetUtils {
         .isDroppable(value))
         && DroppableHandler.getInstance(cell) == null) {
       //GWT.log("make cell " + cell.hashCode() + " droppable");
-      GWT.log("make droppable new cell " + cell.hashCode()+ " with eventBus "+eventBus+ "and handlers inside it");
+      //GWT.log("make droppable new cell " + cell.hashCode()+ " with value "+value);
       $cell.as(Droppable).droppable(droppableOptions,eventBus);
     }
 

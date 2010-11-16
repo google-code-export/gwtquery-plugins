@@ -249,12 +249,6 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
           sb.append(template.div(i, classesBuilder.toString(), imageWidth,
               image, cellBuilder.toSafeHtml()));
         }
-        
-        /*
-         * Drag and drop custom code start!!
-         */
-        addDragAndDropBehaviour(i, value);
-        //GWT.log("blop");
       
       }
 
