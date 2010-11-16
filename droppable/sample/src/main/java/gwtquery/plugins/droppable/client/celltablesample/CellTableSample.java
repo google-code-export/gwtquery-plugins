@@ -2,6 +2,7 @@ package gwtquery.plugins.droppable.client.celltablesample;
 
 import static com.google.gwt.query.client.GQuery.$;
 
+import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -11,18 +12,26 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.Constants;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
 
@@ -33,8 +42,11 @@ import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHan
 import gwtquery.plugins.droppable.client.DroppableOptions;
 import gwtquery.plugins.droppable.client.celltablesample.ContactDatabase.Category;
 import gwtquery.plugins.droppable.client.celltablesample.ContactDatabase.ContactInfo;
+import gwtquery.plugins.droppable.client.events.DropEvent;
+import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DragAndDropCellTable;
 import gwtquery.plugins.droppable.client.gwt.DragAndDropColumn;
+import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,15 +65,58 @@ public class CellTableSample implements EntryPoint {
 
   interface CellTableSampleUiBinder extends UiBinder<Widget, CellTableSample> {
   }
-  
-  public enum CellType{
-    CHECK_BOX,FIRST_NAME,LAST_NAME,CATEGORY,ADDRESS;
+
+  public enum CellType {
+    CHECK_BOX, FIRST_NAME, LAST_NAME, CATEGORY, ADDRESS;
   }
-  static interface Templates extends SafeHtmlTemplates{
+
+  static interface Templates extends SafeHtmlTemplates {
     Templates INSTANCE = GWT.create(Templates.class);
 
-    @Template("<div id='dragHelper' style='border:1px solid black; background-color:#ffffff'></div>")
+    @Template("<div id='dragHelper' style='border:1px solid black; background-color:#ffffff; color:black;'></div>")
     SafeHtml outerHelper();
+  }
+
+  /**
+   * The Cell used to render a {@link ContactInfo}. Code coming from the GWT
+   * showcase
+   * 
+   */
+  private static class ContactCell extends AbstractCell<ContactInfo> {
+
+    /**
+     * The html of the image used for contacts.
+     * 
+     */
+    private final String imageHtml;
+
+    public ContactCell(ImageResource image) {
+      this.imageHtml = AbstractImagePrototype.create(image).getHTML();
+    }
+
+    @Override
+    public void render(ContactInfo value, Object key, SafeHtmlBuilder sb) {
+      // Value can be null, so do a null check..
+      if (value == null) {
+        return;
+      }
+
+      GWT.log("Cell rendering for " + value);
+
+      sb.appendHtmlConstant("<table>");
+
+      // Add the contact image.
+      sb.appendHtmlConstant("<tr><td rowspan='3'>");
+      sb.appendHtmlConstant(imageHtml);
+      sb.appendHtmlConstant("</td>");
+
+      // Add the name and address.
+      sb.appendHtmlConstant("<td style='font-size:95%;'>");
+      sb.appendEscaped(value.getFullName());
+      sb.appendHtmlConstant("</td></tr><tr><td>");
+      sb.appendEscaped(value.getAddress());
+      sb.appendHtmlConstant("</td></tr></table>");
+    }
   }
 
   /**
@@ -85,13 +140,27 @@ public class CellTableSample implements EntryPoint {
   public CellTableSample() {
     constants = GWT.create(CwConstants.class);
   }
-  
-  private static final String contactImageHtml = AbstractImagePrototype.create(Resource.INSTANCE.contact()).getHTML();
+
+  private static final String contactImageHtml = AbstractImagePrototype.create(
+      Resource.INSTANCE.contact()).getHTML();
+
   /**
    * The main CellTable.
    */
   @UiField(provided = true)
   DragAndDropCellTable<ContactInfo> cellTable;
+
+  /**
+   * The droppable "contact to export" cell list.
+   */
+  @UiField(provided = true)
+  DroppableWidget<CellList<ContactInfo>> exportCellList;
+
+  /**
+   * The pager used to change the range of data.
+   */
+  @UiField(provided = true)
+  Button exportButton;
 
   /**
    * The pager used to change the range of data.
@@ -109,6 +178,59 @@ public class CellTableSample implements EntryPoint {
    */
   public void onModuleLoad() {
     Resource.INSTANCE.css().ensureInjected();
+
+    createDragAndDropCellTable();
+    createDroppableList();
+
+    // Create the UiBinder.
+    Widget w = uiBinder.createAndBindUi(this);
+    RootPanel.get("sample").add(w);
+  }
+
+  private void createDroppableList() {
+    // Create a ConcactCell
+    ContactCell contactCell = new ContactCell(Resource.INSTANCE.contact());
+
+    CellList<ContactInfo> cellList = new CellList<ContactInfo>(contactCell,
+        ContactDatabase.ContactInfo.KEY_PROVIDER);
+    cellList.addStyleName(Resource.INSTANCE.css().exportCellList());
+
+    cellList.setPageSize(30);
+    cellList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
+    final ListDataProvider<ContactInfo> exportedContact = new ListDataProvider<ContactInfo>();
+    exportedContact.addDataDisplay(cellList);
+
+    // make the cell list droppable.
+    exportCellList = new DroppableWidget<CellList<ContactInfo>>(cellList);
+    exportCellList.setHoverClass(Resource.INSTANCE.css().droppableHover());
+    exportCellList.setActiveClass(Resource.INSTANCE.css().droppableActive());
+    exportCellList.addDropHandler(new DropEventHandler() {
+
+      public void onDrop(DropEvent event) {
+        ContactInfo contactToExport = event.getDraggableData();
+        // avoid doublon
+        exportedContact.getList().remove(contactToExport);
+        exportedContact.getList().add(contactToExport);
+        exportedContact.refresh();
+      }
+    });
+
+    // create export button
+    exportButton = new Button("Export contacts list");
+    exportButton.addClickHandler(new ClickHandler() {
+
+      public void onClick(ClickEvent event) {
+        StringBuilder builder = new StringBuilder("You want to export:\n");
+        for (ContactInfo c : exportedContact.getList()) {
+          builder.append(c.getFullName()).append("\n");
+        }
+        Window.alert(builder.toString());
+      }
+    });
+
+  }
+
+  private void createDragAndDropCellTable() {
     // Create a DragAndDropCellTable.
 
     // Set a key provider that provides a unique key for each contact. If key is
@@ -133,36 +255,28 @@ public class CellTableSample implements EntryPoint {
 
     // Add the CellList to the adapter in the database.
     ContactDatabase.get().addDataDisplay(cellTable);
-    
+
     // fill the helper when the drag start
     cellTable.addDragStartHandler(new DragStartEventHandler() {
-      
+
       public void onDragStart(DragStartEvent event) {
         ContactInfo contact = event.getDraggableValue();
         Element helper = event.getHelper();
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
-        sb.appendHtmlConstant("<table width='200px'><tr><td rowspan='3'>");
-        sb.appendHtmlConstant(contactImageHtml);
-        sb.appendHtmlConstant("</td><td style='font-size:95%;'>");
-        sb.appendEscaped(contact.getFullName());
-        sb.appendHtmlConstant("</td></tr><tr><td>");
-        sb.appendEscaped(contact.getAddress());
-        sb.appendHtmlConstant("</td></tr></table>");
+        // reuse the contact cell to render the inner html of the drag helper.
+        new ContactCell(Resource.INSTANCE.contact()).render(contact, null, sb);
         helper.setInnerHTML(sb.toSafeHtml().asString());
-        
+
       }
     });
 
-    // Create the UiBinder.
-    Widget w = uiBinder.createAndBindUi(this);
-    RootPanel.get("sample").add(w);
   }
 
   /**
    * Add the columns to the table.
    */
   private void initTableColumns(final SelectionModel<ContactInfo> selectionModel) {
-    
+
     // Checkbox column. This table will uses a checkbox column for selection.
     // Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
     // mouse selection.
@@ -180,13 +294,11 @@ public class CellTableSample implements EntryPoint {
         selectionModel.setSelected(object, value);
       }
     });
-    DroppableOptions droppableOptions = checkColumn.getDroppableOptions();
-    initCommonDroppableOptions(droppableOptions);
+    checkColumn.setCellDraggableOnly();
     DraggableOptions draggableOptions = checkColumn.getDraggableOptions();
     initCommonDraggableOptions(draggableOptions);
-    cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br>")); 
-    
-    
+    cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br>"));
+
     // First name.
     DragAndDropColumn<ContactInfo, String> firstNameColumn = new DragAndDropColumn<ContactInfo, String>(
         new EditTextCell()) {
@@ -195,8 +307,7 @@ public class CellTableSample implements EntryPoint {
         return object.getFirstName();
       }
     };
-    droppableOptions = firstNameColumn.getDroppableOptions();
-    initCommonDroppableOptions(droppableOptions);
+    firstNameColumn.setCellDraggableOnly();
     draggableOptions = firstNameColumn.getDraggableOptions();
     initCommonDraggableOptions(draggableOptions);
     cellTable
@@ -217,8 +328,7 @@ public class CellTableSample implements EntryPoint {
         return object.getLastName();
       }
     };
-    droppableOptions = lastNameColumn.getDroppableOptions();
-    initCommonDroppableOptions(droppableOptions);
+    lastNameColumn.setCellDraggableOnly();
     draggableOptions = lastNameColumn.getDraggableOptions();
     initCommonDraggableOptions(draggableOptions);
     cellTable.addColumn(lastNameColumn, constants.cwCellTableColumnLastName());
@@ -244,8 +354,7 @@ public class CellTableSample implements EntryPoint {
         return object.getCategory().getDisplayName();
       }
     };
-    droppableOptions = categoryColumn.getDroppableOptions();
-    initCommonDroppableOptions(droppableOptions);
+    categoryColumn.setCellDraggableOnly();
     draggableOptions = categoryColumn.getDraggableOptions();
     initCommonDraggableOptions(draggableOptions);
     cellTable.addColumn(categoryColumn, constants.cwCellTableColumnCategory());
@@ -261,33 +370,27 @@ public class CellTableSample implements EntryPoint {
     });
 
     // Address.
-    DragAndDropColumn<ContactInfo, String> addressColumn = new DragAndDropColumn<ContactInfo, String>(new TextCell()) {
+    DragAndDropColumn<ContactInfo, String> addressColumn = new DragAndDropColumn<ContactInfo, String>(
+        new TextCell()) {
       @Override
       public String getValue(ContactInfo object) {
         return object.getAddress();
       }
     };
     cellTable.addColumn(addressColumn, constants.cwCellTableColumnAddress());
-    droppableOptions = addressColumn.getDroppableOptions();
-    initCommonDroppableOptions(droppableOptions);
+    addressColumn.setCellDraggableOnly();
     draggableOptions = addressColumn.getDraggableOptions();
     initCommonDraggableOptions(draggableOptions);
   }
 
   private void initCommonDraggableOptions(DraggableOptions draggableOptions) {
-     
+
     draggableOptions.setHelper($(Templates.INSTANCE.outerHelper()));
-    draggableOptions.setOpacity((float)0.8);
+    draggableOptions.setOpacity((float) 0.8);
     draggableOptions.setCursor(Cursor.MOVE);
     draggableOptions.setRevert(RevertOption.ON_INVALID_DROP);
-    
-    
-  }
-
-  private void initCommonDroppableOptions(DroppableOptions droppableOptions) {
-    droppableOptions.setHoverClass(Resource.INSTANCE.css().droppableHover());
-    
-    
+    // prevents dragging when user click on the category drop-down list
+    draggableOptions.setCancel("select");
   }
 
 }

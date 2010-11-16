@@ -9,8 +9,9 @@ public interface Resource extends ClientBundle {
 
   public interface Css extends CssResource {
     String droppableHover();
-
+    String droppableActive();
     String dragHover();
+    String exportCellList();
 
   }
 
