@@ -27,11 +27,9 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.plugins.EventsListener;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.droppable.client.Droppable;
 import gwtquery.plugins.droppable.client.DroppableOptions;
 import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
 import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
@@ -66,7 +64,6 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   
   
   private DroppableOptions options;
-  private String childrenSelector;
   private EventBus dropHandlerManager;
 
   /**
@@ -76,28 +73,9 @@ public class DroppableWidget<T extends Widget> extends Composite implements
    *          the widget that you want to make it a drop target.
    */
   public DroppableWidget(T w) {
-    this(w, null, new DroppableOptions(), DraggableOptions.DEFAULT_SCOPE);
+    this(w, new DroppableOptions(), DraggableOptions.DEFAULT_SCOPE);
   }
 
-  /**
-   * Constructor
-   * 
-   * @param w
-   *          the widget that you want to make it a drop target.
-   * @param childrenSelector
-   *          css selector used to define children within the widget
-   *          <code>w</code> droppable
-   * 
-   *          <pre>
-   * e.g : if you want to pass a {@link Grid} object and 
-   *         you want that all cell become drop targets :
-   *          Grid myGrid = new Grid(10,10);
-   *          DroppableWidget<Grid> dw = new DroppableWidget(myGrid, "td");
-   * </pre>
-   */
-  public DroppableWidget(T w, String childrenSelector) {
-    this(w, null, new DroppableOptions(), DraggableOptions.DEFAULT_SCOPE);
-  }
 
   /**
    * Constructor
@@ -108,25 +86,7 @@ public class DroppableWidget<T extends Widget> extends Composite implements
    *          options to use during the drop operation
    */
   public DroppableWidget(T w, DroppableOptions options) {
-    this(w, null, options, DraggableOptions.DEFAULT_SCOPE);
-
-  }
-
-  /**
-   * Constructor
-   * 
-   * @param w
-   *          the widget that you want to make it a drop target.
-   * 
-   * @param childrenSelector
-   *          css selector used to define children within the widget
-   *          <code>w</code> droppable
-   * @param options
-   *          options to use during the drop operation
-   */
-  public DroppableWidget(T w, String childrenSelector, DroppableOptions options) {
-    this(w, childrenSelector, options, DraggableOptions.DEFAULT_SCOPE);
-
+    this(w, options, DraggableOptions.DEFAULT_SCOPE);
   }
 
   /**
@@ -142,30 +102,9 @@ public class DroppableWidget<T extends Widget> extends Composite implements
    *          value as a droppable will be accepted.
    */
   public DroppableWidget(T w, DroppableOptions options, String scope) {
-    this(w, null, options, scope);
-  }
-
-  /**
-   * Constructor
-   * 
-   * @param w
-   *          the widget that you want to make it a drop target.
-   * @param childrenSelector
-   *          css selector used to define children within the widget
-   *          <code>w</code> droppable
-   * @param options
-   *          options to use during the drop operation
-   * @param scope
-   *          Used to group sets of draggable and droppable Widget, in addition
-   *          to droppable's accept option. A draggable with the same scope
-   *          value as a droppable will be accepted.
-   */
-  public DroppableWidget(T w, String childrenSelector,
-      DroppableOptions options, String scope) {
     initWidget(w);
     this.options = options;
     this.options.setScope(scope);
-    this.childrenSelector = childrenSelector;
   }
   
   /**
@@ -199,13 +138,13 @@ public class DroppableWidget<T extends Widget> extends Composite implements
     if (DOM.getEventListener(getElement()) != gQueryEventListener) {
       DOM.setEventListener(getElement(), gQueryEventListener);
     }
-    getDroppable().droppable(options, ensureDropHandlers()).data(DROPPABLE_WIDGET_KEY, this);
+    $(getElement()).as(Droppable).droppable(options, ensureDropHandlers()).data(DROPPABLE_WIDGET_KEY, this);
   }
 
   @Override
   protected void onUnload() {
     super.onUnload();
-    getDroppable().destroy().removeData(DROPPABLE_WIDGET_KEY);
+    $(getElement()).as(Droppable).destroy().removeData(DROPPABLE_WIDGET_KEY);
   }
 
   public HandlerRegistration addActivateDroppableHandler(
@@ -299,20 +238,16 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   }
 
   public void setScope(String scope) {
-    getDroppable().changeScope(scope);
+    $(getElement()).as(Droppable).changeScope(scope);
     options.setScope(scope);
   }
 
   public void setTolerance(DroppableTolerance tolerance) {
     options.setTolerance(tolerance);
   }
-
-  private Droppable getDroppable(){
-    if (childrenSelector != null) {
-      return $(childrenSelector, getElement()).as(Droppable);
-    } else {
-      return $(getElement()).as(Droppable);
-    }
-
+  
+  public DroppableOptions getOptions() {
+    return options;
   }
+
 }
