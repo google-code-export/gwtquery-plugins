@@ -15,10 +15,11 @@
  */
 package gwtquery.plugins.droppable.client.gwt;
 
+import static com.google.gwt.query.client.GQuery.$;
+
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
@@ -34,6 +35,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -67,8 +69,9 @@ import java.util.Set;
 
 /**
  * A view of a tree node.
- *
- * @param <T> the type that this view contains
+ * 
+ * @param <T>
+ *          the type that this view contains
  */
 class DragAndDropCellTreeNodeView<T> extends UIObject {
 
@@ -88,10 +91,11 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
   /**
    * The {@link com.google.gwt.view.client.HasData} used to show children. This
    * class is intentionally static because we might move it to a new
-   * {@link DragAndDropCellTreeNodeView}, and we don't want non-static references to the
-   * old {@link DragAndDropCellTreeNodeView}.
-   *
-   * @param <C> the child item type
+   * {@link DragAndDropCellTreeNodeView}, and we don't want non-static
+   * references to the old {@link DragAndDropCellTreeNodeView}.
+   * 
+   * @param <C>
+   *          the child item type
    */
   private static class NodeCellList<C> implements HasData<C> {
 
@@ -127,8 +131,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
         SafeHtml openImage = nodeView.tree.getOpenImageHtml(isRootNode);
         SafeHtml closedImage = nodeView.tree.getClosedImageHtml(isRootNode);
         int imageWidth = nodeView.tree.getImageWidth();
-        String paddingDirection = LocaleInfo.getCurrentLocale().isRTL()
-            ? "right" : "left";
+        String paddingDirection = LocaleInfo.getCurrentLocale().isRTL() ? "right"
+            : "left";
         int paddingAmount = imageWidth * nodeView.depth;
 
         // Create a set of currently open nodes.
@@ -146,7 +150,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
         // Render the child nodes.
         ProvidesKey<C> keyProvider = nodeInfo.getProvidesKey();
         TreeViewModel model = nodeView.tree.getTreeViewModel();
-        
+
         for (C value : values) {
           Object key = keyProvider.getKey(value);
           boolean isOpen = openNodes.contains(key);
@@ -183,44 +187,50 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
           cell.render(value, key, cellBuilder);
 
           SafeHtml innerDiv = template.innerDiv(paddingDirection, imageWidth,
-              innerClasses.toString(), image, itemValueStyle,
-              cellBuilder.toSafeHtml());
+              innerClasses.toString(), image, itemValueStyle, cellBuilder
+                  .toSafeHtml());
 
           sb.append(template.outerDiv(paddingDirection, paddingAmount,
               outerClasses.toString(), innerDiv));
-          
-          addDragAndDropBehaviour(values.indexOf(value), value);
+
+          // addDragAndDropBehaviour(values.indexOf(value), value);
         }
       }
-      
-      protected void addDragAndDropBehaviour(final int rowIndex, final C value) {
 
-        if (!(nodeInfo instanceof DragAndDropNodeInfo<?>)){
-          return;
+      protected void addDragAndDropBehaviour(List<C> values, int start) {
+
+        int end = start + values.size();
+
+        for (int rowIndex = start; rowIndex < end; rowIndex++) {
+          C value = values.get(rowIndex - start);
+          Element newCell = getRowElement(rowIndex);
+
+          if (!(nodeInfo instanceof DragAndDropNodeInfo<?>)) {
+            continue;
+          }
+          final DragAndDropNodeInfo<C> dndNodeInfo = (DragAndDropNodeInfo<C>) nodeInfo;
+
+          DragAndDropCellWidgetUtils.get().maybeMakeDraggableOrDroppable(
+              newCell, value, dndNodeInfo.getCellDragAndDropBehaviour(),
+              dndNodeInfo.getDraggableOptions(),
+              dndNodeInfo.getDroppableOptions(),
+              // TODO
+              /* ensureDragAndDropHandlers() */new SimpleEventBus());
         }
-        final DragAndDropNodeInfo<C> dndNodeInfo = (DragAndDropNodeInfo<C>) nodeInfo;
-        //final Element oldCell = getRowElementWithoutRowBoundsCheck(rowIndex);
-        final Element oldCell = getRowElement(rowIndex);
-        // make the new cell draggable and droppable
-        // use a deferred command to be sure that the new cell is attached to the
-        // dom
-        Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
-          public void execute() {
-            DragAndDropCellWidgetUtils dndUtils = DragAndDropCellWidgetUtils.get();
+      }
 
-            dndUtils.cleanCell(oldCell);
-
-            Element newCell = getRowElement(rowIndex);
-            
-           dndUtils.maybeMakeDraggableOrDroppable(newCell, value,
-               dndNodeInfo.getCellDragAndDropBehaviour(), dndNodeInfo.getDraggableOptions(), dndNodeInfo.getDroppableOptions(),
-                /*ensureDrangAndDropHandlers()*/ new SimpleEventBus());
+      protected void cleanAllCell() {
+        $(childContainer).children().each(new Function() {
+          @Override
+          public void f(Element div) {
+            DragAndDropCellWidgetUtils.get().cleanCell(
+                (Element) div.getChild(0).cast());
           }
         });
 
       }
-      
+
       private Element getRowElement(int indexOnPage) {
         if (indexOnPage >= 0 && childContainer.getChildCount() > indexOnPage) {
           return childContainer.getChild(indexOnPage).getChild(0).cast();
@@ -230,6 +240,9 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
       public void replaceAllChildren(List<C> values, SafeHtml html,
           boolean stealFocus) {
+        // first clean all cell
+        cleanAllCell();
+
         // Hide the child container so we can animate it.
         if (nodeView.tree.isAnimationEnabled()) {
           nodeView.ensureAnimationFrame().getStyle().setDisplay(Display.NONE);
@@ -237,7 +250,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
         // Replace the child nodes.
         nodeView.tree.isRefreshing = true;
-        Map<Object, DragAndDropCellTreeNodeView<?>> savedViews = saveChildState(values, 0);
+        Map<Object, DragAndDropCellTreeNodeView<?>> savedViews = saveChildState(
+            values, 0);
         AbstractHasData.replaceAllChildren(nodeView.tree, childContainer, html);
         nodeView.tree.isRefreshing = false;
 
@@ -263,12 +277,22 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
         if (nodeView.tree.isAnimationEnabled()) {
           nodeView.tree.maybeAnimateTreeNode(nodeView);
         }
+
+        // add drag and drop behaviour
+        addDragAndDropBehaviour(values, 0);
       }
 
       public void replaceChildren(List<C> values, int start, SafeHtml html,
           boolean stealFocus) {
-        Map<Object, DragAndDropCellTreeNodeView<?>> savedViews = saveChildState(values,
-            start);
+        // clean cell before they are replaced
+        int end = start + values.size();
+        for (int rowIndex = start; rowIndex < end; rowIndex++) {
+          Element oldCell = getRowElement(rowIndex);
+          DragAndDropCellWidgetUtils.get().cleanCell(oldCell);
+        }
+
+        Map<Object, DragAndDropCellTreeNodeView<?>> savedViews = saveChildState(
+            values, start);
 
         nodeView.tree.isRefreshing = true;
         Element newChildren = AbstractHasData.convertToElements(nodeView.tree,
@@ -278,6 +302,9 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
         nodeView.tree.isRefreshing = false;
 
         loadChildState(values, start, savedViews);
+
+        // add drag and drop behaviour
+        addDragAndDropBehaviour(values, start);
       }
 
       public void resetFocus() {
@@ -288,8 +315,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
           boolean stealFocus) {
         // Keyboard selection is handled by CellTree.
         Element elem = childContainer.getChild(index).cast();
-        setStyleName(getSelectionElement(elem),
-            nodeView.tree.getStyle().cellTreeKeyboardSelectedItem(), selected);
+        setStyleName(getSelectionElement(elem), nodeView.tree.getStyle()
+            .cellTreeKeyboardSelectedItem(), selected);
       }
 
       public void setLoadingState(LoadingState state) {
@@ -299,10 +326,13 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
       /**
        * Reload the open children after rendering new items in this node.
-       *
-       * @param values the values being replaced
-       * @param start the start index
-       * @param savedViews the open nodes
+       * 
+       * @param values
+       *          the values being replaced
+       * @param start
+       *          the start index
+       * @param savedViews
+       *          the open nodes
        */
       private void loadChildState(List<C> values, int start,
           Map<Object, DragAndDropCellTreeNodeView<?>> savedViews) {
@@ -313,12 +343,14 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
         Element container = nodeView.ensureChildContainer();
         Element childElem = container.getChild(start).cast();
-        DragAndDropCellTreeNodeView<?> keyboardSelected = nodeView.tree.getKeyboardSelectedNode();
+        DragAndDropCellTreeNodeView<?> keyboardSelected = nodeView.tree
+            .getKeyboardSelectedNode();
         for (int i = start; i < end; i++) {
           C childValue = values.get(i - start);
-          DragAndDropCellTreeNodeView<C> child = nodeView.createTreeNodeView(nodeInfo,
-              childElem, childValue, null);
-          DragAndDropCellTreeNodeView<?> savedChild = savedViews.remove(keyProvider.getKey(childValue));
+          DragAndDropCellTreeNodeView<C> child = nodeView.createTreeNodeView(
+              nodeInfo, childElem, childValue, null);
+          DragAndDropCellTreeNodeView<?> savedChild = savedViews
+              .remove(keyProvider.getKey(childValue));
           // Copy the saved child's state into the new child
           if (savedChild != null) {
             child.animationFrame = savedChild.animationFrame;
@@ -390,13 +422,15 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
        * Save the state of the open child nodes within the range of the
        * specified values. Use {@link #loadChildState(List, int, Map)} to
        * re-attach the open nodes after they have been replaced.
-       *
-       * @param values the values being replaced
-       * @param start the start index
+       * 
+       * @param values
+       *          the values being replaced
+       * @param start
+       *          the start index
        * @return the map of open nodes
        */
-      private Map<Object, DragAndDropCellTreeNodeView<?>> saveChildState(List<C> values,
-          int start) {
+      private Map<Object, DragAndDropCellTreeNodeView<?>> saveChildState(
+          List<C> values, int start) {
         // Ensure that we have a children array.
         if (nodeView.children == null) {
           nodeView.children = new ArrayList<DragAndDropCellTreeNodeView<?>>();
@@ -406,7 +440,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
         int len = values.size();
         int end = start + len;
         int childCount = nodeView.getChildCount();
-        DragAndDropCellTreeNodeView<?> keyboardSelected = nodeView.tree.getKeyboardSelectedNode();
+        DragAndDropCellTreeNodeView<?> keyboardSelected = nodeView.tree
+            .getKeyboardSelectedNode();
         Map<Object, DragAndDropCellTreeNodeView<?>> openNodes = new HashMap<Object, DragAndDropCellTreeNodeView<?>>();
         for (int i = start; i < end && i < childCount; i++) {
           DragAndDropCellTreeNodeView<?> child = nodeView.getChildNode(i);
@@ -449,6 +484,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
     private final NodeInfo<C> nodeInfo;
     private DragAndDropCellTreeNodeView<?> nodeView;
     private final HasDataPresenter<C> presenter;
+    // keep the view to clean it during the cleanup
+    private final View view;
 
     public NodeCellList(final NodeInfo<C> nodeInfo,
         final DragAndDropCellTreeNodeView<?> nodeView, int pageSize) {
@@ -458,8 +495,9 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
       cell = nodeInfo.getCell();
 
       // Create a presenter.
-      presenter = new HasDataPresenter<C>(this, new View(
-          nodeView.ensureChildContainer()), pageSize, nodeInfo.getProvidesKey());
+      view = new View(nodeView.ensureChildContainer());
+      presenter = new HasDataPresenter<C>(this, view, pageSize, nodeInfo
+          .getProvidesKey());
 
       // Disable keyboard selection because it is handled by CellTree.
       presenter.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
@@ -490,6 +528,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
      */
     public void cleanup() {
       presenter.clearSelectionModel();
+      view.cleanAllCell();
     }
 
     public void fireEvent(GwtEvent<?> event) {
@@ -548,9 +587,10 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * An implementation of {@link TreeNode} that delegates to a
-   * {@link DragAndDropCellTreeNodeView}. This class is intentionally static because we
-   * might move it to a new {@link DragAndDropCellTreeNodeView}, and we don't want
-   * non-static references to the old {@link DragAndDropCellTreeNodeView}.
+   * {@link DragAndDropCellTreeNodeView}. This class is intentionally static
+   * because we might move it to a new {@link DragAndDropCellTreeNodeView}, and
+   * we don't want non-static references to the old
+   * {@link DragAndDropCellTreeNodeView}.
    */
   private static class TreeNodeImpl implements TreeNode {
 
@@ -575,8 +615,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
     public int getIndex() {
       assertNotDestroyed();
-      return (nodeView.parentNode == null) ? 0
-          : nodeView.parentNode.children.indexOf(nodeView);
+      return (nodeView.parentNode == null) ? 0 : nodeView.parentNode.children
+          .indexOf(nodeView);
     }
 
     public TreeNode getParent() {
@@ -638,9 +678,11 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
     /**
      * Check the child bounds.
-     *
-     * @param index the index of the child
-     * @throws IndexOutOfBoundsException if the child is not in range
+     * 
+     * @param index
+     *          the index of the child
+     * @throws IndexOutOfBoundsException
+     *           if the child is not in range
      */
     private void checkChildBounds(int index) {
       if ((index < 0) || (index >= getChildCount())) {
@@ -670,7 +712,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
   /**
    * The element used in place of an image when a node has no children.
    */
-  private static final SafeHtml LEAF_IMAGE = SafeHtmlUtils.fromSafeConstant("<div style='position:absolute;display:none;'></div>");
+  private static final SafeHtml LEAF_IMAGE = SafeHtmlUtils
+      .fromSafeConstant("<div style='position:absolute;display:none;'></div>");
 
   /**
    * The temporary element used to render child items.
@@ -679,28 +722,33 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Returns the element that parents the cell contents of the node.
-   *
-   * @param nodeElem the element that represents the node
+   * 
+   * @param nodeElem
+   *          the element that represents the node
    * @return the cell parent within the node
    */
   private static Element getCellParent(Element nodeElem) {
-    return getSelectionElement(nodeElem).getFirstChildElement().getChild(1).cast();
+    return getSelectionElement(nodeElem).getFirstChildElement().getChild(1)
+        .cast();
   }
 
   /**
    * Returns the element that selection is applied to.
-   *
-   * @param nodeElem the element that represents the node
+   * 
+   * @param nodeElem
+   *          the element that represents the node
    * @return the cell parent within the node
    */
   private static Element getImageElement(Element nodeElem) {
-    return getSelectionElement(nodeElem).getFirstChildElement().getFirstChildElement();
+    return getSelectionElement(nodeElem).getFirstChildElement()
+        .getFirstChildElement();
   }
 
   /**
    * Returns the element that selection is applied to.
-   *
-   * @param nodeElem the element that represents the node
+   * 
+   * @param nodeElem
+   *          the element that represents the node
    * @return the cell parent within the node
    */
   private static Element getSelectionElement(Element nodeElem) {
@@ -719,9 +767,11 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Show or hide an element.
-   *
-   * @param element the element to show or hide
-   * @param show true to show, false to hide
+   * 
+   * @param element
+   *          the element to show or hide
+   * @param show
+   *          true to show, false to hide
    */
   private static void showOrHide(Element element, boolean show) {
     if (show) {
@@ -815,9 +865,10 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
   private final DragAndDropCellTree tree;
 
   /**
-   * The publicly visible tree node. The {@link DragAndDropCellTreeNodeView} doesn't
-   * implement {@link TreeNode} directly because we want to transfer the user's
-   * handle to the {@link TreeNode} to the new {@link DragAndDropCellTreeNodeView}.
+   * The publicly visible tree node. The {@link DragAndDropCellTreeNodeView}
+   * doesn't implement {@link TreeNode} directly because we want to transfer the
+   * user's handle to the {@link TreeNode} to the new
+   * {@link DragAndDropCellTreeNodeView}.
    */
   private TreeNodeImpl treeNode;
 
@@ -828,15 +879,21 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Construct a {@link DragAndDropCellTreeNodeView}.
-   *
-   * @param tree the parent {@link DragAndDropCellTreeNodeView}
-   * @param parent the parent {@link DragAndDropCellTreeNodeView}
-   * @param parentNodeInfo the {@link NodeInfo} of the parent
-   * @param elem the outer element of this {@link DragAndDropCellTreeNodeView}
-   * @param value the value of this node
+   * 
+   * @param tree
+   *          the parent {@link DragAndDropCellTreeNodeView}
+   * @param parent
+   *          the parent {@link DragAndDropCellTreeNodeView}
+   * @param parentNodeInfo
+   *          the {@link NodeInfo} of the parent
+   * @param elem
+   *          the outer element of this {@link DragAndDropCellTreeNodeView}
+   * @param value
+   *          the value of this node
    */
-  public DragAndDropCellTreeNodeView(final DragAndDropCellTree tree, final DragAndDropCellTreeNodeView<?> parent,
-      NodeInfo<T> parentNodeInfo, Element elem, T value) {
+  public DragAndDropCellTreeNodeView(final DragAndDropCellTree tree,
+      final DragAndDropCellTreeNodeView<?> parent, NodeInfo<T> parentNodeInfo,
+      Element elem, T value) {
     this.tree = tree;
     this.parentNode = parent;
     this.parentNodeInfo = parentNodeInfo;
@@ -859,7 +916,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Check whether or not this node is open.
-   *
+   * 
    * @return true if open, false if closed
    */
   public boolean isOpen() {
@@ -868,9 +925,11 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Sets whether this item's children are displayed.
-   *
-   * @param open whether the item is open
-   * @param fireEvents true to fire events if the state changes
+   * 
+   * @param open
+   *          whether the item is open
+   * @param fireEvents
+   *          true to fire events if the state changes
    * @return true if successfully opened, false otherwise.
    */
   public boolean setOpen(boolean open, boolean fireEvents) {
@@ -940,7 +999,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
       updateImage(false);
 
       // Keyboard select this node if the open node was a child.
-      DragAndDropCellTreeNodeView<?> keySelected = tree.getKeyboardSelectedNode();
+      DragAndDropCellTreeNodeView<?> keySelected = tree
+          .getKeyboardSelectedNode();
       while (keySelected != null) {
         if (keySelected == this) {
           tree.keyboardSelect(this, true);
@@ -960,8 +1020,9 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Unregister the list handler and destroy all child nodes.
-   *
-   * @param destroy true to destroy this node
+   * 
+   * @param destroy
+   *          true to destroy this node
    */
   protected void cleanup(boolean destroy) {
     // Unregister the list handler.
@@ -1001,23 +1062,30 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
   /**
    * Returns an instance of TreeNodeView of the same subclass as the calling
    * object.
-   *
-   * @param <C> the data type of the node's children
-   * @param nodeInfo a NodeInfo object describing the child nodes
-   * @param childElem the DOM element used to parent the new TreeNodeView
-   * @param childValue the child's value
-   * @param viewData view data associated with the node
+   * 
+   * @param <C>
+   *          the data type of the node's children
+   * @param nodeInfo
+   *          a NodeInfo object describing the child nodes
+   * @param childElem
+   *          the DOM element used to parent the new TreeNodeView
+   * @param childValue
+   *          the child's value
+   * @param viewData
+   *          view data associated with the node
    * @return a TreeNodeView of suitable type
    */
-  protected <C> DragAndDropCellTreeNodeView<C> createTreeNodeView(NodeInfo<C> nodeInfo,
-      Element childElem, C childValue, Object viewData) {
-    return new DragAndDropCellTreeNodeView<C>(tree, this, nodeInfo, childElem, childValue);
+  protected <C> DragAndDropCellTreeNodeView<C> createTreeNodeView(
+      NodeInfo<C> nodeInfo, Element childElem, C childValue, Object viewData) {
+    return new DragAndDropCellTreeNodeView<C>(tree, this, nodeInfo, childElem,
+        childValue);
   }
 
   /**
    * Fire an event to the {@link com.google.gwt.cell.client.AbstractCell}.
-   *
-   * @param event the native event
+   * 
+   * @param event
+   *          the native event
    */
   protected void fireEventToCell(NativeEvent event) {
     if (parentNodeInfo == null) {
@@ -1027,7 +1095,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
     Cell<T> parentCell = parentNodeInfo.getCell();
     String eventType = event.getType();
     boolean isClick = "click".equals(eventType);
-    SelectionModel<? super T> selectionModel = parentNodeInfo.getSelectionModel();
+    SelectionModel<? super T> selectionModel = parentNodeInfo
+        .getSelectionModel();
     Element cellParent = getCellParent();
     Object key = getValueKey();
 
@@ -1044,8 +1113,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
     Set<String> consumedEvents = parentCell.getConsumedEvents();
     if (consumedEvents != null && consumedEvents.contains(eventType)) {
       boolean cellWasEditing = parentCell.isEditing(cellParent, value, key);
-      parentCell.onBrowserEvent(cellParent, value, key, event,
-          parentNodeInfo.getValueUpdater());
+      parentCell.onBrowserEvent(cellParent, value, key, event, parentNodeInfo
+          .getValueUpdater());
       tree.cellIsEditing = parentCell.isEditing(cellParent, value, key);
       if (cellWasEditing && !tree.cellIsEditing) {
         CellBasedWidgetImpl.get().resetFocus(new Scheduler.ScheduledCommand() {
@@ -1066,7 +1135,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Returns the element corresponding to the open/close image.
-   *
+   * 
    * @return the open/close image element
    */
   protected Element getImageElement() {
@@ -1094,14 +1163,16 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Set up the node when it is opened.
-   *
-   * @param nodeInfo the {@link NodeInfo} that provides information about the
-   *          child values
-   * @param <C> the child data type of the node
+   * 
+   * @param nodeInfo
+   *          the {@link NodeInfo} that provides information about the child
+   *          values
+   * @param <C>
+   *          the child data type of the node
    */
   protected <C> void onOpen(final NodeInfo<C> nodeInfo) {
-    NodeCellList<C> view = new NodeCellList<C>(nodeInfo, this,
-        tree.getDefaultNodeSize());
+    NodeCellList<C> view = new NodeCellList<C>(nodeInfo, this, tree
+        .getDefaultNodeSize());
     listView = view;
     view.setSelectionModel(nodeInfo.getSelectionModel());
     nodeInfo.setDataDisplay(view);
@@ -1109,7 +1180,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Ensure that the animation frame exists and return it.
-   *
+   * 
    * @return the animation frame
    */
   Element ensureAnimationFrame() {
@@ -1124,7 +1195,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Ensure that the child container exists and return it.
-   *
+   * 
    * @return the child container
    */
   Element ensureChildContainer() {
@@ -1137,7 +1208,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Ensure that the content container exists and return it.
-   *
+   * 
    * @return the content container
    */
   Element ensureContentContainer() {
@@ -1176,7 +1247,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Get a {@link TreeNode} with a public API for this node view.
-   *
+   * 
    * @return the {@link TreeNode}
    */
   TreeNode getTreeNode() {
@@ -1196,7 +1267,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Check if this node is a root node.
-   *
+   * 
    * @return true if a root node
    */
   boolean isRootNode() {
@@ -1205,12 +1276,13 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Check if the value of this node is selected.
-   *
+   * 
    * @return true if selected, false if not
    */
   boolean isSelected() {
     if (parentNodeInfo != null) {
-      SelectionModel<? super T> selectionModel = parentNodeInfo.getSelectionModel();
+      SelectionModel<? super T> selectionModel = parentNodeInfo
+          .getSelectionModel();
       if (selectionModel != null) {
         return selectionModel.isSelected(value);
       }
@@ -1220,7 +1292,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Reset focus on this node.
-   *
+   * 
    * @return true of the cell takes focus, false if not
    */
   boolean resetFocusOnCell() {
@@ -1233,9 +1305,11 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Select or deselect this node with the keyboard.
-   *
-   * @param selected true if selected, false if not
-   * @param stealFocus true to steal focus
+   * 
+   * @param selected
+   *          true if selected, false if not
+   * @param stealFocus
+   *          true to steal focus
    */
   void setKeyboardSelected(boolean selected, boolean stealFocus) {
     if (tree.isKeyboardSelectionDisabled()) {
@@ -1269,34 +1343,38 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
     }
 
     // Update the selection model.
-    if (KeyboardSelectionPolicy.BOUND_TO_SELECTION == tree.getKeyboardSelectionPolicy()) {
+    if (KeyboardSelectionPolicy.BOUND_TO_SELECTION == tree
+        .getKeyboardSelectionPolicy()) {
       setSelected(selected);
     }
   }
 
   /**
    * Add or remove the keyboard selected style.
-   *
-   * @param selected true if selected, false if not
+   * 
+   * @param selected
+   *          true if selected, false if not
    */
   void setKeyboardSelectedStyle(boolean selected) {
     if (!isRootNode()) {
       Element selectionElem = getSelectionElement(getElement());
       if (selectionElem != null) {
-        setStyleName(selectionElem,
-            tree.getStyle().cellTreeKeyboardSelectedItem(), selected);
+        setStyleName(selectionElem, tree.getStyle()
+            .cellTreeKeyboardSelectedItem(), selected);
       }
     }
   }
 
   /**
    * Select or deselect this node.
-   *
-   * @param selected true to select, false to deselect
+   * 
+   * @param selected
+   *          true to select, false to deselect
    */
   void setSelected(boolean selected) {
     if (parentNodeInfo != null) {
-      SelectionModel<? super T> selectionModel = parentNodeInfo.getSelectionModel();
+      SelectionModel<? super T> selectionModel = parentNodeInfo
+          .getSelectionModel();
       if (selectionModel != null) {
         selectionModel.setSelected(value, selected);
       }
@@ -1306,7 +1384,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
   void showFewer() {
     Range range = listView.getVisibleRange();
     int defaultPageSize = listView.getDefaultPageSize();
-    int maxSize = Math.max(defaultPageSize, range.getLength() - defaultPageSize);
+    int maxSize = Math
+        .max(defaultPageSize, range.getLength() - defaultPageSize);
     listView.setVisibleRange(range.getStart(), maxSize);
   }
 
@@ -1318,8 +1397,9 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   /**
    * Update the image based on the current state.
-   *
-   * @param isLoading true if still loading data
+   * 
+   * @param isLoading
+   *          true if still loading data
    */
   private void updateImage(boolean isLoading) {
     // Early out if this is a root node.
@@ -1331,8 +1411,8 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
     boolean isTopLevel = parentNode.isRootNode();
     SafeHtml html = tree.getClosedImageHtml(isTopLevel);
     if (open) {
-      html = isLoading ? tree.getLoadingImageHtml()
-          : tree.getOpenImageHtml(isTopLevel);
+      html = isLoading ? tree.getLoadingImageHtml() : tree
+          .getOpenImageHtml(isTopLevel);
     }
     if (nodeInfoLoaded && nodeInfo == null) {
       html = LEAF_IMAGE;
@@ -1344,5 +1424,5 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
     Element oldImg = getImageElement();
     oldImg.getParentElement().replaceChild(imageElem, oldImg);
   }
-  
+
 }
