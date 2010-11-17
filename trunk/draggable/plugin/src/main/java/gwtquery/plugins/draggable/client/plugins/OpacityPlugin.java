@@ -57,9 +57,9 @@ public class OpacityPlugin implements DraggablePlugin {
     GQuery $helper = handler.getHelper();
 
     double oldOpacity = GQUtils.cur($helper.get(0), OPACITY_CSS_KEY, true);
-    $helper.data(OLD_OPACITY_KEY, oldOpacity);
+    $helper.data(OLD_OPACITY_KEY, new Double(oldOpacity));
 
-    $helper.css(OPACITY_CSS_KEY, "" + opacity);
+    $helper.css(OPACITY_CSS_KEY, opacity.toString());
 
   }
 
@@ -72,8 +72,8 @@ public class OpacityPlugin implements DraggablePlugin {
     if ($element.data(OLD_OPACITY_KEY) == null) {
       return;
     }
-    double oldOpacity = $element.data(OLD_OPACITY_KEY, Double.class);
-    $element.css(OPACITY_CSS_KEY, "" + oldOpacity);
+    Double oldOpacity = $element.data(OLD_OPACITY_KEY, Double.class);
+    $element.css(OPACITY_CSS_KEY, oldOpacity != null ? String.valueOf(oldOpacity):"");
     $element.removeData(OLD_OPACITY_KEY);
 
   }
