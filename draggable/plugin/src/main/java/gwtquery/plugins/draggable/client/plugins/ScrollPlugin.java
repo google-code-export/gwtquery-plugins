@@ -24,7 +24,7 @@ import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.user.client.Window;
 
 import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.draggable.client.DraggableDroppableManager;
+import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
@@ -121,8 +121,8 @@ public class ScrollPlugin implements DraggablePlugin {
 
     }
 
-    if (scrolled && DraggableDroppableManager.getInstance().isHandleDroppable()) {
-      DraggableDroppableManager.getInstance().prepareOffset(draggableElement,e);
+    if (scrolled && DragAndDropManager.getInstance().isHandleDroppable()) {
+      DragAndDropManager.getInstance().prepareOffset(draggableElement,e);
     }
 
   }
