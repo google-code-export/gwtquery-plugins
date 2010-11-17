@@ -6,7 +6,6 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.query.client.GQuery;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableCell;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
 public abstract class AbstractDraggableEvent<H extends EventHandler> extends
