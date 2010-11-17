@@ -25,11 +25,14 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.user.client.Window;
@@ -57,6 +60,11 @@ import com.google.gwt.user.datepicker.client.DatePicker;
  * 
  */
 public class GWTIntegrationSample implements EntryPoint {
+  
+  interface Image extends ClientBundle{
+    Image INSTANCE = GWT.create(Image.class);
+    ImageResource gwtLogo();
+  }
 
   /**
    * Handler that catch DragEvent and DragStopEvent to fill the information
@@ -337,6 +345,7 @@ public class GWTIntegrationSample implements EntryPoint {
    * http://gwt.google.com/samples/Showcase/Showcase.html#!CwTabPanel
    * 
    */
+  @SuppressWarnings("deprecation")
   private DecoratedTabPanel createTabPanel() {
     // Create a tab panel
     DecoratedTabPanel tabPanel = new DecoratedTabPanel();
@@ -355,7 +364,9 @@ public class GWTIntegrationSample implements EntryPoint {
      * Image(Showcase.images.gwtLogo()));
      */
     // TODO add gwt logo
-    tabPanel.add(new HTML("TODO add GWT LOGO"), tabTitles[1]);
+    VerticalPanel vPanel = new VerticalPanel();
+    vPanel.add(new com.google.gwt.user.client.ui.Image(Image.INSTANCE.gwtLogo()));
+    tabPanel.add(new com.google.gwt.user.client.ui.Image(Image.INSTANCE.gwtLogo()), tabTitles[1]);
 
     // Add a tab
     HTML moreInfo = new HTML("Tabs are highly customizable using CSS.");
