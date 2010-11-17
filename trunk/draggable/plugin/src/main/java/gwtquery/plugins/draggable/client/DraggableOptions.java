@@ -28,10 +28,12 @@ import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
 /**
  * This class is used to configure the drag operation.
  * 
- * See <a href="http://code.google.com/p/gwtquery-plugins/wiki/DraggablePluginGettingStarted">the wiki page</a> for more documentation and samples
+ * See <a href=
+ * "http://code.google.com/p/gwtquery-plugins/wiki/DraggablePluginGettingStarted"
+ * >the wiki page</a> for more documentation and samples
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
- *
+ * 
  */
 public class DraggableOptions extends MouseOptions {
 
@@ -118,6 +120,22 @@ public class DraggableOptions extends MouseOptions {
         GQuery helperFromOptions);
   }
 
+  /**
+   * 
+   * Define what the draggable do a the end of the drag operation.
+   * 
+   * ALWAYS : the draggable will return to its start position when dragging
+   * stops.
+   * 
+   * NEVER : the draggable will not return to its start position when dragging
+   * stops.
+   * 
+   * ON_VALID_DROP :revert will only occur if the draggable has been dropped
+   * (useful with droppable plug-in)
+   * 
+   * ON_INVALID_DROP :revert will only occur if the draggable has not been
+   * dropped (useful with droppable plug-in)
+   */
   public static enum RevertOption {
     NEVER, ALWAYS, ON_VALID_DROP, ON_INVALID_DROP;
 
@@ -133,7 +151,6 @@ public class DraggableOptions extends MouseOptions {
 
   public static final String DEFAULT_SCOPE = "default";
 
-  private boolean addClasses;
   private String appendTo;
   private AxisOption axis;
   // private boolean connectToSortable;
@@ -185,7 +202,7 @@ public class DraggableOptions extends MouseOptions {
   public int[] getContainmentAsArray() {
     return containmentAsArray;
   }
-  
+
   public GQuery getContainmentAsGQuery() {
     return $containment;
   }
@@ -213,7 +230,7 @@ public class DraggableOptions extends MouseOptions {
   public HelperType getHelperType() {
     return helperType;
   }
-  
+
   public Function getOnBeforeDragStart() {
     return onBeforeDragStart;
   }
@@ -282,12 +299,6 @@ public class DraggableOptions extends MouseOptions {
     return zIndex;
   }
 
-  /**
-   * Tell if we add the ui-draggable class on each draggable element
-   */
-  public boolean isAddClasses() {
-    return addClasses;
-  }
 
   public boolean isDisabled() {
     return disabled;
@@ -309,16 +320,6 @@ public class DraggableOptions extends MouseOptions {
     return snap != null;
   }
 
-  /**
-   * If set to false, will prevent the ui-draggable class from being added. This
-   * may be desired as a performance optimization when calling .draggable() init
-   * on many hundreds of elements.
-   * 
-   * @param addClasses
-   */
-  public void setAddClasses(boolean addClasses) {
-    this.addClasses = addClasses;
-  }
 
   /**
    * The element selected by the appendTo option will be used as the draggable
@@ -384,7 +385,7 @@ public class DraggableOptions extends MouseOptions {
     // mutually exclusive
     this.containmentAsArray = null;
   }
-  
+
   /**
    * Constrains dragging to within the bounds of the specified element (called
    * the container) defining by the selector.
@@ -405,7 +406,7 @@ public class DraggableOptions extends MouseOptions {
     this.containmentAsArray = null;
     this.containment = null;
   }
-  
+
   /**
    * Specify the css cursor to use during the drag operation.
    * 
@@ -534,12 +535,13 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * Give a callback function called before the initialization of the drag operation.
+   * Give a callback function called before the initialization of the drag
+   * operation.
    * 
    * @param onDragStart
-   *          function called before the initialization of the drag operation. The draggable
-   *          plugin will invoke the f(Element e) method on this function object
-   *          with e being the draggable (not the helper)
+   *          function called before the initialization of the drag operation.
+   *          The draggable plugin will invoke the f(Element e) method on this
+   *          function object with e being the draggable (not the helper)
    */
   public void setOnBeforeDragStart(Function onBeforeDragStart) {
     this.onBeforeDragStart = onBeforeDragStart;
@@ -590,7 +592,6 @@ public class DraggableOptions extends MouseOptions {
   public void setOpacity(Float opacity) {
     this.opacity = opacity;
   }
-
 
   /**
    * Set the revert options
@@ -669,7 +670,7 @@ public class DraggableOptions extends MouseOptions {
    */
   public void setSnap(boolean snap) {
     if (snap) {
-      this.snap = "." + CssClassNames.UI_DRAGGABLE;
+      this.snap = "." + CssClassNames.GWT_DRAGGABLE;
     } else {
       this.snap = null;
     }
@@ -752,7 +753,6 @@ public class DraggableOptions extends MouseOptions {
   @Override
   protected void initDefault() {
     super.initDefault();
-    addClasses = true;
     appendTo = "parent";
     axis = AxisOption.NONE;
     iframeFix = false;
@@ -768,7 +768,5 @@ public class DraggableOptions extends MouseOptions {
     snapMode = SnapMode.BOTH;
     snapTolerance = 20;
   }
-
- 
 
 }
