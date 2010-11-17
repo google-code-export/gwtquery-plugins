@@ -17,9 +17,6 @@ package gwtquery.plugins.draggable.client.events;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent;
-
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
 /**
  * Event fired when the drag operation stops.
@@ -28,7 +25,7 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
  * 
  */
 public class BeforeDragStartEvent extends
-    GwtEvent<BeforeDragStartEvent.BeforeDragStartEventHandler> {
+    AbstractDraggableEvent<BeforeDragStartEvent.BeforeDragStartEventHandler> {
 
   public interface BeforeDragStartEventHandler extends EventHandler {
     public void onBeforeDragStart(BeforeDragStartEvent event);
@@ -38,7 +35,7 @@ public class BeforeDragStartEvent extends
   private Element draggable;
 
   public BeforeDragStartEvent(Element draggable) {
-    this.draggable = draggable;
+    super(draggable, null);
   }
 
   @Override
@@ -50,16 +47,13 @@ public class BeforeDragStartEvent extends
   protected void dispatch(BeforeDragStartEventHandler handler) {
     handler.onBeforeDragStart(this);
   }
-  
-  public DraggableWidget<?> getDraggableWidget(){
-    if (getDraggable() != null){
-      return DraggableWidget.get(getDraggable());
-    }
+
+  /**
+   * Helper not yet initialized at this moment.
+   */
+  @Override
+  public Element getHelper() {
     return null;
   }
-  
-   public Element getDraggable() {
-      return draggable;
-    }
 
 }
