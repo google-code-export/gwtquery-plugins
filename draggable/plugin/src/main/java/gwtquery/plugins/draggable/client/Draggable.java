@@ -56,9 +56,9 @@ public class Draggable extends MouseHandler {
    * 
    */
   public static interface CssClassNames {
-    String UI_DRAGGABLE = "ui-draggable";
-    String UI_DRAGGABLE_DISABLED = "ui-draggable-disabled";
-    String UI_DRAGGABLE_DRAGGING = "ui-draggable-dragging";
+    String GWT_DRAGGABLE = "gwtQuery-draggable";
+    String GWT_DRAGGABLE_DISABLED = "gwtQuery-draggable-disabled";
+    String GWT_DRAGGABLE_DRAGGING = "gwtQuery-draggable-dragging";
 
   }
 
@@ -163,8 +163,8 @@ public class Draggable extends MouseHandler {
   public Draggable destroy() {
     for (Element e : elements()) {
       $(e).removeData(DRAGGABLE_HANDLER_KEY).removeClass(
-          CssClassNames.UI_DRAGGABLE, CssClassNames.UI_DRAGGABLE_DISABLED,
-          CssClassNames.UI_DRAGGABLE_DRAGGING);
+          CssClassNames.GWT_DRAGGABLE, CssClassNames.GWT_DRAGGABLE_DISABLED,
+          CssClassNames.GWT_DRAGGABLE_DRAGGING);
     }
     destroyMouseHandler();
     return this;
@@ -189,7 +189,7 @@ public class Draggable extends MouseHandler {
   public Draggable draggable(DraggableOptions options) {
     return draggable(options, null);
   }
-  
+
   /**
    * Selected elements will be now draggable
    * 
@@ -221,11 +221,10 @@ public class Draggable extends MouseHandler {
           && !positionIsFixedAbsoluteOrRelative(e.getStyle().getPosition())) {
         e.getStyle().setPosition(Position.RELATIVE);
       }
-      if (options.isAddClasses()) {
-        e.addClassName(CssClassNames.UI_DRAGGABLE);
-      }
+      e.addClassName(CssClassNames.GWT_DRAGGABLE);
+      
       if (options.isDisabled()) {
-        e.addClassName(CssClassNames.UI_DRAGGABLE_DISABLED);
+        e.addClassName(CssClassNames.GWT_DRAGGABLE_DISABLED);
       }
       DraggableHandler handler = new DraggableHandler(options);
       $(e).data(DRAGGABLE_HANDLER_KEY, handler);
@@ -275,6 +274,7 @@ public class Draggable extends MouseHandler {
 
   @Override
   protected boolean mouseCapture(Element draggable, Event event) {
+
     DraggableHandler handler = $(draggable).data(DRAGGABLE_HANDLER_KEY,
         DraggableHandler.class);
     return handler != null && handler.getHelper() == null
@@ -291,20 +291,20 @@ public class Draggable extends MouseHandler {
   protected boolean mouseStart(Element draggable, Event event) {
     reset();
     DraggableHandler dragHandler = getHandler(draggable);
-    DraggableOptions options = getOptions(draggable);
-    
+    DraggableOptions options = dragHandler.getOptions();
+
     try {
-      trigger(new BeforeDragStartEvent(draggable), options.getOnBeforeDragStart(),
-          draggable);
+      trigger(new BeforeDragStartEvent(draggable), options
+          .getOnBeforeDragStart(), draggable);
     } catch (UmbrellaException e) {
-      for (Throwable t : e.getCauses()){
-        if (t instanceof StopDragException){
+      for (Throwable t : e.getCauses()) {
+        if (t instanceof StopDragException) {
           return false;
         }
       }
-     
+
     }
-  
+
     dragHandler.createHelper(draggable, event);
 
     dragHandler.cacheHelperSize();
@@ -318,16 +318,16 @@ public class Draggable extends MouseHandler {
     callPlugins(new StartCaller(draggable, event), options);
 
     try {
-      trigger(new DragStartEvent(draggable, dragHandler.getHelper().get(0)), options.getOnDragStart(),
-          draggable);
+      trigger(new DragStartEvent(draggable, dragHandler.getHelper().get(0)),
+          options.getOnDragStart(), draggable);
     } catch (UmbrellaException e) {
-      for (Throwable t : e.getCauses()){
-        if (t instanceof StopDragException){
+      for (Throwable t : e.getCauses()) {
+        if (t instanceof StopDragException) {
           mouseStop(draggable, event);
           return false;
         }
       }
-     
+
     }
 
     dragHandler.cacheHelperSize();
@@ -336,7 +336,7 @@ public class Draggable extends MouseHandler {
       getDragAndDropManager().prepareOffset(draggable, event);
     }
 
-    getHelper(draggable).addClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
+    getHelper(draggable).addClass(CssClassNames.GWT_DRAGGABLE_DRAGGING);
 
     mouseDragImpl(draggable, dragHandler, event, true);
 
@@ -345,17 +345,16 @@ public class Draggable extends MouseHandler {
 
   @Override
   protected boolean mouseStop(final Element draggable, final Event event) {
-    
+
     final DraggableHandler handler = getHandler(draggable);
     final DraggableOptions options = handler.getOptions();
-    
+
     boolean dropped = false;
     if (getDragAndDropManager().isHandleDroppable()) {
       dropped = getDragAndDropManager().drop(draggable, event);
     }
 
-    if (draggable == null || draggable.getParentNode() == null) {
-      // original element is removed...
+    if (draggable == null) {
       return false;
     }
 
@@ -365,9 +364,8 @@ public class Draggable extends MouseHandler {
         @Override
         public void f(Element e) {
           callPlugins(new StopCaller(draggable, event), options);
-          triggerDragStop(draggable,handler.getHelper().get(0), options);
-          
-          
+          triggerDragStop(draggable, handler.getHelper().get(0), options);
+
           getHandler(draggable).clear(draggable);
         }
       });
@@ -375,7 +373,7 @@ public class Draggable extends MouseHandler {
     }
 
     callPlugins(new StopCaller(draggable, event), options);
-    triggerDragStop(draggable,handler.getHelper().get(0), options);
+    triggerDragStop(draggable, handler.getHelper().get(0), options);
 
     getHandler(draggable).clear(draggable);
 
@@ -390,8 +388,8 @@ public class Draggable extends MouseHandler {
     }
   }
 
-  private DraggableDroppableManager getDragAndDropManager() {
-    return DraggableDroppableManager.getInstance();
+  private DragAndDropManager getDragAndDropManager() {
+    return DragAndDropManager.getInstance();
   }
 
   private DraggableHandler getHandler(Element draggable) {
@@ -447,16 +445,16 @@ public class Draggable extends MouseHandler {
       callPlugins(new DragCaller(draggable, event), dragHandler.getOptions());
 
       try {
-        trigger(new DragEvent(draggable, dragHandler.getHelper().get(0)), dragHandler.getOptions().getOnDrag(),
-            draggable);
+        trigger(new DragEvent(draggable, dragHandler.getHelper().get(0)),
+            dragHandler.getOptions().getOnDrag(), draggable);
       } catch (UmbrellaException e) {
-        for (Throwable t : e.getCauses()){
-          if (t instanceof StopDragException){
+        for (Throwable t : e.getCauses()) {
+          if (t instanceof StopDragException) {
             mouseStop(draggable, event);
             return false;
           }
         }
-       
+
       }
     }
 
@@ -476,19 +474,22 @@ public class Draggable extends MouseHandler {
   private void reset() {
     currentDragHandler = null;
   }
-  
+
   /**
-   * Use a deferred command to be sure that this event is trigger after the possible drop event.
+   * Use a deferred command to be sure that this event is trigger after the
+   * possible drop event.
+   * 
    * @param draggable
    * @param options
    */
-  private void triggerDragStop(final Element draggable, final Element helper, final DraggableOptions options){
+  private void triggerDragStop(final Element draggable, final Element helper,
+      final DraggableOptions options) {
     Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-      
+
       public void execute() {
         trigger(new DragStopEvent(draggable, helper), options.getOnDragStop(),
             draggable);
-        
+
       }
     });
   }

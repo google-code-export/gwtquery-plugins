@@ -292,8 +292,8 @@ public class DraggableHandler {
     if (helper == null) {
       return;
     }
-    helper.removeClass(CssClassNames.UI_DRAGGABLE_DRAGGING);
-    if (helper.get(0) != draggable && !cancelHelperRemoval) {
+    helper.removeClass(CssClassNames.GWT_DRAGGABLE_DRAGGING);
+    if (HelperType.ORIGINAL != options.getHelperType() && !cancelHelperRemoval) {
       impl.removeHelper(helper, options.getHelperType());
     }
     helper = null;
