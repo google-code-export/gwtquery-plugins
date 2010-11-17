@@ -50,7 +50,7 @@ public class ZIndexPlugin implements DraggablePlugin {
 
   public void onStart(DraggableHandler handler, Element draggableElement,
       Event e) {
-    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(draggableElement);
+    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? $(draggableElement) :  handler.getHelper();
     if ($element == null || $element.length() == 0){
       return;
     }
@@ -76,7 +76,8 @@ public class ZIndexPlugin implements DraggablePlugin {
   /**
    * Force the zIndex property to be a String object
    * Under IE, the zIndex property is returned as an Integer
-   * See Issue 5548 of GWT
+   * See <a href="http://code.google.com/p/google-web-toolkit/issues/detail?id=5548">Issue 5548</a> of GWT
+   * 
    * 
    * @param style
    * @return
