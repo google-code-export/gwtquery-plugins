@@ -5,6 +5,8 @@ import static gwtquery.plugins.droppable.client.Droppable.Droppable;
 import static gwtquery.plugins.droppable.client.testoptionssample.TestOptionsSample.EVENT_BUS;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
@@ -12,8 +14,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.uibinder.client.UiTemplate;
-import com.google.gwt.user.client.Command;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
@@ -82,13 +82,16 @@ public class DroppableOptionsPanel extends Composite implements ResetOptionEvent
   
   @UiField
   ListBox hoverClassListBox;
+  
+  @UiField
+  ListBox draggableHoverClassListBox;
 
   public DroppableOptionsPanel(Element droppable) {
     this.droppable = droppable;
     initWidget(uiBinder.createAndBindUi(this));
     EVENT_BUS.addHandler(ResetOptionEvent.TYPE, this);
     //use a deferred command to ensure to init the object when the element is droppable
-    DeferredCommand.addCommand(new Command() {
+    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
       public void execute() {
         init();
       }
@@ -137,7 +140,14 @@ public class DroppableOptionsPanel extends Composite implements ResetOptionEvent
   public void onHoverClassChange(ChangeEvent e) {
     String hoverClass = hoverClassListBox.getValue(hoverClassListBox
         .getSelectedIndex());
-    getOptions().setHoverClass(hoverClass);
+    getOptions().setDroppableHoverClass(hoverClass);
+  }
+  
+  @UiHandler(value = "draggableHoverClassListBox")
+  public void onDraggableHoverClassChange(ChangeEvent e) {
+    String draggablehoverClass = draggableHoverClassListBox.getValue(draggableHoverClassListBox
+        .getSelectedIndex());
+    getOptions().setDraggableHoverClass(draggablehoverClass);
   }
 
   
@@ -148,14 +158,12 @@ public class DroppableOptionsPanel extends Composite implements ResetOptionEvent
   private void init() {
     DroppableOptions options = getOptions();
     
-    int i = 0;
-    for (DroppableTolerance t : DroppableTolerance.values()) {
-      toleranceListBox.addItem(t.name());
-      if (t == getOptions().getTolerance()) {
-        toleranceListBox.setSelectedIndex(i);
-      }
-      i++;
-    }
+    //toleranceListBox
+    toleranceListBox.addItem("FIT (draggable overlaps the droppable entirely)", DroppableTolerance.FIT.name());
+    toleranceListBox.addItem("INTERSECT (draggable overlaps the droppable at least 50%)", DroppableTolerance.INTERSECT.name());
+    toleranceListBox.addItem("POINTER (mouse pointer overlaps the droppable)", DroppableTolerance.POINTER.name());
+    toleranceListBox.addItem("TOUCH (draggable touch the droppable)", DroppableTolerance.TOUCH.name());
+    toleranceListBox.setSelectedIndex(1);
 
     scopeBox.setValue(options.getScope(), false);
 
@@ -167,17 +175,22 @@ public class DroppableOptionsPanel extends Composite implements ResetOptionEvent
     acceptFunctionListBox.addItem("Accept Draggable1", "AcceptDraggable1");
     acceptFunctionListBox.addItem("Accept Draggable2", "AcceptDraggable2");
     
-    initClassNames(hoverClassListBox, options.getHoverClass());
-    initClassNames(activeClassListBox, options.getActiveClass());
+    initClassNames(hoverClassListBox, options.getDroppableHoverClass(), "hover-");
+    initClassNames(activeClassListBox, options.getActiveClass(),  "activate-");
+    
+    //green-background
+    draggableHoverClassListBox.addItem(NONE_CSS_CLASS);
+    draggableHoverClassListBox.addItem("green-background");
     
     
   }
 
-  private void initClassNames(ListBox classListBox, String value) {
+  private void initClassNames(ListBox classListBox, String value, String prefix) {
     for (int i=0; i < classNames.size(); i++){
       String cssClass = classNames.get(i);
-      classListBox.addItem(cssClass);
-      if (cssClass.equals(value)){
+      String realCssClass = prefix+cssClass;
+      classListBox.addItem(cssClass, realCssClass);
+      if (realCssClass.equals(value)){
         classListBox.setSelectedIndex(i);
       }
     }
