@@ -24,7 +24,8 @@
 							<g:CheckBox ui:field="greedyCheckBox" />
 						</td>
 						<td>
-							<g:HTML text="This option prevents event propagation on nested droppables." />
+							<g:HTML
+								text="This option prevents event propagation on nested droppables." />
 						</td>
 					</tr>
 					<tr style="vertical-align:top;">
@@ -34,6 +35,10 @@
 						<td>
 							<g:TextBox ui:field="scopeBox" />
 						</td>
+						<td>
+							<g:HTML
+								text="Used to group sets of draggable and droppable items, in addition to droppable's accept option. A draggable with the same scope value as a droppable will be accepted." />
+						</td>
 					</tr>
 					<tr style="vertical-align:top;">
 						<td>
@@ -41,6 +46,10 @@
 						</td>
 						<td>
 							<g:ListBox ui:field="toleranceListBox" />
+						</td>
+						<td>
+							<g:HTML
+								text="Specifies the mode to use for testing whether a draggable is 'over' a droppable. " />
 						</td>
 					</tr>
 					<tr style="vertical-align:top;">
@@ -50,6 +59,10 @@
 						<td>
 							<g:ListBox ui:field="acceptFunctionListBox" />
 						</td>
+						<td>
+							<g:HTML
+								text="This option specify which elements can be dropped on this droppable." />
+						</td>
 					</tr>
 					<tr style="vertical-align:top;">
 						<td>
@@ -58,6 +71,10 @@
 						<td>
 							<g:ListBox ui:field="activeClassListBox" />
 						</td>
+						<td>
+							<g:HTML
+								text="Css class will be added to the droppable while an acceptable draggable is being dragged." />
+						</td>
 					</tr>
 					<tr style="vertical-align:top;">
 						<td>
@@ -65,6 +82,22 @@
 						</td>
 						<td>
 							<g:ListBox ui:field="hoverClassListBox" />
+						</td>
+						<td>
+							<g:HTML
+								text="Css class will be added to the droppable while an acceptable draggable is being over it." />
+						</td>
+					</tr>
+					<tr style="vertical-align:top;">
+						<td>
+							<g:HTML text="Draggable hover class" />
+						</td>
+						<td>
+							<g:ListBox ui:field="draggableHoverClassListBox" />
+						</td>
+						<td>
+							<g:HTML
+								text="Css class will be added to an acceptable draggable while this one is being over this droppable." />
 						</td>
 					</tr>
 				</tbody>

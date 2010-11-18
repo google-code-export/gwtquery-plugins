@@ -19,7 +19,7 @@
 		<g:Label ui:field="header" addStyleNames="{style.header}"/>
 		<g:SimplePanel ui:field="popupContent" addStyleNames="{style.content}"/>
 		<g:HorizontalPanel>
-			<g:Button ui:field="closeButton">Close</g:Button>
+			<g:Button ui:field="closeButton">Apply</g:Button>
 			<g:Button ui:field="resetButton">Reset to default</g:Button>
 		</g:HorizontalPanel>
 	</g:VerticalPanel>

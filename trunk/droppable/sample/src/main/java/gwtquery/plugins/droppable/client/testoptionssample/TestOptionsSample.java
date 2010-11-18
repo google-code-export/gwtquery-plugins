@@ -27,19 +27,20 @@ import gwtquery.plugins.droppable.client.DroppableOptions;
  */
 public class TestOptionsSample implements EntryPoint {
 
-  public static class SetupPopupPanel extends PopupPanel{
+  public static class SetupPopupPanel extends PopupPanel {
 
-    private static SetupPopupPanelUiBinder uiBinder = GWT.create(SetupPopupPanelUiBinder.class);
+    private static SetupPopupPanelUiBinder uiBinder = GWT
+        .create(SetupPopupPanelUiBinder.class);
 
     @UiTemplate(value = "SetupPopupPanel.ui.xml")
     interface SetupPopupPanelUiBinder extends UiBinder<Widget, SetupPopupPanel> {
     }
-    
+
     @UiField
     Label header;
     @UiField
     SimplePanel popupContent;
-    
+
     public SetupPopupPanel(String id) {
       setModal(true);
       setGlassEnabled(true);
@@ -47,53 +48,57 @@ public class TestOptionsSample implements EntryPoint {
       super.add(uiBinder.createAndBindUi(this));
       initHeader(id);
     }
-    
-    private void initHeader(String id){
-      header.setText("Available options for "+id);
+
+    private void initHeader(String id) {
+      header.setText("Available options for " + id);
     }
-    
+
     @UiHandler(value = { "closeButton" })
-    public void onCloseButtonClicked(ClickEvent e){
+    public void onCloseButtonClicked(ClickEvent e) {
       hide();
     }
-    
+
     @UiHandler(value = { "resetButton" })
-    public void onResetButtonClicked(ClickEvent e){
+    public void onResetButtonClicked(ClickEvent e) {
       EVENT_BUS.fireEvent(new ResetOptionEvent(popupContent.getWidget()));
     }
-    
+
     @Override
     public void add(Widget w) {
       popupContent.add(w);
     }
-    
-    
+
   }
+
   public static SimpleEventBus EVENT_BUS = new SimpleEventBus();
-  
+
   public void onModuleLoad() {
     addSetupButton("draggable1", new DraggableOptionsPanel($("#draggable1")
         .get(0)));
     addSetupButton("draggable2", new DraggableOptionsPanel($("#draggable2")
         .get(0)));
 
-    addSetupButton("mainDroppable1", new DroppableOptionsPanel($(
-        "#mainDroppable1").get(0)));
     addSetupButton("secondDroppable1", new DroppableOptionsPanel($(
         "#secondDroppable1").get(0)));
-    addSetupButton("mainDroppable2", new DroppableOptionsPanel($(
-        "#mainDroppable2").get(0)));
+    addSetupButton("mainDroppable1", new DroppableOptionsPanel($(
+        "#mainDroppable1").get(0)));
     addSetupButton("secondDroppable2", new DroppableOptionsPanel($(
         "#secondDroppable2").get(0)));
+    addSetupButton("mainDroppable2", new DroppableOptionsPanel($(
+        "#mainDroppable2").get(0)));
 
     $("#draggable1").as(Draggable).draggable(EVENT_BUS);
     $("#draggable2").as(Draggable).draggable(EVENT_BUS);
-    $("#secondDroppable1").as(Droppable).droppable(createDroppableOptions(),EVENT_BUS);
-    $("#mainDroppable1").as(Droppable).droppable(createDroppableOptions(),EVENT_BUS);
-    //$("#secondDroppable1").as(Droppable).droppable(createDroppableOptions(),EVENT_BUS);
-    $("#mainDroppable2").as(Droppable).droppable(createDroppableOptions(),EVENT_BUS);
-    $("#secondDroppable2").as(Droppable).droppable(createDroppableOptions(),EVENT_BUS);
-    
+    // $("#secondDroppable1").as(Droppable).droppable(createDroppableOptions(),EVENT_BUS);
+    $("#mainDroppable1").as(Droppable).droppable(createDroppableOptions(),
+        EVENT_BUS);
+    $("#secondDroppable1").as(Droppable).droppable(createDroppableOptions(),
+        EVENT_BUS);
+    $("#mainDroppable2").as(Droppable).droppable(createDroppableOptions(),
+        EVENT_BUS);
+    $("#secondDroppable2").as(Droppable).droppable(createDroppableOptions(),
+        EVENT_BUS);
+
     RootPanel.get("logEventWindow").add(new LogEventPanel());
 
   }
@@ -113,15 +118,16 @@ public class TestOptionsSample implements EntryPoint {
     RootPanel.get(id).add(setup);
 
   }
-  
+
   /**
-   * Create droppable options having some visual feedback on drop operation 
+   * Create droppable options having some visual feedback on drop operation
+   * 
    * @return
    */
-  private DroppableOptions createDroppableOptions(){
+  private DroppableOptions createDroppableOptions() {
     DroppableOptions options = new DroppableOptions();
-    options.setActiveClass("orange-background");
-    options.setHoverClass("yellow-background");
+    options.setActiveClass("activate-orange-background");
+    options.setDroppableHoverClass("hover-yellow-background");
     return options;
   }
 }
