@@ -37,7 +37,6 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -73,6 +72,7 @@ import java.util.Set;
  * @param <T>
  *          the type that this view contains
  */
+@SuppressWarnings("deprecation")
 class DragAndDropCellTreeNodeView<T> extends UIObject {
 
   interface Template extends SafeHtmlTemplates {
@@ -110,7 +110,6 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
         this.childContainer = childContainer;
       }
 
-      @SuppressWarnings("deprecation")
       public <H extends EventHandler> HandlerRegistration addHandler(H handler,
           Type<H> type) {
         return handlerManger.addHandler(type, handler);

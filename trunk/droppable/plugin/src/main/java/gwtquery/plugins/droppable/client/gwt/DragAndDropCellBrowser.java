@@ -88,6 +88,7 @@ import java.util.List;
  * This cell browser allows you to define draggable and or droppable cells.
  * 
  */
+@SuppressWarnings("deprecation")
 public class DragAndDropCellBrowser extends AbstractCellTree implements ProvidesResize,
     RequiresResize, HasAnimation {
 
@@ -115,6 +116,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
    *
    * @param <T> the data type of list items
    */
+  
   class BrowserCellList<T> extends DragAndDropCellList<T> {
 
     /**
@@ -166,10 +168,13 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
     @Override
     protected void onBrowserEvent2(Event event) {
+      String eventType = event.getType();
+
       super.onBrowserEvent2(event);
 
       // Handle keyboard navigation between lists.
-      String eventType = event.getType();
+     // String eventType = event.getType();
+GWT.log("Event received "+eventType);      
       if ("keydown".equals(eventType) && !isKeyboardNavigationSuppressed()) {
         int keyCode = event.getKeyCode();
         switch (keyCode) {
@@ -961,7 +966,6 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
     
     display.setDragAndDropHandlerManager(ensureDrangAndDropHandlers());
     if (nodeInfo instanceof DragAndDropNodeInfo<?>){
-      GWT.log("node info is DragAndDropNodeInfo");
       DragAndDropNodeInfo<C> dndNodeInfo = (DragAndDropNodeInfo<C>)nodeInfo;
       display.setCellDragAndDropBehaviour(dndNodeInfo.getCellDragAndDropBehaviour());
       display.setDraggableOptions(dndNodeInfo.getDraggableOptions());

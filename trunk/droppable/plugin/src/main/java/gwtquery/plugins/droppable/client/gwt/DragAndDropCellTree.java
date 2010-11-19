@@ -28,7 +28,6 @@ import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.CssResource.ImportedWithPrefix;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -69,6 +68,7 @@ import java.util.Set;
  * <dd>{@example com.google.gwt.examples.cellview.CellTreeExample2}</dd>
  * </dl>
  */
+@SuppressWarnings("deprecation")
 public class DragAndDropCellTree extends AbstractCellTree implements HasAnimation,
     Focusable {
 

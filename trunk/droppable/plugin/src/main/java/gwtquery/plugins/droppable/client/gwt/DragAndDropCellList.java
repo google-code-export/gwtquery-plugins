@@ -39,6 +39,7 @@ import gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class DragAndDropCellList<T> extends CellList<T> {
 
   private CellDragAndDropBehaviour<T> cellDragAndDropBehaviour;
