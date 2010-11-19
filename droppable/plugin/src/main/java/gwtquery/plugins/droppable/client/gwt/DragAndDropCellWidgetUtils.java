@@ -4,7 +4,6 @@ import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 import static gwtquery.plugins.droppable.client.Droppable.Droppable;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.query.client.GQuery;
@@ -20,6 +19,7 @@ import gwtquery.plugins.droppable.client.DroppableOptions;
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  *
  */
+
 public class DragAndDropCellWidgetUtils {
   
   public static final String VALUE_KEY = "__dragAndDropCellAssociatedValue"; 

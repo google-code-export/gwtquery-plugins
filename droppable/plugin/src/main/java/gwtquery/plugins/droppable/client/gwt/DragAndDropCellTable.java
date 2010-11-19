@@ -12,7 +12,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.resources.client.ClientBundle.Source;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
@@ -42,6 +41,7 @@ import gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class DragAndDropCellTable<T> extends CellTable<T> {
 
   private final List<Column<T, ?>> columns = new ArrayList<Column<T, ?>>();
