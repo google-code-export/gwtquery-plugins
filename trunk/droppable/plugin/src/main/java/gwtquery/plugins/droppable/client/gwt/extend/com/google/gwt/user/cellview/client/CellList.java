@@ -25,7 +25,6 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -59,7 +58,10 @@ import java.util.Set;
  * </p>
  *
  * @param <T> the data type of list items
+ * @deprecated Use {@link com.google.gwt.user.cellview.client.CellList} instead.
+ *             This class will be removed in future release.
  */
+@Deprecated
 public class CellList<T> extends AbstractHasData<T> {
 
   

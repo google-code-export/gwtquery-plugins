@@ -33,8 +33,12 @@ import com.google.gwt.view.client.TreeViewModel.NodeInfo;
  * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/AbstractCellTree.java?r=9203
  * 
  * An abstract representation of a tree widget that renders items using
- * {@link com.google.gwt.cell.client.Cell}s.
+ * {@link com.google.gwt.cell.client.Cell}
+ * 
+ * @deprecated Use {@link com.google.gwt.user.cellview.client.AbstractCellTree} instead.
+ *             This class will be removed in future release.
  */
+@Deprecated
 public abstract class AbstractCellTree extends Composite implements
     HasOpenHandlers<TreeNode>, HasCloseHandlers<TreeNode>,
     HasKeyboardSelectionPolicy {

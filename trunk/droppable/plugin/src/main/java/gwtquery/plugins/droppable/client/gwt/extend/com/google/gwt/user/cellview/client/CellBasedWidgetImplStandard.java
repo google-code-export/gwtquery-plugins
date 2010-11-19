@@ -30,7 +30,10 @@ import java.util.Set;
  * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/CellBasedWidgetImplSafari.java?spec=svn9203&r=9220
  
  * Standard implementation used by most cell based widgets.
+ * @deprecated Use {@link com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard} instead.
+ *             This class will be removed in future release.
  */
+@Deprecated
 class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
 
   /**
