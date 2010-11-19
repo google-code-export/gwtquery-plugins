@@ -30,6 +30,9 @@ import java.util.Set;
  * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/CellBasedWidgetImpl.java?spec=svn9203&r=9220
  *  
  * Implementation used by various cell based widgets.
+ * 
+ * @deprecated Use {@link com.google.gwt.user.cellview.client.CellBasedWidgetImpl} instead.
+ *             This class will be removed in future release.
  */
 public abstract class CellBasedWidgetImpl {
 

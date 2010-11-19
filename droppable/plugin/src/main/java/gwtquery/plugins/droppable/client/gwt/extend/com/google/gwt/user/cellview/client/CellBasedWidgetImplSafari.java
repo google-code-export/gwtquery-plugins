@@ -23,7 +23,11 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
  * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/CellBasedWidgetImplSafari.java?spec=svn9203&r=9220
  * 
  * Webkit specified Impl used by cell based widgets.
+ * 
+ * @deprecated Use {@link com.google.gwt.user.cellview.client.CellWidgetImpleSafari} instead.
+ *             This class will be removed in future release.
  */
+@Deprecated
 public class CellBasedWidgetImplSafari extends CellBasedWidgetImplStandard {
 
   @Override

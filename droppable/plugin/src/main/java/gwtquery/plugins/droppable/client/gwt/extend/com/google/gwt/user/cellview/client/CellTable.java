@@ -91,7 +91,11 @@ import java.util.Set;
  * </p>
  *
  * @param <T> the data type of each row
+ *
+ * @deprecated Use {@link com.google.gwt.user.cellview.client.CellTable} instead.
+ *             This class will be removed in future release.
  */
+@Deprecated
 public class CellTable<T> extends AbstractHasData<T> {
 
   

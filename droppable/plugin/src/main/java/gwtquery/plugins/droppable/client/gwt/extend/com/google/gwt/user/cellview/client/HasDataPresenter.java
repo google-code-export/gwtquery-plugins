@@ -24,8 +24,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy;
-import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.HasKeyProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -65,7 +63,10 @@ import java.util.TreeSet;
  * </p>
  * 
  * @param <T> the data type of items in the list
+ * @deprecated Use {@link com.google.gwt.user.cellview.client.HasDataPresenter} instead.
+ *             This class will be removed in future release.
  */
+@Deprecated
 public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
     HasKeyboardPagingPolicy {
 
@@ -173,7 +174,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
    * @param <T> the data type of the presenter
    */
   private static class DefaultState<T> implements State<T> {
-    int keyboardSelectedRow = 0;
+    int keyboardSelectedRow = -1;
     T keyboardSelectedRowValue = null;
     int pageSize;
     int pageStart = 0;
@@ -1128,7 +1129,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
      * If the row value exists in multiple places, use the closest index. If the
      * row value not longer exists, use the current index.
      */
-    pending.keyboardSelectedRow = Math.max(0,
+    pending.keyboardSelectedRow = Math.max(-1,
         Math.min(pending.keyboardSelectedRow, rowDataCount - 1));
     if (KeyboardSelectionPolicy.DISABLED == keyboardSelectionPolicy) {
       // Clear the keyboard selected state.
