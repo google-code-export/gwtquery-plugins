@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.PIECE_NUMBER;
@@ -14,53 +29,110 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwtquery.plugins.droppable.client.draughtssample.GameController.Player;
-import gwtquery.plugins.droppable.client.draughtssample.events.PieceEatedEvent;
+import gwtquery.plugins.droppable.client.draughtssample.events.PieceCapturedEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PieceKingedEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PlayerChangeEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PlayerLostEvent;
-import gwtquery.plugins.droppable.client.draughtssample.events.PieceEatedEvent.PieceEatedEventHandler;
+import gwtquery.plugins.droppable.client.draughtssample.events.PieceCapturedEvent.PieceEatedEventHandler;
 import gwtquery.plugins.droppable.client.draughtssample.events.PieceKingedEvent.PieceKingedEventHandler;
 import gwtquery.plugins.droppable.client.draughtssample.events.PlayerChangeEvent.PlayerChangeEventHandler;
 import gwtquery.plugins.droppable.client.draughtssample.events.PlayerLostEvent.PlayerLostEventHandler;
 
-public class ScorePanel extends Composite implements PlayerChangeEventHandler, PieceEatedEventHandler, PieceKingedEventHandler, PlayerLostEventHandler{
- 
-  @UiField
-  Label infoMessage;
+/**
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */
+public class ScorePanel extends Composite implements PlayerChangeEventHandler,
+    PieceEatedEventHandler, PieceKingedEventHandler, PlayerLostEventHandler {
+
+  interface ScorePanelUiBinder extends UiBinder<Widget, ScorePanel> {
+  }
+
+  private static ScorePanelUiBinder uiBinder = GWT
+      .create(ScorePanelUiBinder.class);
   
   @UiField
-  Label whitePieceNbrLabel;
-  @UiField
-  Label redPieceNbrLabel;
-  @UiField
-  Label whiteKingNbrLabel;
+  Label infoMessage;
   @UiField
   Label redKingNbrLabel;
   @UiField
+  Label redPieceNbrLabel;
+  @UiField
   Button restartButton;
+  @UiField
+  Label whiteKingNbrLabel;
+  @UiField
+  Label whitePieceNbrLabel;
   
-  private int whitePieceNbr;
+  private int redKingNbr;
   private int redPieceNbr;
   private int whiteKingNbr;
-  private int redKingNbr;
-  
-  
-	private static ScorePanelUiBinder uiBinder = GWT
-			.create(ScorePanelUiBinder.class);
+  private int whitePieceNbr;
 
-	interface ScorePanelUiBinder extends UiBinder<Widget, ScorePanel> {
-	}
+  public ScorePanel() {
+    initWidget(uiBinder.createAndBindUi(this));
+    init();
+    bind();
 
-	public ScorePanel() {
-		initWidget(uiBinder.createAndBindUi(this));
-		init();
-		bind();
-		
-	}
+  }
+
+  public void onPieceEated(PieceCapturedEvent event) {
+    Piece eatedPiece = event.getPiece();
+    if (eatedPiece.getPlayer() == Player.RED) {
+      if (eatedPiece.isKing()) {
+        redKingNbr--;
+        redKingNbrLabel.setText("" + redKingNbr);
+      } else {
+        redPieceNbr--;
+        redPieceNbrLabel.setText("" + redPieceNbr);
+      }
+    } else {
+      if (eatedPiece.isKing()) {
+        whiteKingNbr--;
+        whiteKingNbrLabel.setText("" + whiteKingNbr);
+      } else {
+        whitePieceNbr--;
+        whitePieceNbrLabel.setText("" + whitePieceNbr);
+      }
+
+    }
+
+  }
+
+  public void onPieceKinged(PieceKingedEvent event) {
+    if (event.getPiece().getPlayer() == Player.RED) {
+      redKingNbr++;
+      redPieceNbr--;
+      redKingNbrLabel.setText("" + redKingNbr);
+      redPieceNbrLabel.setText("" + redPieceNbr);
+    } else {
+      whiteKingNbr++;
+      whitePieceNbr--;
+      whiteKingNbrLabel.setText("" + whiteKingNbr);
+      whitePieceNbrLabel.setText("" + whitePieceNbr);
+    }
+
+  }
+
+  public void onPlayerChange(PlayerChangeEvent event) {
+    infoMessage.setText(event.getPlayer() + " player is playing");
+  }
+
+  public void onPlayerLost(PlayerLostEvent event) {
+    infoMessage.setText("GAME OVER. Player " + event.getPlayer() + " lost.");
+
+  }
+
+  @UiHandler(value = { "restartButton" })
+  public void onRestartButtonClicked(ClickEvent e) {
+    GameController.getInstance().restartGame();
+    init();
+  }
 
   private void bind() {
     EVENT_BUS.addHandler(PlayerChangeEvent.TYPE, this);
-    EVENT_BUS.addHandler(PieceEatedEvent.TYPE, this);
+    EVENT_BUS.addHandler(PieceCapturedEvent.TYPE, this);
     EVENT_BUS.addHandler(PieceKingedEvent.TYPE, this);
     EVENT_BUS.addHandler(PlayerLostEvent.TYPE, this);
   }
@@ -70,63 +142,10 @@ public class ScorePanel extends Composite implements PlayerChangeEventHandler, P
     redPieceNbr = PIECE_NUMBER;
     whiteKingNbr = 0;
     redKingNbr = 0;
-    redKingNbrLabel.setText(""+redKingNbr);
-    redPieceNbrLabel.setText(""+redPieceNbr);
-    whiteKingNbrLabel.setText(""+whiteKingNbr);
-    whitePieceNbrLabel.setText(""+whitePieceNbr);
-    
-  }
+    redKingNbrLabel.setText("" + redKingNbr);
+    redPieceNbrLabel.setText("" + redPieceNbr);
+    whiteKingNbrLabel.setText("" + whiteKingNbr);
+    whitePieceNbrLabel.setText("" + whitePieceNbr);
 
-  public void onPlayerChange(PlayerChangeEvent event) {
-    infoMessage.setText(event.getPlayer()+" player is playing");
-  }
-
-  public void onPieceEated(PieceEatedEvent event) {
-   Piece eatedPiece=event.getPiece();
-   if (eatedPiece.getPlayer() == Player.RED){
-     if (eatedPiece.isKing()){
-       redKingNbr --;
-       redKingNbrLabel.setText(""+redKingNbr);
-     }else{
-       redPieceNbr --;
-       redPieceNbrLabel.setText(""+redPieceNbr);
-     }
-   }else{
-     if (eatedPiece.isKing()){
-       whiteKingNbr --;
-       whiteKingNbrLabel.setText(""+whiteKingNbr);
-     }else{
-       whitePieceNbr --;
-       whitePieceNbrLabel.setText(""+whitePieceNbr);
-     }
-     
-   }
-    
-  }
-
-  public void onPieceKinged(PieceKingedEvent event) {
-    if (event.getPiece().getPlayer() == Player.RED){
-      redKingNbr++;
-      redPieceNbr--;
-      redKingNbrLabel.setText(""+redKingNbr);
-      redPieceNbrLabel.setText(""+redPieceNbr);
-    }else{
-      whiteKingNbr++;
-      whitePieceNbr--;
-      whiteKingNbrLabel.setText(""+whiteKingNbr);
-      whitePieceNbrLabel.setText(""+whitePieceNbr);
-    }
-    
-  }
-
-  public void onPlayerLost(PlayerLostEvent event) {
-    infoMessage.setText("GAME OVER. Player "+event.getPlayer()+" lost.");
-    
-  }
-  
-  @UiHandler(value = { "restartButton" })
-  public void onRestartButtonClicked(ClickEvent e){
-    GameController.getInstance().restartGame();
-    init();
   }
 }

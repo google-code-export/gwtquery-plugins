@@ -1,11 +1,24 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.draughtssample;
 
-import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
 import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.SQUARE_NUMBER;
+import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,6 +29,7 @@ import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
 import gwtquery.plugins.droppable.client.draughtssample.GameController.Position;
 import gwtquery.plugins.droppable.client.draughtssample.events.PieceMoveEvent;
 import gwtquery.plugins.droppable.client.draughtssample.resources.DraughtsResources;
+import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
@@ -25,12 +39,11 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * TODO instead of extends a composite, extends directly {@link DroppableWidget}
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DroppableSquare extends Composite implements HasWidgets,
+public class DroppableSquare extends DroppableWidget<SimplePanel> implements HasWidgets,
     DropEventHandler {
 
   /**
@@ -42,23 +55,23 @@ public class DroppableSquare extends Composite implements HasWidgets,
    */
   private static class CellAcceptFunction implements AcceptFunction {
 
-    Collection<String> acceptedManIds = new ArrayList<String>();
+    Collection<String> acceptedPieceIds = new ArrayList<String>();
 
     public CellAcceptFunction() {
     }
 
+    public boolean acceptDrop(DragAndDropContext context) {
+      return acceptedPieceIds.contains(context.getDraggable().getId());
+    }
+
     public void addPieceId(String... ids) {
       for (String id : ids) {
-        acceptedManIds.add(id);
+        acceptedPieceIds.add(id);
       }
     }
 
     public void reset() {
-      acceptedManIds = new ArrayList<String>();
-    }
-
-    public boolean acceptDrop(Element droppable, Element draggable) {
-      return acceptedManIds.contains(draggable.getId());
+      acceptedPieceIds = new ArrayList<String>();
     }
 
   }
@@ -71,56 +84,33 @@ public class DroppableSquare extends Composite implements HasWidgets,
 
   }
 
-  private void init() {
-    SimplePanel square = new SimplePanel();
-    // make it droppable
-    DroppableWidget<SimplePanel> droppableSquare = new DroppableWidget<SimplePanel>(
-        square);
-    // setup
-    droppableSquare.setHoverClass(DraughtsResources.INSTANCE.css().hoverCell());
-    droppableSquare.setActiveClass(DraughtsResources.INSTANCE.css()
-        .activeCell());
-    droppableSquare.setAccept(new CellAcceptFunction());
-    droppableSquare.setTolerance(DroppableTolerance.POINTER);
-    droppableSquare.addDropHandler(this);
-    initWidget(droppableSquare);
-  }
-
-  public void enable() {
-    getDroppable().setDisabled(false);
-  }
-
-  public void lock() {
-    getDroppable().setDisabled(true);
-    ((CellAcceptFunction) getDroppable().getAccept()).reset();
-  }
-
   public void acceptPiece(Widget piece) {
     enable();
-    CellAcceptFunction f = (CellAcceptFunction) getDroppable().getAccept();
+    CellAcceptFunction f = (CellAcceptFunction) getAccept();
     f.addPieceId(piece.getElement().getId());
   }
 
-  @SuppressWarnings("unchecked")
-  private DroppableWidget<SimplePanel> getDroppable() {
-    return (DroppableWidget<SimplePanel>) getWidget();
-  }
-
   public void add(Widget w) {
-    getDroppable().getOriginalWidget().add(w);
+    ((SimplePanel)getWidget()).add(w);
   }
 
   public void clear() {
-    getDroppable().getOriginalWidget().clear();
+    ((SimplePanel)getWidget()).clear();
 
   }
+
+  public void enable() {
+    setDisabled(false);
+  }
+
 
   public Iterator<Widget> iterator() {
-    return getDroppable().getOriginalWidget().iterator();
+    return ((SimplePanel)getWidget()).iterator();
   }
 
-  public boolean remove(Widget w) {
-    return getDroppable().getOriginalWidget().remove(w);
+  public void lock() {
+    setDisabled(true);
+    ((CellAcceptFunction) getAccept()).reset();
   }
 
   public void onDrop(DropEvent event) {
@@ -131,20 +121,38 @@ public class DroppableSquare extends Composite implements HasWidgets,
     draggable.getElement().getStyle().setTop(0, Unit.PX);
     draggable.getElement().getStyle().setLeft(0, Unit.PX);
 
-    if (draggable.getParent() != getDroppable().getOriginalWidget()) {
+    if (draggable.getParent() != getWidget()) {
       add(draggable);
-      Piece draggingMen = (Piece) draggable.getOriginalWidget();
-      EVENT_BUS.fireEvent(new PieceMoveEvent(draggingMen, position, draggingMen
+      Piece draggingPiece = (Piece) draggable.getOriginalWidget();
+      EVENT_BUS.fireEvent(new PieceMoveEvent(draggingPiece, position, draggingPiece
           .getPosition()));
-      if (isKingLine()){
-        draggingMen.kingMe();
+      if (isKingLine()) {
+        draggingPiece.kingMe();
       }
 
     }
 
   }
 
+  public boolean remove(Widget w) {
+    return ((SimplePanel)getWidget()).remove(w);
+  }
+
+  private void init() {
+    
+    initWidget(new SimplePanel());
+    
+    // setup drop
+    setHoverClass(DraughtsResources.INSTANCE.css().hoverCell());
+    setActiveClass(DraughtsResources.INSTANCE.css()
+        .activeCell());
+    setAccept(new CellAcceptFunction());
+    setTolerance(DroppableTolerance.POINTER);
+    addDropHandler(this);
+    
+  }
+
   private boolean isKingLine() {
-    return position.getY() == 0 || position.getY() == SQUARE_NUMBER - 1 ;
+    return position.getY() == 0 || position.getY() == SQUARE_NUMBER - 1;
   }
 }

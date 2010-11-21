@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -18,11 +33,16 @@ import gwtquery.plugins.droppable.client.draughtssample.events.PieceKingedEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Piece extends HTML {
+/**
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */
+public class Piece extends DraggableWidget<HTML> {
 
-  private Position position;
-  private Player player;
   private boolean isKing = false;
+  private Player player;
+  private Position position;
 
   public Piece(Player player, Position initialPosition) {
     this.player = player;
@@ -30,50 +50,47 @@ public class Piece extends HTML {
     init();
   }
 
-  protected void init() {
-    setStyleName(player.getPieceClassName());
-    // ensure that this div have an unique id because we will use id to
-    // determine if a DroppableSquare accept or not a Piece
-    getElement().setId("piece_" + getElement().hashCode());
+  public void die() {
+    // use GQuery to fade out the piece
+    $(this).fadeOut(300, new Function() {
+      @Override
+      public void f() {
+        ((CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget()).getCell(
+            position.getY(), position.getX()).clear();
+        position = null;
+      }
+    });
+
   }
 
-  public DraggableWidget<Piece> makeDraggable() {
-    // make it draggable
-    DraggableWidget<Piece> draggablePiece = new DraggableWidget<Piece>(this);
-    // setup
-    // revert the piece if this one is not dropped
-    draggablePiece.setRevert(RevertOption.ON_INVALID_DROP);
-    // be sure that when the piece is dragging, it is in front
-    draggablePiece.setZIndex(100);
-    // set the opacity of the piece during the drag
-    draggablePiece.setOpacity((float) 0.8);
-    // the piece cannot be drag outside the checkerboard
-    draggablePiece.setContainment($(CHECKERBOARD_CLASS_NAME).widget());
-    // set cursor in the middle of the piece
-    draggablePiece.setCursorAt(new CursorAt(25, 25, null, null));
-    // set the cursor to use during the drag
-    draggablePiece.setCursor(Cursor.MOVE);
-    
-    draggablePiece.setDistance(0);
-    
-    //register the GameController for dragStart and drag stop event
-    GameController gc = GameController.getInstance();
-    draggablePiece.addDragStartHandler(gc);
-    draggablePiece.addDragStopHandler(gc);
-
-    return draggablePiece;
+  /**
+   * Calculate if jumping is possible
+   * 
+   * @return
+   */
+  public List<Position> getNextJumps() {
+    List<Position> possibleJumps = new ArrayList<Position>();
+    for (int yDirection : getYDirections()) {
+      Position possibleLeftJump = checkJump(-1, yDirection);
+      if (possibleLeftJump != null) {
+        possibleJumps.add(possibleLeftJump);
+      }
+      Position possibleRightJump = checkJump(1, yDirection);
+      if (possibleRightJump != null) {
+        possibleJumps.add(possibleRightJump);
+      }
+    }
+    return possibleJumps;
   }
 
   public Player getPlayer() {
     return player;
   }
 
-  /**
-   * TODO refactor this code
-   * 
-   * @param position
-   * @return
-   */
+  public Position getPosition() {
+    return position;
+  }
+
   public List<Position> getPossibleMove() {
     List<Position> next = new ArrayList<Position>();
 
@@ -89,6 +106,52 @@ public class Piece extends HTML {
     }
 
     return next;
+  }
+
+  public boolean isKing() {
+    return isKing;
+  }
+
+  public void kingMe() {
+    if (isKing) {
+      return;
+    }
+
+    isKing = true;
+    removeStyleName(player.getPieceClassName());
+    addStyleName(player.getKingClassName());
+    EVENT_BUS.fireEvent(new PieceKingedEvent(this));
+  }
+
+  public void setPosition(Position position) {
+    this.position = position;
+  }
+
+  protected void init() {
+    initWidget(new HTML());
+    setStyleName(player.getPieceClassName());
+    // ensure that this div have an unique id because we will use id to
+    // determine if a DroppableSquare accept or not a Piece
+    getElement().setId("piece_" + getElement().hashCode());
+    setupDraggable();
+  }
+
+  private Position checkJump(int xDirection, int yDirection) {
+    int currentX = position.getX();
+    int currentY = position.getY();
+
+    Player playerAtNextPosition = GameController.getInstance().getPlayerAt(
+        new Position(currentX + xDirection, currentY + yDirection));
+
+    if (playerAtNextPosition != null && playerAtNextPosition != player) {
+      Position jumpPosition = new Position(currentX + 2 * xDirection, currentY
+          + 2 * yDirection);
+      if (jumpPosition.isValid()
+          && GameController.getInstance().getPlayerAt(jumpPosition) == null) {
+        return jumpPosition;
+      }
+    }
+    return null;
   }
 
   private Position checkNextPosition(int xDirection, int yDirection) {
@@ -111,85 +174,34 @@ public class Piece extends HTML {
     return null;
   }
 
-  private Position checkJump(int xDirection, int yDirection) {
-    int currentX = position.getX();
-    int currentY = position.getY();
-
-    Player playerAtNextPosition = GameController.getInstance().getPlayerAt(
-        new Position(currentX + xDirection, currentY + yDirection));
-
-    if (playerAtNextPosition != null && playerAtNextPosition != player) {
-      Position jumpPosition = new Position(currentX + 2 * xDirection, currentY
-          + 2 * yDirection);
-      if (jumpPosition.isValid()
-          && GameController.getInstance().getPlayerAt(jumpPosition) == null) {
-        return jumpPosition;
-      }
-    }
-    return null;
-  }
-
-  protected int[] getYDirections() {
+  private int[] getYDirections() {
     if (isKing) {
       return new int[] { -1, 1 };
     }
     return new int[] { player.getYDirection() };
   }
 
-  public Position getPosition() {
-    return position;
-  }
+  private void setupDraggable() {
+    // revert the piece if this one is not dropped
+    setRevert(RevertOption.ON_INVALID_DROP);
+    // be sure that when the piece is dragging, it is in front
+    setZIndex(100);
+    // set the opacity of the piece during the drag
+    setDraggingOpacity((float) 0.8);
+    // the piece cannot be drag outside the checkerboard
+    setContainment($(CHECKERBOARD_CLASS_NAME).widget());
+    // set cursor in the middle of the piece
+    setCursorAt(new CursorAt(25, 25, null, null));
+    // set the cursor to use during the drag
+    setCursor(Cursor.MOVE);
+    // start the drag operation on mousedown
+    setDistance(0);
 
-  public void setPosition(Position position) {
-    this.position = position;
-  }
+    // register the GameController for dragStart and drag stop event
+    GameController gc = GameController.getInstance();
+    addDragStartHandler(gc);
+    addDragStopHandler(gc);
 
-  public void die() {
-    // use GQuery to fade out the piece
-    $(this).fadeOut(300, new Function() {
-      @Override
-      public void f() {
-        ((CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget()).getCell(position.getY(), position.getX())
-            .clear();
-        position = null;
-      }
-    });
-
-  }
-
-  public boolean isKing() {
-    return isKing;
-  }
-
-  public void kingMe() {
-    if (isKing){
-      return;
-    }
-    
-    isKing = true;
-    removeStyleName(player.getPieceClassName());
-    addStyleName(player.getKingClassName());
-    EVENT_BUS.fireEvent(new PieceKingedEvent(this));
-  }
-
-  /**
-   * Calculate if jumping is possible
-   * 
-   * @return
-   */
-  public List<Position> getNextJumps() {
-    List<Position> possibleJumps = new ArrayList<Position>();
-    for (int yDirection : getYDirections()){
-      Position possibleLeftJump = checkJump(-1, yDirection);
-      if (possibleLeftJump != null){
-        possibleJumps.add(possibleLeftJump);
-      }
-      Position possibleRightJump = checkJump(1, yDirection);
-      if (possibleRightJump != null){
-        possibleJumps.add(possibleRightJump);
-      }
-    }
-    return possibleJumps;
   }
 
 }
