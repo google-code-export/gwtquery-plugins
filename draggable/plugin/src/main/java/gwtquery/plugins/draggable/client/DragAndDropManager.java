@@ -84,7 +84,7 @@ public class DragAndDropManager {
     return false;
   }
 
-  public void prepareOffset(Element draggable, Event e) {
+  public void initialize(Element draggable, Event e) {
   }
 
   /**
