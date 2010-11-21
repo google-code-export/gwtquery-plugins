@@ -34,7 +34,6 @@ public class GFinder implements EntryPoint {
        
       }
     });
-    
     RootPanel.get("cellBrowser").add(cellBrowser);
     
   }
