@@ -12,11 +12,14 @@
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- */package gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client;
+ */
+
+package gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
+import com.google.gwt.query.client.plugins.EventsListener;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
@@ -28,12 +31,15 @@ import java.util.Set;
 /**
  * CellBasedWidgetImplSafari implementation based on revision rr=9220 :
  * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/CellBasedWidgetImplSafari.java?spec=svn9203&r=9220
+ * 
+ * Some adaption was done to support GWTQuery Event listener
  
  * Standard implementation used by most cell based widgets.
- * @deprecated Use {@link com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard} instead.
+ * Use {@link com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard} instead.
  *             This class will be removed in future release.
  */
-@Deprecated
+
+@SuppressWarnings("deprecation")
 class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
 
   /**
@@ -68,6 +74,11 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
     while (target != null && listener == null) {
       target = target.getParentElement().cast();
       listener = (target == null) ? null : DOM.getEventListener(target);
+      //check if it's not the GQuery event listener or if it have a original event listener
+      if (listener instanceof EventsListener && ((EventsListener)listener).getOriginalEventListener() == null){
+        //continue the lookup of GWT listener
+        listener = null;
+      }
     }
 
     // Fire the event.
@@ -115,8 +126,8 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
    * Initialize the event system.
    */
   private native void initEventSystem() /*-{
-    @com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent = $entry(function(evt) {
-      @com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)(evt);
+    @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent = $entry(function(evt) {
+      @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)(evt);
     });
   }-*/;
 
@@ -127,6 +138,6 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
    * @param typeName the name of the event to sink
    */
   private native void sinkEventImpl(Element elem, String typeName) /*-{
-    elem.addEventListener(typeName, @com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent, true);
+    elem.addEventListener(typeName, @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent, true);
   }-*/;
 }
