@@ -1,5 +1,0 @@
-<module rename-to='Ratings'>
-    <inherits name='gwtquery.plugins.ratings.Ratings'/>
-    <entry-point class='gwtquery.plugins.ratings.client.RatingsSample'/>
-</module>
-    

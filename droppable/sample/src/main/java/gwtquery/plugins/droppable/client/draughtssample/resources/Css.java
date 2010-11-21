@@ -1,2 +1,0 @@
-package gwtquery.plugins.droppable.client.draughtssample.resources;import com.google.gwt.resources.client.CssResource;
-public interface Css extends CssResource {	public String whiteCell();	public String blackCell();	public String checkerBoard();	public String hoverCell();	public String activeCell();	public String redKing();	public String whiteKing();	public String whitePiece();	public String redPiece();	public String infoMessage();	}
