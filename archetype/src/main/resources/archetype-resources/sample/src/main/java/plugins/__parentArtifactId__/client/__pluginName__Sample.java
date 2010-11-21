@@ -9,7 +9,7 @@ import static ${package}.plugins.${parentArtifactId}.client.${pluginName}.${plug
 import com.google.gwt.core.client.EntryPoint;
 
 /**
- * Example code BasePlugin plugin for GwtQuery
+ * Example code for the GwtQuery ${pluginName} plugin.
  */
 public class ${pluginName}Sample implements EntryPoint {
 

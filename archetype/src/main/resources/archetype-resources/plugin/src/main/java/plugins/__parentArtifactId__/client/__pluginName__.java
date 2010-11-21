@@ -10,7 +10,7 @@ import com.google.gwt.query.client.Plugin;
 import static com.google.gwt.query.client.plugins.Effects.Effects;
 
 /**
- * ${pluginName} for GwtQuery
+ * ${pluginName} plugin for GwtQuery
  */
 public class ${pluginName} extends GQuery {
 
