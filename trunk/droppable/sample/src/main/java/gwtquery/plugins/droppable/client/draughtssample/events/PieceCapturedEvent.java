@@ -19,44 +19,31 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
 import gwtquery.plugins.droppable.client.draughtssample.Piece;
-import gwtquery.plugins.droppable.client.draughtssample.GameController.Position;
 
 /**
- * Event fired when a piece move on the checker board.
+ * Event fired when a piece is captured
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class PieceMoveEvent extends
-    GwtEvent<PieceMoveEvent.PieceMoveEventHandler> {
+public class PieceCapturedEvent extends
+    GwtEvent<PieceCapturedEvent.PieceEatedEventHandler> {
 
-  public interface PieceMoveEventHandler extends EventHandler {
-    public void onPieceMove(PieceMoveEvent event);
+  public interface PieceEatedEventHandler extends EventHandler {
+    public void onPieceEated(PieceCapturedEvent event);
   }
 
-  public static Type<PieceMoveEventHandler> TYPE = new Type<PieceMoveEventHandler>();
+  public static Type<PieceEatedEventHandler> TYPE = new Type<PieceEatedEventHandler>();
 
-  private Position newPosition;
-  private Position oldPosition;
   private Piece piece;
 
-  public PieceMoveEvent(Piece piece, Position newPosition, Position oldPosition) {
+  public PieceCapturedEvent(Piece piece) {
     this.piece = piece;
-    this.newPosition = newPosition;
-    this.oldPosition = oldPosition;
   }
 
   @Override
-  public Type<PieceMoveEventHandler> getAssociatedType() {
+  public Type<PieceEatedEventHandler> getAssociatedType() {
     return TYPE;
-  }
-
-  public Position getNewPosition() {
-    return newPosition;
-  }
-
-  public Position getOldPosition() {
-    return oldPosition;
   }
 
   public Piece getPiece() {
@@ -64,8 +51,8 @@ public class PieceMoveEvent extends
   }
 
   @Override
-  protected void dispatch(PieceMoveEventHandler handler) {
-    handler.onPieceMove(this);
+  protected void dispatch(PieceEatedEventHandler handler) {
+    handler.onPieceEated(this);
   }
 
 }

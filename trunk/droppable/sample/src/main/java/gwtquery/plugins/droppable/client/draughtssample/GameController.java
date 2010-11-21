@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
@@ -12,7 +27,7 @@ import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
-import gwtquery.plugins.droppable.client.draughtssample.events.PieceEatedEvent;
+import gwtquery.plugins.droppable.client.draughtssample.events.PieceCapturedEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PieceMoveEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PlayerChangeEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PlayerLostEvent;
@@ -23,19 +38,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class contains all code needed for the control of the game
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */
 public class GameController implements PieceMoveEventHandler,
     DragStartEventHandler, DragStopEventHandler {
 
+  /**
+   * Player type
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
   public static enum Player {
     RED, WHITE;
-
-    public String getPieceClassName() {
-      if (this == RED) {
-        return DraughtsResources.INSTANCE.css().redPiece();
-      } else {
-        return DraughtsResources.INSTANCE.css().whitePiece();
-      }
-    }
 
     public String getKingClassName() {
       if (this == RED) {
@@ -45,11 +64,25 @@ public class GameController implements PieceMoveEventHandler,
       }
     }
 
+    public String getPieceClassName() {
+      if (this == RED) {
+        return DraughtsResources.INSTANCE.css().redPiece();
+      } else {
+        return DraughtsResources.INSTANCE.css().whitePiece();
+      }
+    }
+
     public int getYDirection() {
       return this == Player.RED ? 1 : -1;
     }
   }
 
+  /**
+   * Position of a piece in the checkerboard.
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
   public static class Position {
     private int x;
     private int y;
@@ -57,27 +90,6 @@ public class GameController implements PieceMoveEventHandler,
     public Position(int column, int row) {
       x = column;
       y = row;
-    }
-
-    public int getX() {
-      return x;
-    }
-
-    public int getY() {
-      return y;
-    }
-
-    public void setX(int x) {
-      this.x = x;
-    }
-
-    public void setY(int y) {
-      this.y = y;
-    }
-
-    @Override
-    public int hashCode() {
-      return x ^ y;
     }
 
     @Override
@@ -89,17 +101,35 @@ public class GameController implements PieceMoveEventHandler,
       return pos2.x == x && pos2.y == y;
     }
 
+    public int getX() {
+      return x;
+    }
+
+    public int getY() {
+      return y;
+    }
+
+    @Override
+    public int hashCode() {
+      return x ^ y;
+    }
+
     public boolean isValid() {
       return x >= 0 && x < CheckerBoard.SQUARE_NUMBER && y >= 0
           && y < CheckerBoard.SQUARE_NUMBER;
 
     }
 
+    public void setX(int x) {
+      this.x = x;
+    }
+
+    public void setY(int y) {
+      this.y = y;
+    }
+
   }
 
-  private Map<Position, Piece> pieceByPosition;
-  private Timer currentTimer;
-  private boolean timerIsRunning;
   private static GameController INSTANCE = new GameController();
 
   public static GameController getInstance() {
@@ -107,48 +137,12 @@ public class GameController implements PieceMoveEventHandler,
   }
 
   private Player currentPlayer;
+  private Timer currentTimer;
+  private Map<Position, Piece> pieceByPosition;
+  private boolean timerIsRunning;
 
   private GameController() {
     EVENT_BUS.addHandler(PieceMoveEvent.TYPE, this);
-  }
-
-  public void reset() {
-    pieceByPosition = new HashMap<Position, Piece>();
-    currentPlayer = Player.RED;
-  }
-
-  public void startGame() {
-    CheckerBoard checkerBoard = getCheckerBoard();
-    checkerBoard.fillBoard();
-    checkerBoard.lock();
-    EVENT_BUS.fireEvent(new PlayerChangeEvent(currentPlayer));
-    calcuteNextMoving();
-  }
-
-  private boolean calcuteNextMoving() {
-    boolean hasNextMove = false;
-    for (Piece currentMen : pieceByPosition.values()) {
-      if (currentMen.getPlayer() != currentPlayer) {
-        continue;
-      }
-      hasNextMove |= calcuteNextMoving(currentMen);
-    }
-
-    if (!hasNextMove) {
-      EVENT_BUS.fireEvent(new PlayerLostEvent(currentPlayer));
-    }
-    
-    return hasNextMove;
-
-  }
-
-  private boolean calcuteNextMoving(Piece currentPiece) {
-
-    List<Position> nextPossibleMove = currentPiece.getPossibleMove();
-    for (Position p : nextPossibleMove) {
-      getCheckerBoard().authorizeMove(currentPiece, p);
-    }
-    return nextPossibleMove.size() > 0;
   }
 
   public Player getPlayerAt(Position position) {
@@ -157,6 +151,54 @@ public class GameController implements PieceMoveEventHandler,
       return pieceAtPosition.getPlayer();
     }
     return null;
+  }
+
+  @SuppressWarnings("unchecked")
+  public void onDragStart(DragStartEvent event) {
+    DraggableWidget<Piece> dw = (DraggableWidget<Piece>) event
+        .getDraggableWidget();
+    Piece draggingPiece = dw.getOriginalWidget();
+
+    if (draggingPiece.getPlayer() != currentPlayer) {
+      // don't start the drag process it's not the right player !!
+      throw new StopDragException();
+    }
+
+    if (currentTimer != null) {
+      currentTimer.cancel();
+      timerIsRunning = false;
+    }
+
+  }
+
+  public void onDragStop(DragStopEvent event) {
+
+    if (currentTimer != null && !timerIsRunning) {
+      // we stopped the timer when the drag operation started and not jump is
+      // occurred during this drag operation
+      playerChange();
+      currentTimer = null;
+    }
+
+  }
+
+  public void onPieceMove(PieceMoveEvent event) {
+    maybeStopTimer();
+
+    Piece piece = event.getPiece();
+    Position newPosition = event.getNewPosition();
+    Position oldPosition = event.getOldPosition();
+
+    pieceMove(piece, oldPosition, newPosition);
+
+    if (maybeJumpingOccurred(piece, oldPosition, newPosition)
+        && maybeMultipleJumpingIsPossible(piece)) {
+      // other jump is possible, let one sec to do it
+      startTimer();
+    } else {
+      playerChange();
+    }
+
   }
 
   public void pieceMove(Piece piece, Position oldPosition, Position newPosition) {
@@ -170,38 +212,92 @@ public class GameController implements PieceMoveEventHandler,
 
   }
 
-  public void onPieceMove(PieceMoveEvent event) {
-    maybeStopTimer();
-
-    Piece m = event.getPiece();
-    Position newPosition = event.getNewPosition();
-    Position oldPosition = event.getOldPosition();
-
-    pieceMove(m, oldPosition, newPosition);
-
-    if (maybeJumpingOccurred(m, oldPosition, newPosition) && maybeMultipleJumpingIsPossible(m)) {
-      //other jump is possible, let one sec to do it
-      startTimer();
-    } else {
-      playerChange();
-    }
-
-    
+  public void reset() {
+    pieceByPosition = new HashMap<Position, Piece>();
+    currentPlayer = Player.RED;
   }
 
-  private boolean maybeMultipleJumpingIsPossible(final Piece m) {
-    List<Position> nextJumps = m.getNextJumps();
+  public void restartGame() {
+    getCheckerBoard().clear();
+    reset();
+    startGame();
+
+  }
+
+  public void startGame() {
+    CheckerBoard checkerBoard = getCheckerBoard();
+    checkerBoard.fillBoard();
+    checkerBoard.lock();
+    EVENT_BUS.fireEvent(new PlayerChangeEvent(currentPlayer));
+    calculateNextMoves();
+  }
+
+  private boolean calculateNextMove(Piece currentPiece) {
+
+    List<Position> nextPossibleMove = currentPiece.getPossibleMove();
+    for (Position p : nextPossibleMove) {
+      getCheckerBoard().authorizeMove(currentPiece, p);
+    }
+    return nextPossibleMove.size() > 0;
+  }
+
+  private boolean calculateNextMoves() {
+    boolean hasNextMove = false;
+    for (Piece currentPiece : pieceByPosition.values()) {
+      if (currentPiece.getPlayer() != currentPlayer) {
+        continue;
+      }
+      hasNextMove |= calculateNextMove(currentPiece);
+    }
+
+    if (!hasNextMove) {
+      EVENT_BUS.fireEvent(new PlayerLostEvent(currentPlayer));
+    }
+
+    return hasNextMove;
+
+  }
+
+  private CheckerBoard getCheckerBoard() {
+    return (CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget();
+
+  }
+
+  private boolean maybeJumpingOccurred(Piece piece, Position oldPosition,
+      Position newPosition) {
+
+    int oldPositionX = oldPosition.getX();
+    int oldPositionY = oldPosition.getY();
+    int newPositionX = newPosition.getX();
+    int newPositionY = newPosition.getY();
+    int maybeCapturedX = newPositionX - (newPositionX > oldPositionX ? 1 : -1);
+    int maybeCapturedY = newPositionY - (newPositionY > oldPositionY ? 1 : -1);
+    Position maybeCaptured = new Position(maybeCapturedX, maybeCapturedY);
+    Player player = getPlayerAt(maybeCaptured);
+
+    if (player != null && piece.getPlayer() != player) {
+      Piece capturedPiece = pieceByPosition.remove(maybeCaptured);
+      capturedPiece.die();
+      EVENT_BUS.fireEvent(new PieceCapturedEvent(capturedPiece));
+      return true;
+    }
+    return false;
+
+  }
+
+  private boolean maybeMultipleJumpingIsPossible(Piece p) {
+    List<Position> nextJumps = p.getNextJumps();
     CheckerBoard cb = getCheckerBoard();
 
     cb.lock();
     if (!nextJumps.isEmpty()) {
-      for (Position p : nextJumps) {
-        cb.authorizeMove(m, p);
+      for (Position position : nextJumps) {
+        cb.authorizeMove(p, position);
       }
       return true;
 
     }
-    
+
     return false;
 
   }
@@ -213,6 +309,14 @@ public class GameController implements PieceMoveEventHandler,
       timerIsRunning = false;
     }
 
+  }
+
+  private void playerChange() {
+    tooglePlayer();
+    getCheckerBoard().lock();
+    if (calculateNextMoves()) {
+      EVENT_BUS.fireEvent(new PlayerChangeEvent(currentPlayer));
+    }
   }
 
   private void startTimer() {
@@ -231,36 +335,6 @@ public class GameController implements PieceMoveEventHandler,
 
   }
 
-  private boolean maybeJumpingOccurred(Piece m, Position oldPosition,
-      Position newPosition) {
-
-    int oldPositionX = oldPosition.getX();
-    int oldPositionY = oldPosition.getY();
-    int newPositionX = newPosition.getX();
-    int newPositionY = newPosition.getY();
-    int maybeEatedX = newPositionX - (newPositionX > oldPositionX ? 1 : -1);
-    int maybeEatedY = newPositionY - (newPositionY > oldPositionY ? 1 : -1);
-    Position maybeEated = new Position(maybeEatedX, maybeEatedY);
-    Player p = getPlayerAt(maybeEated);
-
-    if (p != null && m.getPlayer() != p) {
-      Piece jumpedPiece = pieceByPosition.remove(maybeEated);
-      jumpedPiece.die();
-      EVENT_BUS.fireEvent(new PieceEatedEvent(jumpedPiece));
-      return true;
-    }
-    return false;
-
-  }
-
-  public void playerChange() {
-      tooglePlayer();
-      getCheckerBoard().lock();
-      if (calcuteNextMoving()){
-        EVENT_BUS.fireEvent(new PlayerChangeEvent(currentPlayer));
-      }
-  }
-
   private void tooglePlayer() {
     if (currentPlayer == Player.RED) {
       currentPlayer = Player.WHITE;
@@ -268,47 +342,6 @@ public class GameController implements PieceMoveEventHandler,
       currentPlayer = Player.RED;
     }
 
-  }
-
-  @SuppressWarnings("unchecked")
-  public void onDragStart(DragStartEvent event) {
-    DraggableWidget<Piece> dw = (DraggableWidget<Piece>) event
-        .getDraggableWidget();
-    Piece draggingPiece = dw.getOriginalWidget();
-
-    if (draggingPiece.getPlayer() != currentPlayer) {
-      // don't start the drag process it's not the good player !!
-      throw new StopDragException();
-    }
-
-    if (currentTimer != null) {
-      currentTimer.cancel();
-      timerIsRunning = false;
-    }
-
-  }
-
-  public void onDragStop(DragStopEvent event) {
-    
-    if (currentTimer != null && !timerIsRunning) {
-      // we stopped the timer when the drag operation started and not jump is
-      // occurred during this drag operation
-      playerChange();
-      currentTimer = null;
-    }
-
-  }
-
-  public void restartGame() {
-    getCheckerBoard().clear();
-    reset();
-    startGame();
-
-  }
-  
-  private CheckerBoard getCheckerBoard(){
-    return (CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget();
-    
   }
 
 }
