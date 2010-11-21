@@ -56,10 +56,9 @@ import java.util.Set;
  *
  * @param <T> the data type of each row
  * 
- * @deprecated Use {@link com.google.gwt.user.cellview.client.AbstractHasData} instead.
- *             This class will be removed in future release.
+ * 
  */
-@Deprecated
+@SuppressWarnings("deprecation")
 public abstract class AbstractHasData<T> extends Widget implements HasData<T>,
     HasKeyProvider<T>, Focusable, HasKeyboardPagingPolicy {
 
@@ -68,6 +67,7 @@ public abstract class AbstractHasData<T> extends Widget implements HasData<T>,
    *
    * @param <T> the data type of the view
    */
+  @SuppressWarnings("deprecation")
   private static class View<T> implements HasDataPresenter.View<T> {
 
     private final AbstractHasData<T> hasData;
