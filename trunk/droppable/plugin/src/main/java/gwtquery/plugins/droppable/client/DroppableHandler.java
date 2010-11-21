@@ -77,9 +77,11 @@ public class DroppableHandler {
     if (options.getActiveClass() != null) {
       droppable.addClassName(options.getActiveClass());
     }
-    Element draggable = DragAndDropManager.getInstance()
-        .getCurrentDraggable();
+    Element draggable = DragAndDropManager.getInstance().getCurrentDraggable();
     if (draggable != null) {
+      if (options.getDraggableHoverClass() != null) {
+        $(draggable).data(options.getDraggableHoverClass(), new Integer(0));
+      }
       trigger(new ActivateDroppableEvent(), options.getOnActivate(), droppable,
           draggable);
     }
@@ -89,12 +91,16 @@ public class DroppableHandler {
     if (options.getActiveClass() != null) {
       droppable.removeClassName(options.getActiveClass());
     }
-    if (options.getHoverClass() != null) {
-      droppable.removeClassName(options.getHoverClass());
+    if (options.getDroppableHoverClass() != null) {
+      droppable.removeClassName(options.getDroppableHoverClass());
     }
-    Element draggable = DragAndDropManager.getInstance()
-        .getCurrentDraggable();
+    Element draggable = DragAndDropManager.getInstance().getCurrentDraggable();
     if (draggable != null) {
+      if (options.getDraggableHoverClass() != null) {
+        DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
+        dragHandler.getHelper().removeClass(options.getDraggableHoverClass());
+        $(draggable).removeData(options.getDraggableHoverClass());
+      }
       trigger(new DeactivateDroppableEvent(), options.getOnDeactivate(),
           droppable, draggable);
     }
@@ -119,10 +125,10 @@ public class DroppableHandler {
         // without perturbation
         // (e.g. on the drop event we can remove the draggable..)
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-          
+
           public void execute() {
             trigger(new DropEvent(), options.getOnDrop(), droppable, draggable);
-            
+
           }
         });
         drop = true;
@@ -162,35 +168,49 @@ public class DroppableHandler {
     return visible;
   }
 
-  public void out(Element droppable, Event e) {
-    Element currentDraggable = DragAndDropManager.getInstance()
-        .getCurrentDraggable();
-
+  public void out(Element droppable, Element currentDraggable, Event e) {
     if (currentDraggable == null || currentDraggable == droppable) {
       return;
     }
 
     if (isDraggableAccepted(droppable, currentDraggable)) {
-      if (options.getHoverClass() != null) {
-        droppable.removeClassName(options.getHoverClass());
+      if (options.getDroppableHoverClass() != null) {
+        droppable.removeClassName(options.getDroppableHoverClass());
+      }
+      if (options.getDraggableHoverClass() != null) {
+        Integer counter = $(currentDraggable).data(
+            options.getDraggableHoverClass(), Integer.class);
+        $(currentDraggable).data(options.getDraggableHoverClass(),
+            new Integer(--counter));
+        if (counter == 0) {
+          DraggableHandler dragHandler = DraggableHandler
+              .getInstance(currentDraggable);
+          dragHandler.getHelper().removeClass(options.getDraggableHoverClass());
+        }
       }
       trigger(new OutDroppableEvent(), options.getOnOut(), droppable,
           currentDraggable);
     }
   }
 
-  public void over(Element droppable, Event e) {
-
-    Element currentDraggable = DragAndDropManager.getInstance()
-        .getCurrentDraggable();
+  public void over(Element droppable, Element currentDraggable, Event e) {
 
     if (currentDraggable == null || currentDraggable == droppable) {
       return;
     }
 
     if (isDraggableAccepted(droppable, currentDraggable)) {
-      if (options.getHoverClass() != null) {
-        droppable.addClassName(options.getHoverClass());
+      if (options.getDroppableHoverClass() != null) {
+        droppable.addClassName(options.getDroppableHoverClass());
+      }
+      if (options.getDraggableHoverClass() != null) {
+        DraggableHandler dragHandler = DraggableHandler
+            .getInstance(currentDraggable);
+        dragHandler.getHelper().addClass(options.getDraggableHoverClass());
+        Integer counter = $(currentDraggable).data(
+            options.getDraggableHoverClass(), Integer.class);
+        $(currentDraggable).data(options.getDraggableHoverClass(),
+            new Integer(++counter));
       }
       trigger(new OverDroppableEvent(), options.getOnOver(), droppable,
           currentDraggable);
@@ -299,7 +319,8 @@ public class DroppableHandler {
 
   private boolean isDraggableAccepted(Element droppable, Element draggable) {
     AcceptFunction accept = options.getAccept();
-    return accept != null && accept.acceptDrop(droppable, draggable);
+    return accept != null
+        && accept.acceptDrop(new DragAndDropContext(draggable, droppable));
   }
 
   private void trigger(AbstractDroppableEvent<?> e, DroppableFunction callback,
@@ -307,7 +328,7 @@ public class DroppableHandler {
     DragAndDropContext context = new DragAndDropContext(draggable, droppable);
 
     if (eventBus != null && e != null) {
-      if (e.getDragDropInfo() == null){
+      if (e.getDragDropInfo() == null) {
         e.setDragDropInfo(context);
       }
       eventBus.fireEvent(e);
@@ -345,7 +366,8 @@ public class DroppableHandler {
     if (options.isGreedy()) {
       // TODO maybe filter the parent with droppable data instead of test on css
       // class name
-      droppableParents = $(droppable).parents("." + CssClassNames.UI_DROPPABLE);
+      droppableParents = $(droppable).parents(
+          "." + CssClassNames.GWTQUERY_DROPPABLE);
       if (droppableParents.length() > 0) {
         parentDroppableHandler = DroppableHandler.getInstance(droppableParents
             .get(0));
@@ -356,23 +378,23 @@ public class DroppableHandler {
     if (parentDroppableHandler != null && c == PositionStatus.IS_OVER) {
       parentDroppableHandler.isOver = false;
       parentDroppableHandler.isOut = true;
-      parentDroppableHandler.out(droppableParents.get(0), e);
+      parentDroppableHandler.out(droppableParents.get(0), draggable, e);
     }
 
     if (c == PositionStatus.IS_OUT) {
       isOut = true;
       isOver = false;
-      out(droppable, e);
+      out(droppable, draggable, e);
     } else {
       isOver = true;
       isOut = false;
-      over(droppable, e);
+      over(droppable, draggable, e);
     }
 
     if (parentDroppableHandler != null && c == PositionStatus.IS_OUT) {
       parentDroppableHandler.isOut = false;
       parentDroppableHandler.isOver = true;
-      parentDroppableHandler.over(droppableParents.get(0), e);
+      parentDroppableHandler.over(droppableParents.get(0), draggable, e);
     }
 
   }

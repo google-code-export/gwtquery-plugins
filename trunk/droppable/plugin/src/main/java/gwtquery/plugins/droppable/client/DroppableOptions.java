@@ -16,19 +16,31 @@
 package gwtquery.plugins.droppable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
-
-import com.google.gwt.dom.client.Element;
-
 import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 
 /**
  * This class is used to configure the drop operation.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
- *
+ * 
  */
 public class DroppableOptions {
 
+  /**
+   * Specifies which mode to use for testing whether a draggable is 'over' a
+   * droppable.
+   * 
+   * FIT: draggable overlaps the droppable entirely 
+   * 
+   * INTERSECT: draggable overlaps the droppable at least 50% 
+   * 
+   * POINTER: mouse pointer overlaps the droppable 
+   * 
+   * TOUCH: draggable overlaps the droppable any amount
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
   public static enum DroppableTolerance {
     FIT, INTERSECT, POINTER, TOUCH;
   }
@@ -43,7 +55,7 @@ public class DroppableOptions {
      * @param draggable
      * @return
      */
-    public boolean acceptDrop(Element droppable, Element draggable);
+    public boolean acceptDrop(DragAndDropContext context);
 
   }
 
@@ -56,7 +68,7 @@ public class DroppableOptions {
   }
 
   public static AcceptFunction ACCEPT_ALL = new AcceptFunction() {
-    public boolean acceptDrop(Element droppable, Element draggable) {
+    public boolean acceptDrop(DragAndDropContext context) {
       return true;
     }
   };
@@ -64,7 +76,8 @@ public class DroppableOptions {
   private boolean disabled;
   private String activeClass;
   private boolean greedy;
-  private String hoverClass;
+  private String droppableHoverClass;
+  private String draggableHoverClass;
   private String scope;
   private DroppableTolerance tolerance;
   private AcceptFunction accept;
@@ -94,8 +107,12 @@ public class DroppableOptions {
     return greedy;
   }
 
-  public String getHoverClass() {
-    return hoverClass;
+  public String getDraggableHoverClass() {
+    return draggableHoverClass;
+  }
+
+  public String getDroppableHoverClass() {
+    return droppableHoverClass;
   }
 
   public DroppableFunction getOnDrop() {
@@ -128,8 +145,8 @@ public class DroppableOptions {
 
   public void setAccept(final String selector) {
     this.accept = new AcceptFunction() {
-      public boolean acceptDrop(Element droppable, Element draggable) {
-        return $(draggable).is(selector);
+      public boolean acceptDrop(DragAndDropContext context) {
+        return $(context.getDraggable()).is(selector);
       }
     };
   }
@@ -142,8 +159,12 @@ public class DroppableOptions {
     this.greedy = greedy;
   }
 
-  public void setHoverClass(String hoverClass) {
-    this.hoverClass = hoverClass;
+  public void setDraggableHoverClass(String draggableHoverClass) {
+    this.draggableHoverClass = draggableHoverClass;
+  }
+
+  public void setDroppableHoverClass(String hoverClass) {
+    this.droppableHoverClass = hoverClass;
   }
 
   public void setScope(String scope) {
@@ -170,7 +191,8 @@ public class DroppableOptions {
     setAccept(ACCEPT_ALL);
     activeClass = null;
     greedy = false;
-    hoverClass = null;
+    droppableHoverClass = null;
+    draggableHoverClass = null;
     scope = "default";
     tolerance = DroppableTolerance.INTERSECT;
 
