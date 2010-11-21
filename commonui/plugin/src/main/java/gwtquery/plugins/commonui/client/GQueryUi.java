@@ -57,8 +57,8 @@ public class GQueryUi extends GQuery {
   
   private GQueryUiImpl impl = GWT.create(GQueryUiImpl.class);
  
-  public static boolean contains(Element parent, Element descendant){
-    return parent.isOrHasChild(descendant);
+  public static boolean contains(Element parent, Element descendant){    
+    return parent != descendant && parent.isOrHasChild(descendant);
   }
   
   public GQueryUi() {
