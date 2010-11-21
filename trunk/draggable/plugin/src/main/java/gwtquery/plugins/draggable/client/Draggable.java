@@ -333,7 +333,7 @@ public class Draggable extends MouseHandler {
     dragHandler.cacheHelperSize();
 
     if (getDragAndDropManager().isHandleDroppable()) {
-      getDragAndDropManager().prepareOffset(draggable, event);
+      getDragAndDropManager().initialize(draggable, event);
     }
 
     getHelper(draggable).addClass(CssClassNames.GWT_DRAGGABLE_DRAGGING);
