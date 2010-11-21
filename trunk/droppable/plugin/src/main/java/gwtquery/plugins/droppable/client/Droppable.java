@@ -45,8 +45,8 @@ public class Droppable extends GQueryUi {
 	}
 
 	public static interface CssClassNames {
-		String UI_DROPPABLE = "ui-droppable";
-		String UI_DROPPABLE_DISABLED = "ui-droppable-disabled";
+		String GWTQUERY_DROPPABLE = "gwtQuery-droppable";
+		String GWTQUERY_DROPPABLE_DISABLED = "gwtQuery-droppable-disabled";
 
 	}
 
@@ -85,7 +85,7 @@ public class Droppable extends GQueryUi {
 
 			ddm.addDroppable(e, o.getScope());
 
-			e.addClassName(CssClassNames.UI_DROPPABLE);
+			e.addClassName(CssClassNames.GWTQUERY_DROPPABLE);
 
 		}
 
@@ -97,8 +97,8 @@ public class Droppable extends GQueryUi {
 		for (Element e : elements()) {
 			DroppableHandler infos = DroppableHandler.getInstance(e);
 			ddm.getDroppablesByScope(infos.getOptions().getScope()).remove(e);
-			$(e).removeClass(CssClassNames.UI_DROPPABLE,
-					CssClassNames.UI_DROPPABLE_DISABLED).removeData(
+			$(e).removeClass(CssClassNames.GWTQUERY_DROPPABLE,
+					CssClassNames.GWTQUERY_DROPPABLE_DISABLED).removeData(
 					DROPPABLE_HANDLER_KEY);
 		}
 		return this;
