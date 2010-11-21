@@ -27,6 +27,7 @@ import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.droppable.client.Droppable.CssClassNames;
 import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
+import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,14 +84,14 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
   }
 
   @Override
-  public void prepareOffset(Element draggable, Event e) {
+  public void initialize(Element draggable, Event e) {
     DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
     Collection<Element> droppables = getDroppablesByScope(draggableHandler.getOptions().getScope());
     if (droppables == null || droppables.size() == 0) {
       return;
     }
     
-    GQuery droppablesInsideDraggable = $(draggable).find("."+CssClassNames.UI_DROPPABLE).andSelf();
+    GQuery droppablesInsideDraggable = $(draggable).find("."+CssClassNames.GWTQUERY_DROPPABLE).andSelf();
     
     for (Element droppable : droppables) {
       GQuery $droppable = $(droppable);
@@ -98,7 +99,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
       droppableHandler.reset();
       DroppableOptions droppableOptions = droppableHandler.getOptions();
       AcceptFunction accept = droppableOptions.getAccept();
-      if (droppableOptions.isDisabled() || (accept != null && !accept.acceptDrop(droppable, draggable))){
+      if (droppableOptions.isDisabled() || (accept != null && !accept.acceptDrop(new DragAndDropContext(draggable, droppable)))){
         continue;
       }
       
