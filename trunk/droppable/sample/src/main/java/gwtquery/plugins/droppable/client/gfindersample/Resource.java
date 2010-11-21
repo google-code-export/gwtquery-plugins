@@ -8,6 +8,10 @@ import com.google.gwt.resources.client.ImageResource;
 public interface Resource extends ClientBundle {
 
   public interface Css extends CssResource {
+    String fileCell();
+    
+    String directoryCell();
+    
     String droppableHover();
 
     String dragHover();
@@ -22,6 +26,8 @@ public interface Resource extends ClientBundle {
   
   public ImageResource folder();
   public ImageResource file();
+  public ImageResource addFile();
+  public ImageResource addFolder();
 
 
 }

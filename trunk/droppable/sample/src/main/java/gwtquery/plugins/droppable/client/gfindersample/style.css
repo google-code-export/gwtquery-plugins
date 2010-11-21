@@ -1,12 +1,53 @@
+@external .gwt-Label;
+
 .droppableHover {
 	background-color: #C1DEFD;
 }
 
-.dragHover {
-	
-}
+
 
 .finder {
 	height: 300px;
 	border: 1px solid #ccc;
 }
+
+@sprite .fileCell{
+	gwt-image: "file";
+	background-position:left;
+	padding-left: 30px;
+	padding-top: 4px;
+	width: auto;
+
+}
+
+@sprite .directoryCell{
+	gwt-image: "folder";
+	background-position:left;
+	padding-left: 30px;
+	padding-top: 4px;
+	width: auto;
+}
+
+/* this rule select file helper div*/
+@sprite .dragHover div.fileCell {
+	gwt-image: "addFile";
+	background-position:left;
+	padding-left: 30px;
+	padding-top: 4px;
+	width: auto;
+}
+
+/* this rule select directory helper div*/
+@sprite .dragHover div.directoryCell {
+	gwt-image: "addFolder";
+	background-position:left;
+	padding-left: 30px;
+	padding-top: 4px;
+	width: auto;
+}
+
+
+
+
+
+

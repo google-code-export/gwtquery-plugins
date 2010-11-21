@@ -15,7 +15,6 @@
  */
 package gwtquery.plugins.droppable.client.gfindersample;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Random;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.ProvidesKey;
@@ -124,91 +123,69 @@ public class FileSystem {
     }
 
   }
+  
+  private static final String ROOT_DIRECTORY = "Pictures";
 
-  private static final String[] LETTERS = { "a", "b", "c", "d", "e", "f", "g",
-      "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
-      "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I",
-      "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
-      "X", "Y", "Z" };
+ 
+  private static final String[] USER_DIRECTORY_NAME = {  "Mary", "Patricia", "Linda", "Barbara", "Elizabeth", "Jennifer", "Maria",
+    "Susan", "Margaret", "Dorothy", "Lisa", "Nancy", "Karen", "Betty",
+    "Helen", "Sandra", "Donna", "Carol", "Ruth", "Sharon", "Michelle",
+    "Laura", "Sarah", "Kimberly", "Deborah", "Jessica", "Shirley", "Cynthia",
+    "Angela", "Melissa", "Brenda", "Amy", "Anna", "Rebecca", "Virginia",
+    "Kathleen", "Pamela", "Martha", "Debra", "Amanda", "Stephanie", "Carolyn",
+    "Christine", "Marie", "Janet", "Catherine", "Frances", "Ann", "Joyce",
+    "Diane", "Alice", "Julie", "Heather", "Teresa", "Doris", "Gloria",
+    "Evelyn", "Jean", "Cheryl", "Mildred", "Katherine", "Joan", "Ashley",
+    "Judith", "Rose", "Janice", "Kelly", "Nicole", "Judy", "Christina",
+    "Kathy", "Theresa", "Beverly", "Denise", "Tammy", "Irene", "Jane", "Lori",
+    "Rachel", "Marilyn", "Andrea", "Kathryn", "Louise", "Sara", "Anne",
+    "Jacqueline", "Wanda", "Bonnie", "Julia", "Ruby", "Lois", "Tina",
+    "Phyllis", "Norma", "Paula", "Diana", "Annie", "Lillian", "Emily",
+    "Robin", "Peggy", "Crystal", "Gladys", "Rita", "Dawn", "Connie",
+    "Florence", "Tracy", "Edna", "Tiffany", "Carmen", "Rosa", "Cindy",
+    "Grace", "Wendy", "Victoria", "Edith", "Kim", "Sherry", "Sylvia",
+    "Josephine", "Thelma", "Shannon", "Sheila", "Ethel", "Ellen", "Elaine",
+    "Marjorie", "Carrie", "Charlotte", "Monica", "Esther", "Pauline", "Emma",
+    "Juanita", "Anita", "Rhonda", "Hazel", "Amber", "Eva", "Debbie", "April",
+    "Leslie", "Clara", "Lucille", "Jamie", "Joanne", "Eleanor", "Valerie",
+    "Danielle", "Megan", "Alicia", "Suzanne", "Michele", "Gail", "Bertha",
+    "Darlene", "Veronica", "Jill", "Erin", "Geraldine", "Lauren", "Cathy",
+    "Joann", "Lorraine", "Lynn", "Sally", "Regina", "Erica", "Beatrice",
+    "Dolores", "Bernice", "Audrey", "Yvonne", "Annette", "June", "Samantha",
+    "Marion", "Dana", "Stacy", "Ana", "Renee", "Ida", "Vivian", "Roberta",
+    "Holly", "Brittany", "Melanie", "Loretta", "Yolanda", "Jeanette",
+    "Laurie", "Katie", "Kristen", "Vanessa", "Alma", "Sue", "Elsie", "Beth",
+    "Jeanne", "James", "John", "Robert", "Michael", "William", "David", "Richard",
+    "Charles", "Joseph", "Thomas", "Christopher", "Daniel", "Paul", "Mark",
+    "Donald", "George", "Kenneth", "Steven", "Edward", "Brian", "Ronald",
+    "Anthony", "Kevin", "Jason", "Matthew", "Gary", "Timothy", "Jose",
+    "Larry", "Jeffrey", "Frank", "Scott", "Eric", "Stephen", "Andrew",
+    "Raymond", "Gregory", "Joshua", "Jerry", "Dennis", "Walter", "Patrick",
+    "Peter", "Harold", "Douglas", "Henry", "Carl", "Arthur", "Ryan", "Roger",
+    "Joe", "Juan", "Jack", "Albert", "Jonathan", "Justin", "Terry", "Gerald",
+    "Keith", "Samuel", "Willie", "Ralph", "Lawrence", "Nicholas", "Roy",
+    "Benjamin", "Bruce", "Brandon", "Adam", "Harry", "Fred", "Wayne", "Billy",
+    "Steve", "Louis", "Jeremy", "Aaron", "Randy", "Howard", "Eugene",
+    "Carlos", "Russell", "Bobby", "Victor", "Martin", "Ernest", "Phillip",
+    "Todd", "Jesse", "Craig", "Alan", "Shawn", "Clarence", "Sean", "Philip",
+    "Chris", "Johnny", "Earl", "Jimmy", "Antonio", "Danny", "Bryan", "Tony",
+    "Luis", "Mike", "Stanley", "Leonard", "Nathan", "Dale", "Manuel",
+    "Rodney", "Curtis", "Norman", "Allen", "Marvin", "Vincent", "Glenn",
+    "Jeffery", "Travis", "Jeff", "Chad", "Jacob", "Lee", "Melvin", "Alfred",
+    "Kyle", "Francis", "Bradley", "Jesus", "Herbert", "Frederick", "Ray",
+    "Joel", "Edwin", "Don", "Eddie", "Ricky", "Troy", "Randall", "Barry",
+    "Alexander", "Bernard", "Mario", "Leroy", "Francisco", "Marcus",
+    "Micheal", "Theodore", "Clifford", "Miguel", "Oscar", "Jay", "Jim", "Tom",
+    "Calvin", "Alex", "Jon", "Ronnie", "Bill", "Lloyd", "Tommy", "Leon",
+    "Derek", "Warren", "Darrell", "Jerome", "Floyd", "Leo", "Alvin", "Tim",
+    "Wesley", "Gordon", "Dean", "Greg", "Jorge", "Dustin", "Pedro", "Derrick",
+    "Dan", "Lewis", "Zachary", "Corey", "Herman", "Maurice", "Vernon",
+    "Roberto", "Clyde", "Glen", "Hector", "Shane", "Ricardo", "Sam", "Rick",
+    "Lester", "Brent", "Ramon", "Charlie", "Tyler", "Gilbert", "Gene" };
 
-  /*
-   * private static final String[] FILE_NAMES = { "chmod", "date",
-   * "domainname  expr", "ksh", "ln", "mv", "pwd", "rmdir", "stty", "test",
-   * "zsh", "bash", "cp", "dd", "echo", "hostname", "launchctl", "ls", "pax",
-   * "rcp", "sh", "sync", "unlink", "cat", "csh", "df", "ed", "kill", "link",
-   * "mkdir", "ps", "rm", "sleep", "tcsh", "wait4path", "Address", "Book",
-   * "Adobe", "Reader", "9", "AppleScript", "Automator", "Belgium", "Identity",
-   * "Card", "Calculator", "Chess", "ChromeWithSpeedTracer", "DVD", "Player",
-   * "Dashboard", "Dictionary", "Firefox", "Font", "Book", "Front", "Row",
-   * "GarageBand", "Gimp", "Google", "Chrome", "Home'Bank", "Image", "Capture",
-   * "Mail", "Microsoft", "Internet", "Explorer", "6", "Microsoft", "Internet",
-   * "Explorer", "7", "Microsoft", "Office", "2008", "OpenOffice.org", "Opera",
-   * "Photo", "Booth", "Preview", "QuickTime", "Player", "Safari", "SketchUp",
-   * "Skype", "Smultron", "Stickies", "System", "Preferences", "TextEdit",
-   * "Time", "Machine", "Utilities", "VLC", "Wine", "WineBottler", "XAMPP",
-   * "eclipse", "iCal", "iChat", "iDVD", "iMovie", "iPhoto", "iSync", "iTunes",
-   * "iWeb", "PICT0002", "PICT0004", "PICT0005", "PICT0006", "PICT0007",
-   * "PICT0010", "PICT0011", "PICT0012", "PICT0013", "PICT0014", "PICT0015",
-   * "PICT0016", "PICT0017", "PICT0018", "PICT0019", "PICT0020", "PICT0021",
-   * "PICT0022", "PICT0023", "PICT0024", "PICT0025", "PICT0026", "PICT0027",
-   * "PICT0028", "PICT0029", "PICT0030", "PICT0031", "PICT0032", "PICT0033",
-   * "PICT0034", "PICT0035", "PICT0036", "PICT0037", "PICT0038", "PICT0039",
-   * "PICT0040", "PICT0041", "PICT0042", "PICT0043", "PICT0044", "PICT0045",
-   * "PICT0046", "PICT0047", "PICT0048", "PICT0049", "PICT0050", "PICT0051",
-   * "PICT0052", "PICT0053", "PICT0054", "PICT0055", "PICT0056", "PICT0057",
-   * "PICT0058", "PICT0059", "PICT0060", "PICT0061", "PICT0062", "PICT0063",
-   * "PICT0064", "PICT0068", "PICT0069", "PICT0070", "PICT0071", "PICT0072",
-   * "PICT0073", "PICT0074", "PICT0075", "PICT0076", "PICT0077", "PICT0078",
-   * "PICT0080", "PICT0081", "Thumbs" };
-   */
-  private static final String[] ROOT_DIRECTORY_NAMES = { "Applications",
-      "Library", "Network", "System", "Users", "Volumes", "bin", "cores",
-      "dev", "etc", "home", "net", "private", "sbin", "tmp", "usr", "var" };
-
-  private static final String[] OTHER_DIRECTORY_NAME = { "Application",
-      "Support", "Audio", "Automator", "Caches", "ColorPickers", "ColorSync",
-      "Components", "Compositions", "Contextual", "Menu", "Items", "Desktop",
-      "Pictures", "Developer", "Dictionaries", "Documentation", "Extensions",
-      "Filesystems", "Fonts", "Fonts", "Disabled", "Frameworks", "Google",
-      "Graphics", "Image", "Capture", "Input", "Methods", "Internet",
-      "Plug-Ins", "Java", "Keyboard", "Layouts", "Keychains", "LaunchAgents",
-      "LaunchDaemons", "Logs", "Modem", "Scripts", "Mozilla", "OpenSC", "PDF",
-      "Services", "Perl", "PreferencePanes", "Preferences", "Printers",
-      "PrivilegedHelperTools", "Python", "QuickLook", "QuickTime", "Receipts",
-      "Ruby", "Sandbox", "Screen", "Savers", "Scripts", "Security", "Speech",
-      "Spelling", "Spotlight", "StartupItems", "Updates", "User", "Pictures",
-      "WebServer", "Widgets", "iTunes", "James", "John", "Robert", "Michael",
-      "William", "David", "Richard", "Charles", "Joseph", "Thomas",
-      "Christopher", "Daniel", "Paul", "Mark", "Donald", "George", "Kenneth",
-      "Steven", "Edward", "Brian", "Ronald", "Anthony", "Kevin", "Jason",
-      "Matthew", "Gary", "Timothy", "Jose", "Larry", "Jeffrey", "Frank",
-      "Scott", "Eric", "Stephen", "Andrew", "Raymond", "Gregory", "Joshua",
-      "Jerry", "Dennis", "Walter", "Patrick", "Peter", "Harold", "Douglas",
-      "Henry", "Carl", "Arthur", "Ryan", "Roger", "Joe", "Juan", "Jack",
-      "Albert", "Jonathan", "Justin", "Terry", "Gerald", "Keith", "Samuel",
-      "Willie", "Ralph", "Lawrence", "Nicholas", "Roy", "Benjamin", "Bruce",
-      "Brandon", "Adam", "Harry", "Fred", "Wayne", "Billy", "Steve", "Louis",
-      "Jeremy", "Aaron", "Randy", "Howard", "Eugene", "Carlos", "Russell",
-      "Bobby", "Victor", "Martin", "Ernest", "Phillip" };
-
-  private static final String[] FILE_EXTENSIONS = { "blg", "csv", "dat", "efx",
-      "key", "pps", "ppt", "pptx", "sdf", "vcf", "xml", "aac", "aif", "iff",
-      "m3u", "mid", "mp3", "mpa", "ra", "wav", "wma", "3g2", "3gp", "asf",
-      "asx", "avi", "flv", "mov", "mp4", "mpg", "rm", "swf", "vob", "wmv",
-      "3dm", "max", "bmp", "gif", "jpg", "png", "psd", "thm", "tif", "yuv",
-      "ai", "drw", "eps", "ps", "svg", "indd", "pct", "pdf", "qxd", "qxp",
-      "wks", "xls", "xlsx", "accdb", "db", "mdb", "pdb", "sql", "app", "bat",
-      "cgi", "com", "exe", "jar", "pif", "vb", "wsf", "asp", "cer", "csr",
-      "css", "hª", "hªl", "js", "jsp", "php", "rss", "xhtml", "fnt", "fon",
-      "otf", "ttf", "cab", "cpl", "cur", "dll", "dmp", "drv", "lnk", "sys",
-      "cfg", "ini", "prf", "bin", "hqx", "mim", "uue", "deb", "gz", "pkg",
-      "rar", "sit", "sitx", "tar.gz", "zip", "zipx", "dmg", "iso", "c",
-      "class", "cpp", "cs", "dtd", "java", "m", "pl" };
-
-  private static int MAX_DEPTH = 20;
-  private static int MAX_FILE_NBR = 10;
-  private static int MAX_DIR_NBR = 5;
-  private static int MAX_LETTER_FILE_NAME = 30;
+ 
+  private static int MAX_FILE_NBR = 50;
+  private static int MAX_DIR_NBR = 40;
 
   /**
    * The singleton instance of the database.
@@ -231,73 +208,68 @@ public class FileSystem {
    * The provider that holds the list of file in a directory.
    */
   private Map<File, ListDataProvider<File>> filesByDirectory = new HashMap<File, ListDataProvider<File>>();
-  private List<File> rootDirectories = new ArrayList<File>();
+  private ListDataProvider<File> rootDirectories = new ListDataProvider<File>();
 
   /**
    * Construct the file system.
    */
   private FileSystem() {
-    for (String name : ROOT_DIRECTORY_NAMES) {
-      File root = new File(FileType.DIRECTORY);
-      root.setName(name);
-      rootDirectories.add(root);
-      generateDirTree(root, Random.nextInt(MAX_FILE_NBR), Random
-          .nextInt(MAX_DIR_NBR), 0);
+   
+      File rootDirectory = new File(FileType.DIRECTORY);
+      rootDirectory.setName(ROOT_DIRECTORY);
+      
+      generateDirTree(rootDirectory);
+      
+      rootDirectories.getList().add(rootDirectory);
+      
+
+  }
+  
+  private void generateDirTree(File rootDirectory){
+    //generate user directories
+    ListDataProvider<File> files = new ListDataProvider<File>();
+    
+    for (int i = 0; i < Math.max(10, Random.nextInt(20)) ; i++){
+      File f = new File(FileType.DIRECTORY);
+      f.setName(nextValue(USER_DIRECTORY_NAME));
+      f.setParent(rootDirectory);
+      files.getList().add(f);
+      //generate Event sub directories
+      generateDirContent(f, 0, Math.max(10,Random.nextInt(MAX_DIR_NBR)));
+      
     }
+    filesByDirectory.put(rootDirectory, files);
+    
+    
   }
 
-  private void generateDirTree(File root, int fileNbr, int dirNbr, int depth) {
-    assert root.getType() == FileType.DIRECTORY;
-    ListDataProvider<File> files = new ListDataProvider<File>();
-
-    if (depth < Random.nextInt(MAX_DEPTH)) {
-      // generate directories
-      File dir = generateDirectory(root);
-      // files.getList().remove(dir);
-      // files.getList().remove(dir);
-      files.getList().add(dir);
-      generateDirTree(dir, Random.nextInt(MAX_FILE_NBR), Random
-          .nextInt(MAX_DIR_NBR), depth + 1);
-    }
+  private void generateDirContent(File root, int fileNbr, int subDirNbr) {
     
-    // ensure at least one file by directory
-    fileNbr = Math.max(fileNbr, 1);
-
-    for (int i = 0; i < fileNbr; i++) {
-      File f = generateFile(root);
-      // avoid duplicate
-      // files.getList().remove(f);
+    assert root.getType() == FileType.DIRECTORY;
+    
+    ListDataProvider<File> files = new ListDataProvider<File>();
+    
+    for (int i = 0; i < subDirNbr; i++){
+      File f = new File(FileType.DIRECTORY);
+      f.setName(root.getName()+"Event"+i);
+      f.setParent(root);
       files.getList().add(f);
+      
+      generateDirContent(f, Math.max(10, Random.nextInt(MAX_FILE_NBR)), 0);
+    }
 
+    for (int i = 0; i < fileNbr; i++){
+      File f = new File(FileType.FILE);
+      f.setName(root.getName()+"PICT"+i+".jpg");
+      f.setParent(root);
+      files.getList().add(f);
     }
     
     filesByDirectory.put(root, files);
 
   }
 
-  private File generateFile(File parent) {
-    File f = new File(FileType.FILE);
-    int letterNbr = Random.nextInt(MAX_LETTER_FILE_NAME);
-    StringBuilder nameBuilder = new StringBuilder();
-    for (int i = 0; i < letterNbr; i++) {
-      nameBuilder.append(nextValue(LETTERS));
-    }
-
-    String name = nameBuilder.append(".").append(nextValue(FILE_EXTENSIONS))
-        .toString();
-    f.setName(name);
-    f.setParent(parent);
-    return f;
-  }
-
-  private File generateDirectory(File parent) {
-    File f = new File(FileType.DIRECTORY);
-    String name = nextValue(OTHER_DIRECTORY_NAME);
-    f.setName(name);
-    f.setParent(parent);
-    return f;
-  }
-
+  
   /**
    * move file
    * 
@@ -305,38 +277,24 @@ public class FileSystem {
    *          the contact to add.
    */
   public void moveFile(File file, File destination) {
+    assert destination.getType() == FileType.DIRECTORY;
+    
     File oldDestination = file.getParent();
     List<File> previousList = getFilesDataProvider(oldDestination).getList();
     List<File> newList = getFilesDataProvider(destination).getList();
+    
     previousList.remove(file);
-    // newList.remove(contact);
     newList.add(file);
 
+    file.setParent(destination);
+    
     refreshDisplays(oldDestination);
     refreshDisplays(destination);
   }
 
-  /**
-   * Add a display to the database. The current range of interest of the display
-   * will be populated with data.
-   * 
-   * @param display
-   *          a {@Link HasData}.
-   */
-  /*
-   * public void addDataDisplay(HasData<File> display, File dir) { assert
-   * dir.getType() == FileType.DIRECTORY;
-   * getFilesDataProvider(dir).addDataDisplay(display); }
-   */
 
-  /**
-   * Get the root directories.
-   * 
-   * @return the categories in the database
-   */
-  public List<File> getRootDirectories() {
-    return rootDirectories;
-  }
+
+
 
   /**
    * Query all files for a directory.
@@ -379,6 +337,11 @@ public class FileSystem {
 
   public ListDataProvider<File> getFilesDataProvider(File dir) {
     return filesByDirectory.get(dir);
+  }
+
+  public ListDataProvider<File> getRootDirectories() {
+    return rootDirectories;
+    
   }
 
 }
