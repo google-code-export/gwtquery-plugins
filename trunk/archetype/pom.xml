@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.gwtquery</groupId>
   <artifactId>gquery-plugin-archetype</artifactId>
-  <version>0.3</version>
+  <version>0.4-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
   <name>This archetype generates a maven/eclipse project for a new GwtQuery Plugin</name>
 
