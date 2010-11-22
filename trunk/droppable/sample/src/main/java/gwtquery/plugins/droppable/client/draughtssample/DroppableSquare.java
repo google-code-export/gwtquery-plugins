@@ -23,7 +23,6 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
 import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
 import gwtquery.plugins.droppable.client.draughtssample.GameController.Position;
@@ -114,16 +113,15 @@ public class DroppableSquare extends DroppableWidget<SimplePanel> implements Has
   }
 
   public void onDrop(DropEvent event) {
-    final DraggableWidget<?> draggable = event.getDraggableWidget();
+    final Piece draggingPiece = (Piece) event.getDraggableWidget();
 
     // as we use original widget for drag operation, clear top and left css
     // properties set during the drag operation before adding it
-    draggable.getElement().getStyle().setTop(0, Unit.PX);
-    draggable.getElement().getStyle().setLeft(0, Unit.PX);
+    draggingPiece.getElement().getStyle().setTop(0, Unit.PX);
+    draggingPiece.getElement().getStyle().setLeft(0, Unit.PX);
 
-    if (draggable.getParent() != getWidget()) {
-      add(draggable);
-      Piece draggingPiece = (Piece) draggable.getOriginalWidget();
+    if (draggingPiece.getParent() != getWidget()) {
+      add(draggingPiece);
       EVENT_BUS.fireEvent(new PieceMoveEvent(draggingPiece, position, draggingPiece
           .getPosition()));
       if (isKingLine()) {

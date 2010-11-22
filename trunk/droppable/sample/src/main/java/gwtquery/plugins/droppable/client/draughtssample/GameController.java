@@ -15,9 +15,9 @@
  */
 package gwtquery.plugins.droppable.client.draughtssample;
 
-import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.CHECKERBOARD_CLASS_NAME;
+import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
 
 import com.google.gwt.user.client.Timer;
 
@@ -26,7 +26,6 @@ import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.draughtssample.events.PieceCapturedEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PieceMoveEvent;
 import gwtquery.plugins.droppable.client.draughtssample.events.PlayerChangeEvent;
@@ -153,11 +152,8 @@ public class GameController implements PieceMoveEventHandler,
     return null;
   }
 
-  @SuppressWarnings("unchecked")
   public void onDragStart(DragStartEvent event) {
-    DraggableWidget<Piece> dw = (DraggableWidget<Piece>) event
-        .getDraggableWidget();
-    Piece draggingPiece = dw.getOriginalWidget();
+    Piece draggingPiece = (Piece) event.getDraggableWidget();
 
     if (draggingPiece.getPlayer() != currentPlayer) {
       // don't start the drag process it's not the right player !!
