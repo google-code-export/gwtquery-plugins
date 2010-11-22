@@ -34,8 +34,8 @@ import gwtquery.plugins.droppable.client.contactcellsample.ContactDatabase.Categ
 import gwtquery.plugins.droppable.client.contactcellsample.ContactDatabase.ContactInfo;
 
 /**
- * A form used for editing contacts.
- * Code coming from gwt showcase http://gwt.google.com/samples/Showcase/Showcase.html#!CwCellList
+ * A form used for editing contacts. Code coming from gwt showcase
+ * http://gwt.google.com/samples/Showcase/Showcase.html#!CwCellList
  */
 public class ContactInfoForm extends Composite {
 
@@ -63,8 +63,8 @@ public class ContactInfoForm extends Composite {
 
   public ContactInfoForm() {
     initWidget(uiBinder.createAndBindUi(this));
-    DateTimeFormat dateFormat = DateTimeFormat.getFormat(
-        PredefinedFormat.DATE_LONG);
+    DateTimeFormat dateFormat = DateTimeFormat
+        .getFormat(PredefinedFormat.DATE_LONG);
     birthdayBox.setFormat(new DateBox.DefaultFormat(dateFormat));
 
     // Add the categories to the category box.
@@ -88,18 +88,18 @@ public class ContactInfoForm extends Composite {
         contactInfo.setLastName(lastNameBox.getText());
         contactInfo.setAddress(addressBox.getText());
         contactInfo.setBirthday(birthdayBox.getValue());
-        
+
         int categoryIndex = categoryBox.getSelectedIndex();
         Category newCategory = categories[categoryIndex];
         Category oldCategory = contactInfo.getCategory();
-        if (oldCategory != newCategory){
+        if (oldCategory != newCategory) {
           contactInfo.setCategory(newCategory);
           ContactDatabase.get().moveContact(contactInfo, oldCategory);
-          
+
         }
 
         // Update the views.
-        ContactDatabase.get().refreshDisplays();
+        ContactDatabase.get().refreshDisplays(contactInfo.getCategory());
       }
     });
     createButton.addClickHandler(new ClickHandler() {
