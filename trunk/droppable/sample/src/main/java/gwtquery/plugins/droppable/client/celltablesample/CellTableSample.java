@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.celltablesample;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -23,6 +38,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
@@ -39,7 +56,6 @@ import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
-import gwtquery.plugins.droppable.client.DroppableOptions;
 import gwtquery.plugins.droppable.client.celltablesample.ContactDatabase.Category;
 import gwtquery.plugins.droppable.client.celltablesample.ContactDatabase.ContactInfo;
 import gwtquery.plugins.droppable.client.events.DropEvent;
@@ -60,26 +76,44 @@ import java.util.List;
  */
 public class CellTableSample implements EntryPoint {
 
-  private static CellTableSampleUiBinder uiBinder = GWT
-      .create(CellTableSampleUiBinder.class);
+  /**
+   * The constants used in this Content Widget.
+   */
+  public static interface CwConstants extends Constants {
+    @DefaultStringValue(value = "Address")
+    String cwCellTableColumnAddress();
+
+    @DefaultStringValue(value = "Category")
+    String cwCellTableColumnCategory();
+
+    @DefaultStringValue(value = "First Name")
+    String cwCellTableColumnFirstName();
+
+    @DefaultStringValue(value = "Last Name")
+    String cwCellTableColumnLastName();
+
+  }
 
   interface CellTableSampleUiBinder extends UiBinder<Widget, CellTableSample> {
   }
 
-  public enum CellType {
-    CHECK_BOX, FIRST_NAME, LAST_NAME, CATEGORY, ADDRESS;
-  }
-
+  /**
+   * Template for the helper
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
   static interface Templates extends SafeHtmlTemplates {
     Templates INSTANCE = GWT.create(Templates.class);
 
-    @Template("<div id='dragHelper' style='border:1px solid black; background-color:#ffffff; color:black;'></div>")
+    @Template("<div id='dragHelper' style='border:1px solid black; background-color:#ffffff; color:black; width:150px;'></div>")
     SafeHtml outerHelper();
   }
 
   /**
-   * The Cell used to render a {@link ContactInfo}. Code coming from the GWT
-   * showcase
+   * The Cell used to render a {@link ContactInfo}.
+   * 
+   * Code coming from the GWT showcase
    * 
    */
   private static class ContactCell extends AbstractCell<ContactInfo> {
@@ -119,39 +153,24 @@ public class CellTableSample implements EntryPoint {
     }
   }
 
-  /**
-   * The constants used in this Content Widget.
-   */
-  public static interface CwConstants extends Constants {
-    @DefaultStringValue(value = "Address")
-    String cwCellTableColumnAddress();
-
-    @DefaultStringValue(value = "Category")
-    String cwCellTableColumnCategory();
-
-    @DefaultStringValue(value = "First Name")
-    String cwCellTableColumnFirstName();
-
-    @DefaultStringValue(value = "Last Name")
-    String cwCellTableColumnLastName();
-
-  }
-
-  public CellTableSample() {
-    constants = GWT.create(CwConstants.class);
-  }
-
-  private static final String contactImageHtml = AbstractImagePrototype.create(
-      Resource.INSTANCE.contact()).getHTML();
+  private static CellTableSampleUiBinder uiBinder = GWT
+      .create(CellTableSampleUiBinder.class);
 
   /**
-   * The main CellTable.
+   * The main CellTable. Use a {@link DragAndDropCellTable} instead of a
+   * {@link CellTable}
    */
   @UiField(provided = true)
   DragAndDropCellTable<ContactInfo> cellTable;
 
   /**
-   * The droppable "contact to export" cell list.
+   * The delete button
+   */
+  @UiField(provided = true)
+  Button deleteButton;
+
+  /**
+   * The droppable "contact to delete" cell list.
    */
   @UiField(provided = true)
   DroppableWidget<CellList<ContactInfo>> exportCellList;
@@ -160,18 +179,22 @@ public class CellTableSample implements EntryPoint {
    * The pager used to change the range of data.
    */
   @UiField(provided = true)
-  Button exportButton;
+  SimplePager pager;
 
   /**
-   * The pager used to change the range of data.
+   * The undo button
    */
   @UiField(provided = true)
-  SimplePager pager;
+  Button undoButton;
 
   /**
    * An instance of the constants.
    */
   private final CwConstants constants;
+
+  public CellTableSample() {
+    constants = GWT.create(CwConstants.class);
+  }
 
   /**
    * Initialize this example.
@@ -187,58 +210,14 @@ public class CellTableSample implements EntryPoint {
     RootPanel.get("sample").add(w);
   }
 
-  private void createDroppableList() {
-    // Create a ConcactCell
-    ContactCell contactCell = new ContactCell(Resource.INSTANCE.contact());
-
-    CellList<ContactInfo> cellList = new CellList<ContactInfo>(contactCell,
-        ContactDatabase.ContactInfo.KEY_PROVIDER);
-    cellList.addStyleName(Resource.INSTANCE.css().exportCellList());
-
-    cellList.setPageSize(30);
-    cellList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
-    final ListDataProvider<ContactInfo> exportedContact = new ListDataProvider<ContactInfo>();
-    exportedContact.addDataDisplay(cellList);
-
-    // make the cell list droppable.
-    exportCellList = new DroppableWidget<CellList<ContactInfo>>(cellList);
-    exportCellList.setHoverClass(Resource.INSTANCE.css().droppableHover());
-    exportCellList.setActiveClass(Resource.INSTANCE.css().droppableActive());
-    exportCellList.addDropHandler(new DropEventHandler() {
-
-      public void onDrop(DropEvent event) {
-        ContactInfo contactToExport = event.getDraggableData();
-        // avoid doublon
-        exportedContact.getList().remove(contactToExport);
-        exportedContact.getList().add(contactToExport);
-        exportedContact.refresh();
-      }
-    });
-
-    // create export button
-    exportButton = new Button("Export contacts list");
-    exportButton.addClickHandler(new ClickHandler() {
-
-      public void onClick(ClickEvent event) {
-        StringBuilder builder = new StringBuilder("You want to export:\n");
-        for (ContactInfo c : exportedContact.getList()) {
-          builder.append(c.getFullName()).append("\n");
-        }
-        Window.alert(builder.toString());
-      }
-    });
-
-  }
-
+  /**
+   * This method create the CellTable for the contacts
+   */
   private void createDragAndDropCellTable() {
-    // Create a DragAndDropCellTable.
 
-    // Set a key provider that provides a unique key for each contact. If key is
-    // used to identify contacts when fields (such as the name and address)
-    // change.
+    // Create a DragAndDropCellTable.
     cellTable = new DragAndDropCellTable<ContactInfo>(
         ContactDatabase.ContactInfo.KEY_PROVIDER);
-
     // Create a Pager to control the table.
     SimplePager.Resources pagerResources = GWT
         .create(SimplePager.Resources.class);
@@ -256,7 +235,7 @@ public class CellTableSample implements EntryPoint {
     // Add the CellList to the adapter in the database.
     ContactDatabase.get().addDataDisplay(cellTable);
 
-    // fill the helper when the drag start
+    // fill the helper when the drag operation start
     cellTable.addDragStartHandler(new DragStartEventHandler() {
 
       public void onDragStart(DragStartEvent event) {
@@ -273,13 +252,94 @@ public class CellTableSample implements EntryPoint {
   }
 
   /**
+   * Create a droppable CellList
+   */
+  private void createDroppableList() {
+    // Create a ConcactCell
+    ContactCell contactCell = new ContactCell(Resource.INSTANCE.contact());
+
+    CellList<ContactInfo> cellList = new CellList<ContactInfo>(contactCell,
+        ContactDatabase.ContactInfo.KEY_PROVIDER);
+    cellList.addStyleName(Resource.INSTANCE.css().exportCellList());
+
+    cellList.setPageSize(30);
+    cellList.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
+    // temporary ListDataProvider to keep list of contacts to delete
+    final ListDataProvider<ContactInfo> deleteContactList = new ListDataProvider<ContactInfo>();
+    deleteContactList.addDataDisplay(cellList);
+
+    // make the cell list droppable.
+    exportCellList = new DroppableWidget<CellList<ContactInfo>>(cellList);
+
+    // setup the drop operation
+    exportCellList.setHoverClass(Resource.INSTANCE.css().droppableHover());
+    exportCellList.setActiveClass(Resource.INSTANCE.css().droppableActive());
+    exportCellList.addDropHandler(new DropEventHandler() {
+
+      public void onDrop(DropEvent event) {
+        ContactInfo contactToDelete = event.getDraggableData();
+        // first remove the contact to the table
+        ContactDatabase.get().removeContact(contactToDelete);
+        // avoid doublon
+        deleteContactList.getList().remove(contactToDelete);
+        // add the contact to the delete list
+        deleteContactList.getList().add(contactToDelete);
+
+      }
+    });
+
+    // create delete button
+    deleteButton = new Button("Delete contacts");
+    deleteButton.addClickHandler(new ClickHandler() {
+
+      public void onClick(ClickEvent event) {
+        deleteContactList.getList().clear();
+        Window.alert("The contacts have been deleted");
+      }
+    });
+
+    // create undo button
+    undoButton = new Button("Undo");
+    undoButton.addClickHandler(new ClickHandler() {
+
+      public void onClick(ClickEvent event) {
+        for (ContactInfo c : deleteContactList.getList()) {
+          ContactDatabase.get().addContact(c);
+        }
+        deleteContactList.getList().clear();
+      }
+    });
+  }
+
+  /**
+   * Init draggable operation for column
+   * 
+   * @param draggableOptions
+   */
+  private void initDragOperation(DragAndDropColumn<?, ?> column) {
+
+    // retrieve draggableOptions on the column
+    DraggableOptions draggableOptions = column.getDraggableOptions();
+    // use template to construct the helper. The content of the div will be set
+    // after
+    draggableOptions.setHelper($(Templates.INSTANCE.outerHelper().asString()));
+    // opacity of the helper
+    draggableOptions.setOpacity((float) 0.8);
+    // cursor to use during the drag operation
+    draggableOptions.setCursor(Cursor.MOVE);
+    // set the revert option
+    draggableOptions.setRevert(RevertOption.ON_INVALID_DROP);
+    // prevents dragging when user click on the category drop-down list
+    draggableOptions.setCancel("select");
+  }
+
+  /**
    * Add the columns to the table.
+   * 
+   * Use {@link DragAndDropColumn} instead of {@link Column}
    */
   private void initTableColumns(final SelectionModel<ContactInfo> selectionModel) {
 
-    // Checkbox column. This table will uses a checkbox column for selection.
-    // Alternatively, you can call cellTable.setSelectionEnabled(true) to enable
-    // mouse selection.
     DragAndDropColumn<ContactInfo, Boolean> checkColumn = new DragAndDropColumn<ContactInfo, Boolean>(
         new CheckboxCell(true)) {
       @Override
@@ -295,8 +355,7 @@ public class CellTableSample implements EntryPoint {
       }
     });
     checkColumn.setCellDraggableOnly();
-    DraggableOptions draggableOptions = checkColumn.getDraggableOptions();
-    initCommonDraggableOptions(draggableOptions);
+    initDragOperation(checkColumn);
     cellTable.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br>"));
 
     // First name.
@@ -308,8 +367,7 @@ public class CellTableSample implements EntryPoint {
       }
     };
     firstNameColumn.setCellDraggableOnly();
-    draggableOptions = firstNameColumn.getDraggableOptions();
-    initCommonDraggableOptions(draggableOptions);
+    initDragOperation(firstNameColumn);
     cellTable
         .addColumn(firstNameColumn, constants.cwCellTableColumnFirstName());
     firstNameColumn.setFieldUpdater(new FieldUpdater<ContactInfo, String>() {
@@ -329,8 +387,7 @@ public class CellTableSample implements EntryPoint {
       }
     };
     lastNameColumn.setCellDraggableOnly();
-    draggableOptions = lastNameColumn.getDraggableOptions();
-    initCommonDraggableOptions(draggableOptions);
+    initDragOperation(lastNameColumn);
     cellTable.addColumn(lastNameColumn, constants.cwCellTableColumnLastName());
     lastNameColumn.setFieldUpdater(new FieldUpdater<ContactInfo, String>() {
       public void update(int index, ContactInfo object, String value) {
@@ -355,8 +412,7 @@ public class CellTableSample implements EntryPoint {
       }
     };
     categoryColumn.setCellDraggableOnly();
-    draggableOptions = categoryColumn.getDraggableOptions();
-    initCommonDraggableOptions(draggableOptions);
+    initDragOperation(categoryColumn);
     cellTable.addColumn(categoryColumn, constants.cwCellTableColumnCategory());
     categoryColumn.setFieldUpdater(new FieldUpdater<ContactInfo, String>() {
       public void update(int index, ContactInfo object, String value) {
@@ -379,18 +435,7 @@ public class CellTableSample implements EntryPoint {
     };
     cellTable.addColumn(addressColumn, constants.cwCellTableColumnAddress());
     addressColumn.setCellDraggableOnly();
-    draggableOptions = addressColumn.getDraggableOptions();
-    initCommonDraggableOptions(draggableOptions);
-  }
-
-  private void initCommonDraggableOptions(DraggableOptions draggableOptions) {
-
-    draggableOptions.setHelper($(Templates.INSTANCE.outerHelper()));
-    draggableOptions.setOpacity((float) 0.8);
-    draggableOptions.setCursor(Cursor.MOVE);
-    draggableOptions.setRevert(RevertOption.ON_INVALID_DROP);
-    // prevents dragging when user click on the category drop-down list
-    draggableOptions.setCancel("select");
+    initDragOperation(addressColumn);
   }
 
 }
