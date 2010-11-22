@@ -32,10 +32,9 @@ public class BeforeDragStartEvent extends
   }
 
   public static Type<BeforeDragStartEventHandler> TYPE = new Type<BeforeDragStartEventHandler>();
-  private Element draggable;
-
+ 
   public BeforeDragStartEvent(Element draggable) {
-    super(draggable, null);
+    super(draggable);
   }
 
   @Override

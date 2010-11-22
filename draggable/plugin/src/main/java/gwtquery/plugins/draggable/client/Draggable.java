@@ -222,7 +222,7 @@ public class Draggable extends MouseHandler {
         e.getStyle().setPosition(Position.RELATIVE);
       }
       e.addClassName(CssClassNames.GWT_DRAGGABLE);
-      
+
       if (options.isDisabled()) {
         e.addClassName(CssClassNames.GWT_DRAGGABLE_DISABLED);
       }
@@ -318,8 +318,8 @@ public class Draggable extends MouseHandler {
     callPlugins(new StartCaller(draggable, event), options);
 
     try {
-      trigger(new DragStartEvent(draggable, dragHandler.getHelper().get(0)),
-          options.getOnDragStart(), draggable);
+      trigger(new DragStartEvent(draggable), options.getOnDragStart(),
+          draggable);
     } catch (UmbrellaException e) {
       for (Throwable t : e.getCauses()) {
         if (t instanceof StopDragException) {
@@ -445,8 +445,8 @@ public class Draggable extends MouseHandler {
       callPlugins(new DragCaller(draggable, event), dragHandler.getOptions());
 
       try {
-        trigger(new DragEvent(draggable, dragHandler.getHelper().get(0)),
-            dragHandler.getOptions().getOnDrag(), draggable);
+        trigger(new DragEvent(draggable), dragHandler.getOptions().getOnDrag(),
+            draggable);
       } catch (UmbrellaException e) {
         for (Throwable t : e.getCauses()) {
           if (t instanceof StopDragException) {
@@ -487,7 +487,7 @@ public class Draggable extends MouseHandler {
     Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
       public void execute() {
-        trigger(new DragStopEvent(draggable, helper), options.getOnDragStop(),
+        trigger(new DragStopEvent(draggable), options.getOnDragStop(),
             draggable);
 
       }

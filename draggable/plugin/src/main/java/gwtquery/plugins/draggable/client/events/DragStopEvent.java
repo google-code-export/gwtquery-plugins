@@ -33,8 +33,8 @@ public class DragStopEvent extends AbstractDraggableEvent<DragStopEvent.DragStop
   public static Type<DragStopEventHandler> TYPE = new Type<DragStopEventHandler>();
 
 
-  public DragStopEvent(Element draggable, Element helper) {
-    super(draggable, helper);
+  public DragStopEvent(Element draggable) {
+    super(draggable);
   }
 
   @Override
