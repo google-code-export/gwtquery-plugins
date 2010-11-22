@@ -40,8 +40,9 @@ import gwtquery.plugins.droppable.client.gwt.DragAndDropCellList;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 /**
- * Take the contact sample of the GWT showcase and make the contactcell
- * draggable !
+ * This example shows how to implement drag and drop in CellList.
+ * 
+ * Just use {@link DragAndDropCellList} instead of {@link CellList}
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
