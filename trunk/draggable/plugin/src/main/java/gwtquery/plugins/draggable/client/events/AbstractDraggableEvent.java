@@ -10,18 +10,16 @@ import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
 public abstract class AbstractDraggableEvent<H extends EventHandler> extends
 		GwtEvent<H> {
-  public static final String VALUE_KEY = "__dragAndDropCellAssociatedValue"; 
+  
+  private DragContext context;
 
-  private Element draggable;
-  private Element helper;
 
 	public AbstractDraggableEvent() {
 	
 	}
 	
-	public AbstractDraggableEvent(Element draggable, Element helper) {
-		this.draggable = draggable;
-		this.helper=helper;
+	public AbstractDraggableEvent(Element draggable) {
+		context = new DragContext(draggable); 
 	}
 	
   /**
@@ -34,23 +32,23 @@ public abstract class AbstractDraggableEvent<H extends EventHandler> extends
    *          the class of the data
    * @return
    */
-  @SuppressWarnings("unchecked")
-  public <T> T getDraggableValue() {
-    return (T) GQuery.$(getDraggable()).data(VALUE_KEY);
+  public <T> T getDraggableData() {
+    assert context != null : "Drag context cannot be null";
+    return context.getDraggableData();
   }
   
   public DraggableWidget<?> getDraggableWidget(){
-    if (getDraggable() != null){
-      return DraggableWidget.get(getDraggable());
-    }
-    return null;
+    assert context != null : "Drag context cannot be null";
+    return context.getDraggableWidget();
   }
 	
 	 public Element getDraggable() {
-	    return draggable;
+	    assert context != null : "Drag context cannot be null";
+	    return context.getDraggable();
 	  }
 	  
 	  public Element getHelper() {
-	    return helper;
+	    assert context != null : "Drag context cannot be null";
+      return context.getHelper();
 	  }
 }

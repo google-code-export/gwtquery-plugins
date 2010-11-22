@@ -33,8 +33,8 @@ public class DragStartEvent extends
 
   public static Type<DragStartEventHandler> TYPE = new Type<DragStartEventHandler>();
 
-  public DragStartEvent(Element draggable, Element helper) {
-    super(draggable, helper);
+  public DragStartEvent(Element draggable) {
+    super(draggable);
   }
 
   @Override

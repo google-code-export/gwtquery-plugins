@@ -35,8 +35,8 @@ public class DragEvent extends
 
  
 
-  public DragEvent(Element draggable, Element helper) {
-    super(draggable, helper);
+  public DragEvent(Element draggable) {
+    super(draggable);
   }
 
   @Override
