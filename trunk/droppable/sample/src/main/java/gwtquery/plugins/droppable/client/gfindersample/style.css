@@ -28,7 +28,7 @@
 	width: auto;
 }
 
-/* this rule select file helper div*/
+/* this rule select helper div when draggable is a file*/
 @sprite .dragHover div.fileCell {
 	gwt-image: "addFile";
 	background-position:left;
@@ -37,7 +37,7 @@
 	width: auto;
 }
 
-/* this rule select directory helper div*/
+/* this rule select helper div when draggable is a directory*/
 @sprite .dragHover div.directoryCell {
 	gwt-image: "addFolder";
 	background-position:left;
