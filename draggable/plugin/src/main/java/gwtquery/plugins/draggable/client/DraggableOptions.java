@@ -19,11 +19,11 @@ import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
-import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
 import gwtquery.plugins.commonui.client.MouseOptions;
 import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 /**
  * This class is used to configure the drag operation.
@@ -36,13 +36,31 @@ import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
  * 
  */
 public class DraggableOptions extends MouseOptions {
+  
+  /**
+   * Object use as callback function
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   *
+   */
+  public interface DragFunction{
+    public void f(DragContext context);
+  }
 
+  /**
+   * Axis options. Constraint the drag operation to either the horizontal (
+   * <code>X_AXIS</code>) or vertical (<code>Y_AXIS</code>) axis.
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
   public static enum AxisOption {
     Y_AXIS, X_AXIS, NONE;
   }
 
   /**
-   * Object used to specify the cursorAt options.
+   * Object used to specify the cursorAt options. This options allows you to set
+   * the offset of the dragging helper relative to the mouse cursor.
    * 
    * @author Julien Dramaix (julien.dramaix@gmail.com)
    * 
@@ -96,6 +114,11 @@ public class DraggableOptions extends MouseOptions {
 
   }
 
+  /**
+   * TODO
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   *
+   */
   public static enum HelperType {
     ORIGINAL {
       @Override
@@ -178,10 +201,10 @@ public class DraggableOptions extends MouseOptions {
   private int snapTolerance;
   private GQuery stack;
   private Integer zIndex;
-  private Function onBeforeDragStart;
-  private Function onDragStart;
-  private Function onDragStop;
-  private Function onDrag;
+  private DragFunction onBeforeDragStart;
+  private DragFunction onDragStart;
+  private DragFunction onDragStop;
+  private DragFunction onDrag;
   private GQuery $containment;
 
   public String getAppendTo() {
@@ -231,19 +254,19 @@ public class DraggableOptions extends MouseOptions {
     return helperType;
   }
 
-  public Function getOnBeforeDragStart() {
+  public DragFunction getOnBeforeDragStart() {
     return onBeforeDragStart;
   }
 
-  public Function getOnDrag() {
+  public DragFunction getOnDrag() {
     return onDrag;
   }
 
-  public Function getOnDragStart() {
+  public DragFunction getOnDragStart() {
     return onDragStart;
   }
 
-  public Function getOnDragStop() {
+  public DragFunction getOnDragStop() {
     return onDragStop;
   }
 
@@ -299,7 +322,6 @@ public class DraggableOptions extends MouseOptions {
     return zIndex;
   }
 
-
   public boolean isDisabled() {
     return disabled;
   }
@@ -319,7 +341,6 @@ public class DraggableOptions extends MouseOptions {
   public boolean isSnap() {
     return snap != null;
   }
-
 
   /**
    * The element selected by the appendTo option will be used as the draggable
@@ -540,10 +561,9 @@ public class DraggableOptions extends MouseOptions {
    * 
    * @param onDragStart
    *          function called before the initialization of the drag operation.
-   *          The draggable plugin will invoke the f(Element e) method on this
-   *          function object with e being the draggable (not the helper)
+   *          
    */
-  public void setOnBeforeDragStart(Function onBeforeDragStart) {
+  public void setOnBeforeDragStart(DragFunction onBeforeDragStart) {
     this.onBeforeDragStart = onBeforeDragStart;
   }
 
@@ -551,11 +571,9 @@ public class DraggableOptions extends MouseOptions {
    * Give a callback function called when the drag operation is dragging.
    * 
    * @param onDragStart
-   *          function called when the drag operation is dragging. The draggable
-   *          plugin will invoke the f(Element e) method on this function object
-   *          with e being the draggable (not the helper)
+   *          function called when the drag operation is dragging. 
    */
-  public void setOnDrag(Function onDrag) {
+  public void setOnDrag(DragFunction onDrag) {
     this.onDrag = onDrag;
   }
 
@@ -563,11 +581,9 @@ public class DraggableOptions extends MouseOptions {
    * Give a callback function called when the drag operation starts.
    * 
    * @param onDragStart
-   *          function called when the drag operation starts. The draggable
-   *          plugin will invoke the f(Element e) method on this function object
-   *          with e being the draggable (not the helper)
+   *          function called when the drag operation starts. 
    */
-  public void setOnDragStart(Function onDragStart) {
+  public void setOnDragStart(DragFunction onDragStart) {
     this.onDragStart = onDragStart;
   }
 
@@ -575,11 +591,9 @@ public class DraggableOptions extends MouseOptions {
    * Give a callback function called when the drag operation ends.
    * 
    * @param onDragStart
-   *          function called when the drag operation ends. The draggable plugin
-   *          will invoke the f(Element e) method on this function object with e
-   *          being the draggable (not the helper)
+   *          function called when the drag operation ends. 
    */
-  public void setOnDragStop(Function onDragStop) {
+  public void setOnDragStop(DragFunction onDragStop) {
     this.onDragStop = onDragStop;
   }
 

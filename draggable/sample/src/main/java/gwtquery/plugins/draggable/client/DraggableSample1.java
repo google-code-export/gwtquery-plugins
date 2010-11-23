@@ -19,8 +19,9 @@ import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.Function;
+
+import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 /**
  * Simple sample
@@ -42,25 +43,23 @@ public class DraggableSample1 implements EntryPoint {
 
   private DraggableOptions createOptionsForSimpleDraggable() {
     DraggableOptions o = new DraggableOptions();
-    o.setOnDragStart(new Function() {
-      @Override
-      public void f(Element e) {
+    o.setOnDragStart(new DragFunction() { 
+      public void f(DragContext context) {
         startCounter++;
         $("#startCounter").html("" + startCounter);
+        
       }
     });
 
-    o.setOnDrag(new Function() {
-      @Override
-      public void f(Element e) {
+    o.setOnDrag(new DragFunction() {
+      public void f(DragContext context) {
         dragCounter++;
         $("#dragCounter").html("" + dragCounter);
       }
     });
 
-    o.setOnDragStop(new Function() {
-      @Override
-      public void f(Element e) {
+    o.setOnDragStop(new DragFunction() {
+      public void f(DragContext context) {
         stopCounter++;
         $("#stopCounter").html("" + stopCounter);
       }

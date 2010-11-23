@@ -20,6 +20,7 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.query.client.Function;
@@ -29,9 +30,11 @@ import com.google.gwt.query.client.Plugin;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.commonui.client.MouseHandler;
+import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
+import gwtquery.plugins.draggable.client.events.DragContext;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
@@ -492,6 +495,20 @@ public class Draggable extends MouseHandler {
 
       }
     });
+  }
+  
+ 
+  private void trigger(GwtEvent<?> e, DragFunction callback, Element draggable) {
+    trigger(e, callback, draggable, eventBus);
+  }
+  
+  private static void trigger(GwtEvent<?> e, DragFunction callback, Element draggable, HasHandlers handlerManager){
+    if (handlerManager != null && e != null) {
+      handlerManager.fireEvent(e);
+    }
+    if (callback != null) {
+      callback.f(new DragContext(draggable));
+    }
   }
 
 }
