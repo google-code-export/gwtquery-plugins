@@ -41,10 +41,21 @@ import gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
+
 public class DragAndDropCellTable<T> extends CellTable<T> {
 
   private final List<Column<T, ?>> columns = new ArrayList<Column<T, ?>>();
+  
+  /**
+   * Resources that match the GWT standard style theme.
+   */
+  public interface BasicResources extends Resources {
+    /**
+     * The styles used in this widget.
+     */
+    @Source("gwtquery/plugins/droppable/client/gwt/DragAndDropCellTableBasic.css")
+    Style cellTableStyle();
+  }
   
   public interface Resources extends com.google.gwt.user.cellview.client.CellTable.Resources{
     Resources INSTANCE = GWT.create(Resources.class);
@@ -147,24 +158,6 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
     return addDragAndDropHandler(handler, BeforeDragStartEvent.TYPE);
   }
 
-  /*
-   * @Override protected void renderRowValues(SafeHtmlBuilder sb, List<T>
-   * values, int start, SelectionModel<? super T> selectionModel) { // Lets the
-   * super class do its jobs super.renderRowValues(sb, values, start,
-   * selectionModel);
-   * 
-   * // make all cell draggable and/or droppable int end = start +
-   * values.size();
-   * 
-   * GWT.log("renderRowValue with start =" + start + " and values =" +
-   * values.size()); for (int row = start; row < end; row++) { final T value =
-   * values.get(row - start); for (int column = 0; column < columns.size();
-   * column++) { addDragAndDropBehaviour(row, column, value); }
-   * 
-   * }
-   * 
-   * }
-   */
 
   public void addColumn(Column<T, ?> col, Header<?> header, Header<?> footer) {
     super.addColumn(col, header, footer);
@@ -222,8 +215,6 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
 
   protected final <H extends EventHandler> HandlerRegistration addDragAndDropHandler(
       H handler, Type<H> type) {
-    GWT.log("add handler " + handler + " to eventbus :"
-        + ensureDrangAndDropHandlers());
     return ensureDrangAndDropHandlers().addHandler(type, handler);
   }
 
