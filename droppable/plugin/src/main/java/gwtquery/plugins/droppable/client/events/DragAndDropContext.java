@@ -19,70 +19,26 @@ import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.droppable.client.gwt.DragAndDropCellWidgetUtils.VALUE_KEY;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.GQuery.Offset;
 
-import gwtquery.plugins.draggable.client.DraggableHandler;
+import gwtquery.plugins.draggable.client.events.DragContext;
+import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 /**
  * Object containing usefull information on the drag and drop operations.
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DragAndDropContext {
+public class DragAndDropContext extends DragContext {
 
-  private Element draggable;
-  private Element helper;
-  private Offset helperPosition;
-  private Offset draggableOffset;
+  
   private Element droppable;
 
   public DragAndDropContext(Element draggable, Element droppable) {
-    this.draggable = draggable;
+    super(draggable);
     this.droppable = droppable;
-    init();
   }
 
-  private void init() {
-    DraggableHandler handler = DraggableHandler.getInstance(draggable);
-    if (handler.getHelper() != null) {
-      helper = handler.getHelper().get(0);
-    }
-    helperPosition = handler.getPosition();
-    draggableOffset = handler.getAbsPosition();
-  }
-
-  public Element getDraggable() {
-    return draggable;
-  }
-
-  public Element getHelper() {
-    return helper;
-  }
-
-  public Offset getHelperPosition() {
-    return helperPosition;
-  }
-
-  public Offset getDraggableOffset() {
-    return draggableOffset;
-  }
-
-  public void setDraggable(Element draggable) {
-    this.draggable = draggable;
-  }
-
-  public void setHelper(Element helper) {
-    this.helper = helper;
-  }
-
-  public void setHelperPosition(Offset helperPosition) {
-    this.helperPosition = helperPosition;
-  }
-
-  public void setDraggableOffset(Offset draggableOffset) {
-    this.draggableOffset = draggableOffset;
-  }
-
+ 
   public Element getDroppable() {
     return droppable;
   }
@@ -91,21 +47,7 @@ public class DragAndDropContext {
     this.droppable = droppable;
   }
   
-  /**
-   * Return the data value associated to the current draggable element if and
-   * only if this one is coming from a {@link DraggableCell} This method returns
-   * null if the current drag and drop operation doesn't concerns a
-   * {@link DraggableCell}
-   * 
-   * @param <T>
-   *          the class of the data
-   * @return
-   */
-  @SuppressWarnings("unchecked")
-  public <T> T getDraggableData() {
-    return (T) $(getDraggable()).data(VALUE_KEY);
-  }
-
+ 
   /**
    * Return the data value associated to the drop element if and only if this
    * one is coming from a {@link DroppableCell} This method returns null if the
@@ -119,5 +61,12 @@ public class DragAndDropContext {
   public <T> T getDroppableData() {
     return (T) $(getDroppable()).data(VALUE_KEY);
 
+  }
+  
+  public DroppableWidget<?> getDroppableWidget(){
+    if (getDroppable() != null){
+      return DroppableWidget.get(getDroppable());
+    }
+    return null;
   }
 }

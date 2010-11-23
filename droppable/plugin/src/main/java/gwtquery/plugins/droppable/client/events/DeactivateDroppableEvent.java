@@ -32,13 +32,14 @@ public class DeactivateDroppableEvent extends AbstractDroppableEvent<DeactivateD
 
 	public static Type<DeactivateDroppableEventHandler> TYPE = new Type<DeactivateDroppableEventHandler>();
 
-	public DeactivateDroppableEvent() {	
-	}
 	
 	public DeactivateDroppableEvent(Element droppable, Element draggable) {
 		super(droppable, draggable);
 	}
 
+	public DeactivateDroppableEvent(DragAndDropContext ctx) {
+    super(ctx);
+  }
 
 	@Override
 	public Type<DeactivateDroppableEventHandler> getAssociatedType() {
