@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.testoptionssample;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -23,18 +38,28 @@ import com.google.gwt.user.client.ui.Widget;
 import gwtquery.plugins.droppable.client.DroppableOptions;
 
 /**
- * Example code BasePlugin plugin for GwtQuery
+ * With this example, the user have the possibility to test the majority of the
+ * drag and drop options
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
  */
 public class TestOptionsSample implements EntryPoint {
 
+  /**
+   * Popupanel displaying options. 
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   *
+   */
   public static class SetupPopupPanel extends PopupPanel {
-
-    private static SetupPopupPanelUiBinder uiBinder = GWT
-        .create(SetupPopupPanelUiBinder.class);
 
     @UiTemplate(value = "SetupPopupPanel.ui.xml")
     interface SetupPopupPanelUiBinder extends UiBinder<Widget, SetupPopupPanel> {
     }
+
+    private static SetupPopupPanelUiBinder uiBinder = GWT
+        .create(SetupPopupPanelUiBinder.class);
 
     @UiField
     Label header;
@@ -49,8 +74,9 @@ public class TestOptionsSample implements EntryPoint {
       initHeader(id);
     }
 
-    private void initHeader(String id) {
-      header.setText("Available options for " + id);
+    @Override
+    public void add(Widget w) {
+      popupContent.add(w);
     }
 
     @UiHandler(value = { "closeButton" })
@@ -63,9 +89,8 @@ public class TestOptionsSample implements EntryPoint {
       EVENT_BUS.fireEvent(new ResetOptionEvent(popupContent.getWidget()));
     }
 
-    @Override
-    public void add(Widget w) {
-      popupContent.add(w);
+    private void initHeader(String id) {
+      header.setText("Available options for " + id);
     }
 
   }
@@ -89,7 +114,6 @@ public class TestOptionsSample implements EntryPoint {
 
     $("#draggable1").as(Draggable).draggable(EVENT_BUS);
     $("#draggable2").as(Draggable).draggable(EVENT_BUS);
-    // $("#secondDroppable1").as(Droppable).droppable(createDroppableOptions(),EVENT_BUS);
     $("#mainDroppable1").as(Droppable).droppable(createDroppableOptions(),
         EVENT_BUS);
     $("#secondDroppable1").as(Droppable).droppable(createDroppableOptions(),

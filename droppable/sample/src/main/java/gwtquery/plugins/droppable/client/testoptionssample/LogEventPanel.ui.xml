@@ -2,17 +2,17 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-<ui:style>
-.logEventPanelActionBar {
-margin-right: 5px;
-margin-bottom: 5px;
-float: left;
-}
-.logCheckBox{
-	display:block;
-}
-
-</ui:style>
+	<ui:style>
+		.logEventPanelActionBar {
+				margin-right: 5px;
+				margin-bottom: 5px;
+				float: left;
+		}
+		
+		.logCheckBox {
+				display: block;
+		}
+	</ui:style>
 	<g:HTMLPanel>
 		<table>
 			<tr>
@@ -31,15 +31,24 @@ float: left;
 				</td>
 				<td>
 					<g:Label>Enable logging of :</g:Label>
-					<g:CheckBox ui:field="enableBeforeDragStart" addStyleNames="{style.logCheckBox}">BeforeDragStartdrag events</g:CheckBox>
-					<g:CheckBox ui:field="enableDragStart" addStyleNames="{style.logCheckBox}">DragStart events</g:CheckBox>
-					<g:CheckBox ui:field="enableDragMove" addStyleNames="{style.logCheckBox}">Drag events</g:CheckBox>
-					<g:CheckBox ui:field="enableDragStop" addStyleNames="{style.logCheckBox}">DragStop events</g:CheckBox>
-					<g:CheckBox ui:field="enableActivateDrop" addStyleNames="{style.logCheckBox}">ActivateDroppable events</g:CheckBox>
-					<g:CheckBox ui:field="enableDeactivateDrop" addStyleNames="{style.logCheckBox}">DeactivateDroppable events</g:CheckBox>
-					<g:CheckBox ui:field="enableOverDrop" addStyleNames="{style.logCheckBox}">OverDroppable events</g:CheckBox>
-					<g:CheckBox ui:field="enableOutDrop" addStyleNames="{style.logCheckBox}">OutDroppable events</g:CheckBox>
-					<g:CheckBox ui:field="enableDrop" addStyleNames="{style.logCheckBox}">Drop events</g:CheckBox>
+					<g:CheckBox ui:field="enableBeforeDragStart"
+						addStyleNames="{style.logCheckBox}">BeforeDragStart events</g:CheckBox>
+					<g:CheckBox ui:field="enableDragStart" addStyleNames="{style.logCheckBox}">DragStart
+						events</g:CheckBox>
+					<g:CheckBox ui:field="enableDragMove" addStyleNames="{style.logCheckBox}">Drag
+						events</g:CheckBox>
+					<g:CheckBox ui:field="enableDragStop" addStyleNames="{style.logCheckBox}">DragStop
+						events</g:CheckBox>
+					<g:CheckBox ui:field="enableActivateDrop" addStyleNames="{style.logCheckBox}">ActivateDroppable
+						events</g:CheckBox>
+					<g:CheckBox ui:field="enableDeactivateDrop"
+						addStyleNames="{style.logCheckBox}">DeactivateDroppable events</g:CheckBox>
+					<g:CheckBox ui:field="enableOverDrop" addStyleNames="{style.logCheckBox}">OverDroppable
+						events</g:CheckBox>
+					<g:CheckBox ui:field="enableOutDrop" addStyleNames="{style.logCheckBox}">OutDroppable
+						events</g:CheckBox>
+					<g:CheckBox ui:field="enableDrop" addStyleNames="{style.logCheckBox}">Drop
+						events</g:CheckBox>
 				</td>
 			</tr>
 		</table>

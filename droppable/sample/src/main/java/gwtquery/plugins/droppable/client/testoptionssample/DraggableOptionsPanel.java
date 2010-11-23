@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.testoptionssample;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -34,23 +49,36 @@ import gwtquery.plugins.droppable.client.testoptionssample.ResetOptionEvent.Rese
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Panel displaying the options for a draggable
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */
 public class DraggableOptionsPanel extends Composite implements
     ResetOptionEventHandler {
 
+  @UiTemplate(value = "DraggableOptionsPanel.ui.xml")
+  interface DraggableOptionsPanelUiBinder extends
+      UiBinder<Widget, DraggableOptionsPanel> {
+  }
+
+  /**
+   * Object defining a snap option (tolerance, mode, target)
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
   private static class SnapChoice {
 
-    private int tolerance;
     private SnapMode mode;
     private String snapTarget;
+    private int tolerance;
 
     public SnapChoice(int tolerance, SnapMode mode, String snapTarget) {
       this.tolerance = tolerance;
       this.mode = mode;
       this.snapTarget = snapTarget;
-    }
-
-    public int getTolerance() {
-      return tolerance;
     }
 
     public SnapMode getMode() {
@@ -60,19 +88,17 @@ public class DraggableOptionsPanel extends Composite implements
     public String getSnapTarget() {
       return snapTarget;
     }
-  }
 
-  @UiTemplate(value = "DraggableOptionsPanel.ui.xml")
-  interface DraggableOptionsPanelUiBinder extends
-      UiBinder<Widget, DraggableOptionsPanel> {
+    public int getTolerance() {
+      return tolerance;
+    }
   }
-
-  private static DraggableOptionsPanelUiBinder uiBinder = GWT
-      .create(DraggableOptionsPanelUiBinder.class);
 
   private static Map<String, Object> contaimentOptions;
   private static Map<String, CursorAt> cursorAtOptions;
   private static Map<String, SnapChoice> snapOptions;
+  private static DraggableOptionsPanelUiBinder uiBinder = GWT
+      .create(DraggableOptionsPanelUiBinder.class);
 
   static {
     cursorAtOptions = new HashMap<String, CursorAt>();
@@ -87,7 +113,6 @@ public class DraggableOptionsPanel extends Composite implements
     contaimentOptions.put("None", null);
     contaimentOptions.put("parent", "parent");
     contaimentOptions.put("demo box", ".demo");
-    // contaimentOptions.put("body", "body");
     contaimentOptions.put("window", "window");
 
     snapOptions = new HashMap<String, SnapChoice>();
@@ -101,10 +126,6 @@ public class DraggableOptionsPanel extends Composite implements
 
   }
 
-  private Element draggable;
-
-  @UiField
-  ListBox helperListBox;
   @UiField
   ListBox axisListBox;
   @UiField
@@ -114,17 +135,23 @@ public class DraggableOptionsPanel extends Composite implements
   @UiField
   ListBox cursorListBox;
   @UiField
-  ListBox gridListBox;
-  @UiField
   TextBox delayBox;
-  @UiField
-  TextBox distanceBox;
   @UiField
   CheckBox disabledCheckBox;
   @UiField
+  TextBox distanceBox;
+  @UiField
+  ListBox gridListBox;
+  @UiField
   CheckBox handleCheckBox;
   @UiField
+  ListBox helperListBox;
+  @UiField
   TextBox opacityBox;
+  @UiField
+  TextBox revertDurationTextBox;
+  @UiField
+  ListBox revertListBox;
   @UiField
   CheckBox scrollCheckBox;
   @UiField
@@ -132,19 +159,15 @@ public class DraggableOptionsPanel extends Composite implements
   @UiField
   TextBox scrollSpeedBox;
   @UiField
-  ListBox revertListBox;
-  @UiField
-  TextBox revertDurationTextBox;
-  // @UiField
-  // TextBox zIndexTextBox;
-  @UiField
   ListBox snapListbox;
+  
+  private Element draggable;
 
   public DraggableOptionsPanel(Element draggable) {
     this.draggable = draggable;
     initWidget(uiBinder.createAndBindUi(this));
     EVENT_BUS.addHandler(ResetOptionEvent.TYPE, this);
-    
+
     // use a scheduled command to ensure to init the object when the element is
     // draggable
     Scheduler.get().scheduleDeferred(new ScheduledCommand() {
@@ -271,6 +294,20 @@ public class DraggableOptionsPanel extends Composite implements
     getOptions().setOpacity(opacity);
   }
 
+  public void onResetOption(ResetOptionEvent event) {
+    if (event.getOptionsPanel() == this) {
+      $(draggable).as(Draggable).options(new DraggableOptions());
+      init();
+    }
+
+  }
+
+  @UiHandler(value = "revertListBox")
+  public void onRevertChange(ChangeEvent e) {
+    String revert = revertListBox.getValue(revertListBox.getSelectedIndex());
+    getOptions().setRevert(RevertOption.valueOf(revert));
+  }
+
   @UiHandler(value = "revertDurationTextBox")
   public void onRevertDurationChange(ValueChangeEvent<String> e) {
     String revertDuration = e.getValue();
@@ -286,26 +323,6 @@ public class DraggableOptionsPanel extends Composite implements
       }
     }
     getOptions().setRevertDuration(revertDurationInt);
-  }
-
-  @UiHandler(value = "revertListBox")
-  public void onRevertChange(ChangeEvent e) {
-    String revert = revertListBox.getValue(revertListBox.getSelectedIndex());
-    getOptions().setRevert(RevertOption.valueOf(revert));
-  }
-
-  @UiHandler(value = "snapListbox")
-  public void onSnapListBoxChange(ChangeEvent e) {
-    String snapOption = snapListbox.getValue(snapListbox.getSelectedIndex());
-    SnapChoice snapChoice = snapOptions.get(snapOption);
-    if (snapChoice == null) {
-      getOptions().setSnap((String) null);
-    } else {
-      getOptions().setSnap(snapChoice.getSnapTarget());
-      getOptions().setSnapTolerance(snapChoice.getTolerance());
-      getOptions().setSnapMode(snapChoice.getMode());
-    }
-
   }
 
   @UiHandler(value = "scrollCheckBox")
@@ -339,6 +356,20 @@ public class DraggableOptionsPanel extends Composite implements
       return;
     }
     getOptions().setScrollSpeed(scrollSpeed);
+  }
+
+  @UiHandler(value = "snapListbox")
+  public void onSnapListBoxChange(ChangeEvent e) {
+    String snapOption = snapListbox.getValue(snapListbox.getSelectedIndex());
+    SnapChoice snapChoice = snapOptions.get(snapOption);
+    if (snapChoice == null) {
+      getOptions().setSnap((String) null);
+    } else {
+      getOptions().setSnap(snapChoice.getSnapTarget());
+      getOptions().setSnapTolerance(snapChoice.getTolerance());
+      getOptions().setSnapMode(snapChoice.getMode());
+    }
+
   }
 
   private DraggableOptions getOptions() {
@@ -378,18 +409,6 @@ public class DraggableOptionsPanel extends Composite implements
 
   }
 
-  private void initListBox(Map<String, ?> choices, ListBox listBox) {
-    listBox.clear();
-    int i = 0;
-    for (String s : choices.keySet()) {
-      listBox.addItem(s);
-      if (s.equals("None")) {
-        listBox.setSelectedIndex(i);
-      }
-      i++;
-    }
-  }
-
   private void initListBox(Enum<?>[] values, ListBox listBox,
       Enum<?> defaultValue) {
     listBox.clear();
@@ -403,12 +422,16 @@ public class DraggableOptionsPanel extends Composite implements
     }
   }
 
-  public void onResetOption(ResetOptionEvent event) {
-    if (event.getOptionsPanel() == this) {
-      $(draggable).as(Draggable).options(new DraggableOptions());
-      init();
+  private void initListBox(Map<String, ?> choices, ListBox listBox) {
+    listBox.clear();
+    int i = 0;
+    for (String s : choices.keySet()) {
+      listBox.addItem(s);
+      if (s.equals("None")) {
+        listBox.setSelectedIndex(i);
+      }
+      i++;
     }
-
   }
 
 }

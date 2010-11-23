@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.testoptionssample;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -23,6 +38,7 @@ import com.google.gwt.user.client.ui.Widget;
 import gwtquery.plugins.droppable.client.DroppableOptions;
 import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
 import gwtquery.plugins.droppable.client.DroppableOptions.DroppableTolerance;
+import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 import gwtquery.plugins.droppable.client.testoptionssample.ResetOptionEvent.ResetOptionEventHandler;
 
 import java.util.ArrayList;
@@ -30,33 +46,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DroppableOptionsPanel extends Composite implements ResetOptionEventHandler{
+/**
+ * Panel displaying the options for a droppable
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */
+public class DroppableOptionsPanel extends Composite implements
+    ResetOptionEventHandler {
 
   @UiTemplate(value = "DroppableOptionsPanel.ui.xml")
   interface DroppableOptionsPanelUiBinder extends
       UiBinder<Widget, DroppableOptionsPanel> {
   }
 
+  private static Map<String, AcceptFunction> acceptFunctions;
+  private static List<String> classNames;
+  private static String NONE_CSS_CLASS = "none";
+  
   private static DroppableOptionsPanelUiBinder uiBinder = GWT
       .create(DroppableOptionsPanelUiBinder.class);
-
-  private static Map<String, AcceptFunction> acceptFunctions;
-  private static String NONE_CSS_CLASS="none";
-  private static List<String> classNames;
 
   static {
     acceptFunctions = new HashMap<String, AcceptFunction>();
     acceptFunctions.put("AcceptAll", null);
     acceptFunctions.put("AcceptDraggable1", new AcceptFunction() {
-      public boolean acceptDrop(Element droppable, Element draggable) {
-        return ("draggable1".equals(draggable.getId()));
+
+      public boolean acceptDrop(DragAndDropContext context) {
+        return ("draggable1".equals(context.getDraggable().getId()));
       }
     });
     acceptFunctions.put("AcceptDraggable2", new AcceptFunction() {
-      public boolean acceptDrop(Element droppable, Element draggable) {
-        return ("draggable2".equals(draggable.getId()));
+
+      public boolean acceptDrop(DragAndDropContext context) {
+        return ("draggable2".equals(context.getDraggable().getId()));
       }
     });
+    
     classNames = new ArrayList<String>();
     classNames.add(NONE_CSS_CLASS);
     classNames.add("orange-background");
@@ -64,61 +90,37 @@ public class DroppableOptionsPanel extends Composite implements ResetOptionEvent
     classNames.add("white-background");
   }
 
-  private Element droppable;
-
+  @UiField
+  ListBox acceptFunctionListBox;
+  @UiField
+  ListBox activeClassListBox;
   @UiField
   CheckBox disabledCheckBox;
   @UiField
+  ListBox draggableHoverClassListBox;
+  @UiField
   CheckBox greedyCheckBox;
+  @UiField
+  ListBox hoverClassListBox;
   @UiField
   TextBox scopeBox;
   @UiField
   ListBox toleranceListBox;
-  @UiField
-  ListBox acceptFunctionListBox;
-  
-  @UiField
-  ListBox activeClassListBox;
-  
-  @UiField
-  ListBox hoverClassListBox;
-  
-  @UiField
-  ListBox draggableHoverClassListBox;
+
+  private Element droppable;
 
   public DroppableOptionsPanel(Element droppable) {
     this.droppable = droppable;
     initWidget(uiBinder.createAndBindUi(this));
     EVENT_BUS.addHandler(ResetOptionEvent.TYPE, this);
-    //use a deferred command to ensure to init the object when the element is droppable
+    // use a deferred command to ensure to init the object when the element is
+    // droppable
     Scheduler.get().scheduleDeferred(new ScheduledCommand() {
       public void execute() {
         init();
       }
     });
 
-  }
-
-  @UiHandler(value = "toleranceListBox")
-  public void onToleranceChange(ChangeEvent e) {
-    DroppableTolerance tolerance = DroppableTolerance.valueOf(toleranceListBox
-        .getValue(toleranceListBox.getSelectedIndex()));
-    getOptions().setTolerance(tolerance);
-  }
-
-  @UiHandler(value = "disabledCheckBox")
-  public void onDisabledChange(ValueChangeEvent<Boolean> e) {
-    getOptions().setDisabled(e.getValue());
-  }
-
-  @UiHandler(value = "greedyCheckBox")
-  public void onGreedyChange(ValueChangeEvent<Boolean> e) {
-    getOptions().setGreedy(e.getValue());
-  }
-
-  @UiHandler(value = "scopeBox")
-  public void onScopeChange(ValueChangeEvent<String> e) {
-    $("#droppable").as(Droppable).changeScope(e.getValue());
   }
 
   @UiHandler(value = "acceptFunctionListBox")
@@ -135,34 +137,67 @@ public class DroppableOptionsPanel extends Composite implements ResetOptionEvent
     getOptions().setActiveClass(activeClass);
   }
 
-  
+  @UiHandler(value = "disabledCheckBox")
+  public void onDisabledChange(ValueChangeEvent<Boolean> e) {
+    getOptions().setDisabled(e.getValue());
+  }
+
+  @UiHandler(value = "draggableHoverClassListBox")
+  public void onDraggableHoverClassChange(ChangeEvent e) {
+    String draggablehoverClass = draggableHoverClassListBox
+        .getValue(draggableHoverClassListBox.getSelectedIndex());
+    getOptions().setDraggableHoverClass(draggablehoverClass);
+  }
+
+  @UiHandler(value = "greedyCheckBox")
+  public void onGreedyChange(ValueChangeEvent<Boolean> e) {
+    getOptions().setGreedy(e.getValue());
+  }
+
   @UiHandler(value = "hoverClassListBox")
   public void onHoverClassChange(ChangeEvent e) {
     String hoverClass = hoverClassListBox.getValue(hoverClassListBox
         .getSelectedIndex());
     getOptions().setDroppableHoverClass(hoverClass);
   }
-  
-  @UiHandler(value = "draggableHoverClassListBox")
-  public void onDraggableHoverClassChange(ChangeEvent e) {
-    String draggablehoverClass = draggableHoverClassListBox.getValue(draggableHoverClassListBox
-        .getSelectedIndex());
-    getOptions().setDraggableHoverClass(draggablehoverClass);
+
+  public void onResetOption(ResetOptionEvent event) {
+    if (event.getOptionsPanel() == this) {
+      $(droppable).as(Droppable).options(new DroppableOptions());
+      init();
+    }
+
   }
 
-  
+  @UiHandler(value = "scopeBox")
+  public void onScopeChange(ValueChangeEvent<String> e) {
+    $("#droppable").as(Droppable).changeScope(e.getValue());
+  }
+
+  @UiHandler(value = "toleranceListBox")
+  public void onToleranceChange(ChangeEvent e) {
+    DroppableTolerance tolerance = DroppableTolerance.valueOf(toleranceListBox
+        .getValue(toleranceListBox.getSelectedIndex()));
+    getOptions().setTolerance(tolerance);
+  }
+
   private DroppableOptions getOptions() {
     return $(droppable).as(Droppable).options();
   }
 
   private void init() {
     DroppableOptions options = getOptions();
-    
-    //toleranceListBox
-    toleranceListBox.addItem("FIT (draggable overlaps the droppable entirely)", DroppableTolerance.FIT.name());
-    toleranceListBox.addItem("INTERSECT (draggable overlaps the droppable at least 50%)", DroppableTolerance.INTERSECT.name());
-    toleranceListBox.addItem("POINTER (mouse pointer overlaps the droppable)", DroppableTolerance.POINTER.name());
-    toleranceListBox.addItem("TOUCH (draggable touch the droppable)", DroppableTolerance.TOUCH.name());
+
+    // toleranceListBox
+    toleranceListBox.addItem("FIT (draggable overlaps the droppable entirely)",
+        DroppableTolerance.FIT.name());
+    toleranceListBox.addItem(
+        "INTERSECT (draggable overlaps the droppable at least 50%)",
+        DroppableTolerance.INTERSECT.name());
+    toleranceListBox.addItem("POINTER (mouse pointer overlaps the droppable)",
+        DroppableTolerance.POINTER.name());
+    toleranceListBox.addItem("TOUCH (draggable touch the droppable)",
+        DroppableTolerance.TOUCH.name());
     toleranceListBox.setSelectedIndex(1);
 
     scopeBox.setValue(options.getScope(), false);
@@ -174,34 +209,39 @@ public class DroppableOptionsPanel extends Composite implements ResetOptionEvent
     acceptFunctionListBox.addItem("Accept all", "AcceptAll");
     acceptFunctionListBox.addItem("Accept Draggable1", "AcceptDraggable1");
     acceptFunctionListBox.addItem("Accept Draggable2", "AcceptDraggable2");
-    
-    initClassNames(hoverClassListBox, options.getDroppableHoverClass(), "hover-");
-    initClassNames(activeClassListBox, options.getActiveClass(),  "activate-");
-    
-    //green-background
-    draggableHoverClassListBox.addItem(NONE_CSS_CLASS);
-    draggableHoverClassListBox.addItem("green-background");
-    
-    
+
+    initClassNames(hoverClassListBox, options.getDroppableHoverClass(),
+        "hover-");
+    initClassNames(activeClassListBox, options.getActiveClass(), "activate-");
+
+    initDraggableHoverListBox();
+
   }
 
   private void initClassNames(ListBox classListBox, String value, String prefix) {
-    for (int i=0; i < classNames.size(); i++){
+    for (int i = 0; i < classNames.size(); i++) {
       String cssClass = classNames.get(i);
-      String realCssClass = prefix+cssClass;
+      String realCssClass = prefix + cssClass;
       classListBox.addItem(cssClass, realCssClass);
-      if (realCssClass.equals(value)){
+      if (realCssClass.equals(value)) {
         classListBox.setSelectedIndex(i);
       }
     }
-    
+
   }
 
-  public void onResetOption(ResetOptionEvent event) {
-    if(event.getOptionsPanel() == this){
-      $(droppable).as(Droppable).options(new DroppableOptions());
-      init();
+  private void initDraggableHoverListBox() {
+    String prefix = null;
+    if (droppable.getId().startsWith("main")) {
+      prefix = "main-";
+    } else {
+      prefix = "second-";
     }
-    
+    draggableHoverClassListBox.addItem(NONE_CSS_CLASS);
+    draggableHoverClassListBox.addItem("green-background", prefix
+        + "green-background");
+    draggableHoverClassListBox.addItem("red-background", prefix
+        + "red-background");
+
   }
 }
