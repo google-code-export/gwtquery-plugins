@@ -135,7 +135,6 @@ public class CellTableSample implements EntryPoint {
         return;
       }
 
-      GWT.log("Cell rendering for " + value);
 
       sb.appendHtmlConstant("<table>");
 
@@ -239,7 +238,7 @@ public class CellTableSample implements EntryPoint {
     cellTable.addDragStartHandler(new DragStartEventHandler() {
 
       public void onDragStart(DragStartEvent event) {
-        ContactInfo contact = event.getDraggableValue();
+        ContactInfo contact = event.getDraggableData();
         Element helper = event.getHelper();
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
         // reuse the contact cell to render the inner html of the drag helper.
