@@ -25,30 +25,31 @@ import com.google.gwt.event.shared.EventHandler;
  * 
  */
 public class DropEvent extends
-		AbstractDroppableEvent<DropEvent.DropEventHandler> {
+    AbstractDroppableEvent<DropEvent.DropEventHandler> {
 
-	public interface DropEventHandler extends EventHandler {
-		public void onDrop(DropEvent event);
-	}
+  public interface DropEventHandler extends EventHandler {
+    public void onDrop(DropEvent event);
+  }
 
-	public static Type<DropEventHandler> TYPE = new Type<DropEventHandler>();
-
-	public DropEvent() {
-	}
-	
-	public DropEvent(Element droppable, Element draggable) {
-		super(droppable, draggable);
-	}
+  public static Type<DropEventHandler> TYPE = new Type<DropEventHandler>();
 
 
-	@Override
-	public Type<DropEventHandler> getAssociatedType() {
-		return TYPE;
-	}
+  public DropEvent(Element droppable, Element draggable) {
+    super(droppable, draggable);
+  }
 
-	@Override
-	protected void dispatch(DropEventHandler handler) {
-		handler.onDrop(this);
-	}
+  public DropEvent(DragAndDropContext ctx) {
+    super(ctx);
+  }
+  
+  @Override
+  public Type<DropEventHandler> getAssociatedType() {
+    return TYPE;
+  }
+
+  @Override
+  protected void dispatch(DropEventHandler handler) {
+    handler.onDrop(this);
+  }
 
 }

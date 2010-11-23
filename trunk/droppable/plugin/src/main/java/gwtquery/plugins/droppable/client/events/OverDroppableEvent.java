@@ -33,11 +33,13 @@ public class OverDroppableEvent extends
 
   public static Type<OverDroppableEventHandler> TYPE = new Type<OverDroppableEventHandler>();
 
-  public OverDroppableEvent() {	
-  }
 
   public OverDroppableEvent(Element droppable, Element draggable) {
 	  super(droppable, draggable);
+  }
+  
+  public OverDroppableEvent(DragAndDropContext ctx){
+    super(ctx);
   }
 
   @Override

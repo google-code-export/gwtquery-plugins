@@ -32,12 +32,14 @@ public class ActivateDroppableEvent extends AbstractDroppableEvent<ActivateDropp
 
 	public static Type<ActivateDroppableEventHandler> TYPE = new Type<ActivateDroppableEventHandler>();
 
-	public ActivateDroppableEvent() {	
-	}
 	
 	public ActivateDroppableEvent(Element droppable, Element draggable) {
 		super(droppable, draggable);
 	}
+	
+	public ActivateDroppableEvent(DragAndDropContext ctx) {
+    super(ctx);
+  }
 
 
 	@Override

@@ -33,14 +33,13 @@ public class OutDroppableEvent extends
 
   public static Type<OutDroppableEventHandler> TYPE = new Type<OutDroppableEventHandler>();
 
-  public OutDroppableEvent() {	
-  }
-  
   public OutDroppableEvent(Element droppable, Element draggable) {
-	super(droppable, draggable);
+    super(droppable, draggable);
   }
 
-
+  public OutDroppableEvent(DragAndDropContext ctx) {
+    super(ctx);
+  }
 
   @Override
   public Type<OutDroppableEventHandler> getAssociatedType() {

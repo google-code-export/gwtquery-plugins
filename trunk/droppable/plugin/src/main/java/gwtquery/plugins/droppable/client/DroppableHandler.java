@@ -82,8 +82,9 @@ public class DroppableHandler {
       if (options.getDraggableHoverClass() != null) {
         $(draggable).data(options.getDraggableHoverClass(), new Integer(0));
       }
-      trigger(new ActivateDroppableEvent(), options.getOnActivate(), droppable,
-          draggable);
+
+      DragAndDropContext ctx = new DragAndDropContext(draggable, droppable);
+      trigger(new ActivateDroppableEvent(ctx), options.getOnActivate(), ctx);
     }
   }
 
@@ -101,14 +102,15 @@ public class DroppableHandler {
         dragHandler.getHelper().removeClass(options.getDraggableHoverClass());
         $(draggable).removeData(options.getDraggableHoverClass());
       }
-      trigger(new DeactivateDroppableEvent(), options.getOnDeactivate(),
-          droppable, draggable);
+
+      DragAndDropContext ctx = new DragAndDropContext(draggable, droppable);
+      trigger(new DeactivateDroppableEvent(ctx), options.getOnDeactivate(), ctx);
     }
 
   }
 
-  public boolean drop(final Element droppable, final Element draggable,
-      Event e, boolean alreadyDrop) {
+  public boolean drop(Element droppable, Element draggable, Event e,
+      boolean alreadyDrop) {
     if (options == null) {
       return false;
     }
@@ -119,6 +121,10 @@ public class DroppableHandler {
       if (intersect(draggable)
           && !checkChildrenIntersection(droppable, draggable)
           && isDraggableAccepted(droppable, draggable)) {
+
+        final DragAndDropContext ctx = new DragAndDropContext(draggable,
+            droppable);
+
         // we will use a deferredComand to trigger the drop event a the end of
         // the drag and drop operation !!
         // it's to ensure that the rest of the dnd operation will be done
@@ -127,7 +133,7 @@ public class DroppableHandler {
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
           public void execute() {
-            trigger(new DropEvent(), options.getOnDrop(), droppable, draggable);
+            trigger(new DropEvent(ctx), options.getOnDrop(), ctx);
 
           }
         });
@@ -188,8 +194,10 @@ public class DroppableHandler {
           dragHandler.getHelper().removeClass(options.getDraggableHoverClass());
         }
       }
-      trigger(new OutDroppableEvent(), options.getOnOut(), droppable,
-          currentDraggable);
+
+      DragAndDropContext ctx = new DragAndDropContext(currentDraggable,
+          droppable);
+      trigger(new OutDroppableEvent(ctx), options.getOnOut(), ctx);
     }
   }
 
@@ -212,8 +220,9 @@ public class DroppableHandler {
         $(currentDraggable).data(options.getDraggableHoverClass(),
             new Integer(++counter));
       }
-      trigger(new OverDroppableEvent(), options.getOnOver(), droppable,
-          currentDraggable);
+      DragAndDropContext ctx = new DragAndDropContext(currentDraggable,
+          droppable);
+      trigger(new OverDroppableEvent(ctx), options.getOnOver(), ctx);
     }
 
   }
@@ -324,13 +333,9 @@ public class DroppableHandler {
   }
 
   private void trigger(AbstractDroppableEvent<?> e, DroppableFunction callback,
-      Element droppable, Element draggable) {
-    DragAndDropContext context = new DragAndDropContext(draggable, droppable);
+      DragAndDropContext context) {
 
     if (eventBus != null && e != null) {
-      if (e.getDragDropInfo() == null) {
-        e.setDragDropInfo(context);
-      }
       eventBus.fireEvent(e);
     }
     if (callback != null) {

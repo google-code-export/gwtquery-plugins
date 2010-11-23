@@ -35,50 +35,47 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 public abstract class AbstractDroppableEvent<H extends EventHandler> extends
 		GwtEvent<H> {
 
-	private DragAndDropContext draggableInfo;
+	private DragAndDropContext dragAndDropContext;
 
-	public AbstractDroppableEvent() {
-	
-	}
-	
+
 	public AbstractDroppableEvent(Element droppable, Element draggable) {
-		this.draggableInfo = new DragAndDropContext(draggable, droppable);
+		this.dragAndDropContext = new DragAndDropContext(draggable, droppable);
+	}
+	
+	public AbstractDroppableEvent(DragAndDropContext context){
+	  this.dragAndDropContext = context;
 	}
 	
 	
-	public DragAndDropContext getDragDropInfo() {
-		return draggableInfo;
+	public DragAndDropContext getDragDropContext() {
+		return dragAndDropContext;
 	}
 
 	public Element getDroppable() {
-		if (draggableInfo != null) {
-			return draggableInfo.getDroppable();
-		}
-		return null;
+	  assert dragAndDropContext != null : "DragAndDropContext cannot be null";
+			return dragAndDropContext.getDroppable();
+		
 	}
 
-	public void setDragDropInfo(DragAndDropContext draggableInfo) {
-		this.draggableInfo = draggableInfo;
-	}
 
 	
 	public Element getDraggable(){
-		if (draggableInfo != null) {
-			return draggableInfo.getDraggable();
+		if (dragAndDropContext != null) {
+			return dragAndDropContext.getDraggable();
 		}
 		return null;
 	}
 	
 	public DraggableWidget<?> getDraggableWidget(){
-    if (getDraggable() != null){
-      return DraggableWidget.get(getDraggable());
+	  if (dragAndDropContext != null) {
+      return dragAndDropContext.getDraggableWidget();
     }
     return null;
   }
 	
 	public DroppableWidget<?> getDroppableWidget(){
-    if (getDroppable() != null){
-      return DroppableWidget.get(getDroppable());
+	  if (dragAndDropContext != null) {
+      return dragAndDropContext.getDroppableWidget();
     }
     return null;
   }
