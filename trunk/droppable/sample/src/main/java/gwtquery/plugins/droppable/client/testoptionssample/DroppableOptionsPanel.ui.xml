@@ -49,7 +49,7 @@
 						</td>
 						<td>
 							<g:HTML
-								text="Specifies the mode to use for testing whether a draggable is 'over' a droppable. " />
+								text="Specifies the mode to use for testing whether a acceptable draggable is dragged 'over' a droppable. " />
 						</td>
 					</tr>
 					<tr style="vertical-align:top;">
@@ -85,7 +85,7 @@
 						</td>
 						<td>
 							<g:HTML
-								text="Css class will be added to the droppable while an acceptable draggable is being over it." />
+								text="Css class that will be added to the droppable while an acceptable draggable is dragged over it." />
 						</td>
 					</tr>
 					<tr style="vertical-align:top;">
@@ -97,7 +97,7 @@
 						</td>
 						<td>
 							<g:HTML
-								text="Css class will be added to an acceptable draggable while this one is being over this droppable." />
+								text="Css class will be added to an acceptable draggable while this one is dragged over this droppable." />
 						</td>
 					</tr>
 				</tbody>
