@@ -60,6 +60,7 @@ public class GreedySample implements EntryPoint {
     // set the greddy option
     options.setGreedy(greedy);
 
+    // method called when a acceptable draggable is dropped on the droppable
     options.setOnDrop(new DroppableFunction() {
       public void f(DragAndDropContext context) {
         $("#" + context.getDroppable().getId() + " > p").html(
@@ -68,6 +69,7 @@ public class GreedySample implements EntryPoint {
       }
     });
 
+    // method called when the droppable is activated
     options.setOnActivate(new DroppableFunction() {
       public void f(DragAndDropContext context) {
         $("#" + context.getDroppable().getId() + " > p").html(
