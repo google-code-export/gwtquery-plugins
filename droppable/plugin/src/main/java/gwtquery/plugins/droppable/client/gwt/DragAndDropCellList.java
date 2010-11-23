@@ -35,11 +35,12 @@ import gwtquery.plugins.droppable.client.events.DeactivateDroppableEvent.Deactiv
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.events.OutDroppableEvent.OutDroppableEventHandler;
 import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppableEventHandler;
+import gwtquery.plugins.droppable.client.gwt.CellDragAndDropBehaviour.CellDragOnlyBehaviour;
+import gwtquery.plugins.droppable.client.gwt.CellDragAndDropBehaviour.CellDropOnlyBehaviour;
 import gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellList;
 
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class DragAndDropCellList<T> extends CellList<T> {
 
   private CellDragAndDropBehaviour<T> cellDragAndDropBehaviour;
@@ -230,8 +231,6 @@ public class DragAndDropCellList<T> extends CellList<T> {
 
   protected final <H extends EventHandler> HandlerRegistration addDragAndDropHandler(
       H handler, Type<H> type) {
-    GWT.log("add handler " + handler + " to eventbus :"
-        + ensureDrangAndDropHandlers());
     return ensureDrangAndDropHandlers().addHandler(type, handler);
   }
 
@@ -342,6 +341,15 @@ public class DragAndDropCellList<T> extends CellList<T> {
         DragAndDropCellWidgetUtils.get().cleanCell(div);
       }
     });
+
+  }
+  
+  public void setCellDroppableOnly() {
+    cellDragAndDropBehaviour = new CellDropOnlyBehaviour<T>();
+  }
+
+  public void setCellDraggableOnly() {
+    cellDragAndDropBehaviour = new CellDragOnlyBehaviour<T>();
 
   }
 
