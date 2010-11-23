@@ -58,10 +58,12 @@ import java.util.Set;
  * </p>
  *
  * @param <T> the data type of list items
- * @deprecated Use {@link com.google.gwt.user.cellview.client.CellList} instead.
+ * 
+ * Use {@link com.google.gwt.user.cellview.client.CellList} instead.
  *             This class will be removed in future release.
  */
-@Deprecated
+
+@SuppressWarnings("deprecation")
 public class CellList<T> extends AbstractHasData<T> {
 
   
