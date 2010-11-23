@@ -1,4 +1,4 @@
-@external .gwt-Label;
+@external .gwt-Label, .ui-dragging;
 .memberList {
 	overflow: auto;
 	border: 1px solid #CCCCCC;
