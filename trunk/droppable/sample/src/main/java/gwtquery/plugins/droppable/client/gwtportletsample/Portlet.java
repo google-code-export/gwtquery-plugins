@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.gwtportletsample;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -9,43 +24,56 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
 
-import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent.BeforeDragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
+/**
+ * Portlet widget
+ * 
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * 
+ */
 public class Portlet extends DraggableWidget<Widget> {
-  
-  /**
-   * This handler will modify the position css attribute of portlets during the drag
-   * @author Julien Dramaix (julien.dramaix@gmail.com)
-   *
-   */
-  private static class DraggablePositionHandler implements BeforeDragStartEventHandler, DragStopEventHandler{
-
-    
-    public void onBeforeDragStart(BeforeDragStartEvent event) {
-      Element draggableElement = event.getDraggable();
-      $(draggableElement).css("position", "absolute");
-      
-    }
-
-    public void onDragStop(DragStopEvent event) {
-      Element draggableElement = event.getDraggable();
-      $(draggableElement).css("position", "relative").css("top",null).css("left", null);
-      
-      
-    }
-  }
 
   interface PortletUiBinder extends UiBinder<Widget, Portlet> {
   }
 
-  private static PortletUiBinder uiBinder = GWT.create(PortletUiBinder.class);
-  //one instance of this handler is sufficient
+  /**
+   * This handler will modify the position css attribute of portlets during the
+   * drag
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
+  private static class DraggablePositionHandler implements
+      BeforeDragStartEventHandler, DragStopEventHandler {
+
+    /**
+     * before that the drag operation starts, we will "visually" detach the draggable by setting
+     * it css position to absolute. 
+     */
+    public void onBeforeDragStart(BeforeDragStartEvent event) {
+      Portlet draggingPortlet = (Portlet)event.getDraggableWidget();
+       // "detach" visually the element of the parent
+      $(draggingPortlet).css("position", "absolute");
+
+    }
+
+    public void onDragStop(DragStopEvent event) {
+      Element draggableElement = event.getDraggable();
+      // "reattach" the element
+      $(draggableElement).css("position", "relative").css("top", null).css(
+          "left", null);
+
+    }
+  }
+
+  // This handler is stateless
   private static DraggablePositionHandler HANDLER = new DraggablePositionHandler();
+  private static PortletUiBinder uiBinder = GWT.create(PortletUiBinder.class);
 
   @UiField
   DivElement content;
@@ -68,13 +96,13 @@ public class Portlet extends DraggableWidget<Widget> {
   }
 
   private void setup() {
-    //useCloneAsHelper();
-    setOpacity(new Float(0.8));
+    // opacity of the portlet during the drag
+    setDraggingOpacity(new Float(0.8));
+    // zIndex of the portlet during the drag
     setZIndex(1000);
-    setRevert(RevertOption.ON_INVALID_DROP);
+    // add position handler
     addBeforeDragHandler(HANDLER);
     addDragStopHandler(HANDLER);
-    
 
   }
 }
