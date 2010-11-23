@@ -168,13 +168,11 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
     @Override
     protected void onBrowserEvent2(Event event) {
-      String eventType = event.getType();
-
+     
       super.onBrowserEvent2(event);
 
       // Handle keyboard navigation between lists.
-     // String eventType = event.getType();
-GWT.log("Event received "+eventType);      
+      String eventType = event.getType();
       if ("keydown".equals(eventType) && !isKeyboardNavigationSuppressed()) {
         int keyCode = event.getKeyCode();
         switch (keyCode) {
