@@ -48,8 +48,9 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppable
 /**
  * Wrapper widget that wrap an GWT widget and make it a drop target.
  * 
+ * This class can be used as a wrapper or subclassed.
  * 
- * @author jdramaix
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  * @param <T>
  */
@@ -57,14 +58,21 @@ public class DroppableWidget<T extends Widget> extends Composite implements
     HasAllDropHandler {
 
   private final static String DROPPABLE_WIDGET_KEY = "__droppableWidget";
-  
-  public static DroppableWidget<?> get(Element e){
-    return $(e).data(DROPPABLE_WIDGET_KEY,DroppableWidget.class);
+
+  /**
+   * This method return the widget associated to a droppable DOM element if it
+   * exist. It returns null otherwise.
+   * 
+   * @param e
+   *          a droppable DOM element
+   * @return
+   */
+  public static DroppableWidget<?> get(Element e) {
+    return $(e).data(DROPPABLE_WIDGET_KEY, DroppableWidget.class);
   }
-  
-  
-  private DroppableOptions options;
+
   private EventBus dropHandlerManager;
+  private DroppableOptions options;
 
   /**
    * Constructor
@@ -75,7 +83,6 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   public DroppableWidget(T w) {
     this(w, new DroppableOptions(), DraggableOptions.DEFAULT_SCOPE);
   }
-
 
   /**
    * Constructor
@@ -106,13 +113,208 @@ public class DroppableWidget<T extends Widget> extends Composite implements
     this.options = options;
     this.options.setScope(scope);
   }
-  
+
   /**
-   * Add possibility to extend this widget
-   * As DroppableWidget is a {@link Composite}, don't forget to call the initWidget() method
+   * Add possibility to extend this widget. As {@link DroppableWidget} is a
+   * {@link Composite}, don't forget to call the {@link #initWidget(Widget)}
+   * method
    */
-  protected DroppableWidget(){
+  protected DroppableWidget() {
     options = new DroppableOptions();
+  }
+
+  /**
+   * Add a handler object that will manage the {@link ActivateDroppableEvent}
+   * event. This kind of event is fired when a acceptable draggable start to
+   * drag.
+   * 
+   * @return {@link HandlerRegistration} used to remove the handler
+   */
+  public HandlerRegistration addActivateDroppableHandler(
+      ActivateDroppableEventHandler handler) {
+    return addDropHandler(handler, ActivateDroppableEvent.TYPE);
+  }
+
+  /**
+   * Add a handler object that will manage the {@link DeactivateDroppableEvent}
+   * event. This kind of event is fired when a acceptable draggable finishes to
+   * drag.
+   * 
+   * @return {@link HandlerRegistration} used to remove the handler
+   */
+  public HandlerRegistration addDeactivateDroppableHandler(
+      DeactivateDroppableEventHandler handler) {
+    return addDropHandler(handler, DeactivateDroppableEvent.TYPE);
+  }
+
+  /**
+   * Add a handler object that will manage the {@link DropEvent} event. This
+   * kind of event is fired when a acceptable draggable is dropped in the
+   * droppable
+   * 
+   * @return {@link HandlerRegistration} used to remove the handler
+   */
+  public HandlerRegistration addDropHandler(DropEventHandler handler) {
+    return addDropHandler(handler, DropEvent.TYPE);
+  }
+
+  /**
+   * Add a handler object that will manage the {@link OutDroppableEvent} event.
+   * This kind of event is fired when a acceptable draggable is being dragged
+   * out the droppable.
+   * 
+   * @return {@link HandlerRegistration} used to remove the handler
+   */
+  public HandlerRegistration addOutDroppableHandler(
+      OutDroppableEventHandler handler) {
+    return addDropHandler(handler, OutDroppableEvent.TYPE);
+  }
+
+  /**
+   * Add a handler object that will manage the {@link OutDroppableEvent} event.
+   * This kind of event is fired when a acceptable draggable is being dragged
+   * over the droppable.
+   * 
+   * @return {@link HandlerRegistration} used to remove the handler
+   */
+  public HandlerRegistration addOverDroppableHandler(
+      OverDroppableEventHandler handler) {
+    return addDropHandler(handler, OverDroppableEvent.TYPE);
+  }
+
+  /**
+   * 
+   * @return the {@link AcceptFunction}
+   */
+  public AcceptFunction getAccept() {
+    return options.getAccept();
+  }
+
+  /**
+   * 
+   * @return the css class added to the droppable when is activated
+   */
+  public String getActiveClass() {
+    return options.getActiveClass();
+  }
+
+  /**
+   * Return the drag and drop scope. A draggable widget with the same scope than
+   * a droppable widget will be accepted by this droppable.
+   * 
+   * @return the scope
+   */
+  public String getDragAndDropScope() {
+    return options.getScope();
+  }
+
+  /**
+   * 
+   * @return the css class added to the droppable when is hovered
+   */
+  public String getHoverClass() {
+    return options.getDroppableHoverClass();
+  }
+
+  /**
+   * 
+   * @return the {@link DroppableOptions} currently used.
+   */
+  public DroppableOptions getOptions() {
+    return options;
+  }
+
+  /**
+   * Get the wrapped original widget
+   * 
+   * @return
+   */
+  @SuppressWarnings("unchecked")
+  public T getOriginalWidget() {
+    return (T) getWidget();
+  }
+
+  /**
+   * 
+   * @return the {@link DroppableTolerance}
+   */
+  public DroppableTolerance getTolerance() {
+    return options.getTolerance();
+  }
+
+  /**
+   * 
+   * @return if the drop is disabled or not.
+   */
+  public boolean isDisabled() {
+    return options.isDisabled();
+  }
+
+  /**
+   * 
+   * @return if the droppable is greedy or not. A greedy droppable will prevent
+   *         events propagation on drappable parents of this droppable
+   */
+  public boolean isGreedy() {
+    return options.isGreedy();
+  }
+
+  public void setAccept(AcceptFunction acceptFunction) {
+    if (acceptFunction != null) {
+      options.setAccept(acceptFunction);
+    } else {
+      options.setAccept(DroppableOptions.ACCEPT_ALL);
+    }
+  }
+
+  public void setAccept(String selector) {
+    options.setAccept(selector);
+  }
+
+  public void setActiveClass(String activeClass) {
+    options.setActiveClass(activeClass);
+  }
+
+  public void setDisabled(boolean disabled) {
+    options.setDisabled(disabled);
+  }
+
+  /**
+   * Used to group sets of draggable and droppable widget, in addition to
+   * droppable's {@link AcceptFunction}. A DraggableWidget with the same scope value than a
+   * DroppableWidget will be accepted by this last.
+   * 
+   * @param scope
+   */
+  public void setDragAndDropScope(String scope) {
+    $(getElement()).as(Droppable).changeScope(scope);
+    options.setScope(scope);
+  }
+
+  /**
+   * When set to true it prevents events propagation on parents droppable of
+   * this droppable
+   * 
+   * @param greedy
+   */
+  public void setGreedy(boolean greedy) {
+    options.setGreedy(greedy);
+  }
+
+  /**
+   * Css class added when a acceptable draggable is being dragged over this droppable
+   * @param hoverClass css class
+   */
+  public void setHoverClass(String hoverClass) {
+    options.setDroppableHoverClass(hoverClass);
+  }
+
+  /**
+   * set the {@link DroppableTolerance}
+   * @param tolerance
+   */
+  public void setTolerance(DroppableTolerance tolerance) {
+    options.setTolerance(tolerance);
   }
 
   protected final <H extends EventHandler> HandlerRegistration addDropHandler(
@@ -138,116 +340,14 @@ public class DroppableWidget<T extends Widget> extends Composite implements
     if (DOM.getEventListener(getElement()) != gQueryEventListener) {
       DOM.setEventListener(getElement(), gQueryEventListener);
     }
-    $(getElement()).as(Droppable).droppable(options, ensureDropHandlers()).data(DROPPABLE_WIDGET_KEY, this);
+    $(getElement()).as(Droppable).droppable(options, ensureDropHandlers())
+        .data(DROPPABLE_WIDGET_KEY, this);
   }
 
   @Override
   protected void onUnload() {
     super.onUnload();
     $(getElement()).as(Droppable).destroy().removeData(DROPPABLE_WIDGET_KEY);
-  }
-
-  public HandlerRegistration addActivateDroppableHandler(
-      ActivateDroppableEventHandler handler) {
-    return addDropHandler(handler, ActivateDroppableEvent.TYPE);
-  }
-
-  public HandlerRegistration addDeactivateDroppableHandler(
-      DeactivateDroppableEventHandler handler) {
-    return addDropHandler(handler, DeactivateDroppableEvent.TYPE);
-  }
-
-  public HandlerRegistration addDropHandler(DropEventHandler handler) {
-    return addDropHandler(handler, DropEvent.TYPE);
-  }
-
-  public HandlerRegistration addOutDroppableHandler(
-      OutDroppableEventHandler handler) {
-    return addDropHandler(handler, OutDroppableEvent.TYPE);
-  }
-  
-  /**
-   * Get the wrapped original widget
-   * 
-   * @return
-   */
-  @SuppressWarnings("unchecked")
-  public T getOriginalWidget() {
-    return (T) getWidget();
-  }
-
-  public HandlerRegistration addOverDroppableHandler(
-      OverDroppableEventHandler handler) {
-    return addDropHandler(handler, OverDroppableEvent.TYPE);
-  }
-
-  public AcceptFunction getAccept() {
-    return options.getAccept();
-  }
-
-  public String getActiveClass() {
-    return options.getActiveClass();
-  }
-
-  public String getHoverClass() {
-    return options.getHoverClass();
-  }
-
-  public String getScope() {
-    return options.getScope();
-  }
-
-  public DroppableTolerance getTolerance() {
-    return options.getTolerance();
-  }
-
-  public boolean isDisabled() {
-    return options.isDisabled();
-  }
-
-  public boolean isGreedy() {
-    return options.isGreedy();
-  }
-
-  public void setAccept(AcceptFunction acceptFunction) {
-    if (acceptFunction != null){
-      options.setAccept(acceptFunction);
-    }else{
-      options.setAccept(DroppableOptions.ACCEPT_ALL);
-    }
-  }
-
-  public void setAccept(String selector) {
-    options.setAccept(selector);
-  }
-
-  public void setActiveClass(String activeClass) {
-    options.setActiveClass(activeClass);
-  }
-
-  public void setDisabled(boolean disabled) {
-    options.setDisabled(disabled);
-  }
-
-  public void setGreedy(boolean greedy) {
-    options.setGreedy(greedy);
-  }
-
-  public void setHoverClass(String hoverClass) {
-    options.setHoverClass(hoverClass);
-  }
-
-  public void setScope(String scope) {
-    $(getElement()).as(Droppable).changeScope(scope);
-    options.setScope(scope);
-  }
-
-  public void setTolerance(DroppableTolerance tolerance) {
-    options.setTolerance(tolerance);
-  }
-  
-  public DroppableOptions getOptions() {
-    return options;
   }
 
 }
