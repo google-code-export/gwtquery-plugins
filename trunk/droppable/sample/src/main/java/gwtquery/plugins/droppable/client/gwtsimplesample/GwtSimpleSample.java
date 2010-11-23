@@ -29,6 +29,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.user.client.ui.HTMLTable.CellFormatter;
 
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
@@ -101,26 +102,38 @@ public class GwtSimpleSample implements EntryPoint {
   }
 
   /**
-   * Create a 5x5 grid. Each cell contains the gwt logo.
+   * Create a 5x5 grid. Each cell contains a draggable gwt logo.
    * 
    * @return
    */
   private Widget createImageGrid() {
 
     Grid grid = new Grid(5, 5);
-
+    CellFormatter cellFormatter = grid.getCellFormatter();
+    
     int numRows = grid.getRowCount();
     int numColumns = grid.getColumnCount();
 
+    
     for (int row = 0; row < numRows; row++) {
       for (int col = 0; col < numColumns; col++) {
+        //add draggable logo
         grid.setWidget(row, col, createDraggableImage());
+        
+        //add size to cell in order to keep place when image will be removed
+        cellFormatter.setHeight(row, col,"50px");
+        cellFormatter.setWidth(row, col,"61px");
       }
     }
 
     return grid;
   }
 
+  /**
+   * Simply create a {@link Label} and make it droppable
+   * 
+   * @return
+   */
   private Widget createTrashBin() {
 
     final Label trashBinLabel = new Label("Give me food !");
