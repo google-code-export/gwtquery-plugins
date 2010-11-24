@@ -25,12 +25,12 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 
 /**
  * Object containing usefull information on the drag and drop operations.
+ * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
 public class DragAndDropContext extends DragContext {
 
-  
   private Element droppable;
 
   public DragAndDropContext(Element draggable, Element droppable) {
@@ -38,20 +38,19 @@ public class DragAndDropContext extends DragContext {
     this.droppable = droppable;
   }
 
- 
+  /**
+   * 
+   * @return the current draggable DOM element
+   */
   public Element getDroppable() {
     return droppable;
   }
 
-  public void setDroppable(Element droppable) {
-    this.droppable = droppable;
-  }
-  
- 
   /**
-   * Return the data value associated to the drop element if and only if this
-   * one is coming from a {@link DroppableCell} This method returns null if the
-   * current drag and drop operation doesn't concerns a {@link DroppableCell}
+   * This method allows getting the data object linked to the droppable element
+   * (a cell) in the context of CellWidget. It returns the data object being
+   * rendered by the droppable cell. Return null if we are not in the context of
+   * an drag and drop cell widget.
    * 
    * @param <T>
    *          the class of the data
@@ -62,11 +61,17 @@ public class DragAndDropContext extends DragContext {
     return (T) $(getDroppable()).data(VALUE_KEY);
 
   }
-  
-  public DroppableWidget<?> getDroppableWidget(){
-    if (getDroppable() != null){
+
+  /**
+   * This method return the widget associated to the droppable DOM element if it
+   * exist. It returns null otherwise.
+   * 
+   */
+  public DroppableWidget<?> getDroppableWidget() {
+    if (getDroppable() != null) {
       return DroppableWidget.get(getDroppable());
     }
     return null;
   }
+
 }

@@ -43,6 +43,7 @@ import gwtquery.plugins.droppable.client.events.OutDroppableEvent;
 import gwtquery.plugins.droppable.client.events.OverDroppableEvent;
 
 /**
+ * Class implementing the core of the droppable plugin
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
@@ -50,22 +51,22 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent;
 public class DroppableHandler {
 
   private static enum PositionStatus {
-    IS_OVER, IS_OUT;
+    IS_OUT, IS_OVER;
   }
 
   public static DroppableHandler getInstance(Element droppable) {
     return $(droppable).data(DROPPABLE_HANDLER_KEY, DroppableHandler.class);
   }
 
-  private boolean isOver = false;
-  private boolean isOut = true;
-  private boolean greedyChild = false;
-  private DroppableOptions options;
   private Dimension droppableDimension;
-  private HasHandlers eventBus;
-  private boolean visible = false;
-
   private Offset droppableOffset;
+  private HasHandlers eventBus;
+  private boolean greedyChild = false;
+  private boolean isOut = true;
+  private boolean isOver = false;
+  private DroppableOptions options;
+
+  private boolean visible = false;
 
   public DroppableHandler(DroppableOptions options, HasHandlers eventBus) {
     this.options = options;
@@ -105,6 +106,61 @@ public class DroppableHandler {
 
       DragAndDropContext ctx = new DragAndDropContext(draggable, droppable);
       trigger(new DeactivateDroppableEvent(ctx), options.getOnDeactivate(), ctx);
+    }
+
+  }
+
+  public void drag(Element droppable, Element draggable, Event e) {
+    if (options.isDisabled() || greedyChild || !visible) {
+      return;
+    }
+
+    boolean isIntersect = intersect(draggable);
+    PositionStatus c = null;
+
+    if (!isIntersect && isOver) {
+      c = PositionStatus.IS_OUT;
+    } else if (isIntersect && !isOver) {
+      c = PositionStatus.IS_OVER;
+    }
+    if (c == null) {
+      return;
+    }
+
+    DroppableHandler parentDroppableHandler = null;
+    GQuery droppableParents = null;
+    if (options.isGreedy()) {
+      // TODO maybe filter the parent with droppable data instead of test on css
+      // class name
+      droppableParents = $(droppable).parents(
+          "." + CssClassNames.GWTQUERY_DROPPABLE);
+      if (droppableParents.length() > 0) {
+        parentDroppableHandler = DroppableHandler.getInstance(droppableParents
+            .get(0));
+        parentDroppableHandler.greedyChild = (c == PositionStatus.IS_OVER);
+      }
+    }
+
+    if (parentDroppableHandler != null && c == PositionStatus.IS_OVER) {
+      parentDroppableHandler.isOver = false;
+      parentDroppableHandler.isOut = true;
+      parentDroppableHandler.out(droppableParents.get(0), draggable, e);
+    }
+
+    if (c == PositionStatus.IS_OUT) {
+      isOut = true;
+      isOver = false;
+      out(droppable, draggable, e);
+    } else {
+      isOver = true;
+      isOut = false;
+      over(droppable, draggable, e);
+    }
+
+    if (parentDroppableHandler != null && c == PositionStatus.IS_OUT) {
+      parentDroppableHandler.isOut = false;
+      parentDroppableHandler.isOver = true;
+      parentDroppableHandler.over(droppableParents.get(0), draggable, e);
     }
 
   }
@@ -227,6 +283,12 @@ public class DroppableHandler {
 
   }
 
+  public void reset() {
+    droppableDimension = null;
+    droppableOffset = null;
+
+  }
+
   public void setDroppableDimension(Dimension droppableDimension) {
     this.droppableDimension = droppableDimension;
   }
@@ -341,67 +403,6 @@ public class DroppableHandler {
     if (callback != null) {
       callback.f(context);
     }
-  }
-
-  public void reset() {
-    droppableDimension = null;
-    droppableOffset = null;
-
-  }
-
-  public void drag(Element droppable, Element draggable, Event e) {
-    if (options.isDisabled() || greedyChild || !visible) {
-      return;
-    }
-
-    boolean isIntersect = intersect(draggable);
-    PositionStatus c = null;
-
-    if (!isIntersect && isOver) {
-      c = PositionStatus.IS_OUT;
-    } else if (isIntersect && !isOver) {
-      c = PositionStatus.IS_OVER;
-    }
-    if (c == null) {
-      return;
-    }
-
-    DroppableHandler parentDroppableHandler = null;
-    GQuery droppableParents = null;
-    if (options.isGreedy()) {
-      // TODO maybe filter the parent with droppable data instead of test on css
-      // class name
-      droppableParents = $(droppable).parents(
-          "." + CssClassNames.GWTQUERY_DROPPABLE);
-      if (droppableParents.length() > 0) {
-        parentDroppableHandler = DroppableHandler.getInstance(droppableParents
-            .get(0));
-        parentDroppableHandler.greedyChild = (c == PositionStatus.IS_OVER);
-      }
-    }
-
-    if (parentDroppableHandler != null && c == PositionStatus.IS_OVER) {
-      parentDroppableHandler.isOver = false;
-      parentDroppableHandler.isOut = true;
-      parentDroppableHandler.out(droppableParents.get(0), draggable, e);
-    }
-
-    if (c == PositionStatus.IS_OUT) {
-      isOut = true;
-      isOver = false;
-      out(droppable, draggable, e);
-    } else {
-      isOver = true;
-      isOut = false;
-      over(droppable, draggable, e);
-    }
-
-    if (parentDroppableHandler != null && c == PositionStatus.IS_OUT) {
-      parentDroppableHandler.isOut = false;
-      parentDroppableHandler.isOver = true;
-      parentDroppableHandler.over(droppableParents.get(0), draggable, e);
-    }
-
   }
 
 }
