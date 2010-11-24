@@ -1,3 +1,18 @@
+/*
+ * Copyright 2010 The gwtquery plugins team.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
 package gwtquery.plugins.droppable.client.gwt;
 
 import static com.google.gwt.query.client.GQuery.$;
@@ -14,45 +29,42 @@ import gwtquery.plugins.droppable.client.DroppableHandler;
 import gwtquery.plugins.droppable.client.DroppableOptions;
 
 /**
- * Util class allowing us to externalize all code used in CellWidget to manage the drag and drop behavior of cells
+ * Utils class with all code used in CellWidget to manage
+ * the drag and drop behavior of cells
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
- *
+ * 
  */
 
 public class DragAndDropCellWidgetUtils {
-  
-  public static final String VALUE_KEY = "__dragAndDropCellAssociatedValue"; 
+
+  public static final String VALUE_KEY = "__dragAndDropCellAssociatedValue";
 
   private static final DragAndDropCellWidgetUtils INSTANCE = new DragAndDropCellWidgetUtils();
-
-  private DragAndDropCellWidgetUtils() {
-  }
 
   static DragAndDropCellWidgetUtils get() {
     return INSTANCE;
   }
 
+  private DragAndDropCellWidgetUtils() {
+  }
+
   void cleanCell(Element cell) {
-    
+
     if (cell == null) {
       return;
     }
-    
+
     GQuery $cell = $(cell);
 
-    //GWT.log("clean old cell" + cell.hashCode());
-
     if (DraggableHandler.getInstance(cell) != null) {
-      // GWT.log("clean darggable cell");
       $cell.as(Draggable).destroy();
     }
 
     if (DroppableHandler.getInstance(cell) != null) {
-      // GWT.log("clean droppable cell");
       $cell.as(Droppable).destroy();
     }
-    // GWT.log("clean cell by removing data " + $(e).data(VALUE_KEY));
+    
     $cell.removeData(VALUE_KEY);
   }
 
@@ -60,24 +72,23 @@ public class DragAndDropCellWidgetUtils {
       CellDragAndDropBehaviour<C> cellDragAndDropBehaviour,
       DraggableOptions draggableOptions, DroppableOptions droppableOptions,
       EventBus eventBus) {
-    
 
     GQuery $cell = $(cell);
 
     if ((cellDragAndDropBehaviour == null || cellDragAndDropBehaviour
         .isDraggable(value))
         && DraggableHandler.getInstance(cell) == null) {
-      //GWT.log("make new cell " + cell.hashCode() + " draggable");
-      //GWT.log("make dragable new cell " + cell.hashCode()+ " with value "+value);
+      
       $cell.as(Draggable).draggable(draggableOptions, eventBus);
+    
     }
 
     if ((cellDragAndDropBehaviour == null || cellDragAndDropBehaviour
         .isDroppable(value))
         && DroppableHandler.getInstance(cell) == null) {
-      //GWT.log("make cell " + cell.hashCode() + " droppable");
-      //GWT.log("make droppable new cell " + cell.hashCode()+ " with value "+value);
-      $cell.as(Droppable).droppable(droppableOptions,eventBus);
+      
+      $cell.as(Droppable).droppable(droppableOptions, eventBus);
+    
     }
 
     $cell.data(VALUE_KEY, value);

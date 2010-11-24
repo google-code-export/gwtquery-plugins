@@ -19,35 +19,36 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * Event fired when the droppable element is deactivated.
+ * Event fired when a droppable element is deactivated.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  */
-public class DeactivateDroppableEvent extends AbstractDroppableEvent<DeactivateDroppableEvent.DeactivateDroppableEventHandler> {
-	
-	public interface DeactivateDroppableEventHandler extends EventHandler {
-		public void onDeactivateDroppable(DeactivateDroppableEvent event);
-	}
+public class DeactivateDroppableEvent
+    extends
+    AbstractDroppableEvent<DeactivateDroppableEvent.DeactivateDroppableEventHandler> {
 
-	public static Type<DeactivateDroppableEventHandler> TYPE = new Type<DeactivateDroppableEventHandler>();
+  public interface DeactivateDroppableEventHandler extends EventHandler {
+    public void onDeactivateDroppable(DeactivateDroppableEvent event);
+  }
 
-	
-	public DeactivateDroppableEvent(Element droppable, Element draggable) {
-		super(droppable, draggable);
-	}
+  public static Type<DeactivateDroppableEventHandler> TYPE = new Type<DeactivateDroppableEventHandler>();
 
-	public DeactivateDroppableEvent(DragAndDropContext ctx) {
+  public DeactivateDroppableEvent(DragAndDropContext ctx) {
     super(ctx);
   }
 
-	@Override
-	public Type<DeactivateDroppableEventHandler> getAssociatedType() {
-		return TYPE;
-	}
+  public DeactivateDroppableEvent(Element droppable, Element draggable) {
+    super(droppable, draggable);
+  }
 
-	@Override
-	protected void dispatch(DeactivateDroppableEventHandler handler) {
-		handler.onDeactivateDroppable(this);
-	}
+  @Override
+  public Type<DeactivateDroppableEventHandler> getAssociatedType() {
+    return TYPE;
+  }
+
+  @Override
+  protected void dispatch(DeactivateDroppableEventHandler handler) {
+    handler.onDeactivateDroppable(this);
+  }
 }

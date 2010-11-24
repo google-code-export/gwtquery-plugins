@@ -19,7 +19,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * Event fired when a draggable element is over a droppable element.
+ * Event fired when an acceptable draggable is being dragged over a droppable.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
@@ -33,12 +33,11 @@ public class OverDroppableEvent extends
 
   public static Type<OverDroppableEventHandler> TYPE = new Type<OverDroppableEventHandler>();
 
-
   public OverDroppableEvent(Element droppable, Element draggable) {
-	  super(droppable, draggable);
+    super(droppable, draggable);
   }
-  
-  public OverDroppableEvent(DragAndDropContext ctx){
+
+  public OverDroppableEvent(DragAndDropContext ctx) {
     super(ctx);
   }
 

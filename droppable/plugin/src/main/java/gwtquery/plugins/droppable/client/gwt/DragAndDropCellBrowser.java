@@ -1,5 +1,5 @@
 /*
- * Copyright 2010 Google Inc.
+ * Copyright 2010 The gwtquery plugins team.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -85,12 +85,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This cell browser allows you to define draggable and or droppable cells.
+ * This cell browser allows you to define draggable and or droppable cells by
+ * using {@link DragAndDropNodeInfo}.
  * 
  */
 @SuppressWarnings("deprecation")
-public class DragAndDropCellBrowser extends AbstractCellTree implements ProvidesResize,
-    RequiresResize, HasAnimation {
+public class DragAndDropCellBrowser extends AbstractCellTree implements
+    ProvidesResize, RequiresResize, HasAnimation {
 
   interface Template extends SafeHtmlTemplates {
     @Template("<div onclick=\"\" __idx=\"{0}\" class=\"{1}\" style=\"position:relative;padding-right:{2}px;outline:none;\">{3}<div>{4}</div></div>")
@@ -113,10 +114,11 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * A custom version of cell list used by the browser. Visible for testing.
-   *
-   * @param <T> the data type of list items
+   * 
+   * @param <T>
+   *          the data type of list items
    */
-  
+
   class BrowserCellList<T> extends DragAndDropCellList<T> {
 
     /**
@@ -162,13 +164,14 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
        * track the open node, but we want to suppress keyboard navigation if the
        * user disables it.
        */
-      return KeyboardSelectionPolicy.DISABLED == DragAndDropCellBrowser.this.getKeyboardSelectionPolicy()
+      return KeyboardSelectionPolicy.DISABLED == DragAndDropCellBrowser.this
+          .getKeyboardSelectionPolicy()
           || super.isKeyboardNavigationSuppressed();
     }
 
     @Override
     protected void onBrowserEvent2(Event event) {
-     
+
       super.onBrowserEvent2(event);
 
       // Handle keyboard navigation between lists.
@@ -176,20 +179,20 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
       if ("keydown".equals(eventType) && !isKeyboardNavigationSuppressed()) {
         int keyCode = event.getKeyCode();
         switch (keyCode) {
-          case KeyCodes.KEY_LEFT:
-            if (LocaleInfo.getCurrentLocale().isRTL()) {
-              keyboardNavigateDeep();
-            } else {
-              keyboardNavigateShallow();
-            }
-            return;
-          case KeyCodes.KEY_RIGHT:
-            if (LocaleInfo.getCurrentLocale().isRTL()) {
-              keyboardNavigateShallow();
-            } else {
-              keyboardNavigateDeep();
-            }
-            return;
+        case KeyCodes.KEY_LEFT:
+          if (LocaleInfo.getCurrentLocale().isRTL()) {
+            keyboardNavigateDeep();
+          } else {
+            keyboardNavigateShallow();
+          }
+          return;
+        case KeyCodes.KEY_RIGHT:
+          if (LocaleInfo.getCurrentLocale().isRTL()) {
+            keyboardNavigateShallow();
+          } else {
+            keyboardNavigateDeep();
+          }
+          return;
         }
       }
     }
@@ -209,8 +212,8 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
       int end = start + length;
       for (int i = start; i < end; i++) {
         T value = values.get(i - start);
-        boolean isSelected = selectionModel == null ? false
-            : selectionModel.isSelected(value);
+        boolean isSelected = selectionModel == null ? false : selectionModel
+            .isSelected(value);
         boolean isOpen = isOpen(i);
         StringBuilder classesBuilder = new StringBuilder();
         classesBuilder.append(i % 2 == 0 ? evenItem : oddItem);
@@ -252,7 +255,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
           sb.append(template.div(i, classesBuilder.toString(), imageWidth,
               image, cellBuilder.toSafeHtml()));
         }
-      
+
       }
 
       // Update the child state.
@@ -283,8 +286,8 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
         image = closedImageHtml;
       }
       tmpElem.setInnerHTML(image.asString());
-      elem.replaceChild(tmpElem.getFirstChildElement(),
-          elem.getFirstChildElement());
+      elem.replaceChild(tmpElem.getFirstChildElement(), elem
+          .getFirstChildElement());
 
       // Update the open state.
       updateChildState(this, true);
@@ -295,7 +298,8 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
      * the keyboard selected index, there is an associated keyboard selected
      * value, and the value is not a leaf.
      * 
-     * @param index the index
+     * @param index
+     *          the index
      * @return true if open, false if not
      */
     private boolean isOpen(int index) {
@@ -338,8 +342,9 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * A node in the tree.
-   *
-   * @param <C> the data type of the children of the node
+   * 
+   * @param <C>
+   *          the data type of the children of the node
    */
   class TreeNodeImpl<C> implements TreeNode {
     private final BrowserCellList<C> display;
@@ -350,11 +355,15 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
     /**
      * Construct a new {@link TreeNodeImpl}.
-     *
-     * @param nodeInfo the nodeInfo for the children nodes
-     * @param value the value of the node
-     * @param display the display associated with the node
-     * @param widget the widget that wraps the display
+     * 
+     * @param nodeInfo
+     *          the nodeInfo for the children nodes
+     * @param value
+     *          the value of the node
+     * @param display
+     *          the display associated with the node
+     * @param widget
+     *          the widget that wraps the display
      */
     public TreeNodeImpl(final NodeInfo<C> nodeInfo, Object value,
         final BrowserCellList<C> display, Widget widget) {
@@ -364,24 +373,25 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
       this.widget = widget;
 
       // Trim to the current level if the open node disappears.
-      valueChangeHandler = display.addValueChangeHandler(new ValueChangeHandler<List<C>>() {
-        public void onValueChange(ValueChangeEvent<List<C>> event) {
-          Object focusedKey = display.focusedKey;
-          if (focusedKey != null) {
-            boolean stillExists = false;
-            List<C> displayValues = event.getValue();
-            for (C displayValue : displayValues) {
-              if (focusedKey.equals(display.getValueKey(displayValue))) {
-                stillExists = true;
-                break;
+      valueChangeHandler = display
+          .addValueChangeHandler(new ValueChangeHandler<List<C>>() {
+            public void onValueChange(ValueChangeEvent<List<C>> event) {
+              Object focusedKey = display.focusedKey;
+              if (focusedKey != null) {
+                boolean stillExists = false;
+                List<C> displayValues = event.getValue();
+                for (C displayValue : displayValues) {
+                  if (focusedKey.equals(display.getValueKey(displayValue))) {
+                    stillExists = true;
+                    break;
+                  }
+                }
+                if (!stillExists) {
+                  trimToLevel(display.level);
+                }
               }
             }
-            if (!stillExists) {
-              trimToLevel(display.level);
-            }
-          }
-        }
-      });
+          });
     }
 
     public int getChildCount() {
@@ -419,9 +429,9 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
     public boolean isChildOpen(int index) {
       assertNotDestroyed();
       checkChildBounds(index);
-      return (display.focusedKey == null || !display.isFocusedOpen)
-          ? false
-          : display.focusedKey.equals(display.getValueKey(getChildValue(index)));
+      return (display.focusedKey == null || !display.isFocusedOpen) ? false
+          : display.focusedKey
+              .equals(display.getValueKey(getChildValue(index)));
     }
 
     public boolean isDestroyed() {
@@ -488,9 +498,11 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
     /**
      * Check the child bounds.
-     *
-     * @param index the index of the child
-     * @throws IndexOutOfBoundsException if the child is not in range
+     * 
+     * @param index
+     *          the index of the child
+     * @throws IndexOutOfBoundsException
+     *           if the child is not in range
      */
     private void checkChildBounds(int index) {
       if ((index < 0) || (index >= getChildCount())) {
@@ -512,7 +524,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
     /**
      * Get the index of the open item.
-     *
+     * 
      * @return the index of the open item, or -1 if not found
      */
     private int getOpenIndex() {
@@ -647,7 +659,8 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
   /**
    * The element used in place of an image when a node has no children.
    */
-  private static final SafeHtml LEAF_IMAGE = SafeHtmlUtils.fromSafeConstant("<div style='position:absolute;display:none;'></div>");
+  private static final SafeHtml LEAF_IMAGE = SafeHtmlUtils
+      .fromSafeConstant("<div style='position:absolute;display:none;'></div>");
 
   private static Template template;
 
@@ -657,7 +670,6 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
     }
     return DEFAULT_RESOURCES;
   }
- 
 
   /**
    * The visible {@link TreeNodeImpl}s. Visible for testing.
@@ -713,26 +725,33 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
    * The styles used by this widget.
    */
   private final Style style;
-  
- 
+
   /**
    * Construct a new {@link DragAndDropCellBrowser}.
-   *
-   * @param <T> the type of data in the root node
-   * @param viewModel the {@link TreeViewModel} that backs the tree
-   * @param rootValue the hidden root value of the tree
+   * 
+   * @param <T>
+   *          the type of data in the root node
+   * @param viewModel
+   *          the {@link TreeViewModel} that backs the tree
+   * @param rootValue
+   *          the hidden root value of the tree
    */
   public <T> DragAndDropCellBrowser(TreeViewModel viewModel, T rootValue) {
     this(viewModel, rootValue, getDefaultResources());
   }
 
   /**
-   * Construct a new {@link DragAndDropCellBrowser} with the specified {@link Resources}.
-   *
-   * @param <T> the type of data in the root node
-   * @param viewModel the {@link TreeViewModel} that backs the tree
-   * @param rootValue the hidden root value of the tree
-   * @param resources the {@link Resources} used for images
+   * Construct a new {@link DragAndDropCellBrowser} with the specified
+   * {@link Resources}.
+   * 
+   * @param <T>
+   *          the type of data in the root node
+   * @param viewModel
+   *          the {@link TreeViewModel} that backs the tree
+   * @param rootValue
+   *          the hidden root value of the tree
+   * @param resources
+   *          the {@link Resources} used for images
    */
   public <T> DragAndDropCellBrowser(TreeViewModel viewModel, T rootValue,
       Resources resources) {
@@ -779,7 +798,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Get the default width of new columns.
-   *
+   * 
    * @return the default width in pixels
    * @see #setDefaultColumnWidth(int)
    */
@@ -789,7 +808,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Get the minimum width of columns.
-   *
+   * 
    * @return the minimum width in pixels
    * @see #setMinimumColumnWidth(int)
    */
@@ -809,10 +828,10 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
   @Override
   public void onBrowserEvent(Event event) {
     switch (DOM.eventGetType(event)) {
-      case Event.ONSCROLL:
-        // Shorten the scroll bar is possible.
-        adjustScrollLock();
-        break;
+    case Event.ONSCROLL:
+      // Shorten the scroll bar is possible.
+      adjustScrollLock();
+      break;
     }
     super.onBrowserEvent(event);
   }
@@ -827,8 +846,9 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Set the default width of new columns.
-   *
-   * @param width the default width in pixels
+   * 
+   * @param width
+   *          the default width in pixels
    * @see #getDefaultColumnWidth()
    */
   public void setDefaultColumnWidth(int width) {
@@ -851,8 +871,9 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Set the minimum width of columns.
-   *
-   * @param minWidth the minimum width in pixels
+   * 
+   * @param minWidth
+   *          the minimum width in pixels
    * @see #getMinimumColumnWidth()
    */
   public void setMinimumColumnWidth(int minWidth) {
@@ -861,14 +882,16 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Create a pager to control the list view.
-   *
-   * @param <C> the item type in the list view
-   * @param display the list view to add paging too
+   * 
+   * @param <C>
+   *          the item type in the list view
+   * @param display
+   *          the list view to add paging too
    * @return the pager
    */
   protected <C> Widget createPager(HasData<C> display) {
-    PageSizePager pager = new PageSizePager(
-        display.getVisibleRange().getLength());
+    PageSizePager pager = new PageSizePager(display.getVisibleRange()
+        .getLength());
     pager.setDisplay(display);
     return pager;
   }
@@ -890,10 +913,13 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
   /**
    * Create a new {@link TreeNodeImpl} and append it to the end of the
    * LayoutPanel.
-   *
-   * @param <C> the data type of the children
-   * @param nodeInfo the info about the node
-   * @param value the value of the open node
+   * 
+   * @param <C>
+   *          the data type of the children
+   * @param nodeInfo
+   *          the info about the node
+   * @param value
+   *          the value of the open node
    */
   private <C> TreeNode appendTreeNode(final NodeInfo<C> nodeInfo, Object value) {
     // Create the list view.
@@ -942,30 +968,34 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
   /**
    * Create a {@link HasData} that will display items. The {@link HasData} must
    * extend {@link Widget}.
-   *
-   * @param <C> the item type in the list view
-   * @param nodeInfo the node info with child data
-   * @param level the level of the list
+   * 
+   * @param <C>
+   *          the item type in the list view
+   * @param nodeInfo
+   *          the node info with child data
+   * @param level
+   *          the level of the list
    * @return the {@link HasData}
    */
   private <C> BrowserCellList<C> createDisplay(NodeInfo<C> nodeInfo, int level) {
     BrowserCellList<C> display = new BrowserCellList<C>(nodeInfo.getCell(),
         level, nodeInfo.getProvidesKey());
-    
+
     display.setValueUpdater(nodeInfo.getValueUpdater());
 
     // Set the keyboard selection policy, but never disable it.
     KeyboardSelectionPolicy keyboardPolicy = getKeyboardSelectionPolicyForLists();
     display.setKeyboardSelectionPolicy(keyboardPolicy);
-    
+
     /*
-     * Drag and drop stuff 
+     * Drag and drop stuff
      */
-    
+
     display.setDragAndDropHandlerManager(ensureDrangAndDropHandlers());
-    if (nodeInfo instanceof DragAndDropNodeInfo<?>){
-      DragAndDropNodeInfo<C> dndNodeInfo = (DragAndDropNodeInfo<C>)nodeInfo;
-      display.setCellDragAndDropBehaviour(dndNodeInfo.getCellDragAndDropBehaviour());
+    if (nodeInfo instanceof DragAndDropNodeInfo<?>) {
+      DragAndDropNodeInfo<C> dndNodeInfo = (DragAndDropNodeInfo<C>) nodeInfo;
+      display.setCellDragAndDropBehaviour(dndNodeInfo
+          .getCellDragAndDropBehaviour());
       display.setDraggableOptions(dndNodeInfo.getDraggableOptions());
       display.setDroppableOptions(dndNodeInfo.getDroppableOptions());
     }
@@ -974,16 +1004,18 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Get the HTML representation of an image.
-   *
-   * @param res the {@link ImageResource} to render as HTML
+   * 
+   * @param res
+   *          the {@link ImageResource} to render as HTML
    * @return the rendered HTML
    */
   private SafeHtml getImageHtml(ImageResource res) {
     // Right-justify image if LTR, left-justify if RTL
     AbstractImagePrototype proto = AbstractImagePrototype.create(res);
     SafeHtml image = SafeHtmlUtils.fromTrustedString(proto.getHTML());
-    return template.imageWrapper((LocaleInfo.getCurrentLocale().isRTL()
-        ? "left" : "right"), res.getWidth(), res.getHeight(), image);
+    return template.imageWrapper(
+        (LocaleInfo.getCurrentLocale().isRTL() ? "left" : "right"), res
+            .getWidth(), res.getHeight(), image);
   }
 
   /**
@@ -995,8 +1027,8 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
    */
   private KeyboardSelectionPolicy getKeyboardSelectionPolicyForLists() {
     KeyboardSelectionPolicy policy = getKeyboardSelectionPolicy();
-    return KeyboardSelectionPolicy.DISABLED == policy
-        ? KeyboardSelectionPolicy.ENABLED : policy;
+    return KeyboardSelectionPolicy.DISABLED == policy ? KeyboardSelectionPolicy.ENABLED
+        : policy;
   }
 
   /**
@@ -1010,8 +1042,9 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Reduce the number of {@link HasData}s down to the specified level.
-   *
-   * @param level the level to trim to
+   * 
+   * @param level
+   *          the level to trim to
    */
   private void trimToLevel(int level) {
     // Add a placeholder to maintain the same scroll width.
@@ -1038,17 +1071,21 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
    * specified {@link BrowserCellList}. This method will open/close child
    * {@link TreeNode}s as needed.
    * 
-   * @param cellList the CellList that changed state.
-   * @param value the value to open
-   * @param open true to open, false to close
-   * @param fireEvents true to fireEvents
+   * @param cellList
+   *          the CellList that changed state.
+   * @param value
+   *          the value to open
+   * @param open
+   *          true to open, false to close
+   * @param fireEvents
+   *          true to fireEvents
    * @return the open {@link TreeNode}, or null if not opened
    */
   private <C> TreeNode updateChildState(BrowserCellList<C> cellList,
       boolean fireEvents) {
     /*
      * Verify that the specified list is still in the browser. It possible for
-     * the list to receive deferred updates after it has been removed 
+     * the list to receive deferred updates after it has been removed
      */
     if (cellList.isDestroyed) {
       return null;
@@ -1063,8 +1100,8 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
     if (cellList.focusedKey != null && cellList.isFocusedOpen
         && !cellList.focusedKey.equals(newKey)) {
       // Get the node to close.
-      closedNode = (treeNodes.size() > cellList.level + 1)
-          ? treeNodes.get(cellList.level + 1) : null;
+      closedNode = (treeNodes.size() > cellList.level + 1) ? treeNodes
+          .get(cellList.level + 1) : null;
 
       // Close the node.
       trimToLevel(cellList.level);
@@ -1108,14 +1145,13 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
     // Return the open node if it is still open.
     return (openNode == null || openNode.isDestroyed()) ? null : openNode;
   }
-  
+
   /*
    * We will put all stuff concerning drag and drop below this comment
    */
-  
- 
+
   private EventBus dragAndDropHandlerManager;
-  
+
   protected final <H extends EventHandler> HandlerRegistration addDragAndDropHandler(
       H handler, Type<H> type) {
     return ensureDrangAndDropHandlers().addHandler(type, handler);
@@ -1139,7 +1175,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
 
   /**
    * Add a handler object that will manage the {@link DragEvent} event. this
-   * kind of event is fired during the move of the widget.
+   * kind of event is fired while a cell is being dragged
    */
   public HandlerRegistration addDragHandler(DragEventHandler handler) {
     return addDragAndDropHandler(handler, DragEvent.TYPE);
@@ -1161,25 +1197,49 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
     return addDragAndDropHandler(handler, DragStopEvent.TYPE);
   }
 
+  /**
+   * Add a handler object that will manage the {@link ActivateDroppableEvent}
+   * event. This kind of event is fired each time a droppable cell is activated.
+   */
   public HandlerRegistration addActivateDroppableHandler(
       ActivateDroppableEventHandler handler) {
     return addDragAndDropHandler(handler, ActivateDroppableEvent.TYPE);
   }
 
+  /**
+   * Add a handler object that will manage the {@link DeactivateDroppableEvent}
+   * event. This kind of event is fired each time a droppable cell is
+   * deactivated.
+   */
   public HandlerRegistration addDeactivateDroppableHandler(
       DeactivateDroppableEventHandler handler) {
     return addDragAndDropHandler(handler, DeactivateDroppableEvent.TYPE);
   }
 
+  /**
+   * Add a handler object that will manage the {@link DropEvent} event. This
+   * kind of event is fired when an acceptable draggable is drop on a droppable
+   * cell.
+   */
   public HandlerRegistration addDropHandler(DropEventHandler handler) {
     return addDragAndDropHandler(handler, DropEvent.TYPE);
   }
 
+  /**
+   * Add a handler object that will manage the {@link OutDroppableEvent} event.
+   * This kind of event is fired when an acceptable draggable is being dragged
+   * out of a droppable cell.
+   */
   public HandlerRegistration addOutDroppableHandler(
       OutDroppableEventHandler handler) {
     return addDragAndDropHandler(handler, OutDroppableEvent.TYPE);
   }
 
+  /**
+   * Add a handler object that will manage the {@link OverDroppableEvent} event.
+   * This kind of event is fired when an acceptable draggable is being dragged
+   * over a droppable cell.
+   */
   public HandlerRegistration addOverDroppableHandler(
       OverDroppableEventHandler handler) {
     return addDragAndDropHandler(handler, OverDroppableEvent.TYPE);

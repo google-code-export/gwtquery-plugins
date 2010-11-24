@@ -19,7 +19,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * Event fired when the draggable element out the droppable element.
+ * Event fired when an acceptable draggable is being dragged out of the droppable.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
@@ -33,12 +33,12 @@ public class OutDroppableEvent extends
 
   public static Type<OutDroppableEventHandler> TYPE = new Type<OutDroppableEventHandler>();
 
-  public OutDroppableEvent(Element droppable, Element draggable) {
-    super(droppable, draggable);
-  }
-
   public OutDroppableEvent(DragAndDropContext ctx) {
     super(ctx);
+  }
+
+  public OutDroppableEvent(Element droppable, Element draggable) {
+    super(droppable, draggable);
   }
 
   @Override

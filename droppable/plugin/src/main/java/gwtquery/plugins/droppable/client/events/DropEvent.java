@@ -19,7 +19,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * Event fired when a drop occurs.
+ * Event fired when an acceptable draggable is dropped on a droppable.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
@@ -33,15 +33,14 @@ public class DropEvent extends
 
   public static Type<DropEventHandler> TYPE = new Type<DropEventHandler>();
 
+  public DropEvent(DragAndDropContext ctx) {
+    super(ctx);
+  }
 
   public DropEvent(Element droppable, Element draggable) {
     super(droppable, draggable);
   }
 
-  public DropEvent(DragAndDropContext ctx) {
-    super(ctx);
-  }
-  
   @Override
   public Type<DropEventHandler> getAssociatedType() {
     return TYPE;

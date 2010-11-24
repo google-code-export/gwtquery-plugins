@@ -38,7 +38,7 @@ import java.util.Map;
  * Implementation of the {@link DragAndDropManager} for drop operations
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
- *
+ * 
  */
 public class DragAndDropManagerImpl extends DragAndDropManager {
 
@@ -51,106 +51,12 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
     droppablesByScope.put("default", new ArrayList<Element>());
   }
 
-  @Override
-  public void drag(Element draggable, Event e) {
-    DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
-    Collection<Element> droppables = getDroppablesByScope(draggableHandler.getOptions().getScope());
-    if (droppables == null || droppables.size() == 0) {
-      return;
-    }
-    
-    for (Element droppable : droppables){
-      DroppableHandler dropHandler = DroppableHandler.getInstance(droppable);
-      dropHandler.drag(droppable, draggable, e);
-      
-    }
-  }
-
-  @Override
-  public boolean drop(Element draggable, Event e) {
-    boolean dropped = false;
-    DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
-    Collection<Element> droppables = getDroppablesByScope(draggableHandler.getOptions().getScope());
-    if (droppables == null || droppables.size() == 0) {
-      return false;
-    }
-    
-    for (Element droppable : droppables){
-      DroppableHandler droppableHandler = DroppableHandler.getInstance(droppable);
-      dropped |= droppableHandler.drop(droppable, draggable, e, dropped);
-    }
-    
-    return dropped;
-  }
-
-  @Override
-  public void initialize(Element draggable, Event e) {
-    DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
-    Collection<Element> droppables = getDroppablesByScope(draggableHandler.getOptions().getScope());
-    if (droppables == null || droppables.size() == 0) {
-      return;
-    }
-    
-    GQuery droppablesInsideDraggable = $(draggable).find("."+CssClassNames.GWTQUERY_DROPPABLE).andSelf();
-    
-    for (Element droppable : droppables) {
-      GQuery $droppable = $(droppable);
-      DroppableHandler droppableHandler = DroppableHandler.getInstance(droppable);
-      droppableHandler.reset();
-      DroppableOptions droppableOptions = droppableHandler.getOptions();
-      AcceptFunction accept = droppableOptions.getAccept();
-      if (droppableOptions.isDisabled() || (accept != null && !accept.acceptDrop(new DragAndDropContext(draggable, droppable)))){
-        continue;
-      }
-      
-      boolean mustContinue = false;
-      for (Element el : droppablesInsideDraggable.elements()){
-        if (el == droppable){
-          //droppableHandler.setDroppableDimension(new Dimension(0, 0));
-          mustContinue = true;
-          break;
-        }
-      }
-      if (mustContinue){
-        continue;
-      }
-      
-      droppableHandler.setVisible(!"none".equals(droppable.getStyle().getDisplay()));
-
-      if (droppableHandler.isVisible()){
-        droppableHandler.setDroppableOffset($droppable.offset());
-        droppableHandler.setDroppableDimension(new Dimension(droppable));
-        if (e.getTypeInt() == ONMOUSEDOWN ){
-          droppableHandler.activate(droppable,e);
-        }
-      }
-      
-      
-    }
-
-  }
-  
-
-  @Override
-  public void setCurrentDraggable(Element draggable) {
-    currentDraggable = draggable;
-  }
-
-  @Override
-  public Element getCurrentDraggable() {
-    return currentDraggable;
-  }
-
-  @Override
-  public boolean isHandleDroppable() {
-    return true;
-  }
-
-  @Override
-  public Collection<Element> getDroppablesByScope(String scope) {
-    return droppablesByScope.get(scope);
-  }
-
+  /**
+   * Link a droppable with the specified scope <code>scope</code>
+   * 
+   * @param droppable
+   * @param scope
+   */
   @Override
   public void addDroppable(Element droppable, String scope) {
     Collection<Element> droppables = droppablesByScope.get(scope);
@@ -160,5 +66,140 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
     }
     droppables.add(droppable);
   }
-}
 
+  /**
+   * Method called when the draggable is being dragged
+   * 
+   * @param draggable
+   * @param e
+   */
+  @Override
+  public void drag(Element draggable, Event e) {
+    DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
+    Collection<Element> droppables = getDroppablesByScope(draggableHandler
+        .getOptions().getScope());
+    if (droppables == null || droppables.size() == 0) {
+      return;
+    }
+
+    for (Element droppable : droppables) {
+      DroppableHandler dropHandler = DroppableHandler.getInstance(droppable);
+      dropHandler.drag(droppable, draggable, e);
+
+    }
+  }
+
+  /**
+   * Method called when the draggable was dropped
+   * 
+   * @param draggable
+   * @param e
+   * @return
+   */
+  @Override
+  public boolean drop(Element draggable, Event e) {
+    boolean dropped = false;
+    DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
+    Collection<Element> droppables = getDroppablesByScope(draggableHandler
+        .getOptions().getScope());
+    if (droppables == null || droppables.size() == 0) {
+      return false;
+    }
+
+    for (Element droppable : droppables) {
+      DroppableHandler droppableHandler = DroppableHandler
+          .getInstance(droppable);
+      dropped |= droppableHandler.drop(droppable, draggable, e, dropped);
+    }
+
+    return dropped;
+  }
+
+  /**
+   * 
+   * @return the current draggable element or null if no drag operation in
+   *         progress
+   */
+  @Override
+  public Element getCurrentDraggable() {
+    return currentDraggable;
+  }
+
+  /**
+   * Return the list of droppable elements with the scope <code>scope</code>
+   * 
+   * @param scope
+   * @return
+   */
+  @Override
+  public Collection<Element> getDroppablesByScope(String scope) {
+    return droppablesByScope.get(scope);
+  }
+
+  @Override
+  public void initialize(Element draggable, Event e) {
+    DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
+    Collection<Element> droppables = getDroppablesByScope(draggableHandler
+        .getOptions().getScope());
+    if (droppables == null || droppables.size() == 0) {
+      return;
+    }
+
+    GQuery droppablesInsideDraggable = $(draggable).find(
+        "." + CssClassNames.GWTQUERY_DROPPABLE).andSelf();
+
+    for (Element droppable : droppables) {
+      GQuery $droppable = $(droppable);
+      DroppableHandler droppableHandler = DroppableHandler
+          .getInstance(droppable);
+      droppableHandler.reset();
+      DroppableOptions droppableOptions = droppableHandler.getOptions();
+      AcceptFunction accept = droppableOptions.getAccept();
+      if (droppableOptions.isDisabled()
+          || (accept != null && !accept.acceptDrop(new DragAndDropContext(
+              draggable, droppable)))) {
+        continue;
+      }
+
+      boolean mustContinue = false;
+      for (Element el : droppablesInsideDraggable.elements()) {
+        if (el == droppable) {
+          // droppableHandler.setDroppableDimension(new Dimension(0, 0));
+          mustContinue = true;
+          break;
+        }
+      }
+      if (mustContinue) {
+        continue;
+      }
+
+      droppableHandler.setVisible(!"none".equals(droppable.getStyle()
+          .getDisplay()));
+
+      if (droppableHandler.isVisible()) {
+        droppableHandler.setDroppableOffset($droppable.offset());
+        droppableHandler.setDroppableDimension(new Dimension(droppable));
+        if (e.getTypeInt() == ONMOUSEDOWN) {
+          droppableHandler.activate(droppable, e);
+        }
+      }
+
+    }
+
+  }
+
+  @Override
+  public boolean isHandleDroppable() {
+    return true;
+  }
+
+  /**
+   * Set the current draggeble element
+   * 
+   * @param draggable
+   */
+  @Override
+  public void setCurrentDraggable(Element draggable) {
+    currentDraggable = draggable;
+  }
+}

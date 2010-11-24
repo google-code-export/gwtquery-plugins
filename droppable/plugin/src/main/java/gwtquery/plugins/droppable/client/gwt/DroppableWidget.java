@@ -125,7 +125,7 @@ public class DroppableWidget<T extends Widget> extends Composite implements
 
   /**
    * Add a handler object that will manage the {@link ActivateDroppableEvent}
-   * event. This kind of event is fired when a acceptable draggable start to
+   * event. This kind of event is fired when an acceptable draggable start to
    * drag.
    * 
    * @return {@link HandlerRegistration} used to remove the handler
@@ -137,7 +137,7 @@ public class DroppableWidget<T extends Widget> extends Composite implements
 
   /**
    * Add a handler object that will manage the {@link DeactivateDroppableEvent}
-   * event. This kind of event is fired when a acceptable draggable finishes to
+   * event. This kind of event is fired when an acceptable draggable finishes to
    * drag.
    * 
    * @return {@link HandlerRegistration} used to remove the handler
@@ -149,7 +149,7 @@ public class DroppableWidget<T extends Widget> extends Composite implements
 
   /**
    * Add a handler object that will manage the {@link DropEvent} event. This
-   * kind of event is fired when a acceptable draggable is dropped in the
+   * kind of event is fired when an acceptable draggable is dropped in the
    * droppable
    * 
    * @return {@link HandlerRegistration} used to remove the handler
@@ -160,8 +160,8 @@ public class DroppableWidget<T extends Widget> extends Composite implements
 
   /**
    * Add a handler object that will manage the {@link OutDroppableEvent} event.
-   * This kind of event is fired when a acceptable draggable is being dragged
-   * out the droppable.
+   * This kind of event is fired when an acceptable draggable is being dragged
+   * out of the droppable.
    * 
    * @return {@link HandlerRegistration} used to remove the handler
    */
@@ -197,7 +197,7 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   public String getActiveClass() {
     return options.getActiveClass();
   }
-
+  
   /**
    * Return the drag and drop scope. A draggable widget with the same scope than
    * a droppable widget will be accepted by this droppable.
@@ -209,10 +209,19 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   }
 
   /**
+   * @return the css class added to an acceptable draggable when it is
+   *         being dragged over a droppable
+   * 
+   */
+  public String getDraggableHoverClass() {
+    return options.getDraggableHoverClass();
+  }
+
+  /**
    * 
    * @return the css class added to the droppable when is hovered
    */
-  public String getHoverClass() {
+  public String getDroppableHoverClass() {
     return options.getDroppableHoverClass();
   }
 
@@ -251,14 +260,21 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   }
 
   /**
+   * Specify if the droppable is greedy or not. A greedy droppable will prevent
+   * events propagation on drappable parents of this droppable
    * 
-   * @return if the droppable is greedy or not. A greedy droppable will prevent
-   *         events propagation on drappable parents of this droppable
+   * @return true if the droppable is greedy. False otherwise
    */
   public boolean isGreedy() {
     return options.isGreedy();
   }
 
+  /**
+   * set the {@link AcceptFunction}. If null is given, the droppable will accept
+   * all draggables.
+   * 
+   * @param acceptFunction
+   */
   public void setAccept(AcceptFunction acceptFunction) {
     if (acceptFunction != null) {
       options.setAccept(acceptFunction);
@@ -267,28 +283,65 @@ public class DroppableWidget<T extends Widget> extends Composite implements
     }
   }
 
+  /**
+   * Set the css selector used to define elements that will be accepted by this
+   * droppable
+   * 
+   * @param selector
+   */
   public void setAccept(String selector) {
     options.setAccept(selector);
   }
 
+  /**
+   * Set the css class that will be add to the droppable when it is activated
+   * 
+   * @param activeClass
+   */
   public void setActiveClass(String activeClass) {
     options.setActiveClass(activeClass);
   }
 
+  /**
+   * Disable (true) or enable (false) the drop.
+   * 
+   * @param disabled
+   */
   public void setDisabled(boolean disabled) {
     options.setDisabled(disabled);
   }
 
   /**
    * Used to group sets of draggable and droppable widget, in addition to
-   * droppable's {@link AcceptFunction}. A DraggableWidget with the same scope value than a
-   * DroppableWidget will be accepted by this last.
+   * droppable's {@link AcceptFunction}. A DraggableWidget with the same scope
+   * value than a DroppableWidget will be accepted by this last.
    * 
    * @param scope
    */
   public void setDragAndDropScope(String scope) {
     $(getElement()).as(Droppable).changeScope(scope);
     options.setScope(scope);
+  }
+  
+  /**
+   * Set the css class added to an acceptable draggable when it is
+   *         being dragged over the droppable
+   *
+   * @param draggableHoverClass
+   */
+  public void setDraggableHoverClass(String draggableHoverClass) {
+    options.setDraggableHoverClass(draggableHoverClass);
+  }
+
+  /**
+   * Css class added when a acceptable draggable is being dragged over this
+   * droppable
+   * 
+   * @param hoverClass
+   *          css class
+   */
+  public void setDroppableHoverClass(String hoverClass) {
+    options.setDroppableHoverClass(hoverClass);
   }
 
   /**
@@ -302,15 +355,8 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Css class added when a acceptable draggable is being dragged over this droppable
-   * @param hoverClass css class
-   */
-  public void setHoverClass(String hoverClass) {
-    options.setDroppableHoverClass(hoverClass);
-  }
-
-  /**
    * set the {@link DroppableTolerance}
+   * 
    * @param tolerance
    */
   public void setTolerance(DroppableTolerance tolerance) {

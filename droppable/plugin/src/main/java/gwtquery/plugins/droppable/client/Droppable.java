@@ -30,113 +30,199 @@ import gwtquery.plugins.draggable.client.DragAndDropManager;
  */
 public class Droppable extends GQueryUi {
 
-	// A shortcut to the class
-	public static final Class<Droppable> Droppable = Droppable.class;
+  /**
+   * Css class used in this plugin
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
+  public static interface CssClassNames {
+    String GWTQUERY_DROPPABLE = "gwtQuery-droppable";
+    String GWTQUERY_DROPPABLE_DISABLED = "gwtQuery-droppable-disabled";
 
-	public static final String DROPPABLE_HANDLER_KEY = "droppableHandler";
+  }
 
-	// Register the plugin in GQuery
-	static {
-		GQuery.registerPlugin(Droppable.class, new Plugin<Droppable>() {
-			public Droppable init(GQuery gq) {
-				return new Droppable(gq);
-			}
-		});
-	}
+  // A shortcut to the class
+  public static final Class<Droppable> Droppable = Droppable.class;
 
-	public static interface CssClassNames {
-		String GWTQUERY_DROPPABLE = "gwtQuery-droppable";
-		String GWTQUERY_DROPPABLE_DISABLED = "gwtQuery-droppable-disabled";
+  public static final String DROPPABLE_HANDLER_KEY = "droppableHandler";
 
-	}
+  // Register the plugin in GQuery
+  static {
+    GQuery.registerPlugin(Droppable.class, new Plugin<Droppable>() {
+      public Droppable init(GQuery gq) {
+        return new Droppable(gq);
+      }
+    });
+  }
 
-	public Droppable(Element element) {
-		super(element);
-	}
+  /**
+   * Constructor
+   * 
+   * @param element
+   */
+  public Droppable(Element element) {
+    super(element);
+  }
 
-	public Droppable(GQuery gq) {
-		super(gq);
-	}
+  /**
+   * Constructor
+   * 
+   * @param gq
+   */
+  public Droppable(GQuery gq) {
+    super(gq);
+  }
 
-	public Droppable(JSArray elements) {
-		super(elements);
-	}
+  /**
+   * Constructor
+   * 
+   * @param elements
+   */
+  public Droppable(JSArray elements) {
+    super(elements);
+  }
 
-	public Droppable(NodeList<Element> list) {
-		super(list);
-	}
+  /**
+   * Constructor
+   * 
+   * @param list
+   */
+  public Droppable(NodeList<Element> list) {
+    super(list);
+  }
 
-	public Droppable droppable() {
-		return droppable(new DroppableOptions());
-	}
+  /**
+   * Change the scope of the selected elements.
+   * 
+   * @param newScope
+   * @return
+   */
+  public Droppable changeScope(String newScope) {
+    for (Element e : elements()) {
+      DroppableHandler handler = DroppableHandler.getInstance(e);
+      if (handler != null) {
+        String oldScope = handler.getOptions().getScope();
+        DragAndDropManager dndManager = DragAndDropManager.getInstance();
+        dndManager.getDroppablesByScope(oldScope).remove(e);
+        dndManager.getDroppablesByScope(newScope).add(e);
+        handler.getOptions().setScope(newScope);
+      }
+    }
+    return this;
+  }
 
-	public Droppable droppable(DroppableOptions o) {
-		return droppable(o, null);
-	}
+  /**
+   * Remove the droppable behavior to the selectedelements. This method releases
+   * resources used by the plugin and should be called when an element is
+   * removed of the DOM.
+   * 
+   * @return
+   */
+  public Droppable destroy() {
+    DragAndDropManager ddm = DragAndDropManager.getInstance();
+    for (Element e : elements()) {
+      DroppableHandler infos = DroppableHandler.getInstance(e);
+      ddm.getDroppablesByScope(infos.getOptions().getScope()).remove(e);
+      $(e).removeClass(CssClassNames.GWTQUERY_DROPPABLE,
+          CssClassNames.GWTQUERY_DROPPABLE_DISABLED).removeData(
+          DROPPABLE_HANDLER_KEY);
+    }
+    return this;
+  }
 
-	public Droppable droppable(DroppableOptions o, HasHandlers eventBus) {
+  /**
+   * Make the selected elements droppable with default options
+   * 
+   * @return
+   */
+  public Droppable droppable() {
+    return droppable(new DroppableOptions());
+  }
 
-		DragAndDropManager ddm = DragAndDropManager.getInstance();
+  /**
+   * Make the selected elements draggable by using the
+   * <code>droppableOptions</code>
+   * 
+   * @param droppableOptions
+   *          options used to initialize the droppable
+   * @return
+   */
+  public Droppable droppable(DroppableOptions droppableOptions) {
+    return droppable(droppableOptions, null);
+  }
 
-		for (Element e : elements()) {
-			DroppableHandler di = new DroppableHandler(o, eventBus);
-			di.setDroppableDimension(new Dimension(e));
-			$(e).data(DROPPABLE_HANDLER_KEY, di);
+  /**
+   * Make the selected elements droppable with default options. All drop events
+   * will be fired on the <code>eventBus</code>
+   * 
+   *@param eventBus
+   *          The eventBus to use to fire events.
+   * @return
+   */
+  public Droppable droppable(HasHandlers eventBus) {
+    return droppable(new DroppableOptions(), eventBus);
+  }
 
-			ddm.addDroppable(e, o.getScope());
+  /**
+   * Make the selected elements droppable by using the
+   * <code>droppableOptions</code>. All drop events will be fired on the
+   * <code>eventBus</code>
+   * 
+   *@param eventBus
+   *          The eventBus to use to fire events.
+   * @param droppableOptions
+   *          options used to initialize the droppable
+   * @return
+   */
+  public Droppable droppable(DroppableOptions droppableOptions,
+      HasHandlers eventBus) {
 
-			e.addClassName(CssClassNames.GWTQUERY_DROPPABLE);
+    DragAndDropManager ddm = DragAndDropManager.getInstance();
 
-		}
+    for (Element e : elements()) {
+      DroppableHandler handler = new DroppableHandler(droppableOptions,
+          eventBus);
+      handler.setDroppableDimension(new Dimension(e));
+      $(e).data(DROPPABLE_HANDLER_KEY, handler);
 
-		return this;
-	}
+      ddm.addDroppable(e, droppableOptions.getScope());
 
-	public Droppable destroy() {
-		DragAndDropManager ddm = DragAndDropManager.getInstance();
-		for (Element e : elements()) {
-			DroppableHandler infos = DroppableHandler.getInstance(e);
-			ddm.getDroppablesByScope(infos.getOptions().getScope()).remove(e);
-			$(e).removeClass(CssClassNames.GWTQUERY_DROPPABLE,
-					CssClassNames.GWTQUERY_DROPPABLE_DISABLED).removeData(
-					DROPPABLE_HANDLER_KEY);
-		}
-		return this;
-	}
+      e.addClassName(CssClassNames.GWTQUERY_DROPPABLE);
 
-	public DroppableOptions options() {
-		if (length() > 0) {
-			DroppableHandler handler = DroppableHandler.getInstance(get(0));
-			if (handler != null) {
-				return handler.getOptions();
-			}
-		}
-		return null;
-	}
-	
-	public Droppable options(DroppableOptions options) {
-		if (length() > 0) {
-			DroppableHandler handler = DroppableHandler.getInstance(get(0));
-			if (handler != null) {
-				handler.setOptions(options);
-			}
-		}
-		return this;
-	}
-	
-	public Droppable changeScope(String newScope) {
-		for (Element e : elements()) {			
-			DroppableHandler handler = DroppableHandler.getInstance(e);
-			if (handler != null) {
-				String oldScope = handler.getOptions().getScope();
-				DragAndDropManager dndManager =DragAndDropManager.getInstance();
-				dndManager.getDroppablesByScope(oldScope).remove(e);
-				dndManager.getDroppablesByScope(newScope).add(e);
-				handler.getOptions().setScope(newScope);
-			}
-		}
-		return this;
-	}
-	
-	
+    }
+
+    return this;
+  }
+
+  /**
+   * Get the {@link DroppableOptions} for the first element.
+   * 
+   * @return
+   */
+  public DroppableOptions options() {
+    if (length() > 0) {
+      DroppableHandler handler = DroppableHandler.getInstance(get(0));
+      if (handler != null) {
+        return handler.getOptions();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Set the {@link DroppableOptions} for the selected elements.
+   * 
+   * @return
+   */
+  public Droppable options(DroppableOptions options) {
+    if (length() > 0) {
+      DroppableHandler handler = DroppableHandler.getInstance(get(0));
+      if (handler != null) {
+        handler.setOptions(options);
+      }
+    }
+    return this;
+  }
+
 }
