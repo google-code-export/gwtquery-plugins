@@ -51,10 +51,12 @@ import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandl
 import java.util.List;
 
 /**
- * Wrapper widget that wrap an GWT widget and to drag it.
+ * Wrapper widget that wrap an GWT widget and allows dragging it.
+ * 
+ * This class can be used as a wrapper or subclassed.
  * 
  * 
- * @author jdramaix
+ * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
  * @param <T>
  */
@@ -63,26 +65,23 @@ public class DraggableWidget<T extends Widget> extends Composite implements
 
   private final static String DRAGGABLE_WIDGET_KEY = "__draggableWidget";
 
+  /**
+   * This method return the widget associated to a draggable DOM element if it
+   * exist. It returns null otherwise.
+   * 
+   * @param e
+   *          a draggable DOM element
+   * @return
+   */
   public static DraggableWidget<?> get(Element e) {
     return $(e).data(DRAGGABLE_WIDGET_KEY, DraggableWidget.class);
   }
 
-  private DraggableOptions options;
   private SimpleEventBus dragHandlerManager;
-  
-  /**
-   * Constructor allowing extending of this class
-   * 
-   *  Don't forget to call initWidget method !
-   */
-  protected DraggableWidget(){
-    this.options = new DraggableOptions();
-    
-    
-  }
+  private DraggableOptions options;
 
   /**
-   * Constructor
+   * Constructor wrapping a existing widget.
    * 
    * @param w
    *          the widget that you want to make draggable
@@ -92,7 +91,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Constructor
+   * Constructor wrapping a existing widget.
    * 
    * @param w
    *          the widget that you want to make draggable
@@ -105,7 +104,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Constructor
+   * Constructor wrapping a existing widget.
    * 
    * @param w
    *          the widget that you want to make draggable
@@ -123,7 +122,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Constructor
+   * Constructor wrapping a existing widget.
    * 
    * @param w
    *          the widget that you want to make draggable
@@ -135,10 +134,22 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   public DraggableWidget(T w, String scope) {
     this(w, new DraggableOptions(), scope);
   }
-  
+
   /**
-   * Add a handler object that will manage the {@link BeforeDragStartEvent} event. this
-   * kind of event is fired before the initialization of the drag operation.
+   * Constructor allowing subclassing of this class
+   * 
+   * As {@link DraggableWidget} extends {@link Composite}, don't forget to call
+   * {@link #initWidget(Widget)} method !
+   */
+  protected DraggableWidget() {
+    this.options = new DraggableOptions();
+
+  }
+
+  /**
+   * Add a handler object that will manage the {@link BeforeDragStartEvent}
+   * event. This kind of event is fired before the initialization of the drag
+   * operation.
    */
   public HandlerRegistration addBeforeDragHandler(
       BeforeDragStartEventHandler handler) {
@@ -170,16 +181,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Get the axis constraint.
-   * 
-   * @return the {@link AxisOption} constraint
-   * 
-   */
-  public AxisOption getAxis() {
-    return options.getAxis();
-  }
-
-  /**
    * 
    * @return the options currently use for the drag operation
    */
@@ -198,12 +199,12 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Return the drag and drop scope. A draggable widget with the same scope
-   * value as a droppable widget will be accepted by this droppable.
+   * Return the drag and drop scope. A draggable widget with the same scope than
+   * a droppable widget will be accepted by this droppable.
    * 
    * @return the scope
    */
-  public String getScope() {
+  public String getDragAndDropScope() {
     return options.getScope();
   }
 
@@ -212,6 +213,10 @@ public class DraggableWidget<T extends Widget> extends Composite implements
    */
   public boolean isCloneUsedAsHelper() {
     return HelperType.CLONE == options.getHelperType();
+  }
+
+  public boolean isDragDisabled() {
+    return options.isDisabled();
   }
 
   /**
@@ -227,22 +232,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   public boolean isOtherWidgetUsedAsHelper() {
     return HelperType.ELEMENT == options.getHelperType();
 
-  }
-
-  public boolean isDragDisabled() {
-    return options.isDisabled();
-  }
-
-  public boolean isRefreshPositions() {
-    return options.isRefreshPositions();
-  }
-
-  public boolean isScroll() {
-    return options.isScroll();
-  }
-
-  public boolean isSnap() {
-    return options.isSnap();
   }
 
   /**
@@ -262,8 +251,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Constrains dragging to either the horizontal (X_AXIS) or vertical (Y_AXIS)
-   * axis.
+   * set the {@link AxisOption}
    * 
    * @param axis
    */
@@ -330,15 +318,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * Specify the css cursor to use during the drag operation.
-   * 
-   * @param cursor
-   */
-  public void setCursor(Cursor cursor) {
-    options.setCursor(cursor);
-  }
-
-  /**
    * Moves the dragging helper so the cursor always appears to drag from the
    * same position.
    * 
@@ -377,6 +356,17 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
+   * Used to group sets of draggable and droppable widget, in addition to
+   * droppable's accept option. A DraggableWidget with the same scope value than
+   * a DroppableWidget will be accepted by this last.
+   * 
+   * @param scope
+   */
+  public void setDragAndDropScope(String scope) {
+    options.setScope(scope);
+  }
+
+  /**
    * Set the options for the draggable
    * 
    * @param options
@@ -386,6 +376,34 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     if (isAttached()) {
       $(getElement()).as(Draggable).options(options);
     }
+  }
+
+  /**
+   * Specify the css cursor to use during the drag operation.
+   * 
+   * @param cursor
+   */
+  public void setDraggingCursor(Cursor cursor) {
+    options.setCursor(cursor);
+  }
+
+  /**
+   * Set the opacity of the helper during the drag.
+   * 
+   * @param opacity
+   *          a float between 0 and 1
+   */
+  public void setDraggingOpacity(Float opacity) {
+    options.setOpacity(opacity);
+  }
+
+  /**
+   * z-index for the helper while being dragged.
+   * 
+   * @param zIndex
+   */
+  public void setDraggingZIndex(Integer zIndex) {
+    options.setZIndex(zIndex);
   }
 
   /**
@@ -404,11 +422,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     options.setGrid(grid);
   }
 
-  /*
-   * public void setIframeFix(boolean iframeFix) {
-   * options.setIframeFix(iframeFix); }
-   */
-
   /**
    * If specified, restricts drag start when the user clicks on the specified
    * element(s).
@@ -418,16 +431,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
    */
   public void setHandle(String selector) {
     options.setHandle(selector);
-  }
-
-  /**
-   * Set the opacity of the helper during the drag.
-   * 
-   * @param opacity
-   *          a float between 0 and 1
-   */
-  public void setOpacity(Float opacity) {
-    options.setOpacity(opacity);
   }
 
   /**
@@ -457,17 +460,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
    */
   public void setRevertDuration(int revertDuration) {
     options.setRevertDuration(revertDuration);
-  }
-
-  /**
-   * Used to group sets of draggable and droppable widget, in addition to
-   * droppable's accept option. A DraggableWidget with the same scope value as a
-   * DroppableWidget will be accepted by this last.
-   * 
-   * @param scope
-   */
-  public void setScope(String scope) {
-    options.setScope(scope);
   }
 
   /**
@@ -576,15 +568,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
-   * z-index for the helper while being dragged.
-   * 
-   * @param zIndex
-   */
-  public void setZIndex(Integer zIndex) {
-    options.setZIndex(zIndex);
-  }
-
-  /**
    * A clone of the widget will Be used as dragging display during the drag
    * operation instead of moving the original widget
    */
@@ -632,7 +615,8 @@ public class DraggableWidget<T extends Widget> extends Composite implements
       DOM.setEventListener(getElement(), gQueryEventListener);
     }
 
-    $(getElement()).as(Draggable).draggable(options, ensureDragHandlers()).data(DRAGGABLE_WIDGET_KEY, this);
+    $(getElement()).as(Draggable).draggable(options, ensureDragHandlers())
+        .data(DRAGGABLE_WIDGET_KEY, this);
   }
 
   @Override
@@ -641,5 +625,4 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     $(getElement()).as(Draggable).destroy().removeData(DRAGGABLE_WIDGET_KEY);
   }
 
- 
 }
