@@ -174,7 +174,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
    * @param <T> the data type of the presenter
    */
   private static class DefaultState<T> implements State<T> {
-    int keyboardSelectedRow = -1;
+    int keyboardSelectedRow = 0;
     T keyboardSelectedRowValue = null;
     int pageSize;
     int pageStart = 0;
@@ -636,7 +636,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
    */
   public void keyboardEnd() {
     if (!isKeyboardPagingPolicyLimitedToRange(keyboardPagingPolicy)) {
-      setKeyboardSelectedRow(getRowCount() - 1, true);
+      setKeyboardSelectedRow(getRowCount() - 1, true, false);
     }
   }
 
@@ -645,7 +645,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
    */
   public void keyboardHome() {
     if (!isKeyboardPagingPolicyLimitedToRange(keyboardPagingPolicy)) {
-      setKeyboardSelectedRow(-getPageStart(), true);
+      setKeyboardSelectedRow(-getPageStart(), true, false);
     }
   }
 
@@ -654,7 +654,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
    */
   public void keyboardNext() {
     if (hasKeyboardNext()) {
-      setKeyboardSelectedRow(getKeyboardSelectedRow() + 1, true);
+      setKeyboardSelectedRow(getKeyboardSelectedRow() + 1, true, false);
     }
   }
 
@@ -664,9 +664,9 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
   public void keyboardNextPage() {
     if (KeyboardPagingPolicy.CHANGE_PAGE == keyboardPagingPolicy) {
       // 0th index of next page.
-      setKeyboardSelectedRow(getPageSize(), true);
+      setKeyboardSelectedRow(getPageSize(), true, false);
     } else if (KeyboardPagingPolicy.INCREASE_RANGE == keyboardPagingPolicy) {
-      setKeyboardSelectedRow(getKeyboardSelectedRow() + PAGE_INCREMENT, true);
+      setKeyboardSelectedRow(getKeyboardSelectedRow() + PAGE_INCREMENT, true, false);
     }
   }
 
@@ -675,7 +675,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
    */
   public void keyboardPrev() {
     if (hasKeyboardPrev()) {
-      setKeyboardSelectedRow(getKeyboardSelectedRow() - 1, true);
+      setKeyboardSelectedRow(getKeyboardSelectedRow() - 1, true, false);
     }
   }
 
@@ -685,9 +685,9 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
   public void keyboardPrevPage() {
     if (KeyboardPagingPolicy.CHANGE_PAGE == keyboardPagingPolicy) {
       // 0th index of previous page.
-      setKeyboardSelectedRow(-getPageSize(), true);
+      setKeyboardSelectedRow(-getPageSize(), true, false);
     } else if (KeyboardPagingPolicy.INCREASE_RANGE == keyboardPagingPolicy) {
-      setKeyboardSelectedRow(getKeyboardSelectedRow() - PAGE_INCREMENT, true);
+      setKeyboardSelectedRow(getKeyboardSelectedRow() - PAGE_INCREMENT, true, false);
     }
   }
 
@@ -726,10 +726,21 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
    * 
    * @param index the row index
    * @param stealFocus true to steal focus
+   * @param forceUpdate force the update even if the row didn't change
    */
-  public void setKeyboardSelectedRow(int index, boolean stealFocus) {
+  public void setKeyboardSelectedRow(int index, boolean stealFocus, boolean forceUpdate) {
     // Early exit if disabled.
     if (KeyboardSelectionPolicy.DISABLED == keyboardSelectionPolicy) {
+      return;
+    }
+
+    /*
+     * Early exit if the keyboard selected row has not changed and the keyboard
+     * selected value is already set.
+     */
+
+    if (!forceUpdate && getKeyboardSelectedRow() == index
+        && getKeyboardSelectedRowValue() != null) {
       return;
     }
 
@@ -1129,7 +1140,7 @@ public class HasDataPresenter<T> implements HasData<T>, HasKeyProvider<T>,
      * If the row value exists in multiple places, use the closest index. If the
      * row value not longer exists, use the current index.
      */
-    pending.keyboardSelectedRow = Math.max(-1,
+    pending.keyboardSelectedRow = Math.max(0,
         Math.min(pending.keyboardSelectedRow, rowDataCount - 1));
     if (KeyboardSelectionPolicy.DISABLED == keyboardSelectionPolicy) {
       // Clear the keyboard selected state.

@@ -316,7 +316,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
       if (level < treeNodes.size() - 1) {
         TreeNodeImpl<?> treeNode = treeNodes.get(level + 1);
         treeNode.display.getPresenter().setKeyboardSelectedRow(
-            treeNode.display.getKeyboardSelectedRow(), true);
+            treeNode.display.getKeyboardSelectedRow(), true, true);
       }
     }
 
@@ -447,7 +447,7 @@ public class DragAndDropCellBrowser extends AbstractCellTree implements Provides
       checkChildBounds(index);
       if (open) {
         // Open the child node.
-        display.getPresenter().setKeyboardSelectedRow(index, false);
+        display.getPresenter().setKeyboardSelectedRow(index, false, true);
         return updateChildState(display, fireEvents);
       } else {
         // Close the child node if it is currently open.

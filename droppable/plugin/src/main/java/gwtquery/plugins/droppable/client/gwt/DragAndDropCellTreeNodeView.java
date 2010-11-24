@@ -1336,7 +1336,7 @@ class DragAndDropCellTreeNodeView<T> extends UIObject {
       if (accessKey != 0) {
         focusImpl.setAccessKey(cellElem, accessKey);
       }
-      if (stealFocus) {
+      if (stealFocus && !tree.cellIsEditing) {
         cellElem.focus();
       }
     }
