@@ -50,7 +50,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Draggable for GwtQuery
+ * Draggable plugin for GwtQuery
  */
 public class Draggable extends MouseHandler {
 
@@ -119,6 +119,7 @@ public class Draggable extends MouseHandler {
       }
     });
 
+    // register the different draggable plugins
     registerDraggablePlugin(new OpacityPlugin());
     registerDraggablePlugin(new ScrollPlugin());
     registerDraggablePlugin(new CursorPlugin());
@@ -142,24 +143,46 @@ public class Draggable extends MouseHandler {
   // for performance purpose cache the current drag handler.
   private DraggableHandler currentDragHandler;
 
+  /**
+   * Constructor
+   * 
+   * @param element
+   */
   public Draggable(Element element) {
     super(element);
   }
 
+  /**
+   * Constructor
+   * 
+   * @param gq
+   */
   public Draggable(GQuery gq) {
     super(gq);
   }
 
+  /**
+   * Constructor
+   * 
+   * @param elements
+   */
   public Draggable(JSArray elements) {
     super(elements);
   }
 
+  /**
+   * Constructor
+   * 
+   * @param list
+   */
   public Draggable(NodeList<Element> list) {
     super(list);
   }
 
   /**
-   * Remove the draggable behavior to the elements
+   * Remove the draggable behavior to the elements. This method release
+   * resources used by the plugin and should be called when an element is
+   * removed of the DOM.
    * 
    * @return
    */
@@ -174,7 +197,7 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Selected elements will be now draggable
+   * Make the selected elements draggable
    * 
    * @return
    */
@@ -183,7 +206,7 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Selected elements will be now draggable
+   * Make the selected elements draggable by using the <code>options</code>
    * 
    * @param options
    *          options to use during the drag operation
@@ -194,7 +217,8 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Selected elements will be now draggable
+   * Make the selected elements draggable. All drag events will be fired on the
+   * <code>eventBus</code>
    * 
    *@param eventBus
    *          The eventBus to use to fire events.
@@ -205,7 +229,8 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Selected elements will be now draggable
+   * Make the selected elements draggable by using the <code>options</code>. All
+   * drag events will be fired on the <code>eventBus</code>
    * 
    * @param options
    *          options to use during the drag operation
@@ -496,13 +521,13 @@ public class Draggable extends MouseHandler {
       }
     });
   }
-  
- 
+
   private void trigger(GwtEvent<?> e, DragFunction callback, Element draggable) {
     trigger(e, callback, draggable, eventBus);
   }
-  
-  private static void trigger(GwtEvent<?> e, DragFunction callback, Element draggable, HasHandlers handlerManager){
+
+  private static void trigger(GwtEvent<?> e, DragFunction callback,
+      Element draggable, HasHandlers handlerManager) {
     if (handlerManager != null && e != null) {
       handlerManager.fireEvent(e);
     }
