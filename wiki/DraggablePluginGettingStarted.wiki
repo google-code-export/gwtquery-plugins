@@ -40,7 +40,8 @@ If you use maven, you have to add these blocks to your pom.xml
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>draggable-plugin</artifactId>
-            <scope>0.1</version>
+            <version>0.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
    </build>
