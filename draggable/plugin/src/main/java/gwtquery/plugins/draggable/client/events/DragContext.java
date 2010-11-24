@@ -24,7 +24,7 @@ import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
 /**
- * Object containing usefull information on the drag operation.
+ * Object containing useful information on the drag operation.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
@@ -37,36 +37,30 @@ public class DragContext {
   private Element helper;
   private Offset helperPosition;
 
+  /**
+   * Constructor
+   * 
+   * @param draggable
+   *          the draggable element
+   */
   public DragContext(Element draggable) {
     this.draggable = draggable;
     init();
   }
 
-  private void init() {
-    DraggableHandler handler = DraggableHandler.getInstance(draggable);
-    if (handler.getHelper() != null) {
-      helper = handler.getHelper().get(0);
-    }
-    helperPosition = handler.getPosition();
-  }
-
+  /**
+   * 
+   * @return the draggable DOM element
+   */
   public Element getDraggable() {
     return draggable;
   }
 
-  public Element getHelper() {
-    return helper;
-  }
-
-  public Offset getHelperPosition() {
-    return helperPosition;
-  }
-
   /**
-   * Return the data value associated to the current draggable element if and
-   * only if this one is coming from a {@link DraggableCell} This method returns
-   * null if the current drag and drop operation doesn't concerns a
-   * {@link DraggableCell}
+   * This method allows getting the data object linked to the draggable element
+   * (a cell) in the context of CellWidget.It return the data object being
+   * rendered by the dragging cell. Return null if we are not in the context of
+   * an drag and drop cell widget.
    * 
    * @param <T>
    *          the class of the data
@@ -77,11 +71,40 @@ public class DragContext {
     return (T) $(getDraggable()).data(VALUE_KEY);
   }
 
+  /**
+   * This method return the widget associated to the draggable DOM element if it
+   * exist. It returns null otherwise.
+   * 
+   */
   public DraggableWidget<?> getDraggableWidget() {
     if (getDraggable() != null) {
       return DraggableWidget.get(getDraggable());
     }
     return null;
+  }
+
+  /**
+   * 
+   * @return the DOM element used for dragging display
+   */
+  public Element getHelper() {
+    return helper;
+  }
+
+  /**
+   * 
+   * @return the {@link Offset} of the helper element.
+   */
+  public Offset getHelperPosition() {
+    return helperPosition;
+  }
+
+  private void init() {
+    DraggableHandler handler = DraggableHandler.getInstance(draggable);
+    if (handler.getHelper() != null) {
+      helper = handler.getHelper().get(0);
+    }
+    helperPosition = handler.getPosition();
   }
 
 }

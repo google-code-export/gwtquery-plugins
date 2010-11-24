@@ -19,7 +19,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
- * Event fired when the drag operation stops.
+ * Event fired when the initialization of the drag before it starts.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
  * 
@@ -42,17 +42,17 @@ public class BeforeDragStartEvent extends
     return TYPE;
   }
 
-  @Override
-  protected void dispatch(BeforeDragStartEventHandler handler) {
-    handler.onBeforeDragStart(this);
-  }
-
   /**
    * Helper not yet initialized at this moment.
    */
   @Override
   public Element getHelper() {
     return null;
+  }
+
+  @Override
+  protected void dispatch(BeforeDragStartEventHandler handler) {
+    handler.onBeforeDragStart(this);
   }
 
 }

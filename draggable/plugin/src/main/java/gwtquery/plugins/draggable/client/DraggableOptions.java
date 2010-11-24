@@ -36,14 +36,14 @@ import gwtquery.plugins.draggable.client.events.DragContext;
  * 
  */
 public class DraggableOptions extends MouseOptions {
-  
+
   /**
    * Object use as callback function
    * 
    * @author Julien Dramaix (julien.dramaix@gmail.com)
-   *
+   * 
    */
-  public interface DragFunction{
+  public interface DragFunction {
     public void f(DragContext context);
   }
 
@@ -55,7 +55,20 @@ public class DraggableOptions extends MouseOptions {
    * 
    */
   public static enum AxisOption {
-    Y_AXIS, X_AXIS, NONE;
+    /**
+     * Y_AXIS constraints the drag operation to the vertical axis
+     */
+    Y_AXIS,
+
+    /**
+     * X_AXIS constraints the drag operation to the horizontal axis
+     */
+    X_AXIS,
+
+    /**
+     * No axis constraint
+     */
+    NONE;
   }
 
   /**
@@ -115,23 +128,35 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * TODO
+   * Specify which element is used as dragging display
+   * 
    * @author Julien Dramaix (julien.dramaix@gmail.com)
-   *
+   * 
    */
   public static enum HelperType {
+    /**
+     * ORIGINAL : the original element will be used as dragging display
+     */
     ORIGINAL {
       @Override
       public GQuery createHelper(Element original, GQuery helperFromOptions) {
         return $(original);
       }
     },
+
+    /**
+     * CLONE : a clone of the original element will be used as dragging display
+     */
     CLONE {
       @Override
       public GQuery createHelper(Element original, GQuery helperFromOptions) {
         return $(original).clone();
       }
     },
+
+    /**
+     * ORIGINAL : an other element will be used as dragging display
+     */
     ELEMENT {
       @Override
       public GQuery createHelper(Element original, GQuery helperFromOptions) {
@@ -144,23 +169,32 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * 
-   * Define what the draggable do a the end of the drag operation.
-   * 
-   * ALWAYS : the draggable will return to its start position when dragging
-   * stops.
-   * 
-   * NEVER : the draggable will not return to its start position when dragging
-   * stops.
-   * 
-   * ON_VALID_DROP :revert will only occur if the draggable has been dropped
-   * (useful with droppable plug-in)
-   * 
-   * ON_INVALID_DROP :revert will only occur if the draggable has not been
-   * dropped (useful with droppable plug-in)
+   * Define what the dragging helper do a the end of the drag operation.
    */
   public static enum RevertOption {
-    NEVER, ALWAYS, ON_VALID_DROP, ON_INVALID_DROP;
+    /**
+     * NEVER : the draggable will not return to its start position when dragging
+     * stops.
+     */
+    NEVER,
+
+    /**
+     * ALWAYS : the helper will return to its start position when dragging
+     * stops.
+     */
+    ALWAYS,
+
+    /**
+     * ON_VALID_DROP : revert will only occur if the draggable has been dropped
+     * (useful with droppable plug-in)
+     */
+    ON_VALID_DROP,
+
+    /**
+     * ON_INVALID_DROP :revert will only occur if the draggable has not been
+     * dropped (useful with droppable plug-in)
+     */
+    ON_INVALID_DROP;
 
     public boolean doRevert(boolean dropped) {
       return this == ALWAYS || (this == ON_INVALID_DROP && !dropped)
@@ -168,8 +202,27 @@ public class DraggableOptions extends MouseOptions {
     }
   }
 
+  /**
+   * Determines which edges of snap elements the helper will snap to.
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
   public static enum SnapMode {
-    INNER, OUTER, BOTH;
+    /**
+     * The helper will snap the inner edges of snap elements.
+     */
+    INNER,
+
+    /**
+     * The helper will snap the outer edges of snap elements.
+     */
+    OUTER,
+
+    /**
+     * The helper will snap the inner and the outer edges of snap elements.
+     */
+    BOTH;
   }
 
   public static final String DEFAULT_SCOPE = "default";
@@ -186,9 +239,7 @@ public class DraggableOptions extends MouseOptions {
   private String handle;
   private GQuery helper;
   private HelperType helperType;
-  private boolean iframeFix;
   private Float opacity;
-  private boolean refreshPositions;
   private RevertOption revert;
   private int revertDuration;
   private String scope;
@@ -207,10 +258,18 @@ public class DraggableOptions extends MouseOptions {
   private DragFunction onDrag;
   private GQuery $containment;
 
+  /**
+   * @return the css selector used to select the element where the helper will
+   *         be appended
+   */
   public String getAppendTo() {
     return appendTo;
   }
 
+  /**
+   * 
+   * @return the {@link AxisOption}
+   */
   public AxisOption getAxis() {
     if (axis == null) {
       return AxisOption.NONE;
@@ -218,126 +277,238 @@ public class DraggableOptions extends MouseOptions {
     return axis;
   }
 
+  /**
+   * 
+   * @return the css selector used to select the element that will constraint
+   *         dragging within it
+   */
   public String getContainment() {
     return containment;
   }
 
+  /**
+   * 
+   * @return an arry of 4 int determining the area used to constraint dragging
+   *         within it
+   */
   public int[] getContainmentAsArray() {
     return containmentAsArray;
   }
 
+  /**
+   * 
+   * @return the {@link GQuery} object used to select the element that will
+   *         constraint dragging within it
+   */
   public GQuery getContainmentAsGQuery() {
     return $containment;
   }
 
+  /**
+   * 
+   * @return the {@link Cursor} used during the drag operation
+   */
   public Cursor getCursor() {
     return cursor;
   }
 
+  /**
+   * 
+   * @return the {@link CursorAt}
+   */
   public CursorAt getCursorAt() {
     return cursorAt;
   }
 
+  /**
+   * 
+   * @return The array of int defining the dimension of the cell of the snap
+   *         grid.
+   */
   public int[] getGrid() {
     return grid;
   }
 
+  /**
+   * 
+   * @return the css selector used to select the element used as drag handle.
+   *         The drag operations starts only when the user clicks on it
+   */
   public String getHandle() {
     return handle;
   }
 
+  /**
+   * 
+   * @return the {@link GQuery} object used as dragging display
+   */
   public GQuery getHelper() {
     return helper;
   }
 
+  /**
+   * 
+   * @return the {@link HelperType}
+   */
   public HelperType getHelperType() {
     return helperType;
   }
 
+  /**
+   * 
+   * @return the {@link DragFunction} called before the drag start
+   */
   public DragFunction getOnBeforeDragStart() {
     return onBeforeDragStart;
   }
 
+  /**
+   * 
+   * @return the {@link DragFunction} called when the helper is being dragged
+   */
   public DragFunction getOnDrag() {
     return onDrag;
   }
 
+  /**
+   * 
+   * @return the {@link DragFunction} called when the drag start
+   */
   public DragFunction getOnDragStart() {
     return onDragStart;
   }
 
+  /**
+   * 
+   * @return the {@link DragFunction} called before the drag stop
+   */
   public DragFunction getOnDragStop() {
     return onDragStop;
   }
 
+  /**
+   * 
+   * @return the value of the opacity set to the helper while being dragged
+   */
   public Float getOpacity() {
     return opacity;
   }
 
+  /**
+   * 
+   * @return the {@link RevertOption}
+   */
   public RevertOption getRevert() {
     return revert;
   }
 
+  /**
+   * 
+   * @return The duration of the revert animation, in milliseconds.
+   */
   public int getRevertDuration() {
     return revertDuration;
   }
 
+  /**
+   * 
+   * @return the scope of the draggable. The scope is used to group sets of
+   *         draggable and droppable items, in addition to droppable's accept
+   *         option. A draggable with the same scope value as a droppable will
+   *         be accepted by the droppable.
+   */
   public String getScope() {
     return scope;
   }
 
+  /**
+   * 
+   * @return the distance in pixels from the edge of the viewport after which
+   *         the viewport should scroll. Distance is relative to pointer, not to
+   *         the draggable.
+   */
   public int getScrollSensitivity() {
     return scrollSensitivity;
   }
 
+  /**
+   * 
+   * @return The speed at which the window should scroll once the mouse pointer
+   *         gets within the scrollSensitivity distance.
+   */
   public int getScrollSpeed() {
     return scrollSpeed;
   }
 
+  /**
+   * 
+   * @return the css selector used to identify the snap elements.
+   */
   public String getSnap() {
     return snap;
   }
 
+  /**
+   * 
+   * @return the {@link GQuery} used to identify the snap elements.
+   */
   public GQuery getSnap_$() {
     return $snap;
   }
 
+  /**
+   * 
+   * @return the {@link SnapMode}
+   */
   public SnapMode getSnapMode() {
     return snapMode;
   }
 
+  /**
+   * 
+   * @return The distance in pixels from the snap element edges at which
+   *         snapping should occur.
+   */
   public int getSnapTolerance() {
     return snapTolerance;
   }
 
+  /**
+   * 
+   * @return the {@link GQuery}
+   */
   public GQuery getStack() {
     return stack;
   }
 
-  /*
-   * public boolean isConnectToSortable() { return connectToSortable; }
+  /**
+   * 
+   * @return return the z-index set to the helper while being dragged
    */
-
   public Integer getZIndex() {
     return zIndex;
   }
 
+  /**
+   * 
+   * @return if the drag is disabled.
+   */
   public boolean isDisabled() {
     return disabled;
   }
 
-  public boolean isIframeFix() {
-    return iframeFix;
-  }
-
-  public boolean isRefreshPositions() {
-    return refreshPositions;
-  }
-
+  /**
+   * 
+   * @return if the container scroll while dragging
+   */
   public boolean isScroll() {
     return scroll;
   }
 
+  /**
+   * 
+   * @return if the helper will snap the edges of the other draggable elements.
+   */
   public boolean isSnap() {
     return snap != null;
   }
@@ -355,19 +526,14 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * Constrains dragging to either the horizontal (X_AXIS) or vertical (Y_AXIS)
-   * axis.
-   * 
+   * set the {@link AxisOption}
+   *  
    * @param axis
    */
   public void setAxis(AxisOption axis) {
     this.axis = axis;
   }
 
-  /*
-   * public void setConnectToSortable(boolean connectToSortable) {
-   * this.connectToSortable = connectToSortable; }
-   */
 
   /**
    * Constrains dragging to within the bounds of the specified region. The
@@ -438,8 +604,7 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * Moves the dragging helper so the cursor always appears to drag from the
-   * same position.
+   * set the {@link CursorAt}
    * 
    * @param cursorAt
    */
@@ -516,20 +681,7 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * Set the helper type.
-   * 
-   * ORIGINAL : the original draggable will be used as dragging display
-   * 
-   * CLONE : a clone of the original draggable will be used as dragging display
-   * 
-   * ELEMENT : an other element will be used. If you set this helper type, you
-   * have to call <code>setHelper(Element helper)</code> or
-   * <code>setHelper(GQuery helper)</code> to specify which element to use.
-   * Please note that if you call directly these methods, the helper type will
-   * be set automatically to ELEMENT
-   * 
-   * CLONE and ELEMENT options don't move the original widget at the end of the
-   * drag operation. They are only useful with droppable plugin
+   * Set the {@link HelperType}
    * 
    * @param helperType
    *          the helper type
@@ -556,42 +708,42 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * Give a callback function called before the initialization of the drag
+   * Set the {@link DragFunction} called before the initialization of the drag
    * operation.
    * 
    * @param onDragStart
    *          function called before the initialization of the drag operation.
-   *          
+   * 
    */
   public void setOnBeforeDragStart(DragFunction onBeforeDragStart) {
     this.onBeforeDragStart = onBeforeDragStart;
   }
 
   /**
-   * Give a callback function called when the drag operation is dragging.
+   * Set the {@link DragFunction} called when the drag operation is dragging.
    * 
    * @param onDragStart
-   *          function called when the drag operation is dragging. 
+   *          function called when the drag operation is dragging.
    */
   public void setOnDrag(DragFunction onDrag) {
     this.onDrag = onDrag;
   }
 
   /**
-   * Give a callback function called when the drag operation starts.
+   * Set the {@link DragFunction} called when the drag operation starts.
    * 
    * @param onDragStart
-   *          function called when the drag operation starts. 
+   *          function called when the drag operation starts.
    */
   public void setOnDragStart(DragFunction onDragStart) {
     this.onDragStart = onDragStart;
   }
 
   /**
-   * Give a callback function called when the drag operation ends.
+   * Set the {@link DragFunction} called when the drag operation ends.
    * 
    * @param onDragStart
-   *          function called when the drag operation ends. 
+   *          function called when the drag operation ends.
    */
   public void setOnDragStop(DragFunction onDragStop) {
     this.onDragStop = onDragStop;
@@ -608,18 +760,7 @@ public class DraggableOptions extends MouseOptions {
   }
 
   /**
-   * Set the revert options
-   * 
-   * ALWAYS : the element will return to its start position when dragging stops.
-   * 
-   * NEVER : the element will not return to its start position when dragging
-   * stops.
-   * 
-   * ON_VALID_DROP :revert will only occur if the draggable has been dropped
-   * (useful with droppable plug-in)
-   * 
-   * ON_INVALID_DROP :revert will only occur if the draggable has not been
-   * dropped (useful with droppable plug-in)
+   * Set the {@link RevertOption}
    * 
    * @param revert
    */
@@ -769,8 +910,6 @@ public class DraggableOptions extends MouseOptions {
     super.initDefault();
     appendTo = "parent";
     axis = AxisOption.NONE;
-    iframeFix = false;
-    refreshPositions = false;
     revert = RevertOption.NEVER;
     cursor = Cursor.AUTO;
     helperType = HelperType.ORIGINAL;
