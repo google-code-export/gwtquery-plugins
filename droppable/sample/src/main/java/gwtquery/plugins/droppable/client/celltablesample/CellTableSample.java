@@ -271,7 +271,7 @@ public class CellTableSample implements EntryPoint {
     exportCellList = new DroppableWidget<CellList<ContactInfo>>(cellList);
 
     // setup the drop operation
-    exportCellList.setHoverClass(Resource.INSTANCE.css().droppableHover());
+    exportCellList.setDroppableHoverClass(Resource.INSTANCE.css().droppableHover());
     exportCellList.setActiveClass(Resource.INSTANCE.css().droppableActive());
     exportCellList.addDropHandler(new DropEventHandler() {
 

@@ -141,7 +141,7 @@ public class DroppableSquare extends DroppableWidget<SimplePanel> implements Has
     initWidget(new SimplePanel());
     
     // setup drop
-    setHoverClass(DraughtsResources.INSTANCE.css().hoverCell());
+    setDroppableHoverClass(DraughtsResources.INSTANCE.css().hoverCell());
     setActiveClass(DraughtsResources.INSTANCE.css()
         .activeCell());
     setAccept(new CellAcceptFunction());

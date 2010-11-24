@@ -95,9 +95,9 @@ public class GwtSimpleSample implements EntryPoint {
     // revert the image to its initial position if no drop
     draggableLogo.setRevert(RevertOption.ON_INVALID_DROP);
     // ensure that dragging image is above the others during drag operation
-    draggableLogo.setZIndex(100);
+    draggableLogo.setDraggingZIndex(100);
     // set the cursor during the drag operation
-    draggableLogo.setCursor(Cursor.MOVE);
+    draggableLogo.setDraggingCursor(Cursor.MOVE);
     return draggableLogo;
   }
 
@@ -143,7 +143,7 @@ public class GwtSimpleSample implements EntryPoint {
     DroppableWidget<Label> trashBin = new DroppableWidget<Label>(trashBinLabel);
     // specify wich class has to be used when a draggable widget is over the
     // droppable
-    trashBin.setHoverClass(Resources.INSTANCE.css().droppableHover());
+    trashBin.setDroppableHoverClass(Resources.INSTANCE.css().droppableHover());
     // add a drop handler
     trashBin.addDropHandler(new DropEventHandler() {
 
