@@ -16,7 +16,7 @@
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.CHECKERBOARD_CLASS_NAME;
+import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.CHECKERBOARD_SELECTOR;
 import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
 
 import com.google.gwt.dom.client.Style.Cursor;
@@ -55,7 +55,7 @@ public class Piece extends DraggableWidget<HTML> {
     $(this).fadeOut(300, new Function() {
       @Override
       public void f() {
-        ((CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget()).getCell(
+        ((CheckerBoard) $(CHECKERBOARD_SELECTOR).widget()).getCell(
             position.getY(), position.getX()).clear();
         position = null;
       }
@@ -185,15 +185,15 @@ public class Piece extends DraggableWidget<HTML> {
     // revert the piece if this one is not dropped
     setRevert(RevertOption.ON_INVALID_DROP);
     // be sure that when the piece is dragging, it is in front
-    setZIndex(100);
+    setDraggingZIndex(100);
     // set the opacity of the piece during the drag
     setDraggingOpacity((float) 0.8);
     // the piece cannot be drag outside the checkerboard
-    setContainment($(CHECKERBOARD_CLASS_NAME).widget());
+    setContainment($(CHECKERBOARD_SELECTOR).widget());
     // set cursor in the middle of the piece
     setCursorAt(new CursorAt(25, 25, null, null));
     // set the cursor to use during the drag
-    setCursor(Cursor.MOVE);
+    setDraggingCursor(Cursor.MOVE);
     // start the drag operation on mousedown
     setDistance(0);
 

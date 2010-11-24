@@ -40,7 +40,8 @@ import java.util.List;
 public class CheckerBoard extends Grid {
 
   private static final Css CSS = DraughtsResources.INSTANCE.css();
-  public static final String CHECKERBOARD_CLASS_NAME = "." + CSS.checkerBoard();
+  private static final String CHECKERBOARD_ID = "checkerBoard";
+  public static final String CHECKERBOARD_SELECTOR = "#checkerBoard";
   public static final int PIECE_NUMBER = 12;
   public static final int SQUARE_NUMBER = 8;
   
@@ -79,7 +80,7 @@ public class CheckerBoard extends Grid {
       for (int column = (row + 1) % 2; column < SQUARE_NUMBER; column += 2) {
         Piece piece = new Piece(player, new Position(column, row));
         // we will fade in the piece after
-        $(piece.getElement()).hide();
+        $(piece).hide();
         pieces.add(piece);
         getCell(row, column).add(piece);
         GameController.getInstance().pieceMove(piece, null,
@@ -152,6 +153,8 @@ public class CheckerBoard extends Grid {
     }
 
     addStyleName(CSS.checkerBoard());
+    //set and id to retrieve it later thnaks to GwtQuery
+    getElement().setId(CHECKERBOARD_ID);
 
   }
 

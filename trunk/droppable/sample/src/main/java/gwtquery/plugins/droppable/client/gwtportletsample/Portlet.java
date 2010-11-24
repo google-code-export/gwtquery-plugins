@@ -19,7 +19,6 @@ import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Widget;
@@ -56,16 +55,14 @@ public class Portlet extends DraggableWidget<Widget> {
      * it css position to absolute. 
      */
     public void onBeforeDragStart(BeforeDragStartEvent event) {
-      Portlet draggingPortlet = (Portlet)event.getDraggableWidget();
        // "detach" visually the element of the parent
-      $(draggingPortlet).css("position", "absolute");
+      $(event.getDraggable()).css("position", "absolute");
 
     }
 
     public void onDragStop(DragStopEvent event) {
-      Element draggableElement = event.getDraggable();
       // "reattach" the element
-      $(draggableElement).css("position", "relative").css("top", null).css(
+      $(event.getDraggable()).css("position", "relative").css("top", null).css(
           "left", null);
 
     }
@@ -99,7 +96,7 @@ public class Portlet extends DraggableWidget<Widget> {
     // opacity of the portlet during the drag
     setDraggingOpacity(new Float(0.8));
     // zIndex of the portlet during the drag
-    setZIndex(1000);
+    setDraggingZIndex(1000);
     // add position handler
     addBeforeDragHandler(HANDLER);
     addDragStopHandler(HANDLER);

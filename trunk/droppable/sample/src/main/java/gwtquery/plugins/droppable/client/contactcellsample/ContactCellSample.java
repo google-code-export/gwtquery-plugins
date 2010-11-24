@@ -208,7 +208,7 @@ public class ContactCellSample implements EntryPoint {
     DroppableWidget<ShowMorePagerPanel> droppabelPanel = new DroppableWidget<ShowMorePagerPanel>(
         pagerPanel);
     // setup the drop operation
-    droppabelPanel.setHoverClass("orange-border");
+    droppabelPanel.setDroppableHoverClass("orange-border");
     droppabelPanel.setActiveClass("yellow-border");
     droppabelPanel.addDropHandler(new DropHandler());
     // use an AcceptFunction to accept only draggable coming from an other panel

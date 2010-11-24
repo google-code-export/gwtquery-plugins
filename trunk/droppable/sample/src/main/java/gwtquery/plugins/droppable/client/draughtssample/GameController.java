@@ -16,7 +16,7 @@
 package gwtquery.plugins.droppable.client.draughtssample;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.CHECKERBOARD_CLASS_NAME;
+import static gwtquery.plugins.droppable.client.draughtssample.CheckerBoard.CHECKERBOARD_SELECTOR;
 import static gwtquery.plugins.droppable.client.draughtssample.DraughtsSample.EVENT_BUS;
 
 import com.google.gwt.user.client.Timer;
@@ -255,7 +255,7 @@ public class GameController implements PieceMoveEventHandler,
   }
 
   private CheckerBoard getCheckerBoard() {
-    return (CheckerBoard) $(CHECKERBOARD_CLASS_NAME).widget();
+    return (CheckerBoard) $(CHECKERBOARD_SELECTOR).widget();
 
   }
 

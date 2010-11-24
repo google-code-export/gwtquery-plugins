@@ -238,7 +238,7 @@ public class PermissionManagerSample implements EntryPoint {
     DroppableWidget<DragAndDropCellList<MemberInfo>> droppableList = new DroppableWidget<DragAndDropCellList<MemberInfo>>(
         cellList);
     // setup drop
-    droppableList.setHoverClass(Resource.INSTANCE.css().droppableHover());
+    droppableList.setDroppableHoverClass(Resource.INSTANCE.css().droppableHover());
     // drop handler
     droppableList.addDropHandler(new DropEventHandler() {
 
