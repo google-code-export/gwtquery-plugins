@@ -1,4 +1,4 @@
-#summary How to use the droppable plugin !
+#summary How to use the droppable plugin : Drafts !! !
 <wiki:toc max_depth="3" />
 =Plugin Information=
 ----
@@ -12,6 +12,7 @@
 This plugin is a gwt clone of the [http://jqueryui.com/demos/droppable/ JQuery-ui droppable plugin]
 
 The Droppable plugin enables any DOM element and GWT widget to be droppable or in other words a target for draggable elements.
+
 
 =Changelog=
 ----
@@ -58,48 +59,51 @@ Then you need to inherit the plugin in your Module.gwt.xml file:
 
 ==Call the plugin==
 
-Simply, as with all gwtQuery plugins, just call the selectable plugin like that :
+Simply, as with all gwtQuery plugins, just call the droppable plugin like that :
 {{{
-import static gwtquery.plugins.draggable.client.Draggable.Draggable;
+import static gwtquery.plugins.droppable.client.Droppable.Droppable;
 
 ...
 
-$(".iWantToDrag").as(Draggable).draggable();
+$(".dropTarget").as(Droppable).droppable();
 }}}
 
-This calls the plugin with the default options. The elements with the css class name 'iWantToDrag' are now draggable.
+This calls the plugin with the default options. The elements with the css class name 'dropTarget' are now droppable.
 
 ==Disabled the plugin==
 
-To remove the draggable functionality completely, just call the `destroy()` method of the plugin.
+To remove the droppable functionality completely, just call the `destroy()` method of the plugin.
 
 {{{
-$(".iWantToDrag").as(Draggable).destroy();
+$(".dropTarget").as(Droppable).destroy();
 }}}
 
+ Note:
+ The destroy method must be called when a droppable DOM element is removed of the DOM in order to release resources used by the plugin.
 
 =Settings=
 ----
 
-The drag operation is fully configurable ! You just have to give an instance of the class `gwtquery.plugins.draggable.client.DraggableOptions` when you call the plugin :
+The drop operation is fully configurable ! You just have to give an instance of the class `gwtquery.plugins.droppable.client.DroppableOptions` when you call the plugin :
 {{{
-import static gwtquery.plugins.draggable.client.Draggable.Draggable;
-import gwtquery.plugins.draggable.client.DraggableOptions;
+import static gwtquery.plugins.droppable.client.Droppable.Droppable;
+import gwtquery.plugins.droppable.client.DroppableOptions;
 
 ...
 
-DraggableOptions options = new DraggableOptions();
+DroppableOptions options = new DroppableOptions();
 //set the options you want... See next paragraph
 ...
 //call the plug-in with your options 
-$(".iWantToDrag").as(Draggable).draggable(options); 
+$(".dropTarget").as(Droppable).droppable(options); 
 }}}
 
 
-To retrieve the current options of a draggable element just call the `options()` method.
+To retrieve the current options of a droppable element just call the `options()` method.
 
 {{{
-DraggableOptions options = $(".iWantToDrag").as(Draggable).options();
+//return the options associated to the first element
+DroppableOptions options = $(".dropTarget").as(Droppable).options();
 }}}
 
 And for change the options
@@ -107,13 +111,13 @@ And for change the options
 
 {{{
 //reinitialise default options
-$(".iWantToDrag").as(Draggable).options(new DraggableOptions());
+$(".dropTarget").as(Droppable).options(new DroppableOptions());
 }}}
 
-==!DraggableOptions Object==
+==!DroppableOptions Object==
 
-To configure the plugin, just set the properties you wish to configure in the `DraggableOptions`instance you pass to the plugin.
-The table below lists the different properties of the `DraggableOptions`object. Each property is accessible via getter/setter methods.
+To configure the plugin, just set the properties you wish to configure in the `DroppableOptions`instance you pass to the plugin.
+The table below lists the different properties of the `DroppableOptions`object. Each property is accessible via getter/setter methods.
 
 || *Property* || *Type* || *Description* || *Default value* || *Comments* ||
 ||disabled||boolean||Disables (true) or enables (false) the drag operation. ||false||-|| 
@@ -122,35 +126,14 @@ The table below lists the different properties of the `DraggableOptions`object. 
 ||addClasses||boolean||If set to false, will prevent the ui-draggable class from being added. This may be desired as a performance optimization when calling .draggable() init on many hundreds of elements.||true||-||
 ||appendTo||String||The element selected by the appendTo option will be used as the draggable helper's container during dragging. By default, the helper is appended to the same container as the draggable.||null||-||  
 ||axis||!AxisOption||Constrains dragging to either the horizontal (!AxisOption.X_AXIS) or vertical (!AxisOption.Y_AXIS) axis.||!AxisOption.NONE||-||  
-||containment||String or int[]||Constrains dragging to within the bounds of the specified region or element||null||-||  
-||cursor||Cursor||Specify the css cursor to use during the drag operation.||Cursor.AUTO||-|| 
-||cursorAt||!CursorAt||Moves the dragging helper so the cursor always appears to drag from the same position.||null||-|| 
-||grid||int[]||Snaps the dragging helper to a grid. The array of int defining the dimension of the cell of the snap grid.||null||-|| 
-||handle||String||Restricts drag start when the user clicks on the specified element(s).||null||-||  
-||helper||String or Element or GQuery or !HelperType||Allows to use a dom element or a clone of the draggable or the draggable itself for dragging display||!HelperType.ORIGNAL||By default, the draggable itself will be used. Using clone or dom element will not move the original draggable. These options are useful in combination with the droppable plug-in|| 
-||onDrag||Function||The callback function called when the drag operation is dragging ||null||-|| 
-||onDragStart||Function||The callback function called when the drag operation starts ||null||-|| 
-||onDragStop||Function||The callback function called when the drag operation ends ||null||-|| 
-||opacity||Float||Specify the opacity of the helper during the drag.||null||If null, the opacity of the helper is not changed||   
-||revert||!RevertOption||Determine if the helper will return to its starts position when dragging stops||!RevertOption.NEVER||the two following options !RevertOption.ON_VALID_DROP and !RevertOption.ON_INVALID_DROP are useful in combination with the droppable plugin||
-||revertDuration||int||The duration of the revert animation, in milliseconds.||null||-||    
-||scope||String|| Used to group sets of draggable and droppable items, in addition to droppable's accept option. A draggable with the same scope value as a droppable will be accepted by the droppable.||'default'||-||
-||scroll||boolean|| Define if the container scroll while dragging||true||-||
-||scrollSensitivity||int|| Distance in pixels from the edge of the viewport after which the viewport should scroll. Distance is relative to pointer, not to the draggable.||20||-||
-||scrollSpeed||int|| The speed at which the window should scroll once the mouse pointer gets within the scrollSensitivity distance.||20||-||
-||snap||boolean|| Define if the draggable will snap to the edges of the other draggable elements when it is near an edge of these elements.||false||-||
-||snap||GQuery or String|| The draggable will snap to the edges of the selected elements when near an edge of the element.||null||-||
-||snapMode||!SnapMode|| Determines which edges of snap elements the draggable will snap to.||!SnapMode.BOTH||Possible values: !SnapMode.INNER, !SnapMode.OUTER, !SnapMode.BOTH||
-||snapTolerance||int|| The distance in pixels from the snap element edges at which snapping should occur.||20||-||
-||stack||GQuery or String|| Controls the z-Index of the selected elements, always brings to front the dragged item.||null||-||
-||zIndex||Integer|| z-index for the helper while being dragged.||null||-||
+
 
 Please note that all properties can be modified after the plugin is instantiated. See the [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html Sample 2] to test some settings of the plugin
 
 =Events=
 ----
 
-As can be seen in the previous paragraph, the `DraggableOptions` object allows you to pass `Function` who will be invoked by the plugin during the drag operation. In addition to invoke these functions, the plugin fires some event that you can listen for. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `HandlerManager` object when you call the plugin :
+As can be seen in the previous paragraph, the `DroppableOptions` object allows you to pass `DropFunction` who will be invoked by the plugin during the drop operation. In addition to invoke these callback functions, the plugin fires some event that you can listen for. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `EventBus` object when you call the plugin :
 
 {{{
 import static com.google.gwt.query.client.GQuery.$;
