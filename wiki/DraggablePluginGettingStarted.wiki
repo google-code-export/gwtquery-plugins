@@ -1,6 +1,7 @@
 #summary How to use the draggable plugin !
 <wiki:toc max_depth="3" />
 =Plugin Information=
+----
 
 || *Plugin name* ||Draggable||
 || *Latest release* ||1.0||
@@ -13,10 +14,13 @@ This plugin is a gwt clone of the [http://jqueryui.com/demos/draggable/ JQuery-u
 The Draggable plugin enables draggable functionality on any DOM element and GWT widget (it makes the selected element draggable by mouse).
 
 =Changelog=
+----
+
 ==v1.0==
   * First release
 
 =Using the plugin=
+----
 
 ==Dependency==
 
@@ -75,6 +79,7 @@ $(".iWantToDrag").as(Draggable).destroy();
 
 
 =Settings=
+----
 
 The drag operation is fully configurable ! You just have to give an instance of the class `gwtquery.plugins.draggable.client.DraggableOptions` when you call the plugin :
 {{{
@@ -143,6 +148,7 @@ The table below lists the different properties of the `DraggableOptions`object. 
 Please note that all properties can be modified after the plugin is instantiated. See the [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html Sample 2] to test some settings of the plugin
 
 =Events=
+----
 
 As can be seen in the previous paragraph, the `DraggableOptions` object allows you to pass `Function` who will be invoked by the plugin during the drag operation. In addition to invoke these functions, the plugin fires some event that you can listen for. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `HandlerManager` object when you call the plugin :
 
@@ -205,6 +211,7 @@ gwtquery.plugins.draggable.client.events.DragStopEvent;
 }}}
 
 =Integration with GWT=
+----
 
 The draggable plugin can be used to make any GWT widget draggable !! You just have to wrap your widget in a `DraggableWidget` object and it will be automatically draggable. This `DraggableWidget` object allows GWT devellopers to use the plugin without any knowledge about GQuery.
 
@@ -240,6 +247,7 @@ public class MyGWTApplication implements EntryPoint {
 For more example, see [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/GWTIntegrationSample/GWTIntegrationSample.html here] 
 
 =Examples=
+----
 
 To better understand the plugin, examples are available
   * Example 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample1/DraggableSample1.html
