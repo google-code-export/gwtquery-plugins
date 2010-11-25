@@ -25,7 +25,7 @@
 						</td>
 						<td>
 							<g:HTML
-								text="This option prevents event propagation on nested droppables." />
+								text="When set to true this option prevents the propagation of the drop event from a child droppable to its parent droppable." />
 						</td>
 					</tr>
 					<tr style="vertical-align:top;">
@@ -37,7 +37,7 @@
 						</td>
 						<td>
 							<g:HTML
-								text="Used to group sets of draggable and droppable items, in addition to droppable's accept option. A draggable with the same scope value as a droppable will be accepted." />
+								text="Used to group sets of draggable and droppable items, in addition to droppable's accept option. A droppable will accept any draggable with the same scope value as itself." />
 						</td>
 					</tr>
 					<tr style="vertical-align:top;">

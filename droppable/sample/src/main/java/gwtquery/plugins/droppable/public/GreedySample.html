@@ -80,19 +80,22 @@ body {
     <li style="display: inline;"><a href="../GwtSimpleSample/GwtSimpleSample.html">Examples with GWT widgets</a>&nbsp;|&nbsp;</li>
 </ul>
 
-<p style="clear: both; padding-top:10px;">This examples showing the importance of the greedy option in a drop operation with nested droppables. When set to true it prevents event propagation on parents droppable when a draggable is dropped on a droppable child.</p>
+<p style="clear: both; padding-top:10px;">These examples show the importance of the greedy option in a drop
+operation with nested droppables. When set to true it prevents the
+propagation of the drop event from a child droppable to its parent
+droppable.</p>
 
 <div style="float: right; margin-right: 20px;">
 <div id="mainDroppable1" class="main-droppable">
 <p>I'm the mainDroppable1</p>
 <div id="innerDroppable1" class="inner-droppable">
-<p>I'm the innerDroppable1 and I'm not greddy</p>
+<p>I'm the innerDroppable1 and I'm not greedy</p>
 </div>
 </div>
 <div id="mainDroppable2" class="main-droppable">
 <p>I'm the mainDroppable2</p>
 <div id="innerDroppable2" class="inner-droppable">
-<p>I'm the innerDroppable2 and I'm greddy</p>
+<p>I'm the innerDroppable2 and I'm greedy</p>
 </div>
 </div>
 </div>

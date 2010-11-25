@@ -128,7 +128,7 @@ public class TestOptionsSample implements EntryPoint {
   }
 
   private void addSetupButton(final String id, final Widget setupPanel) {
-    Button setup = new Button("setup me!");
+    Button setup = new Button("configure me!");
     setup.addStyleName("setupButton");
     setup.addClickHandler(new ClickHandler() {
 
