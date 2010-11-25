@@ -288,7 +288,7 @@ public class DraggableOptions extends MouseOptions {
 
   /**
    * 
-   * @return an arry of 4 int determining the area used to constraint dragging
+   * @return an array of 4 int determining the area used to constraint dragging
    *         within it
    */
   public int[] getContainmentAsArray() {
