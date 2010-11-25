@@ -31,7 +31,7 @@ public class MouseOptions {
 
   /**
    * Tolerance, in pixels, for when plugin should start. If specified, selecting
-   * will not start until after mouse is dragged beyond distance. Default : 0
+   * will not start until after mouse is dragged beyond distance. Default : 1
    * 
    */
   private int distance;
@@ -52,14 +52,28 @@ public class MouseOptions {
     return distance;
   }
 
+  /**
+   * Prevents starting of the plugin on specified elements
+   * @param cancel array of css selectors
+   */
   public void setCancel(String... cancel) {
     this.cancel = cancel;
   }
 
+  /**
+   * Time in milliseconds to define when the plugin should start. It helps
+   * preventing unwanted selections when clicking on an element. 
+   * @param delay
+   */
   public void setDelay(int delay) {
     this.delay = delay;
   }
 
+  /**
+   * Tolerance, in pixels, for when plugin should start. If specified, selecting
+   * will not start until after mouse is dragged beyond distance. Default : 1
+   * @param distance
+   */
   public void setDistance(int distance) {
     this.distance = distance;
   }
