@@ -120,38 +120,44 @@ To configure the plugin, just set the properties you wish to configure in the `D
 The table below lists the different properties of the `DroppableOptions`object. Each property is accessible via getter/setter methods.
 
 || *Property* || *Type* || *Description* || *Default value* || *Comments* ||
-||disabled||boolean||Disables (true) or enables (false) the drag operation. ||false||-|| 
-||delay||int||Time in milliseconds to define when the drag should start. ||1||-|| 
-||distance||int||Tolerance, in pixels, for when the drag should start. If specified, drag will not start until after mouse is dragged beyond distance. ||0||-||
-||addClasses||boolean||If set to false, will prevent the ui-draggable class from being added. This may be desired as a performance optimization when calling .draggable() init on many hundreds of elements.||true||-||
-||appendTo||String||The element selected by the appendTo option will be used as the draggable helper's container during dragging. By default, the helper is appended to the same container as the draggable.||null||-||  
-||axis||!AxisOption||Constrains dragging to either the horizontal (!AxisOption.X_AXIS) or vertical (!AxisOption.Y_AXIS) axis.||!AxisOption.NONE||-||  
+||disabled||boolean||Disables (true) or enables (false) the drop operation. ||false||-|| 
+||accept||String or !AcceptFunction||Define draggable elements that will be accepted by the droppable ||null||If this option is null, the droppable accepts all draggable|| 
+||activeClass||String||Css class added to the droppable when it is active (an acceptable draggable is being dragged)) ||null||If this option is null, no class is added||
+||draggableHoverClass||String||Css class that will be added to an acceptable draggable when it is being dragged over the droppable||null||If this option is null, no class is added||
+||droppableHoverClass||String||Css class that will be added to a droppable when an acceptable draggable is being dragged over it||null||If this option is null, no class is added||  
+||greedy||boolean||When set to true it prevents events propagation on parents droppable of the droppable||false||-||
+||onActivate||!DroppableFunction||Callback function called when a droppable is activated (when an acceptable draggable starts to drag)||null||-||  
+||onDeactivate||!DroppableFunction||Callback function called when a droppable is deactivated (when an acceptable draggable stops to drag)||null||-||  
+||onDrop||!DroppableFunction||Callback function called when an acceptable draggable is dropped on the droppable||null||-|| 
+||onOut||!DroppableFunction||Callback function called when an acceptable draggable is being dragged out of the droppable||null||-||
+||onOver||!DroppableFunction||Callback function called when an acceptable draggable is being dragged over the droppable||null||-||
+||scope||String||Used to group sets of draggable and droppable widget, in addition to droppable's accept option. A draggable with the same scope value as a droppable will be accepted by this last.||"default"||-||  
+||tolerance||!DroppableTolerance||Specifies which mode to use for testing whether a draggable is 'over' a droppable.||DroppableTolerance.INTERSECT||-||  
 
-
-Please note that all properties can be modified after the plugin is instantiated. See the [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html Sample 2] to test some settings of the plugin
+Please note that all properties can be modified after the plugin is instantiated. See this [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/TestOptionsSample/TestOptionsSample.html example] to test the different options.
 
 =Events=
 ----
 
-As can be seen in the previous paragraph, the `DroppableOptions` object allows you to pass `DropFunction` who will be invoked by the plugin during the drop operation. In addition to invoke these callback functions, the plugin fires some event that you can listen for. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `EventBus` object when you call the plugin :
+As can be seen in the previous paragraph, the `DroppableOptions` object allows you to pass `DropFunction` who will be invoked by the plugin during the drag and drop operation. In addition to invoke these callback functions, the plugin fires some event that you can listen for. For that, we use the [http://code.google.com/intl/fr/webtoolkit/doc/latest/tutorial/manageevents.html GWT event system]. Just pass as argument a `EventBus` object when you call the plugin :
 
 {{{
-import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.selectable.client.Draggable.Draggable;
+import static gwtquery.plugins.droppable.client.Droppable.Droppable;
+import gwtquery.plugins.droppable.client.DroppableOptions;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.SimpleEventBus;
 
  
   public void onModuleLoad() {
     
     ...
     
-    // create an instance of HandlerManager to bind events fired by the selectable plug-in
-    HandlerManager handlerManager = new HandlerManager(null);
+    // create an instance of SimpleEventBus to bind events fired by the selectable plug-in
+    EventBus eventBus = new SimpleEventBus();
 
 
     // call the plugin
-    $(".iWantToDrag").as(Draggable).draggable(new DraggableOptions(), handlerManager);
+    $(".dropTarget").as(Droppable).options(new DroppableOptions(), eventBus);
 
   }
 
