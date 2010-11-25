@@ -167,88 +167,69 @@ import com.google.gwt.event.shared.SimpleEventBus;
 Now register your implementation of `EventHandler` :
 
 {{{
-  private static class MyEventHandler implements DragEventHandler,
-      DragStopEventHandler{
+  private static class MyEventHandler implements DropEventHandler,
+    OverDroppableEventHandler, OutDroppableEventHandler{
     
-     public void onDrag(DragEvent event) {
-      String msg = "Component " + event.getDraggable().getId() + " is dragging";
-      infoMsg.setHTML(msg);
+     public void onDrop(DropEvent event) {
+      //do something
+     }
 
-    }
+  
+     public void onOutDroppable(OutDroppableEvent event) {
+      //do something
+     }
 
-    public void onDragStop(DragStopEvent event) {
-      infoMsg.setHTML("End of the drag operation");
-
-    }
-
+  
+     public void onOverDroppable(OverDroppableEvent event) {
+      //do something
+     }
   }
-
    ...
   
     MyEventHandler handler = new MyEventHandler();
     //bind events who interest us
-    handlerManager.addHandler(DragEvent.TYPE, handler);
-    handlerManager.addHandler(DragStopEvent.TYPE, handler);
+    eventBus.addHandler(DropEvent.TYPE, handler);
+    eventBus.addHandler(OutDroppableEvent.TYPE, handler);
+    eventBus.addHandler(OverDroppableEvent.TYPE, handler);
   
 }}}
 
 The different events that you can listen for are :
 {{{
-gwtquery.plugins.draggable.client.events.DragStartEvent;
-gwtquery.plugins.draggable.client.events.DragEvent;
-gwtquery.plugins.draggable.client.events.DragStopEvent;
+gwtquery.plugins.droppable.client.events.DropEvent
+gwtquery.plugins.droppable.client.events.OutDroppableEvent
+gwtquery.plugins.droppable.client.events.OverDroppableEvent
+gwtquery.plugins.droppable.client.events.ActivateDroppableEvent
+gwtquery.plugins.droppable.client.events.DectivateDroppableEvent
+}}}
+
+Please note that the draggable, droppable and helper element are available on each event object.
+
+{{{
+    public void onDrop(DropEvent event) {
+      Element draggable = event.getDraggable();
+      Element droppable = event.getDroppable();
+      Element helper = event.getDragHelper();
+      // do something with thses elements
+     }
+
 }}}
 
 =Integration with GWT=
 ----
 
-The draggable plugin can be used to make any GWT widget draggable !! You just have to wrap your widget in a `DraggableWidget` object and it will be automatically draggable. This `DraggableWidget` object allows GWT devellopers to use the plugin without any knowledge about GQuery.
-
-{{{
-
-import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
-...
-
-public class MyGWTApplication implements EntryPoint {
-
-  public void onModuleLoad() {
-    //create your widget and let's assume it is a DecoratedTabPanel
-    DecoratedTabPanel myWidget = createMyWidget();
-    
-    //make it draggable
-    DraggableWidget<DecoratedTabPanel>  myDraggableWidget = new DraggableWidget<DecoratedTabPanel>(myWidget);
-    
-    //set options for the drag operation
-    myDraggableWidget.setAxis(AxisOption.X_AXIS); 
-    myDraggableWidget.setCursor(Cursor.MOVE);
-    ....
-
-    //Add your draggable widget to the dom
-    RootPanel.get().add(myDraggableWidget);
-
-    // if you want to call some function on your original widget use getOriginalWidget() method. It will be automatically casted.
-   myDraggableWidget.getOriginalWidget().selectTab(0);    
-
-}
-}  
-}}}
-
-For more example, see [http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/GWTIntegrationSample/GWTIntegrationSample.html here] 
+The droppable plugin can be used to implement droppable functionality on any GWT widget.
+For more information please read this article
 
 =Examples=
+----
 
-To better understand the plugin, examples are available
-  * Example 1 : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample1/DraggableSample1.html
-This example shows how to make a simple div draggable. It defines also some callback functions to display informations on the drag operation.  
-  * Test the options : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/DraggableSample2/DraggableSample2.html
-Play with the different options of the draggable plug-in and see the effect they have on the drag operation.
-  * Snap sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/SnapSample/SnapSample.html
-Watch the snap options in action.
-  * Containment sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/ContainmentSample/Containment.html
-This example shows you how it's possible to constraint the drag area with the containment option.
-  * Stack sample : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/StackSample/StackSample.html
-This sample shows how the draggable plugin can handle the z-index to bring on top the current draggable item.
-  * GWT integration : http://gwtquery-plugins.googlecode.com/svn/trunk/draggable/demo/GWTIntegrationSample/GWTIntegrationSample.html
-This sample shows how it is easier to add drag functionnality to any GWT widget. Simply in using the !DraggableWidget wrapper !! This example shows also how to use event fired by the plugin.
+To better understand the plugin, examples are available to :
+http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/SimpleSample/SimpleSample.html
+  
 
 All examples are tested on Internet explore 6, 7 and 8, Firefox 3.6, Google Chrome 4, Opera 10 and Safari 5.
+
+=Issues==
+----
+Although I spent much time to test the plugin, this one is not bug free guaranteed.
