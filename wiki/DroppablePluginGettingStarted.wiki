@@ -1,4 +1,4 @@
-#summary How to use the droppable plugin : Drafts !! !
+#summary How to use the droppable plugin !
 <wiki:toc max_depth="3" />
 =Plugin Information=
 ----
