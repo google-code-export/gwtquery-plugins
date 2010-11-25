@@ -180,7 +180,7 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Remove the draggable behavior to the elements. This method release
+   * Remove the draggable behavior to the selected elements. This method releases
    * resources used by the plugin and should be called when an element is
    * removed of the DOM.
    * 
@@ -197,7 +197,7 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Make the selected elements draggable
+   * Make the selected elements draggable with default options
    * 
    * @return
    */
@@ -217,7 +217,7 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Make the selected elements draggable. All drag events will be fired on the
+   * Make the selected elements draggable with default options. All drag events will be fired on the
    * <code>eventBus</code>
    * 
    *@param eventBus
@@ -262,7 +262,7 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Get the options for the first element.
+   * Get the {@link DraggableOptions} for the first element.
    * 
    * @return
    */
