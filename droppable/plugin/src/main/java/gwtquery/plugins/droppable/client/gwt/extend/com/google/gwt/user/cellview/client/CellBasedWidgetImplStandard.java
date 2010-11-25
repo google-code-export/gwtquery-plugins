@@ -39,7 +39,6 @@ import java.util.Set;
  *             This class will be removed in future release.
  */
 
-@SuppressWarnings("deprecation")
 class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
 
   /**
