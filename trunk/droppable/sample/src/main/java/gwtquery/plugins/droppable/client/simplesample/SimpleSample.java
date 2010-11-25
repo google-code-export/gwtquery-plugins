@@ -37,67 +37,23 @@ public class SimpleSample implements EntryPoint {
 
     $("#draggable").as(Draggable).draggable();
 
-    $("#droppable").as(Droppable).droppable(createDroppableOptions());
-  }
-
-  private DroppableOptions createDroppableOptions() {
+    // create droppable options
     DroppableOptions options = new DroppableOptions();
-    // class added to the droppable when a acceptable draggable is over it
-    options.setDroppableHoverClass("yellow-background");
-    // class added to the droppable when the droppable is activated
-    options.setActiveClass("white-background");
 
-    // function called on when a droppable is activated
-    options.setOnActivate(new DroppableFunction() {
-
-      public void f(DragAndDropContext context) {
-        $("p", context.getDroppable()).html("I'm ready to accept an element");
-        context.getDroppable().removeClassName("orange-background");
-
-      }
-    });
-
-    // function called on when a acceptable draggable is dropped on the droppable
+    // function called on when a acceptable draggable is dropped on the
+    // droppable
     options.setOnDrop(new DroppableFunction() {
       public void f(DragAndDropContext context) {
-        $("p", context.getDroppable()).html(
-            "Element " + context.getDraggable().getId() + " was drop on me");
-        context.getDroppable().addClassName("orange-background");
+        $(context.getDroppable()).addClass("orange-background").find("p").html(
+            "Dropped !");
 
       }
     });
-
-    // function called on when a droppable is deactivated
-    options.setOnDeactivate(new DroppableFunction() {
-
-      public void f(DragAndDropContext context) {
-        $("p", context.getDroppable()).html("I'm a drop target");
-
-      }
-    });
-
-    // function called on when a acceptable draggable is dragged over the
-    // droppable
-    options.setOnOver(new DroppableFunction() {
-
-      public void f(DragAndDropContext context) {
-        $("p", context.getDroppable()).html(
-            "The element " + context.getDraggable().getId()
-                + " is over me and can be dropped");
-
-      }
-    });
-
-    // function called on when a acceptable draggable is dragged out the droppable
-    options.setOnOut(new DroppableFunction() {
-      public void f(DragAndDropContext context) {
-        $("p", context.getDroppable()).html("I'm ready to accept an element");
-
-      }
-
-    });
-
-    return options;
+    
+    //make the element droppable
+    $("#droppable").as(Droppable).droppable(options);
   }
+
+  
 
 }
