@@ -131,9 +131,8 @@ public class FileSystem {
    */
   private static FileSystem instance;
 
-  private static int MAX_DIR_NBR = 40;
-
-  private static int MAX_FILE_NBR = 50;
+  private static int MAX_DIR_NBR = 10;
+  private static int MAX_FILE_NBR = 15;
   private static final String ROOT_DIRECTORY = "Pictures";
 
   private static final String[] USER_DIRECTORY_NAME = { "Mary", "Patricia",
@@ -281,7 +280,7 @@ public class FileSystem {
       f.setParent(root);
       files.getList().add(f);
 
-      generateDirContent(f, Math.max(10, Random.nextInt(MAX_FILE_NBR)), 0);
+      generateDirContent(f, Math.max(5, Random.nextInt(MAX_FILE_NBR)), 0);
     }
 
     for (int i = 0; i < fileNbr; i++) {
@@ -310,7 +309,7 @@ public class FileSystem {
       f.setParent(rootDirectory);
       files.getList().add(f);
       // generate Event sub directories
-      generateDirContent(f, 0, Math.max(10, Random.nextInt(MAX_DIR_NBR)));
+      generateDirContent(f, 0, Math.max(5, Random.nextInt(MAX_DIR_NBR)));
 
     }
     filesByDirectory.put(rootDirectory, files);
