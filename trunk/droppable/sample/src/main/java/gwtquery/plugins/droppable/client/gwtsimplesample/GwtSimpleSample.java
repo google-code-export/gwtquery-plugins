@@ -136,7 +136,7 @@ public class GwtSimpleSample implements EntryPoint {
    */
   private Widget createTrashBin() {
 
-    final Label trashBinLabel = new Label("Give me food !");
+    final Label trashBinLabel = new Label("Feed me !");
     trashBinLabel.addStyleName(Resources.INSTANCE.css().trashBin());
 
     // make the label droppable
