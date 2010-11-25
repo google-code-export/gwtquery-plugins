@@ -6,13 +6,13 @@
 	<groupId>com.googlecode.gwtquery.plugins</groupId>
 	<artifactId>commonui</artifactId>
 	<packaging>pom</packaging>
-	<version>1.2</version>
+	<version>1.0.3</version>
 
 	<properties>
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
 		<gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
-		<gwtversion>2.0.4</gwtversion>
+		<gwtversion>2.1.0</gwtversion>
 	</properties>
 
 	<repositories>
@@ -20,6 +20,12 @@
 			<id>central</id>
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
+		<repository>
+            <id>sonatype</id>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots><enabled>true</enabled></snapshots>
+            <releases><enabled>false</enabled></releases>
+        </repository>
 		<repository>
 			<id>site</id>
 			<url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
@@ -59,8 +65,20 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwtquery</artifactId>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwtversion}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwtversion}</version>
+            <scope>provided</scope>
+        </dependency>
+		<dependency>
+            <groupId>com.googlecode.gwtquery</groupId>
+            <artifactId>gwtquery</artifactId>
 			<version>${gQueryVersion}</version>
 			<scope>provided</scope>
 		</dependency>

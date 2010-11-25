@@ -2,15 +2,15 @@
   <formats>
     <format>zip</format>
   </formats>
-  <baseDirectory>/commonui-1.0-SNAPSHOT</baseDirectory>
+  <baseDirectory>/commonui-1.0.3</baseDirectory>
   <files>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>plugin/target/commonui-plugin-1.0-SNAPSHOT.jar</source>
+     <source>plugin/target/commonui-plugin-1.0.3.jar</source>
    </file>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>sample/target/commonui-sample-1.0-SNAPSHOT.war</source>
+     <source>sample/target/commonui-sample-1.0.3.war</source>
    </file>
   </files>
   <fileSets>
