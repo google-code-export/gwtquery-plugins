@@ -221,7 +221,7 @@ Please note that the draggable, droppable and helper element are available on ea
 ----
 
 The droppable plugin can be used to implement droppable functionality on any GWT widget.
-For more information please read this article
+For more information please read this [http://code.google.com/p/gwtquery-plugins/wiki/DragAndDropPluginForGWTDeveloppers article]
 
 =Examples=
 ----
