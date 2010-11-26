@@ -49,7 +49,7 @@ public class FileTreeViewModel implements TreeViewModel {
     @Override
     public void render(File value, Object key, SafeHtmlBuilder sb) {
       if (value != null) {
-        sb.appendHtmlConstant("<div class='" + getCssClassName(value) + "'>");
+        sb.appendHtmlConstant("<div class='" + getCssClassName(value) + "'></div><div style='padding-top:3px;'>");
         sb.appendEscaped(value.getName());
         sb.appendHtmlConstant("</div>");
       }
