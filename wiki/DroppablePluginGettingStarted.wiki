@@ -4,7 +4,7 @@
 ----
 
 || *Plugin name* ||Droppable||
-|| *Latest release* ||1.0.0||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=droppable-plugin-1.0.1.jar 1.0.1]||
 || *Latest release date* ||Nov 26 2010||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADroppable Open issues]||
@@ -26,6 +26,8 @@ The Droppable plugin enables any DOM element and GWT widget to be droppable or i
 ==Dependency==
 
 The droppable plugin needs the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.3.jar common-ui library] and the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=draggable-plugin-1.0.1.jar draggable library]. If you are not using maven, just download the last version of these libraries and put it in the war/WEB-INF/lib folder.
+
+Please note that the droppable plugin need GWT 2.1.0+ version to works and is not compatible with previous veriosn of GWT.
 
 ==Configuration==
 
