@@ -1,15 +1,11 @@
 #summary How to use the drag and drop plugin with GWT widgets
 
 THIS IS A DRAFT
-
+<wiki:toc max_depth="3" />
 = Introduction =
+----
+The draggable and droppable plugins of gwtquery allows to make any DOM elements draggable and droppable. In addition, it offers a API in order to add drag and drop support to your GWT widgets.
 
-Add your content here.
+This article explains how to use this API in your GWT project.
 
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+TO BE CONTINUE
