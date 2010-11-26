@@ -4,8 +4,8 @@
 ----
 
 || *Plugin name* ||Draggable||
-|| *Latest release* ||1.0||
-|| *Latest release date* ||Oct 13 2010||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=draggable-plugin-1.0.2.jar 1.0.2]||
+|| *Latest release date* ||Oct 26 2010||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADraggable Open issues]||
 
@@ -16,6 +16,9 @@ The Draggable plugin enables draggable functionality on any DOM element and GWT 
 =Changelog=
 ----
 
+==v1.0.2==
+  * Change release numbering
+  * Chenges needed for droppable plugin
 ==v1.0==
   * First release
 
@@ -24,7 +27,7 @@ The Draggable plugin enables draggable functionality on any DOM element and GWT 
 
 ==Dependency==
 
-The draggable plugin needs the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.2.jar common-ui library]. If you are not using maven, just download the last version of the library and put it in the war/WEB-INF/lib folder.
+The draggable plugin needs the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.0.3.jar common-ui library]. If you are not using maven, just download the last version of the library and put it in the war/WEB-INF/lib folder.
 
 ==Configuration==
 
@@ -44,7 +47,7 @@ If you use maven, you have to add these blocks to your pom.xml
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>draggable-plugin</artifactId>
-            <version>0.1</version>
+            <version>1.0.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -119,7 +122,6 @@ The table below lists the different properties of the `DraggableOptions`object. 
 ||disabled||boolean||Disables (true) or enables (false) the drag operation. ||false||-|| 
 ||delay||int||Time in milliseconds to define when the drag should start. ||1||-|| 
 ||distance||int||Tolerance, in pixels, for when the drag should start. If specified, drag will not start until after mouse is dragged beyond distance. ||0||-||
-||addClasses||boolean||If set to false, will prevent the ui-draggable class from being added. This may be desired as a performance optimization when calling .draggable() init on many hundreds of elements.||true||-||
 ||appendTo||String||The element selected by the appendTo option will be used as the draggable helper's container during dragging. By default, the helper is appended to the same container as the draggable.||null||-||  
 ||axis||!AxisOption||Constrains dragging to either the horizontal (!AxisOption.X_AXIS) or vertical (!AxisOption.Y_AXIS) axis.||!AxisOption.NONE||-||  
 ||containment||String or int[]||Constrains dragging to within the bounds of the specified region or element||null||-||  
@@ -128,9 +130,10 @@ The table below lists the different properties of the `DraggableOptions`object. 
 ||grid||int[]||Snaps the dragging helper to a grid. The array of int defining the dimension of the cell of the snap grid.||null||-|| 
 ||handle||String||Restricts drag start when the user clicks on the specified element(s).||null||-||  
 ||helper||String or Element or GQuery or !HelperType||Allows to use a dom element or a clone of the draggable or the draggable itself for dragging display||!HelperType.ORIGNAL||By default, the draggable itself will be used. Using clone or dom element will not move the original draggable. These options are useful in combination with the droppable plug-in|| 
-||onDrag||Function||The callback function called when the drag operation is dragging ||null||-|| 
-||onDragStart||Function||The callback function called when the drag operation starts ||null||-|| 
-||onDragStop||Function||The callback function called when the drag operation ends ||null||-|| 
+||onBeforeDragStart||DragFunction||The callback function called before the initialization of the drag operation||null||-||
+||onDrag||DragFunction||The callback function called when the drag operation is dragging ||null||-|| 
+||onDragStart||DragFunction||The callback function called when the drag operation starts ||null||-|| 
+||onDragStop||DragFunction||The callback function called when the drag operation ends ||null||-|| 
 ||opacity||Float||Specify the opacity of the helper during the drag.||null||If null, the opacity of the helper is not changed||   
 ||revert||!RevertOption||Determine if the helper will return to its starts position when dragging stops||!RevertOption.NEVER||the two following options !RevertOption.ON_VALID_DROP and !RevertOption.ON_INVALID_DROP are useful in combination with the droppable plugin||
 ||revertDuration||int||The duration of the revert animation, in milliseconds.||null||-||    
@@ -205,6 +208,7 @@ Now register your implementation of `EventHandler` :
 
 The different events that you can listen for are :
 {{{
+gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 gwtquery.plugins.draggable.client.events.DragStartEvent;
 gwtquery.plugins.draggable.client.events.DragEvent;
 gwtquery.plugins.draggable.client.events.DragStopEvent;
