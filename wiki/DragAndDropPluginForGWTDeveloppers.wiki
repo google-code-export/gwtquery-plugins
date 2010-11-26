@@ -4,8 +4,12 @@ THIS IS A DRAFT
 <wiki:toc max_depth="3" />
 = Introduction =
 ----
-The draggable and droppable plugins of gwtquery allows to make any DOM elements draggable and droppable. In addition, it offers a API in order to add drag and drop support to your GWT widgets.
+The draggable and droppable plugins of gwtquery allows to make any DOM elements draggable and droppable. In addition, it offers a API in order to add drag and drop support to your GWT widgets included also the new data presentation widgets (aka cell widgets).
 
 This article explains how to use this API in your GWT project.
 
-TO BE CONTINUE
+= Configuration =
+----
+GwtQuery provides you a bundle includind all stuff you need to use gwtquery and its draggable and dropable plugins
+
+First at all, you have to download the [https://gwtquery-plugins.googlecode.com/svn/mavenrepo/com/googlecode/gwtquery/bundles/gquery-dnd-bundle/1.0.1/gquery-dnd-bundle-1.0.1.jar gquery-dnd-bundle jar file] and include it in the classpath of you project.
