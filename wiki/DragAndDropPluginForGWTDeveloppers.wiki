@@ -10,6 +10,32 @@ This article explains how to use this API in your GWT project.
 
 = Configuration =
 ----
-GwtQuery provides you a bundle includind all stuff you need to use gwtquery and its draggable and dropable plugins
+!GwtQuery provides you a bundle including all stuff you need to use gwtquery and its draggable and dropable plugins
 
 First at all, you have to download the [https://gwtquery-plugins.googlecode.com/svn/mavenrepo/com/googlecode/gwtquery/bundles/gquery-dnd-bundle/1.0.1/gquery-dnd-bundle-1.0.1.jar gquery-dnd-bundle jar file] and include it in the classpath of you project.
+
+If you use maven, you have to add these blocks to your pom.xml
+{{{
+   <repositories>
+        <repository>
+         <id>plugins</id>
+         <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
+       </repository>
+   </repositories>
+
+   <build>
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.gwtquery.bundles</groupId>
+            <artifactId>gquery-dnd-bundle</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+   </build>
+}}}
+
+Then you need to inherit the plugin in your Module.gwt.xml file:
+{{{
+  <inherits name='gwtquery.plugins.droppable.Droppable'/>
+}}}
