@@ -95,7 +95,7 @@ The API of the `DraggableWidget` object proposes a set of methods allowing you t
 
 An example is always more understandable than a long text of explanation :
 {{{
-Label label = new Label("I want to be a droppable widget !!");
+    Label label = new Label("I want to be a droppable widget !!");
     //wrap the original widget in a DraggableWidget
     DraggableWidget<Label> draggableLabel = new DraggableWidget<Label>(label);
     
@@ -128,6 +128,10 @@ Please find the list of drag events :
 
 To handle an event, just register an associated event handler in your draggable widget :
 {{{
+    Label label = new Label("I want to be a droppable widget !!");
+    //wrap the original widget in a DraggableWidget
+    DraggableWidget<Label> draggableLabel = new DraggableWidget<Label>(label);
+    
     draggableLabel.addDragStartHandler(new DragStartEventHandler() {
       
       public void onDragStart(DragStartEvent event) {
@@ -149,7 +153,7 @@ To handle an event, just register an associated event handler in your draggable 
     });
 }}}
 
-All drag events provide useful method to retrieve the dragging widget and the associated dragging dispaly (called the helper) excepted on the `BeforeDragStartEvent`where the helper is nuul because the drag operation is not initialized yet.
+All drag events provide useful method to retrieve the dragging widget and the associated dragging display (called the helper) excepted on the `BeforeDragStartEvent`where the helper is null because the drag operation is not initialized yet.
 
 
 = Add drop support to your widgets =
@@ -179,6 +183,27 @@ Example with wrapping:
 Example with subclassing :
 {{{
 
+ public class DroppableLabel extends DroppableWidget<Label> {
+
+  public DroppableLabel() {
+    //as DroppableWidget is a Composite, call initWidget() method to setup your widget
+    initWidget(new Label("I'm a droppable label"));
+    
+    //configure the drop behavior (see next chapters)
+    setTolerance(DroppableTolerance.POINTER);
+   
+  }
+  
+  public void setText(String text){
+    getOriginalWidget().setText(text);
+  }
+}
+
 }}}
+
+== Configure the dropping behavior ==
+The `DroppableWidget` API offers also a set of methods in order to configure the drop behavior of the widget. All available options are listed in the following [http://code.google.com/p/gwtquery-plugins/wiki/DroppablePluginGettingStarted#DroppableOptions_Object table].
+
+Please refer to our [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/TestOptionsSample/TestOptionsSample.html "options in action"] example to play around with most of the options of the `DroppableWidget`.
 
 TO BE CONTINUED
