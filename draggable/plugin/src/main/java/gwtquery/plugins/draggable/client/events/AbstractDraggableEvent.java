@@ -51,9 +51,10 @@ public abstract class AbstractDraggableEvent<H extends EventHandler> extends
    *          the class of the data
    * @return
    */
+  @SuppressWarnings("unchecked")
   public <T> T getDraggableData() {
     assert context != null : "Drag context cannot be null";
-    return context.getDraggableData();
+    return (T) context.getDraggableData();
   }
 
   /**
