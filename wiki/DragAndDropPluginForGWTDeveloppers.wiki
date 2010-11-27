@@ -40,11 +40,11 @@ Then you need to inherit the plugin in your Module.gwt.xml file:
 
 Please note that the drag-and-drop plugin need at least GWT 2.1.0 to work.
 
-= Add drag-and-drop support to your widgets =
+= Add drag support to your widgets =
 ----
 
-== The DraggableWidget class ==
-To make your widget draggable, you have two possibilities :
+== The !DraggableWidget class ==
+To make your widget draggable, you have two simple possibilities :
  * wrap your widget in a `DraggableWidget`instance 
  * extend you widget class with the `DraggableWidget`class.
 
@@ -63,7 +63,7 @@ Example with wrapping:
     //add the draggableLabel to the DOM
     RootPanel.get().add(draggableLabel);
     
-    //if you want to do something in the originale label, just call getOriginalWidget method
+    //if you want to do something in the original label, just call getOriginalWidget method
     draggableLabel.getOriginalWidget().setText("I'm now draggable");
 }}}
 
@@ -89,7 +89,73 @@ public class DraggableLabel extends DraggableWidget<Label> {
 
 }}}
 
-== The DroppableWidget class ==
+== Configure the dragging behavior ==
+
+The API of the `DraggableWidget` object proposes a set of methods allowing you to configure the drag behavior of your widget. You can find the list of all options and their related explanation in this [http://code.google.com/p/gwtquery-plugins/wiki/DraggablePluginGettingStarted#DraggableOptions_Object table]. 
+
+An example is always more understandable than a long text of explanation :
+{{{
+Label label = new Label("I want to be a droppable widget !!");
+    //wrap the original widget in a DraggableWidget
+    DraggableWidget<Label> draggableLabel = new DraggableWidget<Label>(label);
+    
+    //configure the drag behavior
+    //use a clone of the helper as dragging display
+    draggableLabel.useOriginalWidgetAsHelper();
+    //change the cursor during the drag
+    draggableLabel.setDraggingCursor(Cursor.MOVE);
+    //set the opacity of the dragging display
+    draggableLabel.setDraggingOpacity((float)0.8);
+    // the widget can only be dragged on horizontal axis
+    draggableLabel.setAxis(AxisOption.Y_AXIS);
+    //revert the dragging display on its original position is not drop occured
+    draggableLabel.setRevert(RevertOption.ON_INVALID_DROP);
+    //snap the dragging display to a 50x50px grid
+    draggableLabel.setGrid(new int[]{50,50});
+    ...
+}}}
+
+Don't hesitate to try our [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/TestOptionsSample/TestOptionsSample.html "options in action"] example to play around with most of the options of the `DraggableWidget`.
+
+== The drag events ==
+The drag-and-drop plugin fires different events during the drag operation that you can handle to implement your custom code.
+
+Please find the list of drag events :
+ * `gwtquery.plugins.draggable.client.events.BeforeDragStartEvent` : fired before the before the initialization of the drag operation
+ * `gwtquery.plugins.draggable.client.events.DragStartEvent` : fired when the drag starts
+ * `gwtquery.plugins.draggable.client.events.DragEvent` : fired durint the drag
+ * `gwtquery.plugins.draggable.client.events.DragStopEvent` : fired when the drag operation stops
+
+To handle an event, just register an associated event handler in your draggable widget :
+{{{
+    draggableLabel.addDragStartHandler(new DragStartEventHandler() {
+      
+      public void onDragStart(DragStartEvent event) {
+        //retrieve the widget that is being dragged
+        DraggableWidget<Label> draggableWidget = (DraggableWidget<Label>)event.getDraggableWidget();
+        draggableWidget.getOriginalWidget().setText("I'm dragging");
+        
+      }
+    });
+    
+    draggableLabel.addDragStopHandler(new DragStopEventHandler() {
+      
+      public void onDragStop(DragStopEvent event) {
+        //retrieve the widget that was being dragged
+        DraggableWidget<Label> draggableWidget = (DraggableWidget<Label>)event.getDraggableWidget();
+        draggableWidget.getOriginalWidget().setText("I'm not dragging");
+        
+      }
+    });
+}}}
+
+All drag events provide useful method to retrieve the dragging widget and the associated dragging dispaly (called the helper) excepted on the `BeforeDragStartEvent`where the helper is nuul because the drag operation is not initialized yet.
+
+
+= Add drop support to your widgets =
+----
+
+== The !DroppableWidget class ==
 
 In the same way, to make your widget droppable, you have two possibilities :
  * wrap your widget in a `DroppableWidget`instance 
@@ -97,7 +163,7 @@ In the same way, to make your widget droppable, you have two possibilities :
 
 Example with wrapping:
 {{{
-    Label label = new Label("I want to become a droppable widget !!");
+    Label label = new Label("I want to be a droppable widget !!");
     //wrap the original widget in a DroppableWidget
     DroppableWidget<Label> droppableLabel = new DroppableWidget<Label>(label);
     //configure the drop behaviour (see next paragraph)
@@ -114,4 +180,5 @@ Example with subclassing :
 {{{
 
 }}}
+
 TO BE CONTINUED
