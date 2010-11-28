@@ -236,6 +236,7 @@ To handle an event, just register an associated event handler in your `Droppable
 
 
 = Scope and Accept options =
+----
 
 We will define what we mean by an "acceptable draggable".
  A draggable element is accepted by a droppable if and only if they have the same scope value and if true is returned when we call the `AcceptFunction` of the droppable by passing the draggable. When a draggable is accepted by the droppable, it can be drop on this last.
@@ -262,6 +263,8 @@ or an `AcceptFunction` object
       
     });
 }}}
+
+By default, the scope is defined to "default" and a droppable accepts all draggables with the same scope.
 
 The [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/DraughtsSample/DraughtsSample.html checker example] use a `AcceptFunction` to authorize drop of a piece in the authorized squares.
 
