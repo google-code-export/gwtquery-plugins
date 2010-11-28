@@ -126,7 +126,7 @@ Please find the list of drag events :
  * `gwtquery.plugins.draggable.client.events.DragEvent` : fired durint the drag
  * `gwtquery.plugins.draggable.client.events.DragStopEvent` : fired when the drag operation stops
 
-To handle an event, just register an associated event handler in your draggable widget :
+To handle an event, just register an associated event handler in your `DraggableWidget` :
 {{{
     Label label = new Label("I want to be a droppable widget !!");
     //wrap the original widget in a DraggableWidget
@@ -208,16 +208,72 @@ Please refer to our [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/
 
 == The drop events ==
 Different events are fired on the `DroppableWidget` during the drag-and-drop operation :
- * `gwtquery.plugins.droppable.client.events.DropEvent` : fired when a acceptable draggable (see next paragraph to know what is an acceptable draggable") is dropped on the `DroppableWidget`
+ * `gwtquery.plugins.droppable.client.events.DropEvent` : fired when a acceptable draggable (see next paragraph to know what an "acceptable draggable" is) is dropped on the `DroppableWidget`
  * `gwtquery.plugins.droppable.client.events.OutDroppableEvent` : fired when an acceptable draggable is being dragged out of the `DroppableWidget`
  * `gwtquery.plugins.droppable.client.events.OverDroppableEvent` : fired when an acceptable draggable is being dragged over the `DroppableWidget`
  * `gwtquery.plugins.droppable.client.events.ActivateDroppableEvent` : fired when the `DroppableWidget` is activate (when an acceptable draggable start to drag)
  * `gwtquery.plugins.droppable.client.events.DeactivateDroppableEvent` : fired when the `DroppableWidget` is deactivate (when an acceptable draggable stops to drag)
 
+To handle an event, just register an associated event handler in your `DroppableWidget` :
+{{{
+    droppableLabel.addDropHandler(new DropEventHandler() {
+      
+      public void onDrop(DropEvent event) {
+        // retrieve the droppable widget
+        DroppableWidget<Label> droppableLabel = (DroppableWidget<Label>)event.getDroppableWidget();
+        // retrieve the dropped draggable widget (we assume it is a draggable label)
+        DraggableWidget<Label> draggableLabel = (DraggableWidget<Label>)event.getDraggableWidget();
+        
+        droppableLabel.getOriginalWidget().setText("I ate : "+draggableLabel.getOriginalWidget().getText());
+        
+        //remove the draggabeLable
+        draggableLabel.removeFromParent();
+        
+      }
+    });
+     
+}}}
+
 
 = Scope and Accept options =
-We will define in this paragraph what we mean by an "acceptable draggable".
+
+We will define what we mean by an "acceptable draggable".
+ A draggable element is accepted by a droppable if and only if they have the same scope value and if true is returned when we call the `AcceptFunction` of the droppable by passing the draggable. When a draggable is accepted by the droppable, it can be drop on this last.
+
+The scope options is a key used to group draggable and droppable items.
+
+The Accept options is a kind of filter apply to group of draggable with the same scope as the droppable. 
+It can be a css selector. All draggable matching this selector will be accepted :
+{{{
+   // all DraggableWidget with "draggableLabel" as css class name will be accepted
+    droppableLabel.setAccept(".draggableLabel");
+}}}
+
+or an `AcceptFunction` object
+{{{
+    droppableLabel.setAccept(new AcceptFunction() {
+      
+      public boolean acceptDrop(DragAndDropContext context) {
+        DraggableWidget<?> draggabelWidget = context.getDraggableWidget();
+        //accept only draggable Label
+        return draggabelWidget.getOriginalWidget() instanceof Label;
+
+      }
+      
+    });
+}}}
+
+The [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/DraughtsSample/DraughtsSample.html checker example] use a `AcceptFunction` to authorize drop of a piece in the authorized squares.
 
 = The cell widgets =
+----
+
 = Examples =
-TO BE CONTINUED
+----
+To illustrate what we talked in this article, example are available to : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GWTSimpleSample/GWTSimpleSample.html
+
+All examples are tested on Internet explore 6, 7 and 8, Firefox 3.6, Google Chrome 4, Opera 10 and Safari 5. 
+
+= Issues =
+----
+Although I spent much time to test the plugin, this one is not bug free guaranteed. If you found bugs, don't hesitate to open a issue to the [http://code.google.com/p/gwtquery-plugins/issues/entry issue tracker]. 
