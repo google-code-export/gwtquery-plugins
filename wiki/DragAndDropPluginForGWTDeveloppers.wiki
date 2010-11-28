@@ -206,4 +206,18 @@ The `DroppableWidget` API offers also a set of methods in order to configure the
 
 Please refer to our [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/TestOptionsSample/TestOptionsSample.html "options in action"] example to play around with most of the options of the `DroppableWidget`.
 
+== The drop events ==
+Different events are fired on the `DroppableWidget` during the drag-and-drop operation :
+ * `gwtquery.plugins.droppable.client.events.DropEvent` : fired when a acceptable draggable (see next paragraph to know what is an acceptable draggable") is dropped on the `DroppableWidget`
+ * `gwtquery.plugins.droppable.client.events.OutDroppableEvent` : fired when an acceptable draggable is being dragged out of the `DroppableWidget`
+ * `gwtquery.plugins.droppable.client.events.OverDroppableEvent` : fired when an acceptable draggable is being dragged over the `DroppableWidget`
+ * `gwtquery.plugins.droppable.client.events.ActivateDroppableEvent` : fired when the `DroppableWidget` is activate (when an acceptable draggable start to drag)
+ * `gwtquery.plugins.droppable.client.events.DeactivateDroppableEvent` : fired when the `DroppableWidget` is deactivate (when an acceptable draggable stops to drag)
+
+
+= Scope and Accept options =
+We will define in this paragraph what we mean by an "acceptable draggable".
+
+= The cell widgets =
+= Examples =
 TO BE CONTINUED
