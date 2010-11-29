@@ -4,7 +4,7 @@ DRAFT VERSION
 <wiki:toc max_depth="3" />
 = Introduction =
 ----
-The draggable and droppable plugins of gwtquery allows to make any DOM elements draggable and droppable. In addition, it offers a API in order to add drag-and-drop support to your GWT widgets included also the new data presentation widgets (aka cell widgets).
+The draggable and droppable plugins of gwtquery allows to make any DOM elements draggable and droppable. In addition, it offers a API in order to add drag-and-drop support to your GWT widgets including also the new data presentation widgets (aka cell widgets).
 
 This article explains how to use this API in your GWT project.
 
@@ -33,7 +33,7 @@ If you use maven, you have to add these blocks to your pom.xml
    </dependencies>
 }}}
 
-Then you need to inherit the plugin in your Module.gwt.xml file:
+Then you need inherit the plugin in your Module.gwt.xml file:
 {{{
   <inherits name='gwtquery.plugins.droppable.Droppable'/>
 }}}
@@ -266,7 +266,7 @@ or an `AcceptFunction` object
 
 By default, the scope is defined to "default" and a droppable accepts all draggables with the same scope.
 
-The [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/DraughtsSample/DraughtsSample.html checker example] use a `AcceptFunction` to authorize drop of a piece in the authorized squares.
+The [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/DraughtsSample/DraughtsSample.html checkers example] use a `AcceptFunction` to authorize drop of a piece in the authorized squares.
 
 = The cell widgets =
 ----
