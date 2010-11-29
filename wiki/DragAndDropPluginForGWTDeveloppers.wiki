@@ -487,7 +487,7 @@ All drag events provide useful methods to retrieve the data associated with the 
 
 = Examples =
 ----
-To illustrate what we talked in this article, examples are available to : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GWTSimpleSample/GWTSimpleSample.html
+To illustrate what we talked in this article, examples are available to : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GwtSimpleSample/GwtSimpleSample.html
 
 All examples are tested on Internet explore 6, 7 and 8, Firefox 3.6, Google Chrome 4, Opera 10 and Safari 5. 
 
