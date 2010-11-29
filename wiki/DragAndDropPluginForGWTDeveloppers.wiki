@@ -317,7 +317,7 @@ In the same way, to add drag-and-drop in a `CellTree` (or a `CellBrowser`), just
     public <T> NodeInfo<?> getNodeInfo(T value) {
 
      if (value == null) {
-      // permission tree node
+      // root node
       DragAndDropNodeInfo<Permission> permissionNodeInfo = new DragAndDropNodeInfo<Permission>(permissionDataProvider, permissionCell);
       
       // permission cell are only droppable
@@ -346,7 +346,7 @@ In the same way, to add drag-and-drop in a `CellTree` (or a `CellBrowser`), just
       // Permission Tree node. 
       Permission p = (Permission) value;
       
-      //retrive all member having this permission
+      //retrieve all members having this permission
       ListDataProvider<MemberInfo> dataProvider = MemberDatabase.get()
           .getDataProvider(p);
 
@@ -368,12 +368,82 @@ In the same way, to add drag-and-drop in a `CellTree` (or a `CellBrowser`), just
 
     String type = value.getClass().getName();
     throw new IllegalArgumentException("Unsupported object type: " + type);
+   }
   }
 
 }}}
+
+Check at the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/PermissionManagerSample/PermissionManagerSample.html permission manager example] and the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GFinderSample/GFinderSample.html GFinder example] for more concrete examples.
+
 == !DragAndDropCellTable and !DragAndDropColumn classes ==
 
-== ==
+To add drag-and-drop support in a `CellTable` :
+ * Use a `DragAndDropCellTable` instead of a `CellTable`
+ * Extends `DragAndDropColumn` instead of `Column` when you defines your table columns.
+
+{{{
+    // Create a DragAndDropCellTable.
+    DragAndDropCellTable<ContactInfo> table = new DragAndDropCellTable<ContactInfo>();
+
+    // Name.
+    DragAndDropColumn<ContactInfo, String> nameColumn = new DragAndDropColumn<ContactInfo, String>(
+        new TextCell()) {
+      @Override
+      public String getValue(ContactInfo object) {
+        return object.getLastName();
+      }
+    };
+    //cells are only draggable
+    nameColumn.setCellDraggableOnly();
+    DraggableOptions nameOptions = nameColumn.getDraggableOptions();
+    // opacity of the helper
+    nameOptions.setOpacity((float) 0.8);
+    // set the revert option
+    nameOptions.setRevert(RevertOption.ON_INVALID_DROP);
+    table.addColumn(nameColumn,"Name");
+   
+    
+    // Address.
+    DragAndDropColumn<ContactInfo, String> addressColumn = new DragAndDropColumn<ContactInfo, String>(
+        new TextCell()) {
+      @Override
+      public String getValue(ContactInfo object) {
+        return object.getAddress();
+      }
+    };
+    //setup drag operation
+    DraggableOptions addressDragOptions = addressColumn.getDraggableOptions();
+    // opacity of the helper
+    addressDragOptions.setOpacity((float) 0.8);
+    // only draggable on the vertical axis
+    addressDragOptions.setAxis(AxisOption.Y_AXIS);
+    // set the scope for the drag and drop operation
+    addressDragOptions.setScope("addressScope");
+    
+    //setup the drop operation
+    DroppableOptions addressDropOptions = addressColumn.getDroppableOptions();
+    // set the scope for the drag and drop operation, btw the address cell accepts only an other address cell
+    addressDropOptions.setScope("addressScope");
+    
+    //as the drop concerns only cells from this column, use a callback function instead of handle DropEvent from the CellTable
+    addressDropOptions.setOnDrop(new DroppableFunction() {
+      
+      public void f(DragAndDropContext context) {
+        ContactInfo droppedContact = context.getDraggableData();
+        ContactInfo dropTargetContact = context.getDroppableData();
+        
+        dropTargetContact.setAddress(droppedContact.getAddress());
+        
+      }
+    });
+    
+    table.addColumn(nameColumn,"Adress");
+}}}
+
+Example : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/CellTableSample/CellTableSample.html
+
+== !DraggableOptions and !DroppableOptions ==
+As you can see in the examples above, we use [http://code.google.com/p/gwtquery-plugins/wiki/DraggablePluginGettingStarted#DraggableOptions_Object `DraggableOptions`] and [http://code.google.com/p/gwtquery-plugins/wiki/DroppablePluginGettingStarted#DroppableOptions_Object `DroppableOptions`] objects in order to configure respectively the drag and the drop behavior.
 
 == Events ==
 
@@ -384,7 +454,7 @@ All DragAndDrop cell widgets propose a set of methods allowing the registration 
 
 = Examples =
 ----
-To illustrate what we talked in this article, example are available to : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GWTSimpleSample/GWTSimpleSample.html
+To illustrate what we talked in this article, examples are available to : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GWTSimpleSample/GWTSimpleSample.html
 
 All examples are tested on Internet explore 6, 7 and 8, Firefox 3.6, Google Chrome 4, Opera 10 and Safari 5. 
 
