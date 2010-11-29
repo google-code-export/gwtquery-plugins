@@ -270,6 +270,117 @@ The [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/DraughtsSam
 
 = The cell widgets =
 ----
+Since its 2.1 release, GWT proposes a new kind of widget, the data presentation widgets and introduces the concept of cells.
+The GWTQuery drag-and-drop plugins offers an API allowing to make any cell draggable and/or droppable.
+
+== !DragAndDropCellList class ==
+
+To add drag-and-drop support in a `CellList`, you have simply to use a `DragAndDropCellList` widget.
+{{{
+    // Create a ConcactCell (normal cell displaying info a a contact)
+    ContactCell contactCell = new ContactCell(Images.INSTANCE.contact());
+
+    // Create a drag and drop cell list
+    DragAndDropCellList<ContactInfo> cellList = new DragAndDropCellList<ContactInfo>(
+        contactCell, ContactDatabase.ContactInfo.KEY_PROVIDER);
+    
+    // The cell of this CellList are only draggable
+    cellList.setCellDraggableOnly();
+    
+    // setup the drag operation
+    DraggableOptions options = new DraggableOptions();
+    // use a clone of the original cell as drag helper
+    options.setHelper(HelperType.CLONE);
+    // set the opacity of the drag helper
+    options.setOpacity((float) 0.9);
+    // append the drag helper to the body element
+    options.setAppendTo("body");
+    // configure the drag operations of the cell list with this options
+    cellList.setDraggableOptions(options);
+
+}}}
+
+Look at the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/ContactCellSample/ContactCellSample.html contact cell example], to see a more concrete example in action.
+
+== !DragAndDropCellTree, !DragAndDropCellBrowser and !DragAndDropNodeInfo classes==
+
+In the same way, to add drag-and-drop in a `CellTree` (or a `CellBrowser`), just use a `DragAndDropCellTree` (or a `DragAndDropCellBrowser`) and use `DragAndDropNodeInfo` to define your tree model :
+
+{{{
+   DragAndDropCellTree cellTree = new DragAndDropCellTree(
+        new MemberTreeViewModel(), null, DroppableCellTreeResource.INSTANCE);
+   ...
+     
+   public class MemberTreeViewModel implements TreeViewModel {
+    ...
+
+    public <T> NodeInfo<?> getNodeInfo(T value) {
+
+     if (value == null) {
+      // permission tree node
+      DragAndDropNodeInfo<Permission> permissionNodeInfo = new DragAndDropNodeInfo<Permission>(permissionDataProvider, permissionCell);
+      
+      // permission cell are only droppable
+      permissionNodeInfo.setCellDroppableOnly();
+
+      // setup drop operation
+      DroppableOptions options = permissionNodeInfo.getDroppableOptions();
+      options.setDroppableHoverClass(Resource.INSTANCE.css().droppableHover());
+      // use a DroppableFunction to define when happens when a drop occurs. We can also add a DropHandler directly in the tree.
+      options.setOnDrop(new DroppableFunction() {
+
+        public void f(DragAndDropContext context) {
+          //retrieve the Member data that was dropped
+          MemberInfo droppedMember = context.getDraggableData();
+          //retrieve the Permission where the member was dropped
+          Permission dropPermission = context.getDroppableData();
+
+          MemberDatabase.get().permissionChange(droppedMember, dropPermission);
+
+        }
+      });
+      
+      return permissionNodeInfo;
+
+    } else if (value instanceof Permission) {
+      // Permission Tree node. 
+      Permission p = (Permission) value;
+      
+      //retrive all member having this permission
+      ListDataProvider<MemberInfo> dataProvider = MemberDatabase.get()
+          .getDataProvider(p);
+
+      DragAndDropNodeInfo<MemberInfo> memberNodeInfo = new DragAndDropNodeInfo<MemberInfo>(dataProvider, memberCell, new SingleSelectionModel<MemberInfo>(),null);
+
+      // member cell are only draggable
+      memberNodeInfo.setCellDraggableOnly(); 
+
+      // setup the drag operation
+      DraggableOptions options = memberNodeInfo.getDraggableOptions();
+      // opacity of the drag helper
+      options.setOpacity((float) 0.9);
+      // cursor during the drag operation
+      options.setCursor(Cursor.MOVE);
+      ...
+
+      return memberNodeInfo;
+    }
+
+    String type = value.getClass().getName();
+    throw new IllegalArgumentException("Unsupported object type: " + type);
+  }
+
+}}}
+== !DragAndDropCellTable and !DragAndDropColumn classes ==
+
+== ==
+
+== Events ==
+
+All DragAndDrop cell widgets propose a set of methods allowing the registration of handlers for all drag and drop events.
+{{{
+
+}}}
 
 = Examples =
 ----
