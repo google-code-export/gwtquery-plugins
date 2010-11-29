@@ -447,7 +447,7 @@ As you can see in the examples above, we use [http://code.google.com/p/gwtquery-
 
 == Events ==
 
-All DragAndDrop cell widgets propose a set of methods allowing the registration of handlers for all drag and drop events.
+All !DragAndDrop cell widgets propose a set of methods allowing the registration of handlers for all drag and drop events.
 
 {{{
     DragAndDropCellList<ContactInfo> cellList = new DragAndDropCellList<ContactInfo>(
