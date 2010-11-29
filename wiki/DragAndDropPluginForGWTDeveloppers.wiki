@@ -448,8 +448,28 @@ As you can see in the examples above, we use [http://code.google.com/p/gwtquery-
 == Events ==
 
 All DragAndDrop cell widgets propose a set of methods allowing the registration of handlers for all drag and drop events.
-{{{
 
+{{{
+    DragAndDropCellList<ContactInfo> cellList = new DragAndDropCellList<ContactInfo>(
+        contactCell, ContactDatabase.ContactInfo.KEY_PROVIDER);
+    
+    cellList.addDragStartHandler(new DragStartEventHandler() {
+      
+      public void onDragStart(DragStartEvent event) {
+        //called when a cell of the cellList start to drag
+        ...
+        
+      }
+    });
+    
+    cellList.addDropHandler(new DropEventHandler() {
+      
+      public void onDrop(DropEvent event) {
+        //called when a drop occurs on a cell of this CelList
+        ...
+      }
+    });
+    
 }}}
 
 = Examples =
