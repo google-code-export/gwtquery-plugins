@@ -211,8 +211,8 @@ Different events are fired on the `DroppableWidget` during the drag-and-drop ope
  * `gwtquery.plugins.droppable.client.events.DropEvent` : fired when a acceptable draggable (see next paragraph to know what an "acceptable draggable" is) is dropped on the `DroppableWidget`
  * `gwtquery.plugins.droppable.client.events.OutDroppableEvent` : fired when an acceptable draggable is being dragged out of the `DroppableWidget`
  * `gwtquery.plugins.droppable.client.events.OverDroppableEvent` : fired when an acceptable draggable is being dragged over the `DroppableWidget`
- * `gwtquery.plugins.droppable.client.events.ActivateDroppableEvent` : fired when the `DroppableWidget` is activate (when an acceptable draggable start to drag)
- * `gwtquery.plugins.droppable.client.events.DeactivateDroppableEvent` : fired when the `DroppableWidget` is deactivate (when an acceptable draggable stops to drag)
+ * `gwtquery.plugins.droppable.client.events.ActivateDroppableEvent` : fired when the `DroppableWidget` is activated (i.e. when an acceptable draggable start being dragged)
+ * `gwtquery.plugins.droppable.client.events.DeactivateDroppableEvent` : fired when the `DroppableWidget` is deactivated (i.e. when an acceptable draggable stops being dragged)
 
 To handle an event, just register an associated event handler in your `DroppableWidget` :
 {{{
