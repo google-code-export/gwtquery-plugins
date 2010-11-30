@@ -234,4 +234,4 @@ All examples are tested on Internet explore 6, 7 and 8, Firefox 3.6, Google Chro
 
 =Issues==
 ----
-Although I spent much time to test the plugin, this one is not bug free guaranteed. If you found bugs, don't hesitate to open a issue to the [http://code.google.com/p/gwtquery-plugins/issues/entry issue tracker]. 
+Although I spent much time testing this plugin, this one is not guaranteed bug free. If you find any bugs, please don't hesitate to open a issue in the [http://code.google.com/p/gwtquery-plugins/issues/entry issue tracker]. 
