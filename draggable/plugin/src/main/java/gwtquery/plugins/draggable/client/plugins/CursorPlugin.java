@@ -18,12 +18,12 @@ package gwtquery.plugins.draggable.client.plugins;
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 
 import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 /**
  * This add-on handles the css cursor to display during drag operation.
@@ -45,13 +45,14 @@ public class CursorPlugin implements DraggablePlugin {
     return options.getCursor() != null;
   }
 
-  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler,  DragContext ctx, Event e) {
     // nothing to do
   }
 
-  public void onStart(DraggableHandler handler, Element draggableElement,
+  public void onStart(DraggableHandler handler,  DragContext ctx,
       Event e) {
-    if (!isStarting){
+
+    if (ctx.getInitialDraggable() == ctx.getDraggable() && !isStarting){
       isStarting = true;
       GQuery $body = $(body);
       String oldCursor = $body.css(CURSOR_CSS);
@@ -63,7 +64,10 @@ public class CursorPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
+    if (ctx.getInitialDraggable() != ctx.getDraggable()){
+      return;
+    }
     GQuery $body = $(body);
     String oldCursor = $body.data(OLD_CURSOR_KEY, String.class);
     $body.css(CURSOR_CSS, oldCursor);

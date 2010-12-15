@@ -15,7 +15,6 @@
  */
 package gwtquery.plugins.draggable.client.events;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
@@ -33,8 +32,8 @@ public class DragStopEvent extends AbstractDraggableEvent<DragStopEvent.DragStop
   public static Type<DragStopEventHandler> TYPE = new Type<DragStopEventHandler>();
 
 
-  public DragStopEvent(Element draggable) {
-    super(draggable);
+  public DragStopEvent(DragContext dragContext) {
+    super(dragContext);
   }
 
   @Override

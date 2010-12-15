@@ -20,10 +20,14 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.user.client.ui.Widget;
 
 import gwtquery.plugins.commonui.client.MouseOptions;
 import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
 import gwtquery.plugins.draggable.client.events.DragContext;
+import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
+
+import java.util.List;
 
 /**
  * This class is used to configure the drag operation.
@@ -45,6 +49,24 @@ public class DraggableOptions extends MouseOptions {
    */
   public interface DragFunction {
     public void f(DragContext context);
+  }
+
+  /**
+   * Function object used to select other draggable elements that will follow
+   * the initial draggable when this one will drag.
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * 
+   */
+  public class SelectFunction {
+    public GQuery selectElements() {
+      return $(selectWidgets().toArray(new Widget[0]));
+    }
+
+    public List<DraggableWidget<?>> selectWidgets() {
+      throw new RuntimeException(
+          "You must override at least selectElements() function or selectWidgets() function");
+    }
   }
 
   /**
@@ -225,6 +247,35 @@ public class DraggableOptions extends MouseOptions {
     BOTH;
   }
 
+  /**
+   * Determine the mode used to group selected draggable during a drag operation
+   * 
+   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   */
+  public static enum GroupingMode {
+    /**
+     * No grouping
+     */
+    NONE,
+    /**
+     * place the helper to the left of the initial current helper
+     */
+    LEFT,
+    /**
+     * place the helper to the right of the initial current helper
+     */
+    RIGHT,
+    /**
+     * place the helper above the initial current helper
+     */
+    UP,
+    /**
+     * place the helper under the initial current helper
+     */
+    DOWN;
+
+  }
+
   public static final String DEFAULT_SCOPE = "default";
 
   private String appendTo;
@@ -242,10 +293,12 @@ public class DraggableOptions extends MouseOptions {
   private Float opacity;
   private RevertOption revert;
   private int revertDuration;
+  private String selectedClassName;
   private String scope;
   private boolean scroll;
   private int scrollSensitivity;
   private int scrollSpeed;
+  private SelectFunction selectFunction;
   private String snap;
   private GQuery $snap;
   private SnapMode snapMode;
@@ -257,6 +310,9 @@ public class DraggableOptions extends MouseOptions {
   private DragFunction onDragStop;
   private DragFunction onDrag;
   private GQuery $containment;
+  private boolean multipleSelection;
+  private GroupingMode groupingMode;
+  private int groupSpacing;
 
   /**
    * @return the css selector used to select the element where the helper will
@@ -527,13 +583,12 @@ public class DraggableOptions extends MouseOptions {
 
   /**
    * set the {@link AxisOption}
-   *  
+   * 
    * @param axis
    */
   public void setAxis(AxisOption axis) {
     this.axis = axis;
   }
-
 
   /**
    * Constrains dragging to within the bounds of the specified region. The
@@ -905,6 +960,94 @@ public class DraggableOptions extends MouseOptions {
     this.zIndex = zIndex;
   }
 
+  /**
+   * 
+   * @return if the draggable can be part of a selection for a multi-drag
+   */
+  public boolean isMultipleSelection() {
+    return multipleSelection;
+  }
+
+  /**
+   * 
+   * @param multipleSelection
+   */
+  public void setMultipleSelection(boolean multipleSelection) {
+    this.multipleSelection = multipleSelection;
+  }
+
+  /**
+   * @return Css class which will be added to the draggable when it will be
+   *         selected
+   */
+  public String getSelectedClassName() {
+    return selectedClassName;
+  }
+
+  /**
+   * Set the css class which will be added to the draggable when it will be
+   * selected
+   */
+  public void setSelectedClassName(String selectedClassName) {
+    this.selectedClassName = selectedClassName;
+  }
+
+  /**
+   * @return the {@link GroupingMode}
+   * 
+   */
+  public GroupingMode getGroupingMode() {
+    return groupingMode;
+  }
+
+  /**
+   * set the {@link GroupingMode}
+   * 
+   * @param groupingMode
+   */
+  public void setGroupingMode(GroupingMode groupingMode) {
+    this.groupingMode = groupingMode;
+  }
+
+  public int getGroupSpacing() {
+    return groupSpacing;
+  }
+
+  /**
+   * Set the space in px applied when it will be grouped to other draggable
+   * 
+   * @param groupSpacing
+   */
+  public void setGroupSpacing(int groupSpacing) {
+    this.groupSpacing = groupSpacing;
+  }
+  
+  public SelectFunction getSelect() {
+    return selectFunction;
+  }
+  
+  public void setSelect(final String selector){
+    selectFunction = new SelectFunction(){
+      @Override
+      public GQuery selectElements() {
+        return $(selector);
+      }
+    };
+  }
+  
+  public void setSelect(SelectFunction selectFunction){
+    this.selectFunction = selectFunction;
+  }
+  
+  public void setSelect(final GQuery query){
+    selectFunction = new SelectFunction(){
+      @Override
+      public GQuery selectElements() {
+        return query;
+      }
+    };
+  }
+
   @Override
   protected void initDefault() {
     super.initDefault();
@@ -920,6 +1063,10 @@ public class DraggableOptions extends MouseOptions {
     scrollSpeed = 20;
     snapMode = SnapMode.BOTH;
     snapTolerance = 20;
+    multipleSelection = false;
+    selectedClassName = null;
+    groupingMode = GroupingMode.NONE;
+    groupSpacing = 2;
   }
 
 }

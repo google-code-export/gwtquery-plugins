@@ -28,6 +28,7 @@ import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 /**
  * This add-on handle scrolling of parent element.
@@ -47,8 +48,9 @@ public class ScrollPlugin implements DraggablePlugin {
     return options.isScroll();
   }
 
-  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler,  DragContext ctx, Event e) {
     DraggableOptions options = handler.getOptions();
+    Element draggableElement = ctx.getDraggable();
     GQuery scrollParent = handler.getHelperScrollParent();
     Element scrollParentElement = scrollParent.get(0);
     if (scrollParentElement == null) {
@@ -127,7 +129,7 @@ public class ScrollPlugin implements DraggablePlugin {
 
   }
 
-  public void onStart(DraggableHandler handler, Element draggableElement,
+  public void onStart(DraggableHandler handler,  DragContext ctx,
       Event e) {
 
     GQuery scrollParent = handler.getHelperScrollParent();
@@ -136,12 +138,12 @@ public class ScrollPlugin implements DraggablePlugin {
         && scrollParentElement != $(GQuery.document).get(0)
         && !"html".equalsIgnoreCase(scrollParentElement.getTagName())) {
       Offset scrollParentOffset = scrollParent.offset();
-      $(draggableElement).data(OVERFLOW_OFFSET_KEY, scrollParentOffset);
+      $(ctx.getDraggable()).data(OVERFLOW_OFFSET_KEY, scrollParentOffset);
     }
   }
 
-  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
-    $(draggableElement).removeData(OVERFLOW_OFFSET_KEY);
+  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
+    $(ctx.getDraggable()).removeData(OVERFLOW_OFFSET_KEY);
 
   }
 

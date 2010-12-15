@@ -25,6 +25,7 @@ import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,17 +75,17 @@ public class SnapPlugin implements DraggablePlugin {
   }
 
   @SuppressWarnings("unchecked")
-  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler,  DragContext ctx, Event e) {
 
-    List<SnapElement> snapElements = $(draggableElement).data(
+    List<SnapElement> snapElements = $(ctx.getDraggable()).data(
         SNAP_ELEMENTS_KEY, ArrayList.class);
 
     int snapTolerance = handler.getOptions().getSnapTolerance();
     SnapMode snapMode = handler.getOptions().getSnapMode();
 
-    int helperLeft = handler.getAbsPosition().left;
+    int helperLeft = handler.getAbsolutePosition().left;
     int helperRight = helperLeft + handler.getHelperDimension().getWidth();
-    int helperTop = handler.getAbsPosition().top;
+    int helperTop = handler.getAbsolutePosition().top;
     int helperBottom = helperTop + handler.getHelperDimension().getHeight();
 
     for (SnapElement snapElement : snapElements) {
@@ -187,8 +188,9 @@ public class SnapPlugin implements DraggablePlugin {
     }
   }
 
-  public void onStart(DraggableHandler handler, Element draggableElement,
+  public void onStart(DraggableHandler handler,  DragContext ctx,
       Event e) {
+    Element draggableElement = ctx.getDraggable();
     List<SnapElement> snapElements = new ArrayList<SnapElement>();
     GQuery snap = (handler.getOptions().getSnap_$() != null ? handler
         .getOptions().getSnap_$() : $(handler.getOptions().getSnap()));
@@ -204,7 +206,7 @@ public class SnapPlugin implements DraggablePlugin {
 
   }
   
-  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
     // nothing to do
   }
 

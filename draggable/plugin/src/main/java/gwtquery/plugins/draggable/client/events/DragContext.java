@@ -23,6 +23,8 @@ import com.google.gwt.query.client.GQuery.Offset;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
+import java.util.List;
+
 /**
  * Object containing useful information on the drag operation.
  * 
@@ -37,14 +39,21 @@ public class DragContext {
   private Element helper;
   private Offset helperPosition;
 
+  private List<Element> selectedDraggable;
+
+  private Element initialDraggable;
+
   /**
    * Constructor
    * 
    * @param draggable
    *          the draggable element
    */
-  public DragContext(Element draggable) {
+  public DragContext(Element draggable, Element initialDraggable,
+      List<Element> selectedDraggable) {
     this.draggable = draggable;
+    this.selectedDraggable = selectedDraggable;
+    this.initialDraggable = initialDraggable;
     init();
   }
 
@@ -97,6 +106,18 @@ public class DragContext {
    */
   public Offset getHelperPosition() {
     return helperPosition;
+  }
+
+  public List<Element> getSelectedDraggable() {
+    return selectedDraggable;
+  }
+
+  /**
+   * @return the draggable element that initiate the drag operation (i.e. the
+   *         clicked element)
+   */
+  public Element getInitialDraggable() {
+    return initialDraggable;
   }
 
   private void init() {

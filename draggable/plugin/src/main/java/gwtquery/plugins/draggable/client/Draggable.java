@@ -15,6 +15,7 @@
  */
 package gwtquery.plugins.draggable.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
@@ -33,6 +34,7 @@ import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
+import gwtquery.plugins.draggable.client.DraggableOptions.SelectFunction;
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragContext;
 import gwtquery.plugins.draggable.client.events.DragEvent;
@@ -40,13 +42,16 @@ import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
 import gwtquery.plugins.draggable.client.plugins.CursorPlugin;
 import gwtquery.plugins.draggable.client.plugins.DraggablePlugin;
+import gwtquery.plugins.draggable.client.plugins.GroupSelectedPlugin;
 import gwtquery.plugins.draggable.client.plugins.OpacityPlugin;
 import gwtquery.plugins.draggable.client.plugins.ScrollPlugin;
 import gwtquery.plugins.draggable.client.plugins.SnapPlugin;
 import gwtquery.plugins.draggable.client.plugins.StackPlugin;
 import gwtquery.plugins.draggable.client.plugins.ZIndexPlugin;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,17 +67,17 @@ public class Draggable extends MouseHandler {
     String GWT_DRAGGABLE = "gwtQuery-draggable";
     String GWT_DRAGGABLE_DISABLED = "gwtQuery-draggable-disabled";
     String GWT_DRAGGABLE_DRAGGING = "gwtQuery-draggable-dragging";
-
+    String GWT_DRAGGABLE_SELECTED = "gwtQuery-draggable-selected";
   }
 
   private class DragCaller extends StartCaller {
 
-    public DragCaller(Element draggable, Event e) {
-      super(draggable, e);
+    public DragCaller(DragContext ctx, DraggableHandler dragHandler, Event e) {
+      super(ctx, dragHandler, e);
     }
 
     public void call(DraggablePlugin plugin) {
-      plugin.onDrag(getHandler(draggable), draggable, e);
+      plugin.onDrag(dragHandler, ctx, e);
     }
   }
 
@@ -81,33 +86,37 @@ public class Draggable extends MouseHandler {
   }
 
   private class StartCaller implements PluginCaller {
-    protected Element draggable;
+    protected DragContext ctx;
+    protected DraggableHandler dragHandler;
     protected Event e;
 
-    public StartCaller(Element draggable, Event e) {
-      this.draggable = draggable;
+    public StartCaller(DragContext ctx, DraggableHandler dragHandler, Event e) {
+      this.ctx = ctx;
+      this.dragHandler = dragHandler;
       this.e = e;
     }
 
     public void call(DraggablePlugin plugin) {
-      plugin.onStart(getHandler(draggable), draggable, e);
+      plugin.onStart(dragHandler, ctx, e);
     }
   }
 
   private class StopCaller extends StartCaller {
 
-    public StopCaller(Element draggable, Event e) {
-      super(draggable, e);
+    public StopCaller(DragContext ctx, DraggableHandler dragHandler, Event e) {
+      super(ctx, dragHandler, e);
     }
 
     public void call(DraggablePlugin plugin) {
-      plugin.onStop(getHandler(draggable), draggable, e);
+      plugin.onStop(dragHandler, ctx, e);
     }
   }
 
   public static final Class<Draggable> Draggable = Draggable.class;
 
   public static final String DRAGGABLE_HANDLER_KEY = "draggableHandler";
+
+  static List<Element> selectedDraggables;
 
   private static Map<String, DraggablePlugin> draggablePlugins;
 
@@ -126,6 +135,9 @@ public class Draggable extends MouseHandler {
     registerDraggablePlugin(new ZIndexPlugin());
     registerDraggablePlugin(new StackPlugin());
     registerDraggablePlugin(new SnapPlugin());
+    registerDraggablePlugin(new GroupSelectedPlugin());
+
+    selectedDraggables = new ArrayList<Element>();
   }
 
   /**
@@ -140,8 +152,17 @@ public class Draggable extends MouseHandler {
     draggablePlugins.put(plugin.getName(), plugin);
   }
 
-  // for performance purpose cache the current drag handler.
-  private DraggableHandler currentDragHandler;
+  private static void trigger(GwtEvent<?> e, DragFunction callback,
+      DragContext dragContext, HasHandlers handlerManager) {
+    if (handlerManager != null && e != null) {
+      handlerManager.fireEvent(e);
+    }
+    if (callback != null) {
+      callback.f(dragContext);
+    }
+  }
+
+  private boolean dragStart = false;
 
   /**
    * Constructor
@@ -180,14 +201,17 @@ public class Draggable extends MouseHandler {
   }
 
   /**
-   * Remove the draggable behavior to the selected elements. This method releases
-   * resources used by the plugin and should be called when an element is
-   * removed of the DOM.
+   * Remove the draggable behavior to the selected elements. This method
+   * releases resources used by the plugin and should be called when an element
+   * is removed of the DOM.
    * 
    * @return
    */
   public Draggable destroy() {
+
     for (Element e : elements()) {
+      selectedDraggables.remove(e);
+
       $(e).removeData(DRAGGABLE_HANDLER_KEY).removeClass(
           CssClassNames.GWT_DRAGGABLE, CssClassNames.GWT_DRAGGABLE_DISABLED,
           CssClassNames.GWT_DRAGGABLE_DRAGGING);
@@ -214,18 +238,6 @@ public class Draggable extends MouseHandler {
    */
   public Draggable draggable(DraggableOptions options) {
     return draggable(options, null);
-  }
-
-  /**
-   * Make the selected elements draggable with default options. All drag events will be fired on the
-   * <code>eventBus</code>
-   * 
-   *@param eventBus
-   *          The eventBus to use to fire events.
-   * @return
-   */
-  public Draggable draggable(HasHandlers eventBus) {
-    return draggable(new DraggableOptions(), eventBus);
   }
 
   /**
@@ -259,6 +271,18 @@ public class Draggable extends MouseHandler {
     }
 
     return this;
+  }
+
+  /**
+   * Make the selected elements draggable with default options. All drag events
+   * will be fired on the <code>eventBus</code>
+   * 
+   *@param eventBus
+   *          The eventBus to use to fire events.
+   * @return
+   */
+  public Draggable draggable(HasHandlers eventBus) {
+    return draggable(new DraggableOptions(), eventBus);
   }
 
   /**
@@ -311,101 +335,170 @@ public class Draggable extends MouseHandler {
   }
 
   @Override
-  protected boolean mouseDrag(Element draggable, Event event) {
-    return mouseDragImpl(draggable, getHandler(draggable), event, false);
+  protected boolean mouseClick(Element element, Event event) {
+    // react on click event only if no metakey is pressed and if not drag occur
+    if (!event.isMetaKeyPressed() && !dragStart) {
+      DraggableHandler dragHandler = DraggableHandler.getInstance(element);
+      DraggableOptions options = dragHandler.getOptions();
+      unselectAll();
+      select(element, options.getSelectedClassName());
+    }
+
+    dragStart = false;
+
+    return !event.isMetaKeyPressed();
   }
 
   @Override
-  protected boolean mouseStart(Element draggable, Event event) {
-    reset();
-    DraggableHandler dragHandler = getHandler(draggable);
+  protected boolean mouseDown(Element draggable, Event event) {
+
+    DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
     DraggableOptions options = dragHandler.getOptions();
+    boolean metaKeyPressed = event.isMetaKeyPressed();
 
-    try {
-      trigger(new BeforeDragStartEvent(draggable), options
-          .getOnBeforeDragStart(), draggable);
-    } catch (UmbrellaException e) {
-      for (Throwable t : e.getCauses()) {
-        if (t instanceof StopDragException) {
-          return false;
+    if (metaKeyPressed && options.isMultipleSelection()) {
+
+      String selectedCssClass = options.getSelectedClassName();
+
+      if (selectedDraggables.remove(draggable)) {
+
+        draggable.removeClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
+
+        if (selectedCssClass != null) {
+          draggable.removeClassName(selectedCssClass);
         }
+      } else if (canBeSelected(draggable, dragHandler)) {
+        select(draggable, options.getSelectedClassName());
       }
-
+    } else if (!metaKeyPressed && !selectedDraggables.contains(draggable)) {
+      // if no meta key pressed and if the draggable is not selected , deselect
+      // all and select the draggable.
+      unselectAll();
+      select(draggable, options.getSelectedClassName());
     }
 
-    dragHandler.createHelper(draggable, event);
-
-    dragHandler.cacheHelperSize();
-
-    if (getDragAndDropManager().isHandleDroppable()) {
-      getDragAndDropManager().setCurrentDraggable(draggable);
-    }
-
-    dragHandler.initialize(draggable, event);
-
-    callPlugins(new StartCaller(draggable, event), options);
-
-    try {
-      trigger(new DragStartEvent(draggable), options.getOnDragStart(),
-          draggable);
-    } catch (UmbrellaException e) {
-      for (Throwable t : e.getCauses()) {
-        if (t instanceof StopDragException) {
-          mouseStop(draggable, event);
-          return false;
-        }
-      }
-
-    }
-
-    dragHandler.cacheHelperSize();
-
-    if (getDragAndDropManager().isHandleDroppable()) {
-      getDragAndDropManager().initialize(draggable, event);
-    }
-
-    getHelper(draggable).addClass(CssClassNames.GWT_DRAGGABLE_DRAGGING);
-
-    mouseDragImpl(draggable, dragHandler, event, true);
-
-    return true;
+    return super.mouseDown(draggable, event) && !metaKeyPressed;
   }
 
   @Override
-  protected boolean mouseStop(final Element draggable, final Event event) {
+  protected boolean mouseDrag(Element currentDraggable, Event event) {
+    dragStart = true;
 
-    final DraggableHandler handler = getHandler(draggable);
-    final DraggableOptions options = handler.getOptions();
+    boolean result = false;
 
-    boolean dropped = false;
-    if (getDragAndDropManager().isHandleDroppable()) {
-      dropped = getDragAndDropManager().drop(draggable, event);
+    DragContext ctx = new DragContext(currentDraggable, currentDraggable,
+        selectedDraggables);
+    result |= mouseDragImpl(ctx,
+        DraggableHandler.getInstance(currentDraggable), event, false);
+
+    for (Element draggable : selectedDraggables) {
+      if (draggable != currentDraggable) {
+        ctx = new DragContext(draggable, currentDraggable, selectedDraggables);
+        result |= mouseDragImpl(ctx, DraggableHandler.getInstance(draggable),
+            event, false);
+      }
+
     }
 
-    if (draggable == null) {
-      return false;
+    return result;
+  }
+
+  @Override
+  protected boolean mouseStart(Element currentDraggable, Event event) {
+
+    boolean result = false;
+
+    DraggableHandler dragHandler = getHandler(currentDraggable);
+    DraggableOptions options = dragHandler.getOptions();
+    // if the currentDraggable have not the same scope has the other selected
+    // draggable or doesn't accept multi selection, unselect all
+    if (!canBeSelected(currentDraggable, dragHandler)
+        || !options.isMultipleSelection()) {
+      unselectAll();
     }
 
-    RevertOption revertOption = options.getRevert();
-    if (revertOption.doRevert(dropped)) {
-      getHandler(draggable).revertToOriginalPosition(new Function() {
+    // if the currentDraggable is not yet selected and can be selected,
+    // select it
+    if (!selectedDraggables.contains(currentDraggable)
+        && canBeSelected(currentDraggable, dragHandler)
+        && options.isMultipleSelection()) {
+      select(currentDraggable, options.getSelectedClassName());
+    }
+
+    // select other draggable elements if select options is set
+    SelectFunction selectFunction = options.getSelect();
+    if (selectFunction != null) {
+      GQuery followers = selectFunction.selectElements();
+      followers.each(new Function() {
         @Override
         public void f(Element e) {
-          callPlugins(new StopCaller(draggable, event), options);
-          triggerDragStop(draggable, handler.getHelper().get(0), options);
-
-          getHandler(draggable).clear(draggable);
+          DraggableHandler handler = DraggableHandler.getInstance(e);
+          if (handler != null) {
+            GWT.log("Select automatic selected element " + e.getId());
+            select(e, handler.getOptions().getSelectedClassName());
+          }
         }
       });
-      return false;
     }
 
-    callPlugins(new StopCaller(draggable, event), options);
-    triggerDragStop(draggable, handler.getHelper().get(0), options);
+    // first call mouseStart for the initial draggable
+    DragContext ctx = new DragContext(currentDraggable, currentDraggable,
+        selectedDraggables);
+    result |= mouseStartImpl(ctx, event);
 
-    getHandler(draggable).clear(draggable);
+    // call mouseStartImpl for the others
+    for (Element draggable : selectedDraggables) {
+      if (draggable != currentDraggable) {
+        ctx = new DragContext(draggable, currentDraggable, selectedDraggables);
+        result |= mouseStartImpl(ctx, event);
+      }
+    }
 
-    return false;
+    return result;
+  }
+
+  @Override
+  protected boolean mouseStop(Element initialDraggable, final Event event) {
+    boolean result = false;
+
+    DragContext ctx = new DragContext(initialDraggable, initialDraggable,
+        selectedDraggables);
+    result |= mouseStopImpl(ctx, event);
+
+    for (Element draggable : selectedDraggables) {
+      if (draggable != initialDraggable) {
+        ctx = new DragContext(draggable, initialDraggable, selectedDraggables);
+        result |= mouseStopImpl(ctx, event);
+      }
+
+    }
+
+    DraggableOptions options = getOptions(initialDraggable);
+
+    // deselect automatic selected elements
+    // select other draggable elements if select options is set
+    SelectFunction selectFunction = options.getSelect();
+    if (selectFunction != null) {
+      GQuery followers = selectFunction.selectElements();
+      followers.each(new Function() {
+        @Override
+        public void f(Element e) {
+          DraggableHandler handler = DraggableHandler.getInstance(e);
+          if (handler != null) {
+            GWT.log("unselect automatic selected element " + e.getId());
+            selectedDraggables.remove(e);
+            e.removeClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
+            String selectedCssClass = DraggableHandler.getInstance(e)
+                .getOptions().getSelectedClassName();
+            if (selectedCssClass != null) {
+              e.removeClassName(selectedCssClass);
+            }
+          }
+        }
+      });
+    }
+
+    return result;
   }
 
   private void callPlugins(PluginCaller caller, DraggableOptions options) {
@@ -416,22 +509,27 @@ public class Draggable extends MouseHandler {
     }
   }
 
+  private boolean canBeSelected(Element draggable, DraggableHandler handler) {
+    if (selectedDraggables.isEmpty()) {
+
+      return true;
+    }
+
+    String selectedScope = DraggableHandler.getInstance(
+        selectedDraggables.get(0)).getOptions().getScope();
+    String currentScope = handler.getOptions().getScope();
+
+    return currentScope.equals(selectedScope);
+
+  }
+
   private DragAndDropManager getDragAndDropManager() {
     return DragAndDropManager.getInstance();
   }
 
   private DraggableHandler getHandler(Element draggable) {
 
-    if (currentDragHandler == null) {
-      currentDragHandler = $(draggable).data(DRAGGABLE_HANDLER_KEY,
-          DraggableHandler.class);
-    }
-    return currentDragHandler;
-  }
-
-  private GQuery getHelper(Element draggable) {
-    DraggableHandler handler = getHandler(draggable);
-    return handler != null ? handler.getHelper() : null;
+    return DraggableHandler.getInstance(draggable);
   }
 
   private DraggableOptions getOptions(Element draggable) {
@@ -463,18 +561,19 @@ public class Draggable extends MouseHandler {
   /**
    * implementation of mouse drag
    */
-  private boolean mouseDragImpl(Element draggable,
-      DraggableHandler dragHandler, Event event, boolean noPropagation) {
+  private boolean mouseDragImpl(DragContext ctx, DraggableHandler dragHandler,
+      Event event, boolean noPropagation) {
+    Element draggable = ctx.getDraggable();
 
     dragHandler.regeneratePositions(event);
 
     if (!noPropagation) {
 
-      callPlugins(new DragCaller(draggable, event), dragHandler.getOptions());
+      callPlugins(new DragCaller(ctx, dragHandler, event), dragHandler
+          .getOptions());
 
       try {
-        trigger(new DragEvent(draggable), dragHandler.getOptions().getOnDrag(),
-            draggable);
+        trigger(new DragEvent(ctx), dragHandler.getOptions().getOnDrag(), ctx);
       } catch (UmbrellaException e) {
         for (Throwable t : e.getCauses()) {
           if (t instanceof StopDragException) {
@@ -495,12 +594,116 @@ public class Draggable extends MouseHandler {
     return false;
   }
 
+  private boolean mouseStartImpl(DragContext ctx, Event event) {
+
+    Element draggable = ctx.getDraggable();
+    DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
+    DraggableOptions options = dragHandler.getOptions();
+
+    try {
+      trigger(new BeforeDragStartEvent(ctx), options.getOnBeforeDragStart(),
+          ctx);
+    } catch (UmbrellaException e) {
+      for (Throwable t : e.getCauses()) {
+        if (t instanceof StopDragException) {
+          return false;
+        }
+      }
+
+    }
+
+    dragHandler.createHelper(draggable, event);
+
+    dragHandler.cacheHelperSize();
+
+    if (getDragAndDropManager().isHandleDroppable()) {
+      getDragAndDropManager().setCurrentDraggable(draggable);
+    }
+
+    dragHandler.initialize(draggable, event);
+    callPlugins(new StartCaller(ctx, dragHandler, event), options);
+
+    try {
+      trigger(new DragStartEvent(ctx), options.getOnDragStart(), ctx);
+    } catch (UmbrellaException e) {
+      for (Throwable t : e.getCauses()) {
+        if (t instanceof StopDragException) {
+          mouseStop(draggable, event);
+          return false;
+        }
+      }
+
+    }
+
+    dragHandler.cacheHelperSize();
+
+    if (getDragAndDropManager().isHandleDroppable()) {
+      getDragAndDropManager().initialize(draggable, event);
+    }
+
+    dragHandler.getHelper().addClass(CssClassNames.GWT_DRAGGABLE_DRAGGING);
+
+    mouseDragImpl(ctx, dragHandler, event, true);
+
+    return true;
+  }
+
+  private boolean mouseStopImpl(final DragContext ctx, final Event event) {
+    final Element draggable = ctx.getDraggable();
+    final DraggableHandler handler = getHandler(draggable);
+    final DraggableOptions options = handler.getOptions();
+
+    boolean dropped = false;
+    if (getDragAndDropManager().isHandleDroppable()) {
+      dropped = getDragAndDropManager().drop(draggable, event);
+    }
+
+    if (draggable == null) {
+      return false;
+    }
+
+    RevertOption revertOption = options.getRevert();
+    if (revertOption.doRevert(dropped)) {
+      handler.revertToOriginalPosition(new Function() {
+        @Override
+        public void f(Element e) {
+          callPlugins(new StopCaller(ctx, handler, event), options);
+          triggerDragStop(ctx, options);
+
+          handler.clear(draggable);
+        }
+      });
+      return false;
+    }
+
+    callPlugins(new StopCaller(ctx, handler, event), options);
+    triggerDragStop(ctx, options);
+
+    handler.clear(draggable);
+
+    return false;
+  }
+
   private native boolean positionIsFixedAbsoluteOrRelative(String position) /*-{
     return (/^(?:r|a|f)/).test(position);
   }-*/;
 
-  private void reset() {
-    currentDragHandler = null;
+  private void select(Element draggable, String selectedCssClass) {
+    if (selectedDraggables.contains(draggable)) {
+      return;
+    }
+    selectedDraggables.add(draggable);
+
+    draggable.addClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
+
+    if (selectedCssClass != null) {
+      draggable.addClassName(selectedCssClass);
+    }
+  }
+
+  private void trigger(GwtEvent<?> e, DragFunction callback,
+      DragContext dragContext) {
+    trigger(e, callback, dragContext, eventBus);
   }
 
   /**
@@ -510,30 +713,32 @@ public class Draggable extends MouseHandler {
    * @param draggable
    * @param options
    */
-  private void triggerDragStop(final Element draggable, final Element helper,
+  private void triggerDragStop(final DragContext ctx,
       final DraggableOptions options) {
     Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
       public void execute() {
-        trigger(new DragStopEvent(draggable), options.getOnDragStop(),
-            draggable);
+        trigger(new DragStopEvent(ctx), options.getOnDragStop(), ctx);
 
       }
     });
   }
 
-  private void trigger(GwtEvent<?> e, DragFunction callback, Element draggable) {
-    trigger(e, callback, draggable, eventBus);
-  }
+  private void unselectAll() {
+    selectedDraggables.clear();
+    $('.' + CssClassNames.GWT_DRAGGABLE_SELECTED).each(new Function() {
+      @Override
+      public void f(Element e) {
+        e.removeClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
+        DraggableHandler handler = DraggableHandler.getInstance(e);
+        DraggableOptions options = handler.getOptions();
+        String cssClass = options.getSelectedClassName();
+        if (cssClass != null) {
+          e.removeClassName(cssClass);
+        }
+      }
+    });
 
-  private static void trigger(GwtEvent<?> e, DragFunction callback,
-      Element draggable, HasHandlers handlerManager) {
-    if (handlerManager != null && e != null) {
-      handlerManager.fireEvent(e);
-    }
-    if (callback != null) {
-      callback.f(new DragContext(draggable));
-    }
   }
 
 }
