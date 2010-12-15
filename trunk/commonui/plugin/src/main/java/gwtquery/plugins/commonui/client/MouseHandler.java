@@ -24,7 +24,6 @@ import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.plugins.Events;
 
-
 /**
  * Base class for all plug-in that need to handle some mouse interactions.
  * 
@@ -33,20 +32,20 @@ import com.google.gwt.query.client.plugins.Events;
  */
 public abstract class MouseHandler extends GQueryUi {
 
-  private boolean preventClickEvent = false;
+  private Event mouseDownEvent;
   private boolean mouseStarted = false;
   private Duration mouseUpDuration;
-  private Event mouseDownEvent;
-//  private int mouseDownX;
-//  private int mouseDownY;
+  // private int mouseDownX;
+  // private int mouseDownY;
   private MouseOptions options;
-
-  public MouseHandler(GQuery gq) {
-    super(gq);
-  }
+  private boolean preventClickEvent = false;
 
   public MouseHandler(Element element) {
     super(element);
+  }
+
+  public MouseHandler(GQuery gq) {
+    super(gq);
   }
 
   public MouseHandler(JSArray elements) {
@@ -56,6 +55,19 @@ public abstract class MouseHandler extends GQueryUi {
   public MouseHandler(NodeList<Element> list) {
     super(list);
   }
+
+  protected void destroyMouseHandler() {
+    as(Events.Events)
+        .unbind(Event.ONMOUSEDOWN | Event.ONCLICK, getPluginName());
+  }
+
+  /**
+   * Return a String identifying the plugin. This string is used as namespace
+   * when we bind handlers.
+   * 
+   * @return
+   */
+  protected abstract String getPluginName();
 
   /**
    * This method initialize all needed handlers
@@ -67,40 +79,33 @@ public abstract class MouseHandler extends GQueryUi {
 
     for (final Element e : elements()) {
 
-      $(e).as(Events.Events).bind(Event.ONMOUSEDOWN, getPluginName(), (Object)null, new Function() {
-        @Override
-        public boolean f(com.google.gwt.user.client.Event event) {
-          return mouseDown(e, Event.create(event));
+      $(e).as(Events.Events).bind(Event.ONMOUSEDOWN, getPluginName(),
+          (Object) null, new Function() {
+            @Override
+            public boolean f(com.google.gwt.user.client.Event event) {
+              return mouseDown(e, Event.create(event));
 
-        }
-      }).bind(Event.ONCLICK, getPluginName(), (Object)null, new Function() {
-        @Override
-        public boolean f(com.google.gwt.user.client.Event event) {
-          if (preventClickEvent) {
-            preventClickEvent = false;
-            event.stopPropagation();
-            return false;
-          }
-          return true;
-        }
-      });
+            }
+          }).bind(Event.ONCLICK, getPluginName(), (Object) null,
+          new Function() {
+            @Override
+            public boolean f(com.google.gwt.user.client.Event event) {
+              preventClickEvent |= !mouseClick(e, Event.create(event));
+
+              if (preventClickEvent) {
+
+                preventClickEvent = false;
+                event.stopPropagation();
+                event.preventDefault();
+                return false;
+              }
+
+              return true;
+            }
+          });
     }
 
   }
-
-  protected void destroyMouseHandler() {
-    as(Events.Events).unbind(Event.ONMOUSEDOWN | Event.ONCLICK,getPluginName());
-  }
-
-
-
-  /**
-   * Return a String identifying the plugin. This string is used as namespace
-   * when we bind handlers.
-   * 
-   * @return
-   */
-  protected abstract String getPluginName();
 
   /**
    * Test if the mouse down event must be handled by the plugin or not.
@@ -112,86 +117,28 @@ public abstract class MouseHandler extends GQueryUi {
   }
 
   /**
-   * Method called when the mouse is dragging
+   * Method called when mouse click
    * 
    * @param element
    * @param event
    * @return
    */
-  protected abstract boolean mouseDrag(Element element, Event event);
+  protected boolean mouseClick(Element element, Event event) {
+    return true;
+  }
 
   /**
-   * Method called when the mouse is clicked and all conditions for starting the plugin are met.
+   * Method called when mouse down occur on the element.
+   * 
+   * You should not override this method. Instead, override
+   * {@link #mouseStart(Element, Event)} method
    * 
    * @param element
    * @param event
    * @return
    */
-  protected abstract boolean mouseStart(Element element, Event event);
+  protected boolean mouseDown(Element element, Event event) {
 
-  /**
-   * Method called when the mouse button is released 
-   * 
-   * @param element
-   * @param event
-   * @return
-   */
-  protected abstract boolean mouseStop(Element element, Event event);
-
-  private void bindOtherMouseEvent(final Element element) {
-    
-    $(document).as(Events.Events).bind(Event.ONMOUSEMOVE, getPluginName(), (Object)null, new Function() {
-      @Override
-      public boolean f(com.google.gwt.user.client.Event e) {
-    	mouseMove(element, Event.create(e));
-        return false;
-      }
-    }).bind(Event.ONMOUSEUP,getPluginName(), (Object)null,new Function() {
-      @Override
-      public boolean f(com.google.gwt.user.client.Event e) {
-        mouseUp(element, Event.create(e));
-        return false;
-      }
-    });
-  }
-
-  private boolean delayConditionMet() {
-
-    if (mouseUpDuration == null) {
-      return false;
-    }
-
-    return options.getDelay() <= mouseUpDuration.elapsedMillis();
-  }
-
-  private boolean distanceConditionMet(Event event) {
-    int neededDistance = options.getDistance();
-    int mouseDownX = mouseDownEvent.getClientX();
-    int mouseDownY = mouseDownEvent.getClientY();
-    int xMouseDistance = Math.abs(mouseDownX
-        - event.getClientX());
-    int yMouseDistance = Math.abs(mouseDownY
-        - event.getClientY());
-    // in jQuery-ui we take the greater distance between x and y... not really
-    // good !
-    // int mouseDistance = Math.max(xMouseDistance, yMouseDistance);
-    // use Pythagor theorem !!
-    int mouseDistance = (int) Math.sqrt(xMouseDistance * xMouseDistance
-        + yMouseDistance * yMouseDistance); 
-    return mouseDistance >= neededDistance;
-  }
-
-  private native boolean isEventAlreadyHandled(Event event)/*-{
-    var result = event.mouseHandled ? event.mouseHandled : false;
-    return result;
-  }-*/;
-
-  private native void markEventAsHandled(Event event)/*-{
-    event.mouseHandled = true;
-  }-*/;
-
-  private boolean mouseDown(Element element, Event event) {
-	
     // test if an other plugin handle the mouseStart
     if (isEventAlreadyHandled(event)) {
       return false;
@@ -210,7 +157,7 @@ public abstract class MouseHandler extends GQueryUi {
     if (delayConditionMet() && distanceConditionMet(event)) {
       mouseStarted = mouseStart(element, event);
       if (!mouseStarted) {
-    	  event.getOriginalEvent().preventDefault();
+        event.getOriginalEvent().preventDefault();
         return true;
       }
     }
@@ -224,8 +171,27 @@ public abstract class MouseHandler extends GQueryUi {
     return true;
   }
 
-  private boolean mouseMove(Element element, Event event) {
-	if (mouseStarted) {
+  /**
+   * Method called when the mouse is dragging
+   * 
+   * @param element
+   * @param event
+   * @return
+   */
+  protected abstract boolean mouseDrag(Element element, Event event);
+
+  /**
+   * Method called on MouseMove event.
+   * 
+   * You should not override this method. Instead, override
+   * {@link #mouseMove(Element, Event)} method
+   * 
+   * @param element
+   * @param event
+   * @return
+   */
+  protected boolean mouseMove(Element element, Event event) {
+    if (mouseStarted) {
       event.getOriginalEvent().preventDefault();
       return mouseDrag(element, event);
     }
@@ -242,8 +208,37 @@ public abstract class MouseHandler extends GQueryUi {
     return !mouseStarted;
   }
 
-  private boolean mouseUp(Element element, Event event) {
-	unbindOtherMouseEvent();
+  /**
+   * Method called when the mouse is clicked and all conditions for starting the
+   * plugin are met.
+   * 
+   * @param element
+   * @param event
+   * @return
+   */
+  protected abstract boolean mouseStart(Element element, Event event);
+
+  /**
+   * Method called when the mouse button is released
+   * 
+   * @param element
+   * @param event
+   * @return
+   */
+  protected abstract boolean mouseStop(Element element, Event event);
+
+  /**
+   * Method called when mouse is released..
+   * 
+   * You should not override this method. Instead, override
+   * {@link #mouseStop(Element, Event)} method
+   * 
+   * @param element
+   * @param event
+   * @return
+   */
+  protected boolean mouseUp(Element element, Event event) {
+    unbindOtherMouseEvent();
     if (mouseStarted) {
       mouseStarted = false;
       preventClickEvent = (event.getCurrentEventTarget() == mouseDownEvent
@@ -254,12 +249,67 @@ public abstract class MouseHandler extends GQueryUi {
 
   }
 
+  private void bindOtherMouseEvent(final Element element) {
+
+    $(document).as(Events.Events).bind(Event.ONMOUSEMOVE, getPluginName(),
+        (Object) null, new Function() {
+          @Override
+          public boolean f(com.google.gwt.user.client.Event e) {
+            mouseMove(element, Event.create(e));
+            return false;
+          }
+        }).bind(Event.ONMOUSEUP, getPluginName(), (Object) null,
+        new Function() {
+          @Override
+          public boolean f(com.google.gwt.user.client.Event e) {
+            mouseUp(element, Event.create(e));
+            return false;
+          }
+        });
+  }
+
+  private boolean delayConditionMet() {
+
+    if (mouseUpDuration == null) {
+      return false;
+    }
+
+    return options.getDelay() <= mouseUpDuration.elapsedMillis();
+  }
+
+  private boolean distanceConditionMet(Event event) {
+    int neededDistance = options.getDistance();
+    int mouseDownX = mouseDownEvent.getClientX();
+    int mouseDownY = mouseDownEvent.getClientY();
+    int xMouseDistance = Math.abs(mouseDownX - event.getClientX());
+    int yMouseDistance = Math.abs(mouseDownY - event.getClientY());
+    // in jQuery-ui we take the greater distance between x and y... not really
+    // good !
+    // int mouseDistance = Math.max(xMouseDistance, yMouseDistance);
+    // use Pythagor theorem !!
+    int mouseDistance = (int) Math.sqrt(xMouseDistance * xMouseDistance
+        + yMouseDistance * yMouseDistance);
+    return mouseDistance >= neededDistance;
+  }
+
+  private native boolean isEventAlreadyHandled(Event event)/*-{
+    var result = event.mouseHandled ? event.mouseHandled : false;
+    return result;
+  }-*/;
+
+  private native void markEventAsHandled(Event event)/*-{
+    event.mouseHandled = true;
+  }-*/;
+
   private boolean notHandleMouseDown(Element element, Event mouseDownEvent) {
     boolean isNotBoutonLeft = mouseDownEvent.getButton() != NativeEvent.BUTTON_LEFT;
     Element eventTarget = mouseDownEvent.getEventTarget().cast();
 
-    boolean isElementCancel = $(eventTarget).parents()
-        .add($(eventTarget)).filter(options.getCancel()).length() > 0;
+    boolean isElementCancel = false;
+    if (options.getCancel() != null) {
+      isElementCancel = $(eventTarget).parents().add($(eventTarget)).filter(
+          options.getCancel()).length() > 0;
+    }
 
     return isNotBoutonLeft || isElementCancel
         || !mouseCapture(element, mouseDownEvent);
@@ -267,13 +317,13 @@ public abstract class MouseHandler extends GQueryUi {
   }
 
   private void reset(Event mouseDownEvent) {
-	this.mouseDownEvent = mouseDownEvent;
+    this.mouseDownEvent = mouseDownEvent;
     this.mouseUpDuration = new Duration();
   }
 
   private void unbindOtherMouseEvent() {
-    $(document).as(Events.Events).unbind((Event.ONMOUSEUP | Event.ONMOUSEMOVE), getPluginName());
+    $(document).as(Events.Events).unbind((Event.ONMOUSEUP | Event.ONMOUSEMOVE),
+        getPluginName());
   }
 
 }
-

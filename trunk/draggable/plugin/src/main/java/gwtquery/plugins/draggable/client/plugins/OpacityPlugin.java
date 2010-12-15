@@ -17,7 +17,6 @@ package gwtquery.plugins.draggable.client.plugins;
 
 import static com.google.gwt.query.client.GQuery.$;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 
@@ -25,6 +24,7 @@ import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 /**
  * This add-on handle opacity of the helper
@@ -46,11 +46,11 @@ public class OpacityPlugin implements DraggablePlugin {
     return opacity != null && opacity.floatValue() >= 0;
   }
 
-  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler, DragContext ctx, Event e) {
     // do nothing
   }
 
-  public void onStart(DraggableHandler handler, Element draggableElement,
+  public void onStart(DraggableHandler handler,  DragContext ctx,
       Event e) {
     Float opacity = handler.getOptions().getOpacity();
 
@@ -63,8 +63,8 @@ public class OpacityPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
-    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(draggableElement);
+  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
+    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(ctx.getDraggable());
     if ($element == null || $element.length() == 0){
       return;
     }

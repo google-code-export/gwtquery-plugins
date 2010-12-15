@@ -37,8 +37,8 @@ public abstract class AbstractDraggableEvent<H extends EventHandler> extends
 
   }
 
-  public AbstractDraggableEvent(Element draggable) {
-    context = new DragContext(draggable);
+  public AbstractDraggableEvent(DragContext dragContext) {
+    context = dragContext;
   }
 
   /**

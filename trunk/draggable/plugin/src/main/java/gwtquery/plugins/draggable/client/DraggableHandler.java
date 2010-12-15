@@ -46,7 +46,7 @@ public class DraggableHandler {
   public static DraggableHandler getInstance(Element draggable) {
     return $(draggable).data(DRAGGABLE_HANDLER_KEY, DraggableHandler.class);
   }
-
+  
   private DraggableHandlerImpl impl = GWT.create(DraggableHandlerImpl.class);
 
   private Offset margin;
@@ -112,9 +112,6 @@ public class DraggableHandler {
 
   }
 
-  public Offset getAbsPosition() {
-    return absPosition;
-  }
 
   public int[] getContainment() {
     return containment;
@@ -176,6 +173,9 @@ public class DraggableHandler {
     return position;
   }
 
+  public Offset getAbsolutePosition(){
+    return absPosition;
+  }
   public Offset getRelativeOffset() {
     return relativeOffset;
   }
@@ -246,8 +246,8 @@ public class DraggableHandler {
 
   public void regeneratePositions(Event e) {
     position = generatePosition(e, false);
-    absPosition = convertPositionTo(true, position);
-
+    offset = convertPositionTo(true, position);
+    absPosition= offset.add(margin.left, margin.top);
   }
 
   public void revertToOriginalPosition(Function function) {
@@ -279,6 +279,10 @@ public class DraggableHandler {
   public void setPosition(Offset Offset) {
     position = Offset;
 
+  }
+  
+  public void setOffsetClick(Offset offsetClick) {
+    this.offsetClick = offsetClick;
   }
 
   void cacheHelperSize() {
@@ -339,6 +343,8 @@ public class DraggableHandler {
           - cursorAt.getBottom().intValue() + margin.top;
     }
   }
+  
+  
 
   private void calculateContainment() {
     String containmentAsString = options.getContainment();
@@ -516,4 +522,5 @@ public class DraggableHandler {
             .get(0));
   }
 
+  
 }

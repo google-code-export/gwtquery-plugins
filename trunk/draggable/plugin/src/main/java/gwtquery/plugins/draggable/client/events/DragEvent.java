@@ -15,7 +15,6 @@
  */
 package gwtquery.plugins.draggable.client.events;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 
 /**
@@ -35,8 +34,8 @@ public class DragEvent extends
 
  
 
-  public DragEvent(Element draggable) {
-    super(draggable);
+  public DragEvent(DragContext dragContext) {
+    super(dragContext);
   }
 
   @Override

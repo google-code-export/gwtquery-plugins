@@ -33,8 +33,8 @@ public class BeforeDragStartEvent extends
 
   public static Type<BeforeDragStartEventHandler> TYPE = new Type<BeforeDragStartEventHandler>();
  
-  public BeforeDragStartEvent(Element draggable) {
-    super(draggable);
+  public BeforeDragStartEvent(DragContext dragContext) {
+    super(dragContext);
   }
 
   @Override

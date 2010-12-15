@@ -17,7 +17,6 @@ package gwtquery.plugins.draggable.client.plugins;
 
 import static com.google.gwt.query.client.GQuery.$;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.query.client.GQuery;
 
@@ -25,6 +24,7 @@ import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 /**
  * This add-on manage the z-index for the helper while being dragged.
@@ -45,12 +45,12 @@ public class ZIndexPlugin implements DraggablePlugin {
     return options.getZIndex() != null;
   }
 
-  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler,  DragContext ctx, Event e) {
   }
 
-  public void onStart(DraggableHandler handler, Element draggableElement,
+  public void onStart(DraggableHandler handler,  DragContext ctx,
       Event e) {
-    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? $(draggableElement) :  handler.getHelper();
+    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? $(ctx.getDraggable()) :  handler.getHelper();
     if ($element == null || $element.length() == 0){
       return;
     }
@@ -63,9 +63,9 @@ public class ZIndexPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
     //helper can be null if the draggableElement was unloaded and after loaded
-    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(draggableElement);
+    GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(ctx.getDraggable());
     if ($element == null || $element.length() == 0){
       return;
     }
