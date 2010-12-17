@@ -20,9 +20,9 @@ import static com.google.gwt.user.client.Event.ONMOUSEDOWN;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
 import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.droppable.client.Droppable.CssClassNames;

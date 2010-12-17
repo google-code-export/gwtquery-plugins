@@ -24,9 +24,9 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
 import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -345,10 +345,10 @@ public class DroppableHandler {
     }
     DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
 
-    int draggableLeft = dragHandler.getAbsPosition().left;
+    int draggableLeft = dragHandler.getAbsolutePosition().left;
     int draggableRight = draggableLeft
         + dragHandler.getHelperDimension().getWidth();
-    int draggableTop = dragHandler.getAbsPosition().top;
+    int draggableTop = dragHandler.getAbsolutePosition().top;
     int draggableBottom = draggableTop
         + dragHandler.getHelperDimension().getHeight();
 
