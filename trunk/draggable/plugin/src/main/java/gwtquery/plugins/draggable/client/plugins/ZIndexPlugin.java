@@ -19,8 +19,8 @@ import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
-import gwtquery.plugins.commonui.client.Event;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
