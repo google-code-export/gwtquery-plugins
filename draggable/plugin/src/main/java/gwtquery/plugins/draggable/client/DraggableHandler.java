@@ -29,12 +29,12 @@ import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.Effects;
+import com.google.gwt.query.client.plugins.GQueryUi;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 import com.google.gwt.query.client.plugins.PropertiesAnimation.Easing;
 import com.google.gwt.user.client.Window;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.GQueryUi;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
 import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;

@@ -28,9 +28,9 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
+import com.google.gwt.query.client.plugins.MousePlugin;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
@@ -57,7 +57,7 @@ import java.util.Map;
 /**
  * Draggable plugin for GwtQuery
  */
-public class Draggable extends MouseHandler {
+public class Draggable extends MousePlugin {
 
   /**
    * Interface containing all css classes used in this plug-in

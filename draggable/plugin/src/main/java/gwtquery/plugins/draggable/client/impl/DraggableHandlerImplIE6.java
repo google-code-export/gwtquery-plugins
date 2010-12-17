@@ -15,12 +15,12 @@
  */
 package gwtquery.plugins.draggable.client.impl;
 
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.DraggableHandler;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery.Offset;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+
+import gwtquery.plugins.draggable.client.DraggableHandler;
 
 /**
  * Specific code for IE

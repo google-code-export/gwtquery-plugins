@@ -15,7 +15,8 @@
  */
 package gwtquery.plugins.draggable.client.plugins;
 
-import gwtquery.plugins.commonui.client.Event;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
+
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.events.DragContext;
