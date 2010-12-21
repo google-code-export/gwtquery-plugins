@@ -123,8 +123,8 @@ public class ScrollPlugin implements DraggablePlugin {
 
     }
 
-    if (scrolled && DragAndDropManager.getInstance().isHandleDroppable()) {
-      DragAndDropManager.getInstance().initialize(draggableElement,e);
+    if (scrolled && DragAndDropManager.getInstance().isHandleDroppable(ctx)) {
+      DragAndDropManager.getInstance().initialize(ctx,e);
     }
 
   }
