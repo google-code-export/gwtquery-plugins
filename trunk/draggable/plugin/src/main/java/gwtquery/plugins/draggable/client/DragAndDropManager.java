@@ -19,6 +19,8 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
+import gwtquery.plugins.draggable.client.events.DragContext;
+
 import java.util.Collection;
 
 /**
@@ -46,26 +48,19 @@ public class DragAndDropManager {
    * @param draggable
    * @param e
    */
-  public void drag(Element draggable, Event e) {
+  public void drag(DragContext ctx, Event e) {
   }
 
   /**
    * Method called when the draggable was dropped
-   * @param draggable
+   * @param ctx
    * @param e
    * @return
    */
-  public boolean drop(Element draggable, Event e) {
+  public boolean drop(DragContext ctx, Event e) {
     return false;
   }
 
-  /**
-   * 
-   * @return the current draggable element or null if no drag operation in progress
-   */
-  public Element getCurrentDraggable() {
-    return null;
-  }
 
   /**
    * Return the list of droppable elements with the scope <code>scope</code>
@@ -76,23 +71,10 @@ public class DragAndDropManager {
     return null;
   }
 
-  /**
-   * 
-   * @return
-   */
-  public boolean isHandleDroppable() {
-    return false;
+ 
+  public void initialize(DragContext ctx, Event e) {
   }
 
-  public void initialize(Element draggable, Event e) {
-  }
-
-  /**
-   * Set the current draggeble element
-   * @param draggable
-   */
-  public void setCurrentDraggable(Element draggable) {
-  }
 
   /**
    * Link a droppable with the specified scope <code>scope</code>
@@ -100,6 +82,10 @@ public class DragAndDropManager {
    * @param scope
    */
   public void addDroppable(Element droppable, String scope) {
+  }
+
+  public boolean isHandleDroppable(DragContext ctx) {
+    return false;
   }
 
 }

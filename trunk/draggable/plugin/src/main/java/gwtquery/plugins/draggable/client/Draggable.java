@@ -29,7 +29,6 @@ import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
 import com.google.gwt.query.client.plugins.MousePlugin;
-import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
 import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
@@ -587,8 +586,8 @@ public class Draggable extends MousePlugin {
 
     dragHandler.moveHelper(noPropagation);
 
-    if (getDragAndDropManager().isHandleDroppable()) {
-      getDragAndDropManager().drag(draggable, event);
+    if (getDragAndDropManager().isHandleDroppable(ctx)) {
+      getDragAndDropManager().drag(ctx, event);
     }
 
     return false;
@@ -616,10 +615,6 @@ public class Draggable extends MousePlugin {
 
     dragHandler.cacheHelperSize();
 
-    if (getDragAndDropManager().isHandleDroppable()) {
-      getDragAndDropManager().setCurrentDraggable(draggable);
-    }
-
     dragHandler.initialize(draggable, event);
     callPlugins(new StartCaller(ctx, dragHandler, event), options);
 
@@ -637,8 +632,8 @@ public class Draggable extends MousePlugin {
 
     dragHandler.cacheHelperSize();
 
-    if (getDragAndDropManager().isHandleDroppable()) {
-      getDragAndDropManager().initialize(draggable, event);
+    if (getDragAndDropManager().isHandleDroppable(ctx)) {
+      getDragAndDropManager().initialize(ctx, event);
     }
 
     dragHandler.getHelper().addClass(CssClassNames.GWT_DRAGGABLE_DRAGGING);
@@ -654,8 +649,8 @@ public class Draggable extends MousePlugin {
     final DraggableOptions options = handler.getOptions();
 
     boolean dropped = false;
-    if (getDragAndDropManager().isHandleDroppable()) {
-      dropped = getDragAndDropManager().drop(draggable, event);
+    if (getDragAndDropManager().isHandleDroppable(ctx)) {
+      dropped = getDragAndDropManager().drop(ctx, event);
     }
 
     if (draggable == null) {

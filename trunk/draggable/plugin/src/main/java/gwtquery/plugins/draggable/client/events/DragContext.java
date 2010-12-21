@@ -57,6 +57,10 @@ public class DragContext {
     init();
   }
 
+  public DragContext(DragContext ctx) {
+    this(ctx.getDraggable(), ctx.getInitialDraggable(), ctx.getSelectedDraggable());
+  }
+
   /**
    * 
    * @return the draggable DOM element
