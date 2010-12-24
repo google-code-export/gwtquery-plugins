@@ -1,4 +1,4 @@
-package gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client;
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
@@ -364,8 +364,8 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
    * Initialize the focus event listener.
    */
   private native void initFocusEventSystem() /*-{
-    @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::dispatchFocusEvent = $entry(function() {
-    @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)($wnd.event);
+    @com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::dispatchFocusEvent = $entry(function() {
+    @com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)($wnd.event);
     });
   }-*/;
 
@@ -385,7 +385,7 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
 
     // Add an entry for the specified module.
     $wnd.__gwt_CellBasedWidgetImplLoadListeners[moduleName] = $entry(function() {
-    @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)($wnd.event);
+    @com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)($wnd.event);
     });
   }-*/;
 
@@ -397,8 +397,8 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
    */
   private native void sinkFocusEvents(Element elem) /*-{
     elem.attachEvent('onfocusin',
-    @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::dispatchFocusEvent);
+    @com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::dispatchFocusEvent);
     elem.attachEvent('onfocusout',
-    @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::dispatchFocusEvent);
+    @com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident::dispatchFocusEvent);
   }-*/;
 }

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client;
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
@@ -29,9 +29,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * CellBasedWidgetImplSafari implementation based on revision rr=9220 :
- * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/CellBasedWidgetImplSafari.java?spec=svn9203&r=9220
- * 
  * Some adaption was done to support GWTQuery Event listener
  
  * Standard implementation used by most cell based widgets.
@@ -125,8 +122,8 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
    * Initialize the event system.
    */
   private native void initEventSystem() /*-{
-    @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent = $entry(function(evt) {
-      @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)(evt);
+    @com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent = $entry(function(evt) {
+      @com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::handleNonBubblingEvent(Lcom/google/gwt/user/client/Event;)(evt);
     });
   }-*/;
 
@@ -137,6 +134,6 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
    * @param typeName the name of the event to sink
    */
   private native void sinkEventImpl(Element elem, String typeName) /*-{
-    elem.addEventListener(typeName, @gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent, true);
+    elem.addEventListener(typeName, @com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard::dispatchNonBubblingEvent, true);
   }-*/;
 }

@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client;
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -26,11 +26,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * CellBasedWidgetImpl implementation based on revision rr=9220 :
- * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/CellBasedWidgetImpl.java?spec=svn9203&r=9220
- *  
  * Implementation used by various cell based widgets.
- *  
+ * Make this class public, so It canbe used in drag and drop cell widget
  */
 public abstract class CellBasedWidgetImpl {
 
@@ -71,7 +68,7 @@ public abstract class CellBasedWidgetImpl {
    * widget should not steal focus from it.
    * 
    * @param elem the element
-   * @return
+   * @return true if the element is focusable, false if not
    */
   public boolean isFocusable(Element elem) {
     return focusableTypes.contains(elem.getTagName().toLowerCase())

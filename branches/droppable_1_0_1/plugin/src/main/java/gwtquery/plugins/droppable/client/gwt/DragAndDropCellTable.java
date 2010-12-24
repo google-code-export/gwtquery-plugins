@@ -28,9 +28,9 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.Header;
-import com.google.gwt.user.cellview.client.CellTable.Style;
 import com.google.gwt.view.client.ProvidesKey;
 
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
@@ -51,7 +51,6 @@ import gwtquery.plugins.droppable.client.events.DeactivateDroppableEvent.Deactiv
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.events.OutDroppableEvent.OutDroppableEventHandler;
 import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppableEventHandler;
-import gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellTable;
 
 import java.util.ArrayList;
 import java.util.List;

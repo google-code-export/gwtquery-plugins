@@ -47,7 +47,7 @@ public class FileTreeViewModel implements TreeViewModel {
   private static class FileCell extends AbstractCell<File> {
 
     @Override
-    public void render(File value, Object key, SafeHtmlBuilder sb) {
+    public void render(Context ctx, File value, SafeHtmlBuilder sb) {
       if (value != null) {
         sb.appendHtmlConstant("<div class='" + getCssClassName(value) + "'></div><div style='padding-top:3px;'>");
         sb.appendEscaped(value.getName());

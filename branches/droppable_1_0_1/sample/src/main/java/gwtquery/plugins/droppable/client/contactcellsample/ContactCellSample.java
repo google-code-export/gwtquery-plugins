@@ -76,7 +76,7 @@ public class ContactCellSample implements EntryPoint {
     }
 
     @Override
-    public void render(ContactInfo value, Object key, SafeHtmlBuilder sb) {
+    public void render(Context ctx, ContactInfo value, SafeHtmlBuilder sb) {
       // Value can be null, so do a null check..
       if (value == null) {
         return;

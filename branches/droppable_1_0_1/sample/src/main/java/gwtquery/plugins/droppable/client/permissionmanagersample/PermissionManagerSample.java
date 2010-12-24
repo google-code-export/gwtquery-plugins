@@ -80,7 +80,7 @@ public class PermissionManagerSample implements EntryPoint {
     }
 
     @Override
-    public void render(MemberInfo value, Object key, SafeHtmlBuilder sb) {
+    public void render(Context ctx, MemberInfo value, SafeHtmlBuilder sb) {
       // Value can be null, so do a null check..
       if (value == null) {
         return;

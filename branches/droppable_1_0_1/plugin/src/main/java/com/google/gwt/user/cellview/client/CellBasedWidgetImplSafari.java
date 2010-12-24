@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client;
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;

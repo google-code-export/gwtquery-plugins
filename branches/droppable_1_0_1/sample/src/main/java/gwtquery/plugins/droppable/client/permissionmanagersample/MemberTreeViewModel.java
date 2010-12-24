@@ -42,7 +42,7 @@ public class MemberTreeViewModel implements TreeViewModel {
   private static class MemberCell extends AbstractCell<MemberInfo> {
 
     @Override
-    public void render(MemberInfo value, Object key, SafeHtmlBuilder sb) {
+    public void render(Context ctx, MemberInfo value, SafeHtmlBuilder sb) {
       if (value != null) {
         sb.appendEscaped(value.getFullName());
       }
@@ -58,7 +58,7 @@ public class MemberTreeViewModel implements TreeViewModel {
     }
 
     @Override
-    public void render(Permission value, Object key, SafeHtmlBuilder sb) {
+    public void render(Context ctx,  Permission value, SafeHtmlBuilder sb) {
       if (value != null) {
         sb.appendHtmlConstant("<div style='padding:15px 3px 3px 3px;' >");
         sb.appendEscaped(value.getDisplayName());

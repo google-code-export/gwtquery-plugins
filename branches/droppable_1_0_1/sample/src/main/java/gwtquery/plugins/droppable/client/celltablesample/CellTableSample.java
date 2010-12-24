@@ -129,7 +129,8 @@ public class CellTableSample implements EntryPoint {
     }
 
     @Override
-    public void render(ContactInfo value, Object key, SafeHtmlBuilder sb) {
+    public void render(Context context,
+        ContactInfo value, SafeHtmlBuilder sb) {
       // Value can be null, so do a null check..
       if (value == null) {
         return;
@@ -149,6 +150,7 @@ public class CellTableSample implements EntryPoint {
       sb.appendHtmlConstant("</td></tr><tr><td>");
       sb.appendEscaped(value.getAddress());
       sb.appendHtmlConstant("</td></tr></table>");
+      
     }
   }
 
@@ -242,7 +244,7 @@ public class CellTableSample implements EntryPoint {
         Element helper = event.getHelper();
         SafeHtmlBuilder sb = new SafeHtmlBuilder();
         // reuse the contact cell to render the inner html of the drag helper.
-        new ContactCell(Resource.INSTANCE.contact()).render(contact, null, sb);
+        new ContactCell(Resource.INSTANCE.contact()).render(null, contact, sb);
         helper.setInnerHTML(sb.toSafeHtml().asString());
 
       }
