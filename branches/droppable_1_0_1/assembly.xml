@@ -6,11 +6,11 @@
   <files>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>plugin/target/droppable-plugin-1.0.1.jar</source>
+     <source>plugin/target/droppable-plugin-1.0.2.jar</source>
    </file>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>sample/target/droppable-sample-1.0.1.war</source>
+     <source>sample/target/droppable-sample-1.0.2.war</source>
    </file>
   </files>
   <fileSets>
