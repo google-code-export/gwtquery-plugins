@@ -17,7 +17,10 @@ The Droppable plugin enables any DOM element and GWT widget to be droppable or i
 =Changelog=
 ----
 
-==v1.0.0==
+==v1.0.2==
+  * Issue [http://code.google.com/p/gwtquery-plugins/issues/detail?id=4 4] : GWT 2.1.1 Cell API break.
+
+==v1.0.1==
   * First release
 
 =Using the plugin=
@@ -27,7 +30,8 @@ The Droppable plugin enables any DOM element and GWT widget to be droppable or i
 
 The droppable plugin needs the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.3.jar common-ui library] and the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=draggable-plugin-1.0.2.jar draggable library]. If you are not using maven, just download the last version of these libraries and put it in the war/WEB-INF/lib folder.
 
-Please note that the droppable plugin need GWT 2.1.0+ version to works and is not compatible with previous veriosn of GWT.
+Please note that the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=droppable-plugin-1.0.2.jar 1.0.2 release] of the droppable plugin needs at least GWT 2.1.1 to work and is not compatible with previous version of GWT.
+The [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=droppable-plugin-1.0.1.jar 1.0.1 release] is compatible with GWT 2.1.0
 
 ==Configuration==
 
@@ -47,7 +51,7 @@ If you use maven, you have to add these blocks to your pom.xml
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>droppable-plugin</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
