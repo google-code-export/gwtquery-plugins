@@ -5,48 +5,4 @@
 		<when-type-is
 			class="gwtquery.plugins.draggable.client.DragAndDropManager" />
 	</replace-with>
-	
-	<!-- Standard CellBasedWidgetImpl implementation. -->
-  <replace-with class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard">
-    <when-type-is class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImpl"/>
-    <any>
-      <when-property-is name="user.agent" value="opera"/>
-      <when-property-is name="user.agent" value="gecko"/>
-      <when-property-is name="user.agent" value="gecko1_8"/>
-    </any>
-  </replace-with>
-
-  <!-- IE-specific CellBasedWidgetImpl implementation. -->
-  <replace-with class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident">
-    <when-type-is class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImpl"/>
-    <any>
-      <when-property-is name="user.agent" value="ie6"/>
-      <when-property-is name="user.agent" value="ie8"/>
-    </any>
-  </replace-with>
-
-  <!-- Safari-specific CellBasedWidgetImpl implementation. -->
-  <replace-with class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImplSafari">
-    <when-type-is class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellBasedWidgetImpl"/>
-    <any>
-      <when-property-is name="user.agent" value="safari"/>
-    </any>
-  </replace-with>
-
-  <!-- IE-specific CellTable implementation. -->
-  <replace-with class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellTable.ImplTrident">
-    <when-type-is class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellTable.Impl"/>
-    <any>
-      <when-property-is name="user.agent" value="ie6"/>
-      <when-property-is name="user.agent" value="ie8"/>
-    </any>
-  </replace-with>
-
-  <!-- IE6-specific CellTree implementation. -->
-  <replace-with class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellTree.ImplIE6">
-    <when-type-is class="gwtquery.plugins.droppable.client.gwt.extend.com.google.gwt.user.cellview.client.CellTree.Impl"/>
-    <any>
-      <when-property-is name="user.agent" value="ie6"/>
-    </any>
-  </replace-with>
 </module>  
