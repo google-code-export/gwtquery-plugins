@@ -1,7 +1,0 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
-<module>
-    <inherits name='com.google.gwt.query.Query'/>
-</module>
-    
