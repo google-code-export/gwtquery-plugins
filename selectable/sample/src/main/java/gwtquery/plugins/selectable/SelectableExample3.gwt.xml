@@ -1,4 +1,0 @@
-<module rename-to='SelectableSample3'>
-    <inherits name='gwtquery.plugins.selectable.Selectable'/>
-    <entry-point class='gwtquery.plugins.selectable.client.SelectableSample3'/>
-</module>
