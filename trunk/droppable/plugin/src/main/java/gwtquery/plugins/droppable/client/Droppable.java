@@ -33,7 +33,7 @@ public class Droppable extends GQueryUi {
   /**
    * Css class used in this plugin
    * 
-   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
    * 
    */
   public static interface CssClassNames {

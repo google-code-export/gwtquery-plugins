@@ -47,7 +47,7 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppable
  * Implementation of the {@link CellTree} allowing dragging and dropping of the
  * tree node by using {@link DragAndDropNodeInfo}
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DragAndDropCellTree extends CellTree {

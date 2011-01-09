@@ -50,7 +50,7 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppable
  * 
  * This class can be used as a wrapper or subclassed.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  * @param <T>
  */

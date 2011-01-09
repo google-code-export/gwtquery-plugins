@@ -18,6 +18,7 @@ package gwtquery.plugins.droppable.client;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
@@ -44,7 +45,7 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent;
 /**
  * Class implementing the core of the droppable plugin
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DroppableHandler {
@@ -80,7 +81,7 @@ public class DroppableHandler {
       droppable.addClassName(options.getActiveClass());
     }
 
-    for (Element draggable : ctx.getSelectedDraggable()) {
+    for (Element draggable : ctx.getSelectedDraggables()) {
 
       if (options.getDraggableHoverClass() != null) {
         $(draggable).data(options.getDraggableHoverClass(), new Integer(0));
@@ -101,7 +102,7 @@ public class DroppableHandler {
       droppable.removeClassName(options.getDroppableHoverClass());
     }
 
-    for (Element draggable : ctx.getSelectedDraggable()) {
+    for (Element draggable : ctx.getSelectedDraggables()) {
       if (options.getDraggableHoverClass() != null) {
         DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
         dragHandler.getHelper().removeClass(options.getDraggableHoverClass());
@@ -250,7 +251,7 @@ public class DroppableHandler {
       }
 
       if (options.getDraggableHoverClass() != null) {
-        for (Element draggable : ctx.getSelectedDraggable()) {
+        for (Element draggable : ctx.getSelectedDraggables()) {
           Integer counter = $(draggable).data(options.getDraggableHoverClass(),
               Integer.class);
           $(draggable).data(options.getDraggableHoverClass(),
@@ -281,7 +282,7 @@ public class DroppableHandler {
         droppable.addClassName(options.getDroppableHoverClass());
       }
       if (options.getDraggableHoverClass() != null) {
-        for (Element draggable : ctx.getSelectedDraggable()) {
+        for (Element draggable : ctx.getSelectedDraggables()) {
           DraggableHandler dragHandler = DraggableHandler
               .getInstance(draggable);
           dragHandler.getHelper().addClass(options.getDraggableHoverClass());

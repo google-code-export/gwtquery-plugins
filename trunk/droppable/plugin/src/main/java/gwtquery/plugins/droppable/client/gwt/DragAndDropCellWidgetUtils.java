@@ -32,7 +32,7 @@ import gwtquery.plugins.droppable.client.DroppableOptions;
  * Utils class with all code used in CellWidget to manage
  * the drag and drop behavior of cells
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 

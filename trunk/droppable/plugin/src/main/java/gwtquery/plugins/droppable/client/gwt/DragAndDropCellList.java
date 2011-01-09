@@ -59,7 +59,7 @@ import java.util.List;
 /**
  * {@link com.google.gwt.user.cellview.client.CellList} implementation allowing dragging or dropping of the cells
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  *
  * @param <T> the data type of list items
  */
