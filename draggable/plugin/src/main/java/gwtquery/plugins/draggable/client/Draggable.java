@@ -29,6 +29,7 @@ import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
 import com.google.gwt.query.client.plugins.MousePlugin;
+import com.google.gwt.user.client.DeferredCommand;
 
 import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
@@ -39,6 +40,8 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
+import gwtquery.plugins.draggable.client.events.DraggableSelectedEvent;
+import gwtquery.plugins.draggable.client.events.DraggableUnselectedEvent;
 import gwtquery.plugins.draggable.client.plugins.CursorPlugin;
 import gwtquery.plugins.draggable.client.plugins.DraggablePlugin;
 import gwtquery.plugins.draggable.client.plugins.GroupSelectedPlugin;
@@ -66,7 +69,6 @@ public class Draggable extends MousePlugin {
     String GWT_DRAGGABLE = "gwtQuery-draggable";
     String GWT_DRAGGABLE_DISABLED = "gwtQuery-draggable-disabled";
     String GWT_DRAGGABLE_DRAGGING = "gwtQuery-draggable-dragging";
-    String GWT_DRAGGABLE_SELECTED = "gwtQuery-draggable-selected";
   }
 
   private class DragCaller extends StartCaller {
@@ -335,8 +337,11 @@ public class Draggable extends MousePlugin {
 
   @Override
   protected boolean mouseClick(Element element, Event event) {
-    // react on click event only if no metakey is pressed and if not drag occur
-    if (!event.isMetaKeyPressed() && !dragStart) {
+    // react on click event only if no metakey is pressed, if no drag occurs and
+    // if more than one element are selected
+
+    if (!event.isMetaKeyPressed() && !dragStart
+        && selectedDraggables.size() > 1) {
       DraggableHandler dragHandler = DraggableHandler.getInstance(element);
       DraggableOptions options = dragHandler.getOptions();
       unselectAll();
@@ -357,15 +362,10 @@ public class Draggable extends MousePlugin {
 
     if (metaKeyPressed && options.isMultipleSelection()) {
 
-      String selectedCssClass = options.getSelectedClassName();
+      if (selectedDraggables.contains(draggable)) {
 
-      if (selectedDraggables.remove(draggable)) {
+        unselect(draggable);
 
-        draggable.removeClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
-
-        if (selectedCssClass != null) {
-          draggable.removeClassName(selectedCssClass);
-        }
       } else if (canBeSelected(draggable, dragHandler)) {
         select(draggable, options.getSelectedClassName());
       }
@@ -479,22 +479,9 @@ public class Draggable extends MousePlugin {
     SelectFunction selectFunction = options.getSelect();
     if (selectFunction != null) {
       GQuery followers = selectFunction.selectElements();
-      followers.each(new Function() {
-        @Override
-        public void f(Element e) {
-          DraggableHandler handler = DraggableHandler.getInstance(e);
-          if (handler != null) {
-            GWT.log("unselect automatic selected element " + e.getId());
-            selectedDraggables.remove(e);
-            e.removeClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
-            String selectedCssClass = DraggableHandler.getInstance(e)
-                .getOptions().getSelectedClassName();
-            if (selectedCssClass != null) {
-              e.removeClassName(selectedCssClass);
-            }
-          }
-        }
-      });
+      for (Element e : followers.elements()) {
+        unselect(e);
+      }
     }
 
     return result;
@@ -593,10 +580,11 @@ public class Draggable extends MousePlugin {
     return false;
   }
 
-  private boolean mouseStartImpl(DragContext ctx, Event event) {
+  private boolean mouseStartImpl(final DragContext ctx, final Event event) {
 
     Element draggable = ctx.getDraggable();
-    DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
+    final DraggableHandler dragHandler = DraggableHandler
+        .getInstance(draggable);
     DraggableOptions options = dragHandler.getOptions();
 
     try {
@@ -637,8 +625,15 @@ public class Draggable extends MousePlugin {
     }
 
     dragHandler.getHelper().addClass(CssClassNames.GWT_DRAGGABLE_DRAGGING);
+    // defer the mouseDragImpl to be sure that all selected draggable are
+    // initialized
+    Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
-    mouseDragImpl(ctx, dragHandler, event, true);
+      public void execute() {
+        mouseDragImpl(ctx, dragHandler, event, true);
+
+      }
+    });
 
     return true;
   }
@@ -648,10 +643,7 @@ public class Draggable extends MousePlugin {
     final DraggableHandler handler = getHandler(draggable);
     final DraggableOptions options = handler.getOptions();
 
-    boolean dropped = false;
-    if (getDragAndDropManager().isHandleDroppable(ctx)) {
-      dropped = getDragAndDropManager().drop(ctx, event);
-    }
+    boolean dropped = isDropped(ctx, event);
 
     if (draggable == null) {
       return false;
@@ -679,6 +671,25 @@ public class Draggable extends MousePlugin {
     return false;
   }
 
+  private boolean isDropped(DragContext ctx, Event event) {
+
+    boolean dropped = false;
+
+    if (ctx.getDraggable() == ctx.getInitialDraggable()) {
+
+      if (getDragAndDropManager().isHandleDroppable(ctx)) {
+        dropped = getDragAndDropManager().drop(ctx, event);
+      }
+
+      $(ctx.getInitialDraggable()).data("_is_dropped", dropped);
+
+    } else {
+      dropped = $(ctx.getInitialDraggable()).data("_is_dropped", Boolean.class);
+
+    }
+    return dropped;
+  }
+
   private native boolean positionIsFixedAbsoluteOrRelative(String position) /*-{
     return (/^(?:r|a|f)/).test(position);
   }-*/;
@@ -689,11 +700,26 @@ public class Draggable extends MousePlugin {
     }
     selectedDraggables.add(draggable);
 
-    draggable.addClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
-
     if (selectedCssClass != null) {
       draggable.addClassName(selectedCssClass);
     }
+    GWT.log("trigger DraggableSelectedEvent");
+    trigger(new DraggableSelectedEvent(draggable), getOptions(draggable)
+        .getOnSelected(), draggable);
+  }
+
+  private void unselect(Element draggable) {
+
+    DraggableHandler handler = DraggableHandler.getInstance(draggable);
+    DraggableOptions options = handler.getOptions();
+
+    if (options.getSelectedClassName() != null) {
+      draggable.removeClassName(options.getSelectedClassName());
+    }
+    GWT.log("trigger DraggableUnselectedEvent");
+    selectedDraggables.remove(draggable);
+    trigger(new DraggableUnselectedEvent(draggable), options.getOnUnselected(),
+        draggable);
   }
 
   private void trigger(GwtEvent<?> e, DragFunction callback,
@@ -720,19 +746,11 @@ public class Draggable extends MousePlugin {
   }
 
   private void unselectAll() {
-    selectedDraggables.clear();
-    $('.' + CssClassNames.GWT_DRAGGABLE_SELECTED).each(new Function() {
-      @Override
-      public void f(Element e) {
-        e.removeClassName(CssClassNames.GWT_DRAGGABLE_SELECTED);
-        DraggableHandler handler = DraggableHandler.getInstance(e);
-        DraggableOptions options = handler.getOptions();
-        String cssClass = options.getSelectedClassName();
-        if (cssClass != null) {
-          e.removeClassName(cssClass);
-        }
-      }
-    });
+    GWT.log("unselectall()");
+    // TODO concurent modification list !
+    while (selectedDraggables.size() != 0) {
+      unselect(selectedDraggables.get(0));
+    }
 
   }
 

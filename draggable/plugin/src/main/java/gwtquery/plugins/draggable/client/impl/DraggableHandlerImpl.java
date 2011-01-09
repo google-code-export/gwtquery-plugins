@@ -26,7 +26,7 @@ import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 
 /**
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DraggableHandlerImpl {

@@ -15,13 +15,26 @@
  */
 package gwtquery.plugins.draggable.client.events;
 
+import com.google.gwt.event.shared.HandlerRegistration;
+
+import gwtquery.plugins.draggable.client.events.DraggableSelectedEvent.DraggableSelectedHandler;
+
 /**
- * This is a convenience interface that includes all drag handlers defined by
- * the draggable plug-in
+ * A widget that implements this interface provides registration for
+ * {@link DraggableSelectedHandler} instances.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
-public interface HasAllDragHandler extends HasDragHandler, HasDragStartHandler,
-    HasDragStopHandler, HasBeforeDragStartHandler, HasDraggableSelectedHandler, HasDraggableUnselectedHandler {
+public interface HasDraggableSelectedHandler {
+
+  /**
+   * Adds a {@link DraggableSelectedHandler} handler.
+   * 
+   * @param handler
+   *          the drag handler
+   * @return {@link HandlerRegistration} used to remove this handler
+   */
+  HandlerRegistration addDraggableSelectedHandler(DraggableSelectedHandler handler);
+
 }

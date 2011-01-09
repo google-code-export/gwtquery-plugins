@@ -28,18 +28,18 @@ import java.util.List;
 /**
  * Object containing useful information on the drag operation.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DragContext {
 
-  private static final String VALUE_KEY = "__dragAndDropCellAssociatedValue";
+  static final String VALUE_KEY = "__dragAndDropCellAssociatedValue";
 
   private Element draggable;
   private Element helper;
   private Offset helperPosition;
 
-  private List<Element> selectedDraggable;
+  private List<Element> selectedDraggables;
 
   private Element initialDraggable;
 
@@ -52,13 +52,13 @@ public class DragContext {
   public DragContext(Element draggable, Element initialDraggable,
       List<Element> selectedDraggable) {
     this.draggable = draggable;
-    this.selectedDraggable = selectedDraggable;
+    this.selectedDraggables = selectedDraggable;
     this.initialDraggable = initialDraggable;
     init();
   }
 
   public DragContext(DragContext ctx) {
-    this(ctx.getDraggable(), ctx.getInitialDraggable(), ctx.getSelectedDraggable());
+    this(ctx.getDraggable(), ctx.getInitialDraggable(), ctx.getSelectedDraggables());
   }
 
   /**
@@ -105,15 +105,18 @@ public class DragContext {
   }
 
   /**
-   * 
    * @return the {@link Offset} of the helper element.
+   * 
    */
   public Offset getHelperPosition() {
     return helperPosition;
   }
 
-  public List<Element> getSelectedDraggable() {
-    return selectedDraggable;
+  /** 
+   * @return the list of selected draggables.
+   */
+  public List<Element> getSelectedDraggables() {
+    return selectedDraggables;
   }
 
   /**

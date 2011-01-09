@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * Add-on allow the draggable to snap other elements
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  *
  */
 public class SnapPlugin implements DraggablePlugin {

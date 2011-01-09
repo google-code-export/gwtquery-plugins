@@ -29,7 +29,7 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 /**
  * This add-on manage the z-index for the helper while being dragged.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class ZIndexPlugin implements DraggablePlugin {
