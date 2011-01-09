@@ -22,6 +22,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
+import java.util.List;
+
 import gwtquery.plugins.draggable.client.events.DragContext;
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
@@ -29,7 +31,7 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 /**
  * Abstract class for all droppable event
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  * @param <H>
  */
@@ -130,4 +132,24 @@ public abstract class AbstractDroppableEvent<H extends EventHandler> extends
     assert dragAndDropContext != null : "DragAndDropContext cannot be null";
     return dragAndDropContext.getDroppableWidget();
   }
+  
+  /** 
+   * @return the list of selected draggables.
+   */
+  public List<Element> getSelectedDraggables() {
+    assert dragAndDropContext != null : "DragAndDropContext cannot be null";
+    return dragAndDropContext.getSelectedDraggables();
+  }
+
+  /**
+   * @return the draggable element that initiate the drag operation (i.e. the
+   *         clicked element)
+   */
+  public Element getInitialDraggable() {
+    assert dragAndDropContext != null : "DragAndDropContext cannot be null";
+    return dragAndDropContext.getInitialDraggable();
+  }
+
+  
+  
 }

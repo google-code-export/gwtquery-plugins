@@ -23,7 +23,7 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 /**
  * Event fired when an acceptable draggable is being dragged over a droppable.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class OverDroppableEvent extends

@@ -23,7 +23,7 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 /**
  * Event fired when a droppable element is deactivated.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DeactivateDroppableEvent

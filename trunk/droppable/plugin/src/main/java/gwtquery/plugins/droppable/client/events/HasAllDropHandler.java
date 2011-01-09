@@ -24,7 +24,7 @@ package gwtquery.plugins.droppable.client.events;
  * {@link HasOutDroppableHandler} instances and
  * {@link HasOverDroppableHandler} instances.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public interface HasAllDropHandler extends HasActivateDroppableHandler,
