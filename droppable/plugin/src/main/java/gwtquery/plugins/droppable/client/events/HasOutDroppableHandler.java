@@ -24,7 +24,7 @@ import gwtquery.plugins.droppable.client.events.OutDroppableEvent.OutDroppableEv
  * A widget that implements this interface provides registration for
  * {@link OutDroppableEventHandler} instances.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public interface HasOutDroppableHandler {

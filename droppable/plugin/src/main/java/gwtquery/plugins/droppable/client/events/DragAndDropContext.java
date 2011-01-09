@@ -26,7 +26,7 @@ import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 /**
  * Object containing usefull information on the drag and drop operations.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DragAndDropContext extends DragContext {
