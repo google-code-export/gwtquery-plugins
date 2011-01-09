@@ -31,7 +31,7 @@ import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 /**
  * Make any elements droppable !
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class MultiDropSample implements EntryPoint {
@@ -52,7 +52,7 @@ public class MultiDropSample implements EntryPoint {
     options.setOnDrop(new DroppableFunction() {
       public void f(DragAndDropContext context) {
         StringBuilder text = new StringBuilder();
-        for (Element draggable : context.getSelectedDraggable()){
+        for (Element draggable : context.getSelectedDraggables()){
           text.append(draggable.getId()).append(" ");
         }
         text.append("was dropped on me !");
