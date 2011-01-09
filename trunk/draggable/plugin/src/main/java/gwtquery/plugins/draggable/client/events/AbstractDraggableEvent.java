@@ -21,10 +21,12 @@ import com.google.gwt.event.shared.GwtEvent;
 
 import gwtquery.plugins.draggable.client.gwt.DraggableWidget;
 
+import java.util.List;
+
 /**
  * Abstract class for all drag events.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  * @param <H>
  */
@@ -68,12 +70,26 @@ public abstract class AbstractDraggableEvent<H extends EventHandler> extends
   }
 
   /**
+   * @return the current draggable DOM element
    * 
-   * @return the draggable DOM element
    */
   public Element getDraggable() {
     assert context != null : "Drag context cannot be null";
     return context.getDraggable();
+  }
+  
+  /**
+   * @return the draggable element that initiate the drag operation (i.e. the
+   *         clicked element)
+   */
+  public Element getInitialDraggable() {
+    assert context != null : "Drag context cannot be null";
+    return context.getInitialDraggable();
+  }
+  
+  public List<Element> getSelectedDraggables() {
+    assert context != null : "Drag context cannot be null";
+    return context.getSelectedDraggables();
   }
 
   /**

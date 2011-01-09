@@ -20,7 +20,7 @@ import com.google.gwt.event.shared.EventHandler;
 /**
  * Event fired when the drag operation stops.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DragStopEvent extends AbstractDraggableEvent<DragStopEvent.DragStopEventHandler> {

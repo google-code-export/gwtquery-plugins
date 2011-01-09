@@ -21,7 +21,7 @@ import com.google.gwt.event.shared.EventHandler;
 /**
  * Event fired when the initialization of the drag before it starts.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class BeforeDragStartEvent extends

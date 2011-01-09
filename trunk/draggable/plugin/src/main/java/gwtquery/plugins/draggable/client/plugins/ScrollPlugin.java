@@ -33,7 +33,7 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 /**
  * This add-on handle scrolling of parent element.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class ScrollPlugin implements DraggablePlugin {

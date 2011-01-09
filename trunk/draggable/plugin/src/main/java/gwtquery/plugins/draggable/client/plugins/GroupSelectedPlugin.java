@@ -30,7 +30,7 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 /**
  * Plugin used when multi-draggable is on to group helper together.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class GroupSelectedPlugin implements DraggablePlugin {

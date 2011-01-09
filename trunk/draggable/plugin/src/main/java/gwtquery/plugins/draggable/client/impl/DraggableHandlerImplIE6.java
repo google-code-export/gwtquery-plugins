@@ -25,7 +25,7 @@ import gwtquery.plugins.draggable.client.DraggableHandler;
 /**
  * Specific code for IE
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DraggableHandlerImplIE6 extends DraggableHandlerImplIE {

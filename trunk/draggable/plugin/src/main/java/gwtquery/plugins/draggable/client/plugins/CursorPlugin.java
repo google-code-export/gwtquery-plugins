@@ -28,7 +28,7 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 /**
  * This add-on handles the css cursor to display during drag operation.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class CursorPlugin implements DraggablePlugin {

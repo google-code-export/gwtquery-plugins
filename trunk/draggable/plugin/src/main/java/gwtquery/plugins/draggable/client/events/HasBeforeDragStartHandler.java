@@ -23,7 +23,7 @@ import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent.BeforeDragS
  * A widget that implements this interface provides registration for
  * {@link BeforeDragStartEventHandler} instances.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public interface HasBeforeDragStartHandler {

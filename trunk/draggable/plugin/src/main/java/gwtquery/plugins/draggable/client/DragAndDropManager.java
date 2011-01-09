@@ -27,7 +27,7 @@ import java.util.Collection;
  * The goal of this class is to manage the interactions between draggable and droppable objects.
  * This implementation specifies the interface needed by this kind of manager but do nothing.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  *
  */
 public class DragAndDropManager {

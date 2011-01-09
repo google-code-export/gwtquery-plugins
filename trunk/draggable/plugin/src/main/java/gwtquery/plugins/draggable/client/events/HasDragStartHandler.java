@@ -23,7 +23,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * A widget that implements this interface provides registration for
  * {@link DragStartEventHandler} instances.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public interface HasDragStartHandler {

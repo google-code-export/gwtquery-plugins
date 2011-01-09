@@ -35,18 +35,24 @@ import com.google.gwt.user.client.ui.Widget;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
+import gwtquery.plugins.draggable.client.DraggableOptions.GroupingMode;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
+import gwtquery.plugins.draggable.client.DraggableOptions.SelectFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragEvent;
 import gwtquery.plugins.draggable.client.events.DragStartEvent;
 import gwtquery.plugins.draggable.client.events.DragStopEvent;
+import gwtquery.plugins.draggable.client.events.DraggableSelectedEvent;
+import gwtquery.plugins.draggable.client.events.DraggableUnselectedEvent;
 import gwtquery.plugins.draggable.client.events.HasAllDragHandler;
 import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent.BeforeDragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragEvent.DragEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
+import gwtquery.plugins.draggable.client.events.DraggableSelectedEvent.DraggableSelectedHandler;
+import gwtquery.plugins.draggable.client.events.DraggableUnselectedEvent.DraggableUnselectedHandler;
 
 import java.util.List;
 
@@ -56,7 +62,7 @@ import java.util.List;
  * This class can be used as a wrapper or subclassed.
  * 
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  * @param <T>
  */
@@ -157,6 +163,24 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
+   * Add a handler object that will manage the {@link DraggableSelectedEvent}
+   * event. This kind of event is fired when the widget is selected.
+   */
+  public HandlerRegistration addDraggableSelectedHandler(
+      DraggableSelectedHandler handler) {
+    return addDragHandler(handler, DraggableSelectedEvent.TYPE);
+  }
+
+  /**
+   * Add a handler object that will manage the {@link DraggableUnselectedEvent}
+   * event. This kind of event is fired when the widget is unselected.
+   */
+  public HandlerRegistration addDraggableUnselectedHandler(
+      DraggableUnselectedHandler handler) {
+    return addDragHandler(handler, DraggableUnselectedEvent.TYPE);
+  }
+
+  /**
    * Add a handler object that will manage the {@link DragEvent} event. this
    * kind of event is fired during the move of the widget.
    */
@@ -181,6 +205,16 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   }
 
   /**
+   * Return the drag and drop scope. A draggable widget with the same scope than
+   * a droppable widget will be accepted by this droppable.
+   * 
+   * @return the scope
+   */
+  public String getDragAndDropScope() {
+    return options.getScope();
+  }
+
+  /**
    * 
    * @return the options currently use for the drag operation
    */
@@ -196,16 +230,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   @SuppressWarnings("unchecked")
   public T getOriginalWidget() {
     return (T) getWidget();
-  }
-
-  /**
-   * Return the drag and drop scope. A draggable widget with the same scope than
-   * a droppable widget will be accepted by this droppable.
-   * 
-   * @return the scope
-   */
-  public String getDragAndDropScope() {
-    return options.getScope();
   }
 
   /**
@@ -422,6 +446,14 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     options.setGrid(grid);
   }
 
+  public void setGroupingMode(GroupingMode groupingMode){
+    options.setGroupingMode(groupingMode);
+  }
+
+  public void setGroupSpacing(int spacing){
+    options.setGroupSpacing(spacing);
+  }
+
   /**
    * If specified, restricts drag start when the user clicks on the specified
    * element(s).
@@ -431,6 +463,10 @@ public class DraggableWidget<T extends Widget> extends Composite implements
    */
   public void setHandle(String selector) {
     options.setHandle(selector);
+  }
+
+  public void setMultipleSelection(boolean enabled){
+    options.setMultipleSelection(enabled);
   }
 
   /**
@@ -480,7 +516,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   public void setScrollSensitivity(int scrollSensitivity) {
     options.setScrollSensitivity(scrollSensitivity);
   }
-
+  
   /**
    * The speed at which the window should scroll once the mouse pointer gets
    * within the scrollSensitivity distance.
@@ -490,7 +526,16 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   public void setScrollSpeed(int scrollSpeed) {
     options.setScrollSpeed(scrollSpeed);
   }
-
+  
+  public void setSelectedClassName(String selectedClassName){
+    options.setSelectedClassName(selectedClassName);
+  }
+  
+  
+  public void setSelectFunction(SelectFunction selectFunction){
+    options.setSelect(selectFunction);
+  }
+  
   /**
    * Define if this DragableWidget will snap to the edges of the other
    * DraggableWidget when it is near an edge of these widget.
@@ -500,7 +545,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   public void setSnap(boolean snap) {
     options.setSnap(snap);
   }
-
+  
   /**
    * Define if this DragableWidget will snap to the edges of the other widget
    * when it is near an edge of these elements.
