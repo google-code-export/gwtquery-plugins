@@ -29,7 +29,7 @@ import gwtquery.plugins.droppable.client.gwt.CellDragAndDropBehaviour.CellDropOn
  * {@link DefaultNodeInfo} implementation allowing dragging and dropping of
  * nodes.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  * @param <T>
  *          the node type

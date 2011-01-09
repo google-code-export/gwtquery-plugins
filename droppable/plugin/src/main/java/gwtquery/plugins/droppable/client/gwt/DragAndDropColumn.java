@@ -26,7 +26,7 @@ import gwtquery.plugins.droppable.client.gwt.CellDragAndDropBehaviour.CellDropOn
 /**
  * {@link Column} implementation allowing dragging and dropping of cells.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  * @param <T>
  *          the row type

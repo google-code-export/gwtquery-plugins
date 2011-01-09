@@ -21,14 +21,14 @@ import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 /**
  * This class is used to configure the drop operation.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DroppableOptions {
 
   /**
    * 
-   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
    * 
    */
   public static interface AcceptFunction {
@@ -47,7 +47,7 @@ public class DroppableOptions {
   /**
    * Object use as callback function
    * 
-   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
    * 
    */
   public static interface DroppableFunction {
@@ -58,7 +58,7 @@ public class DroppableOptions {
    * Specifies which mode to use for testing whether a draggable is 'over' a
    * droppable.
    * 
-   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
    * 
    */
   public static enum DroppableTolerance {

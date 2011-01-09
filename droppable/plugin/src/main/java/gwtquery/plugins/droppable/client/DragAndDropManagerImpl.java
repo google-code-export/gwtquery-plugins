@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * Implementation of the {@link DragAndDropManager} for drop operations
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class DragAndDropManagerImpl extends DragAndDropManager {

@@ -19,7 +19,7 @@ package gwtquery.plugins.droppable.client.gwt;
  * This objet determines if the current rendering cell have to be draggable
  * and/or droppable
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  * @param <C>
  *          the cell type
@@ -30,7 +30,7 @@ public interface CellDragAndDropBehaviour<C> {
    * Implementation of {@link CellDragAndDropBehaviour} definig cells as
    * draggable only
    * 
-   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
    * 
    * @param <C>
    */
@@ -50,7 +50,7 @@ public interface CellDragAndDropBehaviour<C> {
    * Implementation of {@link CellDragAndDropBehaviour} defining cells as
    * droppable only
    * 
-   * @author Julien Dramaix (julien.dramaix@gmail.com)
+   * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
    * 
    * @param <C>
    */
