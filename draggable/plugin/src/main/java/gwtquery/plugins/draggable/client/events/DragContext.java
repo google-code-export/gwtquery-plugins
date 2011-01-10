@@ -36,12 +36,11 @@ public class DragContext {
   static final String VALUE_KEY = "__dragAndDropCellAssociatedValue";
 
   private Element draggable;
-  private Element helper;
-  private Offset helperPosition;
 
   private List<Element> selectedDraggables;
 
   private Element initialDraggable;
+  
 
   /**
    * Constructor
@@ -54,11 +53,11 @@ public class DragContext {
     this.draggable = draggable;
     this.selectedDraggables = selectedDraggable;
     this.initialDraggable = initialDraggable;
-    init();
   }
 
   public DragContext(DragContext ctx) {
-    this(ctx.getDraggable(), ctx.getInitialDraggable(), ctx.getSelectedDraggables());
+    this(ctx.getDraggable(), ctx.getInitialDraggable(), ctx
+        .getSelectedDraggables());
   }
 
   /**
@@ -101,7 +100,12 @@ public class DragContext {
    * @return the DOM element used for dragging display
    */
   public Element getHelper() {
-    return helper;
+    DraggableHandler handler = DraggableHandler.getInstance(draggable);
+
+    if (handler.getHelper() != null) {
+      return handler.getHelper().get(0);
+    }
+    return null;
   }
 
   /**
@@ -109,10 +113,10 @@ public class DragContext {
    * 
    */
   public Offset getHelperPosition() {
-    return helperPosition;
+    return  DraggableHandler.getInstance(draggable).getPosition();
   }
 
-  /** 
+  /**
    * @return the list of selected draggables.
    */
   public List<Element> getSelectedDraggables() {
@@ -127,12 +131,5 @@ public class DragContext {
     return initialDraggable;
   }
 
-  private void init() {
-    DraggableHandler handler = DraggableHandler.getInstance(draggable);
-    if (handler.getHelper() != null) {
-      helper = handler.getHelper().get(0);
-    }
-    helperPosition = handler.getPosition();
-  }
 
 }
