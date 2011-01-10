@@ -17,7 +17,6 @@ package gwtquery.plugins.droppable.client.gwt;
 
 import static com.google.gwt.query.client.GQuery.$;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -55,7 +54,7 @@ class DragAndDropCellTreeNodeView<T> extends CellTreeNodeView<T> {
       public View(Element childContainer) {
         
         super(childContainer);
-        GWT.log("Enter in my view");
+      
         this.childContainer = childContainer;
       }
 
@@ -138,7 +137,6 @@ class DragAndDropCellTreeNodeView<T> extends CellTreeNodeView<T> {
     public DragAndDropNodeCellList(final NodeInfo<C> nodeInfo,
         final CellTreeNodeView<?> nodeView, int pageSize) {
       super(nodeInfo, nodeView, pageSize);
-      GWT.log("enter in my node cellList");
     }
 
     /**
