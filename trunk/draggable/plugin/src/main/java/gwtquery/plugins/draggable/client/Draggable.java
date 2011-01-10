@@ -29,7 +29,6 @@ import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
 import com.google.gwt.query.client.plugins.MousePlugin;
-import com.google.gwt.user.client.DeferredCommand;
 
 import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
