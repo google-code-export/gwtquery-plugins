@@ -3,8 +3,8 @@
 =Plugin Information=
 
 || *Plugin name* ||Selectable||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.1.jar 1.1]||
-|| *Latest release date* ||Aug 24||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=selectable-plugin-1.0.2.jar 1.0.2]||
+|| *Latest release date* ||Jan 16||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ASelectable Open issues]||
 
@@ -13,6 +13,11 @@ This plugin is a gwt clone of the [http://jqueryui.com/demos/selectable/ JQuery-
 The Selectable plugin allows for elements to be selected by drawing a lasso with the mouse over the elements or by cliking on element. If you want to select non-contiguous element  just hold the Ctrl/Meta key.
 
 =Changelog=
+
+==v1.0.2==
+  * Change release numbering 
+  * Remove dependency to common-ui (moved to GwtQuery trunk)
+  * Correct some bugs on delay and distance options.
 ==v1.1==
   * implementation of delay and distance options
   * add dependency to commonui-plugin
