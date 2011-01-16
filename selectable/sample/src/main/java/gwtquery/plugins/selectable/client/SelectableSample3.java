@@ -20,7 +20,8 @@ import static gwtquery.plugins.selectable.client.Selectable.Selectable;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -149,8 +150,8 @@ public class SelectableSample3 implements EntryPoint {
     initTable(table);
     RootPanel.get("table").add(table);
     
-    // create an instance of HandlerManager to bind events fired by the selectable plug-in
-    HandlerManager handlerManager = new HandlerManager(null);
+    // create an instance of eventBus to bind events fired by the selectable plug-in
+    EventBus handlerManager = new SimpleEventBus();
     // create an instance of EventHandler who manage the event when they will be fired
     EventHandler handler = new EventHandler(table);
     //bind events who interest us
