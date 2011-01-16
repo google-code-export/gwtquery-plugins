@@ -22,7 +22,7 @@ import com.google.gwt.event.shared.GwtEvent;
 /**
  * Event fired when an element is selecting.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class SelectingEvent extends
