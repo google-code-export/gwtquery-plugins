@@ -6,15 +6,15 @@
 	<groupId>com.googlecode.gwtquery.plugins</groupId>
 	<artifactId>droppable</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 
 	<properties>
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
 		<gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
-		<gwtversion>2.1.0</gwtversion>
+		<gwtversion>2.1.1</gwtversion>
 		<draggableVersion>1.0.2</draggableVersion>
-		<commonUiVersion>1.0.3</commonUiVersion>
+		<!--  commonUiVersion>1.0.3</commonUiVersion-->
 	</properties>
 
 	<repositories>
@@ -101,12 +101,12 @@
 			<scope>provided</scope>
 
 		</dependency>
-		<dependency>
+		<!--  dependency>
 			<groupId>com.googlecode.gwtquery.plugins</groupId>
 			<artifactId>commonui-plugin</artifactId>
 			<version>${commonUiVersion}</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency-->
 
 	</dependencies>
 
