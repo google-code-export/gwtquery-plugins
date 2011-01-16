@@ -37,12 +37,6 @@
             <scope>provided</scope>
             <version>${gQueryVersion}</version>
         </dependency>
-         <dependency>
-            <groupId>com.googlecode.gwtquery.plugins</groupId>
-            <artifactId>commonui-plugin</artifactId>
-            <version>${gCommonUiVersion}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
