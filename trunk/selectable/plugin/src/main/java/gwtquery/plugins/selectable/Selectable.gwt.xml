@@ -1,4 +1,4 @@
 <module>
-    <inherits name='gwtquery.plugins.commonui.CommonUi'/>
+    <inherits name='com.google.gwt.query.Query'/>
 </module>
     
