@@ -21,13 +21,12 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
 import com.google.gwt.query.client.Plugin;
+import com.google.gwt.query.client.plugins.MousePlugin;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.MouseHandler;
 import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
 import gwtquery.plugins.selectable.client.event.SelectedEvent;
 import gwtquery.plugins.selectable.client.event.SelectingEvent;
@@ -39,12 +38,12 @@ import gwtquery.plugins.selectable.client.event.UnselectingEvent;
 /**
  * Class implementing the JQuery-ui Selectable plugin.
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
-public class Selectable extends MouseHandler {
+public class Selectable extends MousePlugin {
 
-  private class SelectableItem {
+  public class SelectableItem {
 
     private Element element;
     private GQuery $element;
@@ -299,7 +298,7 @@ public class Selectable extends MouseHandler {
    * 
    * @return
    */
-  public Selectable selectable(HandlerManager eventBus) {
+  public Selectable selectable(HasHandlers eventBus) {
     return selectable(new SelectableOptions(), eventBus);
   }
 
@@ -310,7 +309,7 @@ public class Selectable extends MouseHandler {
    * @return
    */
   public Selectable selectable(SelectableOptions options,
-      HandlerManager eventBus) {
+      HasHandlers eventBus) {
     this.options = options;
     this.eventBus = eventBus;
     lasso = new Lasso();
@@ -333,14 +332,14 @@ public class Selectable extends MouseHandler {
    */
   public Selectable unSelectable() {
     for (Element e : elements()) {
-      GQuery $this = $(e);
-      GQuery selectees = $this.data(SELECTEES_KEY, GQuery.class);
+      GQuery $e = $(e);
+      GQuery selectees = $e.data(SELECTEES_KEY, GQuery.class);
       if (selectees != null) {
         selectees.removeClass(CssClassNames.UI_UNSELECTEE).removeData(
             SELECTABLE_ITEM_KEY);
       }
-      $this.removeClass(CssClassNames.UI_SELECTABLE, "ui-selectable-disabled");
-      $this.removeData(SELECTEES_KEY).removeData(SELECTABLE_KEY);
+      $e.removeClass(CssClassNames.UI_SELECTABLE, "ui-selectable-disabled");
+      $e.removeData(SELECTEES_KEY).removeData(SELECTABLE_KEY);
 
     }
     destroyMouseHandler();
@@ -351,10 +350,19 @@ public class Selectable extends MouseHandler {
   protected String getPluginName() {
     return "selectable";
   }
+  
+  @Override
+  protected boolean mouseCapture(Element selectable, Event event) {  
+    return !options.isDisabled();
+  }
+  
+  private boolean isLassoSelectionEnable(Event e){
+    return options.isMultiSelect() && (!options.isLassoOnMetaKey() || e.isMetaKeyPressed());
+  }
 
   protected void onSelection(Element selectable, Event event) {
 
-    if (options.isDisabled() || !options.isMultiSelect()) {
+    if (!isLassoSelectionEnable(event)) {
       return;
     }
 
@@ -427,14 +435,10 @@ public class Selectable extends MouseHandler {
 
   protected void onSelectionStart(Element selectable, Event event) {
 
-    if (options.isDisabled()) {
-      return;
-    }
-
     trigger(new SelectionStartEvent(selectable), options.getOnStartSelection(),
         selectable);
 
-    if (options.isMultiSelect()) {
+    if (isLassoSelectionEnable(event)) {
       opos = new int[] { event.pageX(), event.pageY() };
       lasso.show(opos[0], opos[1], options.getAppendTo());
     }
@@ -513,7 +517,7 @@ public class Selectable extends MouseHandler {
     trigger(new SelectionStopEvent(selectable), options.getOnStopSelection(),
         selectable);
 
-    if (options.isMultiSelect()) {
+    if (isLassoSelectionEnable(event)) {
       lasso.hide();
     }
 
@@ -539,7 +543,7 @@ public class Selectable extends MouseHandler {
 
   private boolean isMetaKeyEnabled(Event event) {
     return options.isMultiSelect()
-        && (event.getMetaKey() || event.getCtrlKey());
+        && event.isMetaKeyPressed();
   }
 
   private GQuery refreshSelectees(Element e) {

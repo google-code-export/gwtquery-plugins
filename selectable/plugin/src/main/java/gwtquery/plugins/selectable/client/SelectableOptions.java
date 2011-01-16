@@ -17,13 +17,13 @@ package gwtquery.plugins.selectable.client;
 
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.plugins.MouseOptions;
 
-import gwtquery.plugins.commonui.client.MouseOptions;
 
 /**
  * Object containing all options for the Selectable plugin
  * 
- * @author Julien Dramaix (julien.dramaix@gmail.com)
+ * @author Julien Dramaix (julien.dramaix@gmail.com, @jdramaix)
  * 
  */
 public class SelectableOptions extends MouseOptions {
@@ -101,6 +101,8 @@ public class SelectableOptions extends MouseOptions {
    * This callback function is called at the end of the select operation.
    */
   private Function onStopSelection;
+  
+  private boolean lassoOnMetaKey;
 
   public SelectableOptions() {
     initDefault();
@@ -201,6 +203,14 @@ public class SelectableOptions extends MouseOptions {
   public void setTolerance(Tolerance tolerance) {
     this.tolerance = tolerance;
   }
+  
+  public boolean isLassoOnMetaKey() {
+    return lassoOnMetaKey;
+  }
+  
+  public void setLassoOnMetaKey(boolean lassoOnMetaKey) {
+    this.lassoOnMetaKey = lassoOnMetaKey;
+  }
 
   protected void initDefault() {
     disabled = false;
@@ -209,6 +219,8 @@ public class SelectableOptions extends MouseOptions {
     tolerance = Tolerance.TOUCH;
     appendTo = GQuery.body.getTagName();
     multiSelect = true;
+    lassoOnMetaKey = false;
+    super.initDefault();
   }
 
 }
