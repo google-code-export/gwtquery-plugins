@@ -12,8 +12,7 @@
 		<maven.compiler.source>1.5</maven.compiler.source>
 		<maven.compiler.target>1.5</maven.compiler.target>
 		<gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
-		<gwtversion>2.1.0</gwtversion>
-		<gCommonUiVersion>1.0.3</gCommonUiVersion>
+		<gwtversion>2.1.1</gwtversion>
 	</properties>
 
 	<repositories>
@@ -34,10 +33,6 @@
 		<repository>
 			<id>m.g.o</id>
 			<url>http://maven.glassfish.org/content/groups/public/</url>
-		</repository>
-		<repository>
-			<id>plugins</id>
-			<url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
 		</repository>
 
 	</repositories>
@@ -86,12 +81,6 @@
 			<groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
 			<version>${gQueryVersion}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.googlecode.gwtquery.plugins</groupId>
-			<artifactId>commonui-plugin</artifactId>
-			<version>${gCommonUiVersion}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
