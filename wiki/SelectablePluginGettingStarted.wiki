@@ -28,7 +28,7 @@ The Selectable plugin allows for elements to be selected by drawing a lasso with
 
 ==Dependency==
 
-Since version 1.1, the selectable plugin needs the common-ui library to work. If you are not using maven, just download the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=commonui-plugin-1.0.jar last version of the library] and put it in the war/WEB-INF/lib folder.
+The selectable plugin needs [http://code.google.com/p/gwtquery/wiki/UsingLatestSnapshot the last snapshot] of GwtQuery library to work. 
 
 ==Configuration==
 
