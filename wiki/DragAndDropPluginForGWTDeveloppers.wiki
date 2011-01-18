@@ -375,6 +375,9 @@ In the same way, to add drag-and-drop in a `CellTree` (or a `CellBrowser`), just
 
 Check out the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/PermissionManagerSample/PermissionManagerSample.html permission manager example] and the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GFinderSample/GFinderSample.html GFinder example] for more concrete examples.
 
+Please note taht the droppable plugins needs to override few gwt classes to open the API of CellTree and CellBrowser widget. So ensure that the gquery-dnd-bundle.jar are set before the gwt jar files in your compilation classpath. 
+
+
 == !DragAndDropCellTable and !DragAndDropColumn classes ==
 
 To add drag-and-drop support in a `CellTable` :
