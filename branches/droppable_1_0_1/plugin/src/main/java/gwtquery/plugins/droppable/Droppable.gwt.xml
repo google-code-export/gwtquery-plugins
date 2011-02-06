@@ -5,32 +5,4 @@
 		<when-type-is
 			class="gwtquery.plugins.draggable.client.DragAndDropManager" />
 	</replace-with>
-	
-	<!-- Standard CellBasedWidgetImpl implementation. -->
-  <replace-with class="com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard">
-    <when-type-is class="com.google.gwt.user.cellview.client.CellBasedWidgetImpl"/>
-    <any>
-      <when-property-is name="user.agent" value="opera"/>
-      <when-property-is name="user.agent" value="gecko"/>
-      <when-property-is name="user.agent" value="gecko1_8"/>
-    </any>
-  </replace-with>
-
-  <!-- IE-specific CellBasedWidgetImpl implementation. -->
-  <replace-with class="com.google.gwt.user.cellview.client.CellBasedWidgetImplTrident">
-    <when-type-is class="com.google.gwt.user.cellview.client.CellBasedWidgetImpl"/>
-    <any>
-      <when-property-is name="user.agent" value="ie6"/>
-      <when-property-is name="user.agent" value="ie8"/>
-    </any>
-  </replace-with>
-
-  <!-- Safari-specific CellBasedWidgetImpl implementation. -->
-  <replace-with class="com.google.gwt.user.cellview.client.CellBasedWidgetImplSafari">
-    <when-type-is class="com.google.gwt.user.cellview.client.CellBasedWidgetImpl"/>
-    <any>
-      <when-property-is name="user.agent" value="safari"/>
-    </any>
-  </replace-with>
-
 </module>  
