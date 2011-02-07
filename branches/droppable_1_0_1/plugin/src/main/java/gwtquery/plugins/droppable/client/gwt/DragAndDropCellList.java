@@ -95,7 +95,7 @@ public class DragAndDropCellList<T> extends CellList<T> {
    *          the cell used to render each item
    */
   public DragAndDropCellList(final Cell<T> cell) {
-    this(cell, null, null, null);
+    this(cell, DEFAULT_RESOURCES, null, null);
 
   }
 
