@@ -175,7 +175,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
       if (droppableHandler.isVisible()) {
         droppableHandler.setDroppableOffset($droppable.offset());
         droppableHandler.setDroppableDimension(new Dimension(droppable));
-        if (e.getTypeInt() == ONMOUSEDOWN) {
+        if (e == null || e.getTypeInt() == ONMOUSEDOWN) {
           DragAndDropContext dndContext = new DragAndDropContext(ctx, droppable);
           droppableHandler.activate(dndContext, e);
         }
@@ -190,4 +190,8 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
     return ctx.getDraggable() == ctx.getInitialDraggable();
   }
 
+  @Override
+  public void update(DragContext ctx) {
+    initialize(ctx, null);
+  }
 }

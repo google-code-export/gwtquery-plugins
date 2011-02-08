@@ -44,12 +44,21 @@ public class DragAndDropManager {
   }
 
   /**
+   * Link a droppable with the specified scope <code>scope</code>
+   * @param droppable
+   * @param scope
+   */
+  public void addDroppable(Element droppable, String scope) {
+  }
+
+  /**
    * Method called when the draggable is being dragged
    * @param draggable
    * @param e
    */
   public void drag(DragContext ctx, Event e) {
   }
+
 
   /**
    * Method called when the draggable was dropped
@@ -61,7 +70,7 @@ public class DragAndDropManager {
     return false;
   }
 
-
+ 
   /**
    * Return the list of droppable elements with the scope <code>scope</code>
    * @param scope
@@ -70,22 +79,21 @@ public class DragAndDropManager {
   public Collection<Element> getDroppablesByScope(String scope) {
     return null;
   }
-
- 
+  
   public void initialize(DragContext ctx, Event e) {
   }
 
 
-  /**
-   * Link a droppable with the specified scope <code>scope</code>
-   * @param droppable
-   * @param scope
-   */
-  public void addDroppable(Element droppable, String scope) {
-  }
-
   public boolean isHandleDroppable(DragContext ctx) {
     return false;
+  }
+
+  /**
+   * Use this method when droppable elements change dynamically during a drag
+   * operation and you want to take into account these changes for the drop
+   * operation.
+   */
+  public void update(DragContext ctx) {
   }
 
 }
