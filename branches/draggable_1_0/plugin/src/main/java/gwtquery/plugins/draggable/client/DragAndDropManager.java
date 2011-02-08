@@ -22,19 +22,20 @@ import gwtquery.plugins.commonui.client.Event;
 import java.util.Collection;
 
 /**
- * The goal of this class is to manage the interactions between draggable and droppable objects.
- * This implementation specifies the interface needed by this kind of manager but do nothing.
+ * The goal of this class is to manage the interactions between draggable and
+ * droppable objects. This implementation specifies the interface needed by this
+ * kind of manager but do nothing.
  * 
  * @author Julien Dramaix (julien.dramaix@gmail.com)
- *
+ * 
  */
 public class DragAndDropManager {
 
-  private static DragAndDropManager INSTANCE = GWT
-      .create(DragAndDropManager.class);
+  private static DragAndDropManager INSTANCE = GWT.create(DragAndDropManager.class);
 
   /**
    * return the instance of the manager
+   * 
    * @return
    */
   public static DragAndDropManager getInstance() {
@@ -42,7 +43,17 @@ public class DragAndDropManager {
   }
 
   /**
+   * Link a droppable with the specified scope <code>scope</code>
+   * 
+   * @param droppable
+   * @param scope
+   */
+  public void addDroppable(Element droppable, String scope) {
+  }
+
+  /**
    * Method called when the draggable is being dragged
+   * 
    * @param draggable
    * @param e
    */
@@ -51,6 +62,7 @@ public class DragAndDropManager {
 
   /**
    * Method called when the draggable was dropped
+   * 
    * @param draggable
    * @param e
    * @return
@@ -61,7 +73,8 @@ public class DragAndDropManager {
 
   /**
    * 
-   * @return the current draggable element or null if no drag operation in progress
+   * @return the current draggable element or null if no drag operation in
+   *         progress
    */
   public Element getCurrentDraggable() {
     return null;
@@ -69,11 +82,19 @@ public class DragAndDropManager {
 
   /**
    * Return the list of droppable elements with the scope <code>scope</code>
+   * 
    * @param scope
    * @return
    */
   public Collection<Element> getDroppablesByScope(String scope) {
     return null;
+  }
+
+  /**
+   * Method call at the begin of a drag operation to initialize all visible
+   * droppables.
+   */
+  public void initialize(Element draggable, Event e) {
   }
 
   /**
@@ -84,22 +105,20 @@ public class DragAndDropManager {
     return false;
   }
 
-  public void initialize(Element draggable, Event e) {
+  /**
+   * Use this method when droppable elements change dynamically during a drag
+   * operation and you want to take into account these changes for the drop
+   * operation.
+   */
+  public void update() {
   }
 
   /**
    * Set the current draggeble element
+   * 
    * @param draggable
    */
   public void setCurrentDraggable(Element draggable) {
-  }
-
-  /**
-   * Link a droppable with the specified scope <code>scope</code>
-   * @param droppable
-   * @param scope
-   */
-  public void addDroppable(Element droppable, String scope) {
   }
 
 }
