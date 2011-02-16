@@ -1,4 +1,3 @@
-package com.google.gwt.user.cellview.client;
 /*
  * Copyright 2010 Google Inc.
  *
@@ -15,7 +14,7 @@ package com.google.gwt.user.cellview.client;
  * the License.
  */
 
-
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
@@ -35,6 +34,8 @@ import java.util.Set;
  * Standard implementation used by most cell based widgets.
  * Use {@link com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard} instead.
  *             This class will be removed in future release.
+ *             
+ * last revision : r9620
  */
 
 class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {

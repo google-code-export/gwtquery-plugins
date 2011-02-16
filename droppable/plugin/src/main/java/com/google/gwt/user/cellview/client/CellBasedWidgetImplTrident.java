@@ -1,6 +1,5 @@
 package com.google.gwt.user.cellview.client;
 
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.Scheduler;
@@ -29,6 +28,8 @@ import java.util.Set;
  * Some adaption was done to support GWTQuery Event listener
  *  
  * IE specified Impl used by cell based widgets.
+ * 
+ * last revision : r9620
  * 
  */
 
@@ -265,6 +266,13 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
     changeEventTriggers.add("mouseup");
     changeEventTriggers.add("mousewheel");
   }
+  
+  @Override
+  public boolean isFocusable(Element elem) {
+    return focusableTypes.contains(elem.getTagName().toLowerCase())
+        || getTabIndexIfSpecified(elem) >= 0;
+  }
+
 
   @Override
   public void onBrowserEvent(final Widget widget, Event event) {
@@ -360,6 +368,17 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
       return super.sinkEvent(widget, typeName);
     }
   }
+  
+  /**
+   * Get the tab index of an element if the tab index is specified.
+   * 
+   * @param elem the Element
+   * @return the tab index, or -1 if not specified
+   */
+  private native int getTabIndexIfSpecified(Element elem) /*-{
+    return elem.getAttributeNode('tabIndex').specified ? elem.tabIndex : -1;
+  }-*/;
+
 
   /**
    * Initialize the focus event listener.

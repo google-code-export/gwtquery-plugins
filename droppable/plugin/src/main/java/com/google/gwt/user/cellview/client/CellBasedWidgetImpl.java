@@ -1,4 +1,3 @@
-package com.google.gwt.user.cellview.client;
 /*
  * Copyright 2010 Google Inc.
  *
@@ -14,7 +13,7 @@ package com.google.gwt.user.cellview.client;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -29,6 +28,8 @@ import java.util.Set;
 /**
  * Implementation used by various cell based widgets.
  * Make this class public, so It canbe used in drag and drop cell widget
+ * 
+ * last revision : r9620
  */
 public abstract class CellBasedWidgetImpl {
 
@@ -52,7 +53,7 @@ public abstract class CellBasedWidgetImpl {
   /**
    * The set of natively focusable elements.
    */
-  private final Set<String> focusableTypes;
+  final Set<String> focusableTypes;
 
   CellBasedWidgetImpl() {
     focusableTypes = new HashSet<String>();

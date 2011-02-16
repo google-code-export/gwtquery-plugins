@@ -1,4 +1,3 @@
-package com.google.gwt.user.cellview.client;
 /*
  * Copyright 2010 Google Inc.
  *
@@ -14,7 +13,7 @@ package com.google.gwt.user.cellview.client;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
@@ -64,6 +63,8 @@ import java.util.Set;
  * A view of a tree node.
  *
  * @param <T> the type that this view contains
+ * 
+ * last revision : r9328
  */
 // TODO(jlabanca): Convert this to be the type of the child and create lazily.
 public class CellTreeNodeView<T> extends UIObject {

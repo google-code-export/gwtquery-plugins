@@ -1,4 +1,3 @@
-package com.google.gwt.user.cellview.client;
 /*
  * Copyright 2010 Google Inc.
  * 
@@ -14,21 +13,19 @@ package com.google.gwt.user.cellview.client;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 
 /**
- * CellBasedWidgetImplSafari implementation based on revision rr=9220 :
+ * CellBasedWidgetImplSafari implementation
  * http://code.google.com/p/google-web-toolkit/source/browse/trunk/user/src/com/google/gwt/user/cellview/client/CellBasedWidgetImplSafari.java?spec=svn9203&r=9220
  * 
  * Webkit specified Impl used by cell based widgets.
  * 
- * @deprecated Use {@link com.google.gwt.user.cellview.client.CellWidgetImpleSafari} instead.
- *             This class will be removed in future release.
+ * last revision : r9620
  */
-@Deprecated
 public class CellBasedWidgetImplSafari extends CellBasedWidgetImplStandard {
 
   @Override

@@ -1,4 +1,3 @@
-package com.google.gwt.user.cellview.client;
 /*
  * Copyright 2010 Google Inc.
  * 
@@ -14,7 +13,7 @@ package com.google.gwt.user.cellview.client;
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
+package com.google.gwt.user.cellview.client;
 
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.cell.client.Cell;
@@ -81,6 +80,8 @@ import java.util.List;
  * <dt>Complex example</dt>
  * <dd>{@example com.google.gwt.examples.cellview.CellBrowserExample2}</dd>
  * </dl>
+ * 
+ * last revision : r9620
  */
 public class CellBrowser extends AbstractCellTree implements ProvidesResize,
     RequiresResize, HasAnimation {
