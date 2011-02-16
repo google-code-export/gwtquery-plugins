@@ -172,10 +172,17 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
     return addDragAndDropHandler(handler, BeforeDragStartEvent.TYPE);
   }
 
-
-  public void addColumn(Column<T, ?> col, Header<?> header, Header<?> footer) {
+  
+  /*public void addColumn(Column<T, ?> col, Header<?> header, Header<?> footer) {
     super.addColumn(col, header, footer);
     columns.add(col);
+  }*/
+  
+  @Override
+  public void insertColumn(int beforeIndex, Column<T, ?> col, Header<?> header,
+      Header<?> footer) {
+    super.insertColumn(beforeIndex, col, header, footer);
+    columns.add(beforeIndex, col);
   }
 
   public HandlerRegistration addDeactivateDroppableHandler(

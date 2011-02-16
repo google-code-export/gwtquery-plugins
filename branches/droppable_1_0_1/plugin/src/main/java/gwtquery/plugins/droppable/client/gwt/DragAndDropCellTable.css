@@ -36,6 +36,7 @@
   text-align: left;
   color: #4b4a4a;
   text-shadow: #ddf 1px 1px 0;
+  overflow: hidden;
 }
 
 .cellTableHeader {
@@ -44,6 +45,7 @@
   text-align: left;
   color: #4b4a4a;
   text-shadow: #ddf 1px 1px 0;
+  overflow: hidden;
 }
 
  /*
@@ -51,6 +53,7 @@
   */
 .cellTableCell > div {
   padding: 2px 15px;
+  overflow: hidden;
 }
 
 .cellTableFirstColumnFooter {
@@ -67,6 +70,23 @@
 
 .cellTableLastColumnHeader {
   
+}
+
+.cellTableSortableHeader {
+  cursor: pointer;
+  cursor: hand;
+}
+
+.cellTableSortableHeader:hover {
+  color: #6c6b6b;
+}
+
+.cellTableSortedHeaderAscending {
+
+}
+
+.cellTableSortedHeaderDescending {
+
 }
 
 .cellTableEvenRow {
