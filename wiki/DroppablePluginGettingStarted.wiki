@@ -16,6 +16,8 @@ The Droppable plugin enables any DOM element and GWT widget to be droppable or i
 
 =Changelog=
 ----
+==v1.0.3==
+  * Release compatible with GWT 2.2
 
 ==v1.0.2==
   * Issue [http://code.google.com/p/gwtquery-plugins/issues/detail?id=4 4] : GWT 2.1.1 Cell API break.
