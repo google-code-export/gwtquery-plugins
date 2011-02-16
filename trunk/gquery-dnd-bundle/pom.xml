@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <name>GQuery drag and drop bundle</name>
+  <name>GQuery drag and drop bundle compatible GWT 2.2.X</name>
   <description>A jar containing all the necessary stuff to use gwtquery and its plugins draggable and dropable</description>
   <groupId>com.googlecode.gwtquery.bundles</groupId>
   <artifactId>gquery-dnd-bundle</artifactId>
   <packaging>jar</packaging>
-  <version>1.0</version>
+  <version>1.0.3</version>
 
   <properties>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
-    <includedArtifacts>gwtquery,commonui-plugin,draggable-plugin</includedArtifacts>
+    <includedArtifacts>gwtquery,commonui-plugin,draggable-plugin,droppable-plugin</includedArtifacts>
     <gqueryVersion>1.0.0-SNAPSHOT</gqueryVersion>
-    <commonuiVersion>1.2</commonuiVersion>
-    <dragableVersion>1.0</dragableVersion>
+    <commonuiVersion>1.0.3</commonuiVersion>
+    <dragableVersion>1.0.2</dragableVersion>
+    <droppableVersion>1.0.3</droppableVersion>
   </properties>
 
   <dependencies>
    <dependency>
-      <groupId>com.googlecode.gwtquery</groupId>
-      <artifactId>gwtquery</artifactId>
-      <version>${gqueryVersion}</version>
-      <scope>provided</scope>
+       <groupId>com.googlecode.gwtquery</groupId>
+       <artifactId>gwtquery</artifactId>
+       <version>1.0.0-SNAPSHOT</version>
+       <classifier>2.2.0</classifier>
+       <scope>provided</scope>
     </dependency>
+
     <dependency>
        <groupId>com.googlecode.gwtquery.plugins</groupId>
        <artifactId>commonui-plugin</artifactId>
@@ -34,6 +37,12 @@
        <groupId>com.googlecode.gwtquery.plugins</groupId>
        <artifactId>draggable-plugin</artifactId>
        <version>${dragableVersion}</version>
+       <scope>provided</scope>
+     </dependency>
+     <dependency>
+       <groupId>com.googlecode.gwtquery.plugins</groupId>
+       <artifactId>droppable-plugin</artifactId>
+       <version>${droppableVersion}</version>
        <scope>provided</scope>
      </dependency>
   </dependencies>
@@ -66,7 +75,7 @@
        <snapshots><enabled>false</enabled></snapshots>
      </repository>
   </repositories>
-
+  
   <pluginRepositories>
     <pluginRepository>
       <id>gcupload</id>
@@ -118,8 +127,8 @@
           </uploads>
         </configuration>
       </plugin>
-    </plugins>
 
+    </plugins>
     <resources>
       <resource>
         <directory>${project.build.directory}/generated-resources/</directory>
@@ -148,3 +157,4 @@
  </distributionManagement>
 
 </project>
+
