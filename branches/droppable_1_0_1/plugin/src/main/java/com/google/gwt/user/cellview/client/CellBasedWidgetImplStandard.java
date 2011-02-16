@@ -34,6 +34,8 @@ import java.util.Set;
  * Standard implementation used by most cell based widgets.
  * Use {@link com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard} instead.
  *             This class will be removed in future release.
+ *             
+ * last revision : r9620
  */
 
 class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {

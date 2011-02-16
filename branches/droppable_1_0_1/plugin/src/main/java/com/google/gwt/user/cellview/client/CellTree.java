@@ -62,6 +62,8 @@ import java.util.Set;
  * <dt>Complex example</dt>
  * <dd>{@example com.google.gwt.examples.cellview.CellTreeExample2}</dd>
  * </dl>
+ * 
+ * last revision : r9620
  */
 public class CellTree extends AbstractCellTree implements HasAnimation,
     Focusable {

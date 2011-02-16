@@ -28,6 +28,8 @@ import java.util.Set;
 /**
  * Implementation used by various cell based widgets.
  * Make this class public, so It canbe used in drag and drop cell widget
+ * 
+ * last revision : r9620
  */
 public abstract class CellBasedWidgetImpl {
 
@@ -51,7 +53,7 @@ public abstract class CellBasedWidgetImpl {
   /**
    * The set of natively focusable elements.
    */
-  private final Set<String> focusableTypes;
+  final Set<String> focusableTypes;
 
   CellBasedWidgetImpl() {
     focusableTypes = new HashSet<String>();

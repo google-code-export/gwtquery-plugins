@@ -80,6 +80,8 @@ import java.util.List;
  * <dt>Complex example</dt>
  * <dd>{@example com.google.gwt.examples.cellview.CellBrowserExample2}</dd>
  * </dl>
+ * 
+ * last revision : r9620
  */
 public class CellBrowser extends AbstractCellTree implements ProvidesResize,
     RequiresResize, HasAnimation {
