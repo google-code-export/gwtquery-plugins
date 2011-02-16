@@ -365,6 +365,10 @@ public class ContactDatabase {
     contacts.add(contact);
   }
   
+  public ListDataProvider<ContactInfo> getDataProvider() {
+    return dataProvider;
+  }
+  
   /**
    * Remove a contact.
    * 

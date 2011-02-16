@@ -41,6 +41,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
+import com.google.gwt.user.cellview.client.ColumnSortEvent.ListHandler;
 import com.google.gwt.user.cellview.client.HasKeyboardPagingPolicy.KeyboardPagingPolicy;
 import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Window;
@@ -51,6 +52,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionModel;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
@@ -63,9 +68,6 @@ import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DragAndDropCellTable;
 import gwtquery.plugins.droppable.client.gwt.DragAndDropColumn;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Take the cell table example of the GWT showcase and make all cell droppable
@@ -229,9 +231,15 @@ public class CellTableSample implements EntryPoint {
     final MultiSelectionModel<ContactInfo> selectionModel = new MultiSelectionModel<ContactInfo>(
         ContactDatabase.ContactInfo.KEY_PROVIDER);
     cellTable.setSelectionModel(selectionModel);
+    
+ // Attach a column sort handler to the ListDataProvider to sort the list.
+    ListHandler<ContactInfo> sortHandler = new ListHandler<ContactInfo>(
+        ContactDatabase.get().getDataProvider().getList());
+    cellTable.addColumnSortHandler(sortHandler);
+
 
     // Initialize the columns.
-    initTableColumns(selectionModel);
+    initTableColumns(selectionModel,sortHandler);
 
     // Add the CellList to the adapter in the database.
     ContactDatabase.get().addDataDisplay(cellTable);
@@ -338,11 +346,12 @@ public class CellTableSample implements EntryPoint {
    * Add the columns to the table.
    * 
    * Use {@link DragAndDropColumn} instead of {@link Column}
+   * @param sortHandler 
    */
-  private void initTableColumns(final SelectionModel<ContactInfo> selectionModel) {
+  private void initTableColumns(final SelectionModel<ContactInfo> selectionModel, ListHandler<ContactInfo> sortHandler) {
 
     DragAndDropColumn<ContactInfo, Boolean> checkColumn = new DragAndDropColumn<ContactInfo, Boolean>(
-        new CheckboxCell(true)) {
+        new CheckboxCell(true,true)) {
       @Override
       public Boolean getValue(ContactInfo object) {
         // Get the value from the selection model.
@@ -368,6 +377,14 @@ public class CellTableSample implements EntryPoint {
       }
     };
     firstNameColumn.setCellDraggableOnly();
+    firstNameColumn.setSortable(true);
+    sortHandler.setComparator(firstNameColumn, new Comparator<ContactInfo>() {
+      public int compare(ContactInfo o1, ContactInfo o2) {
+        return o1.getFirstName().compareTo(o2.getFirstName());
+      }
+    });
+
+    
     initDragOperation(firstNameColumn);
     cellTable
         .addColumn(firstNameColumn, constants.cwCellTableColumnFirstName());
@@ -388,6 +405,14 @@ public class CellTableSample implements EntryPoint {
       }
     };
     lastNameColumn.setCellDraggableOnly();
+    lastNameColumn.setSortable(true);
+    sortHandler.setComparator(lastNameColumn, new Comparator<ContactInfo>() {
+      public int compare(ContactInfo o1, ContactInfo o2) {
+        return o1.getLastName().compareTo(o2.getLastName());
+      }
+    });
+
+    
     initDragOperation(lastNameColumn);
     cellTable.addColumn(lastNameColumn, constants.cwCellTableColumnLastName());
     lastNameColumn.setFieldUpdater(new FieldUpdater<ContactInfo, String>() {
