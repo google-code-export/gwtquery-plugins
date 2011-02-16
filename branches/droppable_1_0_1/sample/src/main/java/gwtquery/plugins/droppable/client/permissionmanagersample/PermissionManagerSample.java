@@ -127,7 +127,7 @@ public class PermissionManagerSample implements EntryPoint {
   static interface Templates extends SafeHtmlTemplates {
     Templates INSTANCE = GWT.create(Templates.class);
 
-    @Template(" <div id='dragHelper' class='{0}'></div>")
+    @Template("<div id='dragHelper' class='{0}'></div>")
     SafeHtml outerHelper(String cssClassName);
   }
 
