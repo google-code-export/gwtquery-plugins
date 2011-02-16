@@ -55,7 +55,6 @@ class DragAndDropCellTreeNodeView<T> extends CellTreeNodeView<T> {
       public View(Element childContainer) {
         
         super(childContainer);
-        GWT.log("Enter in my view");
         this.childContainer = childContainer;
       }
 
@@ -138,7 +137,7 @@ class DragAndDropCellTreeNodeView<T> extends CellTreeNodeView<T> {
     public DragAndDropNodeCellList(final NodeInfo<C> nodeInfo,
         final CellTreeNodeView<?> nodeView, int pageSize) {
       super(nodeInfo, nodeView, pageSize);
-      GWT.log("enter in my node cellList");
+     
     }
 
     /**
