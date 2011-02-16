@@ -4,8 +4,8 @@
 ----
 
 || *Plugin name* ||Droppable||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=droppable-plugin-1.0.1.jar 1.0.1]||
-|| *Latest release date* ||Nov 26 2010||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=droppable-plugin-1.0.3.jar 1.0.3]||
+|| *Latest release date* ||Feb 16 2011||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADroppable Open issues]||
 
