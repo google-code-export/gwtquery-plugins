@@ -16,7 +16,6 @@
 package gwtquery.plugins.droppable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -24,9 +23,11 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
+
 import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;

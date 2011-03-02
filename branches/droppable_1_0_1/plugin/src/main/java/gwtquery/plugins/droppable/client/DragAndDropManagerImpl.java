@@ -20,19 +20,19 @@ import static com.google.gwt.user.client.Event.ONMOUSEDOWN;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
-
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.DragAndDropManager;
-import gwtquery.plugins.draggable.client.DraggableHandler;
-import gwtquery.plugins.droppable.client.Droppable.CssClassNames;
-import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
-import gwtquery.plugins.droppable.client.events.DragAndDropContext;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import gwtquery.plugins.draggable.client.DragAndDropManager;
+import gwtquery.plugins.draggable.client.DraggableHandler;
+import gwtquery.plugins.droppable.client.Droppable.CssClassNames;
+import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
+import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 
 /**
  * Implementation of the {@link DragAndDropManager} for drop operations
@@ -203,8 +203,8 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
     currentDraggable = draggable;
   }
   
-  @Override
+ /* @Override
   public void update() {
     initialize(currentDraggable, null);
-  }
+  }*/
 }
