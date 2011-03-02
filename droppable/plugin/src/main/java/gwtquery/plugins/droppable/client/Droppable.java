@@ -16,12 +16,10 @@
 package gwtquery.plugins.droppable.client;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
-import com.google.gwt.query.client.Plugin;
 import com.google.gwt.query.client.plugins.GQueryUi;
+import com.google.gwt.query.client.plugins.Plugin;
 
 import gwtquery.plugins.draggable.client.DragAndDropManager;
 
@@ -56,41 +54,16 @@ public class Droppable extends GQueryUi {
     });
   }
 
-  /**
-   * Constructor
-   * 
-   * @param element
-   */
-  public Droppable(Element element) {
-    super(element);
-  }
-
+ 
   /**
    * Constructor
    * 
    * @param gq
    */
-  public Droppable(GQuery gq) {
+  protected Droppable(GQuery gq) {
     super(gq);
   }
 
-  /**
-   * Constructor
-   * 
-   * @param elements
-   */
-  public Droppable(JSArray elements) {
-    super(elements);
-  }
-
-  /**
-   * Constructor
-   * 
-   * @param list
-   */
-  public Droppable(NodeList<Element> list) {
-    super(list);
-  }
 
   /**
    * Change the scope of the selected elements.
