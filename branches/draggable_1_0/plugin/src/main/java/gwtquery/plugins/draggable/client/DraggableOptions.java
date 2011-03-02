@@ -20,8 +20,8 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.plugins.MouseOptions;
 
-import gwtquery.plugins.commonui.client.MouseOptions;
 import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
 import gwtquery.plugins.draggable.client.events.DragContext;
 

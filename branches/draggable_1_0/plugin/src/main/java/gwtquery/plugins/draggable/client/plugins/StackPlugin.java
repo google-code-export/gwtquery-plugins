@@ -17,13 +17,13 @@ package gwtquery.plugins.draggable.client.plugins;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
-
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.draggable.client.DraggableHandler;
-import gwtquery.plugins.draggable.client.DraggableOptions;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
 import java.util.Arrays;
 import java.util.Comparator;
+
+import gwtquery.plugins.draggable.client.DraggableHandler;
+import gwtquery.plugins.draggable.client.DraggableOptions;
 
 /**
  * This add-on manage the z-index for the helper while being dragged.
