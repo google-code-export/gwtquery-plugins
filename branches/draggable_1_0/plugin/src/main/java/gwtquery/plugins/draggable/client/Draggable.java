@@ -143,40 +143,14 @@ public class Draggable extends MouseHandler {
   // for performance purpose cache the current drag handler.
   private DraggableHandler currentDragHandler;
 
-  /**
-   * Constructor
-   * 
-   * @param element
-   */
-  public Draggable(Element element) {
-    super(element);
-  }
 
   /**
    * Constructor
    * 
    * @param gq
    */
-  public Draggable(GQuery gq) {
+  protected Draggable(GQuery gq) {
     super(gq);
-  }
-
-  /**
-   * Constructor
-   * 
-   * @param elements
-   */
-  public Draggable(JSArray elements) {
-    super(elements);
-  }
-
-  /**
-   * Constructor
-   * 
-   * @param list
-   */
-  public Draggable(NodeList<Element> list) {
-    super(list);
   }
 
   /**
