@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.googlecode.gwtquery.plugins</groupId>
         <artifactId>droppable</artifactId>
-        <version>1.0.2</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <name>Droppable plugin for gQuery</name>
@@ -34,6 +34,7 @@
         <dependency>
             <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
+            <classifier>2.2.0</classifier>
             <scope>provided</scope>
             <version>${gQueryVersion}</version>
         </dependency>
@@ -43,14 +44,6 @@
 			<version>${draggableVersion}</version>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-            <groupId>com.googlecode.gwtquery.bundles</groupId>
-            <artifactId>gquery-dnd-bundle</artifactId>
-            <version>1.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-		
-        
     </dependencies>
 
     <build>
