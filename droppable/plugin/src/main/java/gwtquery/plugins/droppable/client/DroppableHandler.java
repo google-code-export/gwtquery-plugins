@@ -25,8 +25,8 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
-import com.google.gwt.query.client.plugins.GQueryUi.Event;
+import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
+import com.google.gwt.query.client.plugins.UiPlugin.Event;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;

@@ -18,7 +18,7 @@ package gwtquery.plugins.droppable.client;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.GQueryUi;
+import com.google.gwt.query.client.plugins.UiPlugin;
 import com.google.gwt.query.client.plugins.Plugin;
 
 import gwtquery.plugins.draggable.client.DragAndDropManager;
@@ -26,7 +26,7 @@ import gwtquery.plugins.draggable.client.DragAndDropManager;
 /**
  * Droppable plugin for GwtQuery
  */
-public class Droppable extends GQueryUi {
+public class Droppable extends UiPlugin {
 
   /**
    * Css class used in this plugin
