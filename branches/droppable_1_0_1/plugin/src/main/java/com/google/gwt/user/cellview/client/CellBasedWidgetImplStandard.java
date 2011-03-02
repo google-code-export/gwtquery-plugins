@@ -19,7 +19,7 @@ package com.google.gwt.user.cellview.client;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.query.client.plugins.EventsListener;
+import com.google.gwt.query.client.plugins.events.EventsListener;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
