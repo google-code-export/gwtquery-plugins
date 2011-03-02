@@ -18,7 +18,7 @@ package gwtquery.plugins.draggable.client.impl;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 
