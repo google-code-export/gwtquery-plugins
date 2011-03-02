@@ -15,12 +15,13 @@
  */
 package gwtquery.plugins.draggable.client.impl;
 
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
-import gwtquery.plugins.draggable.client.DraggableHandler;
+import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery.Offset;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+
+import gwtquery.plugins.draggable.client.DraggableHandler;
 
 /**
  * Specific code for IE
@@ -37,24 +38,24 @@ public class DraggableHandlerImplIE6 extends DraggableHandlerImplIE {
     // don't substract margin in ie 6 and 7
     return new int[] {
         containerOffset.left
-            + (int) GQUtils.cur(containerElement, "borderLeftWidth", true)
-            + (int) GQUtils.cur(containerElement, "paddingLeft", true),
+            + (int) $(containerElement).cur("borderLeftWidth", true)
+            + (int) $(containerElement).cur("paddingLeft", true),
         containerOffset.top
-            + (int) GQUtils.cur(containerElement, "borderTopWidth", true)
-            + (int) GQUtils.cur(containerElement, "paddingTop", true),
+            + (int) $(containerElement).cur("borderTopWidth", true)
+            + (int) $(containerElement).cur("paddingTop", true),
         containerOffset.left
             + (overflow ? Math.max(containerElement.getScrollWidth(),
                 containerElement.getOffsetWidth()) : containerElement
                 .getOffsetWidth())
-            - (int) GQUtils.cur(containerElement, "borderLeftWidth", true)
-            - (int) GQUtils.cur(containerElement, "paddingRight", true)
+            - (int) $(containerElement).cur("borderLeftWidth", true)
+            - (int) $(containerElement).cur("paddingRight", true)
             - helperDimension.getWidth(),
         containerOffset.top
             + (overflow ? Math.max(containerElement.getScrollHeight(),
                 containerElement.getOffsetHeight()) : containerElement
                 .getOffsetHeight())
-            - (int) GQUtils.cur(containerElement, "borderTopWidth", true)
-            - (int) GQUtils.cur(containerElement, "paddingBottom", true)
+            - (int) $(containerElement).cur("borderTopWidth", true)
+            - (int) $(containerElement).cur("paddingBottom", true)
             - helperDimension.getHeight()};
   }
   

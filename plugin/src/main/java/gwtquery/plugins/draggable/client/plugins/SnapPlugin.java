@@ -20,14 +20,14 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.draggable.client.DraggableHandler;
-import gwtquery.plugins.draggable.client.DraggableOptions;
-import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import gwtquery.plugins.draggable.client.DraggableHandler;
+import gwtquery.plugins.draggable.client.DraggableOptions;
+import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 
 /**
  * Add-on allow the draggable to snap other elements

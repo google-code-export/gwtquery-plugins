@@ -16,7 +16,6 @@
 package gwtquery.plugins.draggable.client.gwt;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
@@ -31,6 +30,10 @@ import com.google.gwt.query.client.plugins.EventsListener;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.util.List;
+
+import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
@@ -47,8 +50,6 @@ import gwtquery.plugins.draggable.client.events.BeforeDragStartEvent.BeforeDragS
 import gwtquery.plugins.draggable.client.events.DragEvent.DragEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHandler;
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
-
-import java.util.List;
 
 /**
  * Wrapper widget that wrap an GWT widget and allows dragging it.

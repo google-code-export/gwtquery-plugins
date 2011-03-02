@@ -18,18 +18,18 @@ package gwtquery.plugins.draggable.client;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.event.shared.UmbrellaException;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
+import com.google.gwt.query.client.plugins.MousePlugin;
 import com.google.gwt.query.client.plugins.Plugin;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.MouseHandler;
+import java.util.HashMap;
+import java.util.Map;
+
 import gwtquery.plugins.draggable.client.DraggableOptions.DragFunction;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.draggable.client.DraggableOptions.RevertOption;
@@ -46,13 +46,10 @@ import gwtquery.plugins.draggable.client.plugins.SnapPlugin;
 import gwtquery.plugins.draggable.client.plugins.StackPlugin;
 import gwtquery.plugins.draggable.client.plugins.ZIndexPlugin;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Draggable plugin for GwtQuery
  */
-public class Draggable extends MouseHandler {
+public class Draggable extends MousePlugin {
 
   /**
    * Interface containing all css classes used in this plug-in

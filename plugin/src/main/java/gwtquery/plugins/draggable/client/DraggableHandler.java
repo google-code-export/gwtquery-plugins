@@ -17,24 +17,24 @@ package gwtquery.plugins.draggable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
-import static gwtquery.plugins.draggable.client.Draggable.DRAGGABLE_HANDLER_KEY;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.Effects;
+import com.google.gwt.query.client.plugins.GQueryUi;
+import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
+import com.google.gwt.query.client.plugins.GQueryUi.Event;
 import com.google.gwt.query.client.plugins.PropertiesAnimation.Easing;
 import com.google.gwt.user.client.Window;
 
-import gwtquery.plugins.commonui.client.Event;
-import gwtquery.plugins.commonui.client.GQueryUi;
-import gwtquery.plugins.commonui.client.GQueryUi.Dimension;
+import static gwtquery.plugins.draggable.client.Draggable.DRAGGABLE_HANDLER_KEY;
+
 import gwtquery.plugins.draggable.client.Draggable.CssClassNames;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
 import gwtquery.plugins.draggable.client.DraggableOptions.CursorAt;
@@ -80,11 +80,9 @@ public class DraggableHandler {
   /**
    * convert a relative position to a absolute position and vice versa.
    * 
-   * @param absolute
-   *          if true the position is convert to an absolute position, if false
-   *          it is convert in a relative position
-   * @param aPosition
-   *          position to convert
+   * @param absolute if true the position is convert to an absolute position, if
+   *          false it is convert in a relative position
+   * @param aPosition position to convert
    * @return
    */
   public Offset convertPositionTo(boolean absolute, Offset aPosition) {
@@ -192,8 +190,8 @@ public class DraggableHandler {
 
     setMarginCache(element);
 
-    absPosition = new Offset(element.getAbsoluteLeft(), element
-        .getAbsoluteTop());
+    absPosition = new Offset(element.getAbsoluteLeft(),
+        element.getAbsoluteTop());
 
     offset = new Offset(absPosition.left - margin.left, absPosition.top
         - margin.top);
@@ -230,9 +228,8 @@ public class DraggableHandler {
 
   /**
    * 
-   * @param firstTime
-   *          if true, the helper has to be positionned without take care to the
-   *          axis options
+   * @param firstTime if true, the helper has to be positionned without take
+   *          care to the axis options
    */
   public void moveHelper(boolean firstTime) {
     AxisOption axis = options.getAxis();
@@ -264,8 +261,8 @@ public class DraggableHandler {
   }
 
   public void setMarginCache(Element element) {
-    int marginLeft = (int) GQUtils.cur(element, "marginLeft", true);
-    int marginTop = (int) GQUtils.cur(element, "marginTop", true);
+    int marginLeft = (int) $(element).cur("marginLeft", true);
+    int marginTop = (int) $(element).cur("marginTop", true);
 
     margin = new Offset(marginLeft, marginTop);
 
@@ -358,11 +355,11 @@ public class DraggableHandler {
 
     if (containmentAsString != null) {
       if ("window".equals(containmentAsString)) {
-        containment = new int[] {
+        containment = new int[]{
             0 /*- relativeOffset.left - parentOffset.left*/,
             0 /*- relativeOffset.top - parentOffset.top*/,
             Window.getClientWidth() - helperDimension.getWidth() - margin.left,
-            Window.getClientHeight() - helperDimension.getHeight() - margin.top };
+            Window.getClientHeight() - helperDimension.getHeight() - margin.top};
 
         return;
       }
@@ -400,9 +397,8 @@ public class DraggableHandler {
       position.top = 0;
     }
 
-    position = position.add((int) GQUtils.cur(helperOffsetParent.get(0),
-        "borderLeftWidth", true), (int) GQUtils.cur(helperOffsetParent.get(0),
-        "borderTopWidth", true));
+    position = position.add((int) $(helperOffsetParent).cur("borderLeftWidth",
+        true), (int) $(helperOffsetParent.get(0)).cur("borderTopWidth", true));
 
     return new Offset(position.left, position.top);
 
@@ -512,8 +508,8 @@ public class DraggableHandler {
   private boolean isOffsetParentIncludedInScrollParent() {
     assert helperOffsetParent != null && helperScrollParent != null;
     return !"html".equalsIgnoreCase(helperScrollParent.get(0).getTagName())
-        && GQueryUi.contains(helperScrollParent.get(0), helperOffsetParent
-            .get(0));
+        && GQueryUi.contains(helperScrollParent.get(0),
+            helperOffsetParent.get(0));
   }
 
 }
