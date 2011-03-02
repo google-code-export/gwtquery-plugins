@@ -26,7 +26,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
-import com.google.gwt.query.client.plugins.EventsListener;
+import com.google.gwt.query.client.plugins.events.EventsListener;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;

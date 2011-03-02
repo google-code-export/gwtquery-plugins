@@ -27,10 +27,10 @@ import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.Effects;
-import com.google.gwt.query.client.plugins.GQueryUi;
-import com.google.gwt.query.client.plugins.GQueryUi.Dimension;
-import com.google.gwt.query.client.plugins.GQueryUi.Event;
-import com.google.gwt.query.client.plugins.PropertiesAnimation.Easing;
+import com.google.gwt.query.client.plugins.UiPlugin;
+import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
+import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.Easing;
 import com.google.gwt.user.client.Window;
 
 import static gwtquery.plugins.draggable.client.Draggable.DRAGGABLE_HANDLER_KEY;
@@ -181,7 +181,7 @@ public class DraggableHandler {
   public void initialize(Element element, Event e) {
 
     helperCssPosition = helper.css("position");
-    helperScrollParent = helper.as(GQueryUi.GQueryUi).scrollParent();
+    helperScrollParent = helper.as(UiPlugin.GQueryUi).scrollParent();
     helperOffsetParent = helper.offsetParent();
 
     if ("html".equalsIgnoreCase(helperOffsetParent.get(0).getTagName())) {
@@ -508,7 +508,7 @@ public class DraggableHandler {
   private boolean isOffsetParentIncludedInScrollParent() {
     assert helperOffsetParent != null && helperScrollParent != null;
     return !"html".equalsIgnoreCase(helperScrollParent.get(0).getTagName())
-        && GQueryUi.contains(helperScrollParent.get(0),
+        && UiPlugin.contains(helperScrollParent.get(0),
             helperOffsetParent.get(0));
   }
 

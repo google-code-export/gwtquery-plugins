@@ -21,7 +21,7 @@ import static com.google.gwt.query.client.GQuery.document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.query.client.plugins.GQueryUi.Event;
+import com.google.gwt.query.client.plugins.UiPlugin.Event;
 import com.google.gwt.user.client.Window;
 
 import gwtquery.plugins.draggable.client.DragAndDropManager;
