@@ -20,7 +20,8 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.JSArray;
-import com.google.gwt.query.client.Plugin;
+import com.google.gwt.query.client.plugins.Plugin;
+
 
 import gwtquery.plugins.commonui.client.GQueryUi;
 import gwtquery.plugins.draggable.client.DragAndDropManager;
