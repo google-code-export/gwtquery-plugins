@@ -18,14 +18,12 @@ package gwtquery.plugins.selectable.client;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style.Position;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
-import com.google.gwt.query.client.Plugin;
 import com.google.gwt.query.client.plugins.MousePlugin;
+import com.google.gwt.query.client.plugins.Plugin;
 
 import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
 import gwtquery.plugins.selectable.client.event.SelectedEvent;
@@ -261,18 +259,6 @@ public class Selectable extends MousePlugin {
   public Selectable(GQuery gq) {
     super(gq);
 
-  }
-
-  public Selectable(Element element) {
-    super(element);
-  }
-
-  public Selectable(JSArray elements) {
-    super(elements);
-  }
-
-  public Selectable(NodeList<Element> list) {
-    super(list);
   }
 
   /**
