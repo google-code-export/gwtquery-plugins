@@ -18,7 +18,6 @@ package gwtquery.plugins.draggable.client.plugins;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.UiPlugin.Event;
 
@@ -56,7 +55,7 @@ public class OpacityPlugin implements DraggablePlugin {
 
     GQuery $helper = handler.getHelper();
 
-    double oldOpacity = GQUtils.cur($helper.get(0), OPACITY_CSS_KEY, true);
+    double oldOpacity = $helper.cur(OPACITY_CSS_KEY, true);
     $helper.data(OLD_OPACITY_KEY, new Double(oldOpacity));
 
     $helper.css(OPACITY_CSS_KEY, opacity.toString());

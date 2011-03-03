@@ -16,7 +16,6 @@
 package gwtquery.plugins.draggable.client.impl;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
 
@@ -37,8 +36,8 @@ public class DraggableHandlerImplOpera extends DraggableHandlerImpl {
     Offset relativeHelperOffset = super.calculateRelativeHelperOffset(element, draggableHandler);
     Element offsetParent = GQuery.$(element).offsetParent().get(0);
     
-    int offsetParentBorderLeft = (int) GQUtils.cur(offsetParent, "borderLeftWidth", true);
-    int offsetParentBorderTop = (int) GQUtils.cur(offsetParent, "borderTopWidth", true);
+    int offsetParentBorderLeft = (int) GQuery.$(offsetParent).cur("borderLeftWidth", true);
+    int offsetParentBorderTop = (int) GQuery.$(offsetParent).cur("borderTopWidth", true);
     
     return new Offset(relativeHelperOffset.left - offsetParentBorderLeft, relativeHelperOffset.top - offsetParentBorderTop);
   }
