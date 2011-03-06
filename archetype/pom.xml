@@ -6,7 +6,8 @@
   <artifactId>gquery-plugin-archetype</artifactId>
   <version>0.5-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
-  <name>This archetype generates a maven/eclipse project for a new GwtQuery Plugin</name>
+  <name>GwtQuery Plugins archetype</name>
+  <description>This archetype generates a maven/eclipse project with all set for creating a new GwtQuery Plugin</description>
 
   <parent>
     <groupId>org.sonatype.oss</groupId>
