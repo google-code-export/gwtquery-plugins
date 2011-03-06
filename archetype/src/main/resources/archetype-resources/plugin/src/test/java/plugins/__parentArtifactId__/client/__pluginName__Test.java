@@ -6,7 +6,6 @@ package ${package}.plugins.${parentArtifactId}.client;
 import static ${package}.plugins.${parentArtifactId}.client.${pluginName}.*;
 
 import com.google.gwt.junit.client.GWTTestCase;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.Effects.Speed;
 import com.google.gwt.user.client.Event;
@@ -21,7 +20,7 @@ public class ${pluginName}Test extends GWTTestCase {
   }
 
   private double fontSize(GQuery g) {
-    return GQUtils.cur(g.get(0), "fontSize", true);
+    return $(g).cur("fontSize", true);
   }
 
   public void test${pluginName}Apply() {

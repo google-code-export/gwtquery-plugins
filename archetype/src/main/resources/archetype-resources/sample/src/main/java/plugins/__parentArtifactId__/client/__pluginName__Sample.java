@@ -5,6 +5,7 @@ package ${package}.plugins.${parentArtifactId}.client;
 
 import static com.google.gwt.query.client.GQuery.*;
 import static ${package}.plugins.${parentArtifactId}.client.${pluginName}.${pluginName};
+import com.google.gwt.query.client.plugins.*; //
 
 import com.google.gwt.core.client.EntryPoint;
 

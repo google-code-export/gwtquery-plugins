@@ -32,6 +32,7 @@
         <include>LICENSE</include>
         <include>README.txt</include>
         <include>assembly.xml</include>
+        <include>update_demos_svn.sh</include>
       </includes>
     </fileSet>
   </fileSets>
