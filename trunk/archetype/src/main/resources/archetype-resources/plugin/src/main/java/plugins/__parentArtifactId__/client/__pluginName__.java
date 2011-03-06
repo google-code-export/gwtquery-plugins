@@ -6,7 +6,7 @@ package ${package}.plugins.${parentArtifactId}.client;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.Plugin;
+import com.google.gwt.query.client.plugins.Plugin;
 import static com.google.gwt.query.client.plugins.Effects.Effects;
 
 /**

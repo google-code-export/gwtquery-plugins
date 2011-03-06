@@ -21,7 +21,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.gwt</groupId>
+            <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
             <version>${gQueryVersion}</version>
             <scope>provided</scope>
@@ -32,12 +32,12 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>${gwtversion}</version>
+                <version>${gwtmaven}</version>
                 <configuration>
                     <logLevel>${gwt.loglevel}</logLevel>
                     <style>${gwt.outputstyle}</style>
                     <gwtVersion>${gwtversion}</gwtVersion>
-                    <soyc>false</soyc>
+                    <compileReport>false</compileReport>
                     <runTarget>${pluginName}/${pluginName}Sample.html</runTarget>
                     <hostedWebapp>src/main/webapp</hostedWebapp>
                 </configuration>
@@ -68,6 +68,23 @@
                  <skip>true</skip>
               </configuration>
             </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-eclipse-plugin</artifactId>
+              <configuration>
+                 <downloadSources>true</downloadSources>
+                 <downloadJavadocs>false</downloadJavadocs>
+                 <additionalBuildcommands>
+                   <buildCommand>
+                     <name>com.google.gwt.eclipse.core.gwtProjectValidator</name>
+                   </buildCommand>
+                 </additionalBuildcommands>
+                 <additionalProjectnatures>
+                   <projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+                 </additionalProjectnatures>
+              </configuration>
+            </plugin>
         </plugins>
+        <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
     </build>
 </project>
