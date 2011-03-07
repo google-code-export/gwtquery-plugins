@@ -2,41 +2,40 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     
-    <name>Ratings plugin project</name>
+    <name>ColorPicker plugin project</name>
     <groupId>com.googlecode.gwtquery.plugins</groupId>
-    <artifactId>ratings</artifactId>
+    <artifactId>colorpicker</artifactId>
     <packaging>pom</packaging>
-    <version>1.1-SNAPSHOT</version>
-    <description>This is a demo plugin and it is maintained by GwtQuery team</description>
-
-    <developers>
-      <developer>
-        <id>manolo</id>
-        <name>Manuel Carrasco Moñino</name>
-        <email>manolo@apache.org</email>
-        <organization>ASF</organization>
-      </developer>
-    </developers>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>
       <maven.compiler.target>1.5</maven.compiler.target>
       <gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
-      <gwtversion>2.1.0</gwtversion>
+      <gwtversion>2.1.1</gwtversion>
+      <gwtmaven>2.1.0-1</gwtmaven>
     </properties>
 
     <repositories>
        <repository>
          <id>central</id>
          <url>http://repo1.maven.org/maven2</url>
+         <snapshots><enabled>false</enabled></snapshots>
        </repository>
        <repository>
-         <id>site</id>
-         <url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
+         <id>sonatype</id>
+         <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+         <snapshots><enabled>true</enabled></snapshots>
+         <releases><enabled>false</enabled></releases>
        </repository>
        <repository>
          <id>m.g.o</id>
          <url>http://maven.glassfish.org/content/groups/public/</url>
+         <snapshots><enabled>false</enabled></snapshots>
+       </repository>
+       <repository>
+         <id>plugins</id>
+         <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
        </repository>
     </repositories>
 
@@ -49,11 +48,11 @@
     </pluginRepositories>
 
     <scm>
-        <connection>scm:svn:http://gwtquery-plugins.googlecode.com/svn/trunk/ratings
+        <connection>scm:svn:http://gwtquery-plugins.googlecode.com/svn/trunk/colorpicker
         </connection>
-        <developerConnection>scm:svn:https://gwtquery-plugins.googlecode.com/svn/trunk/ratings
+        <developerConnection>scm:svn:https://gwtquery-plugins.googlecode.com/svn/trunk/colorpicker
         </developerConnection>
-        <url>http://code.google.com/p/gwtquery-plugins/source/browse/trunk/ratings</url>
+        <url>http://code.google.com/p/gwtquery-plugins/source/browse/trunk/colorpicker</url>
     </scm>
 
     <issueManagement>
@@ -69,7 +68,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.gwt</groupId>
+            <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
             <version>${gQueryVersion}</version>
             <scope>provided</scope>
