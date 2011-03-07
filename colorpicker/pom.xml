@@ -16,6 +16,15 @@
       <gwtmaven>2.1.0-1</gwtmaven>
     </properties>
 
+    <developers>
+      <developer>
+        <id>manolo</id>
+        <name>Manuel Carrasco Moñino</name>
+        <email>manolo@apache.org</email>
+        <organization>ASF</organization>
+      </developer>
+    </developers>
+
     <repositories>
        <repository>
          <id>central</id>
