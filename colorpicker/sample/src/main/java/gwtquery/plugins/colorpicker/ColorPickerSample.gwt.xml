@@ -1,0 +1,5 @@
+<module rename-to='ColorPicker'>
+    <inherits name='gwtquery.plugins.colorpicker.ColorPicker'/>
+    <entry-point class='gwtquery.plugins.colorpicker.client.ColorPickerSample'/>
+</module>
+    
