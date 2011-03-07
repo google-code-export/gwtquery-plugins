@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.googlecode.gwtquery.plugins</groupId>
         <artifactId>colorpicker</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
 
     <name>ColorPicker plugin for gQuery</name>
