@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>${rootArtifactId}-plugin</artifactId>
-            <version>${version}</version>
+            <version>\${version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
