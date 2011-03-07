@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.googlecode.gwtquery</groupId>
   <artifactId>gquery-plugin-archetype</artifactId>
-  <version>0.5-SNAPSHOT</version>
+  <version>0.5</version>
   <packaging>maven-archetype</packaging>
   <name>GwtQuery Plugins archetype</name>
   <description>This archetype generates a maven/eclipse project with all set for creating a new GwtQuery Plugin</description>
@@ -21,9 +21,9 @@
 
 
   <scm>
-    <connection>scm:svn:http://gwtquery-plugins.googlecode.com/svn/trunk/archetype</connection>
-    <developerConnection>scm:svn:https://gwtquery-plugins.googlecode.com/svn/trunk/archetype</developerConnection>
-    <url>http://code.google.com/p/gwtquery-plugins/source/browse/trunk/archetype</url>
+    <connection>scm:svn:http://gwtquery-plugins.googlecode.com/svn/tags/gquery-plugin-archetype-0.5</connection>
+    <developerConnection>scm:svn:https://gwtquery-plugins.googlecode.com/svn/tags/gquery-plugin-archetype-0.5</developerConnection>
+    <url>http://code.google.com/p/gwtquery-plugins/source/browse/tags/gquery-plugin-archetype-0.5</url>
   </scm>
 
   <developers>
