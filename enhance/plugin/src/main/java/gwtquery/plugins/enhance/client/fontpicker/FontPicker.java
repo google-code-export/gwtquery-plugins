@@ -118,6 +118,26 @@ public class FontPicker extends PopupPanel implements ClickHandler,
         return FontSize.SMALL;
     }
   }
+  
+  public String getFontSizeCssName() {
+    switch (Integer.valueOf(font).intValue()) {
+      case 1:
+        return com.google.gwt.query.client.css.FontSizeProperty.FontSize.XX_SMALL.getCssName();
+      case 2:
+        return com.google.gwt.query.client.css.FontSizeProperty.FontSize.X_SMALL.getCssName();
+      case 4:
+        return com.google.gwt.query.client.css.FontSizeProperty.FontSize.MEDIUM.getCssName();
+      case 5:
+        return com.google.gwt.query.client.css.FontSizeProperty.FontSize.LARGE.getCssName();
+      case 6:
+        return com.google.gwt.query.client.css.FontSizeProperty.FontSize.X_LARGE.getCssName();
+      case 7:
+        return com.google.gwt.query.client.css.FontSizeProperty.FontSize.XX_LARGE.getCssName();
+      case 3:
+      default:
+        return com.google.gwt.query.client.css.FontSizeProperty.FontSize.SMALL.getCssName();
+    }
+  }
 
   public void onClick(ClickEvent event) {
     FontCell cell = (FontCell) event.getSource();
