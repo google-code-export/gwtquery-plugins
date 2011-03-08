@@ -33,6 +33,7 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
     DOM.setStyleAttribute(t.getElement(), "fontFamily", "helvetica, arial");
     DOM.setStyleAttribute(t.getElement(), "fontSize", "8px");
     
+    t.setWidth("440px");
     t.setWidget(0, 0, picker);
     t.getFlexCellFormatter().setColSpan(0, 0, 3);
     t.setWidget(1, 1, cancel);
