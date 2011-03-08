@@ -45,7 +45,9 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
     
     if (ret != null) {
       final PopupPanel p = full ? new ColorPickerFull() : new ColorPicker();
-      ret.setValue("#" + val.replaceAll("[^\\da-fA-F]", ""));
+      String value = val.replaceAll("[^\\da-fA-F]", "");
+      ret.setValue("#" + value);
+      ((HasValue<String>)p).setValue(value);
       $(ret).css("backgroundColor", ret.getValue());
       ((HasValue<String>)p).addValueChangeHandler(new ValueChangeHandler<String>() {
         public void onValueChange(ValueChangeEvent<String> value) {

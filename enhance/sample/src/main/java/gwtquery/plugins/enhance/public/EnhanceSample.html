@@ -4,6 +4,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>GwtQuery: Enhance plugin example</title>
 <style type="text/css">
+  .body {
+    font-family: helvetica, arial;
+    font-size: small;
+    padding: 30px;
+  }
   .container {
     width: 600px;
     height: 300px;
@@ -12,22 +17,21 @@
 </style>
     <script language="javascript" src="Enhance.nocache.js"></script>
 </head>
-  <body>
-    <button>Enhance</button><br/>
+  <body class='body'>
+    <button>Enhance me</button><br/><br/>
     Color: <input class='color' type='text' value="#ff00ff"> <br/>
-    Color: <input class='colorfull' type='text' value="#ffff00"> <br/>
+    Color: <input class='colorfull' type='text' value="#d8db2b"> <br/>
     Font-Family: <input class='ffamily' type='text' value="Comic Sans MS"> <br/>
-    Font-Size: <input class='fsize' type='text' value="4mm"> <br/>
+    Font-Size: <input class='fsize' type='text' value="small"> <br/>
     <br/>
     Text:
     <div class='container'>
-    
-	    <div class='editable'>
+	    <textarea class='editable' rows="10" cols="80">
 	    	Cuando, 
 			en los albores de la Baja Edad Media, los Juglares y Trovadores 
 			recorrían los caminos de Europa, ninguno de ellos podía imaginar que 
 			seiscientos años después persistieran algunos de sus usos y costumbres.
-		</div>
+		</textarea>
     </div>
   </body>
 </html>
