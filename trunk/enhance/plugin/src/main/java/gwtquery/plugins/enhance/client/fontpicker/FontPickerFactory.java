@@ -53,8 +53,8 @@ public class FontPickerFactory implements WidgetFactory<TextBox> {
             ret.setValue(value.getValue().getFontName());
             $(ret).css("font-family", value.getValue().getFontName());
           } else {
-            ret.setValue(value.getValue().getFontSize().toString() + "mm");
-            $(ret).css("font-size", value.getValue().getFontSize() + "mm");
+            ret.setValue(value.getValue().getFontSizeCssName());
+            $(ret).css("font-size", value.getValue().getFontSizeCssName());
           }
           p.hide();
         }
