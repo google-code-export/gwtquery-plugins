@@ -1,0 +1,5 @@
+<module rename-to='Enhance'>
+    <inherits name='gwtquery.plugins.enhance.Enhance'/>
+    <entry-point class='gwtquery.plugins.enhance.client.EnhanceSample'/>
+</module>
+    
