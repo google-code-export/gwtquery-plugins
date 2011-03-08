@@ -9,29 +9,66 @@
     font-size: small;
     padding: 30px;
   }
-  .container {
-    width: 600px;
-    height: 300px;
+  .gq-richtext {
     border: solid 1px;
   }
 </style>
     <script language="javascript" src="Enhance.nocache.js"></script>
 </head>
-  <body class='body'>
-    <button>Enhance me</button><br/><br/>
-    Color: <input class='color' type='text' value="#ff00ff"> <br/>
-    Color: <input class='colorfull' type='text' value="#d8db2b"> <br/>
-    Font-Family: <input class='ffamily' type='text' value="Comic Sans MS"> <br/>
-    Font-Size: <input class='fsize' type='text' value="small"> <br/>
-    <br/>
-    Text:
-    <div class='container'>
+ <body class='body'>
+  <h1>GwtQuery Enhance plugin</h1>
+  <table>
+  <tr>
+	  <td>
+	    <button>Enhance me</button>
+	  </td>
+	  <td rowspan='5'>
+	    <br/>Code:
+	    <pre>
+    $("button").click(new Function(){
+      public void f(Element e) {
+        $(".editable").as(Enhance).richText();
+        $(".color").as(Enhance).colorBox();
+        $(".colorfull").as(Enhance).colorBox(true);
+        $(".ffamily").as(Enhance).fontFamilyBox();
+        $(".fsize").as(Enhance).fontSizeBox();
+        $(e).hide();
+      }
+    });
+	    </pre>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Color:<br/> <input class='color' type='text' value="#ff00ff"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Color:<br/> <input class='colorfull' type='text' value="#d8db2b"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Font-Family:<br/> <input class='ffamily' type='text' value="Comic Sans MS"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Font-Size:<br/> <input class='fsize' type='text' value="small"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td colspan="2">
+        Text:<br/>
 	    <textarea class='editable' rows="10" cols="80">
-	    	Cuando, 
-			en los albores de la Baja Edad Media, los Juglares y Trovadores 
-			recorrían los caminos de Europa, ninguno de ellos podía imaginar que 
-			seiscientos años después persistieran algunos de sus usos y costumbres.
+Cuando, en los albores de la Baja Edad Media, los Juglares y Trovadores 
+recorrían los caminos de Europa, ninguno de ellos podía imaginar que 
+seiscientos años después persistieran algunos de sus usos y costumbres.
 		</textarea>
-    </div>
-  </body>
+	  </td>
+  </tr>
+  
+  </table>
+ </body>
 </html>
