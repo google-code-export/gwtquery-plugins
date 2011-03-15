@@ -41,6 +41,8 @@ First of all you have to include the library in the classpath of your project. I
 
 If you use maven, you have to add these blocks to your pom.xml
 {{{
+<project>
+
    <repositories>
         <repository>
          <id>plugins</id>
@@ -48,7 +50,6 @@ If you use maven, you have to add these blocks to your pom.xml
        </repository>
    </repositories>
 
-   <build>
     <dependencies>
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
@@ -57,7 +58,7 @@ If you use maven, you have to add these blocks to your pom.xml
             <scope>provided</scope>
         </dependency>
     </dependencies>
-   </build>
+</project>
 }}}
 
 Then you need to inherit the plugin in your Module.gwt.xml file:
