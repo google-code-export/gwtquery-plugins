@@ -53,12 +53,14 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
       ((HasValue<String>)p).addValueChangeHandler(new ValueChangeHandler<String>() {
         public void onValueChange(ValueChangeEvent<String> value) {
           ret.setValue(value.getValue());
-          long bg = Integer.valueOf(value.getValue().replaceAll("[^\\d]+", ""));
-          String fg = bg > 888888 ? "#000000" : "#ffffff";
-          System.out.println(value.getValue() + " " + bg + " " + fg);
-          $(ret).css("backgroundColor", value.getValue()).css("color", fg);
-          System.out.println($(ret));
-          p.hide();
+          try {
+            long bg = Long.valueOf(value.getValue().replace("#", ""), 16);
+            String fg = bg > 0x800000 ? "#000000" : "#ffffff";
+            $(ret).css("backgroundColor", value.getValue()).css("color", fg);
+            p.hide();
+          } catch (Exception e2) {
+            e2.printStackTrace();
+          }
         }
       });
       $(ret).unbind(Event.ONCLICK).click(new Function() {
