@@ -71,7 +71,6 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
 
   public HandlerRegistration addValueChangeHandler(
       ValueChangeHandler<String> handler) {
-    assert changeHandler == null : "Change handler is already defined";
     changeHandler = handler;
     return new HandlerRegistration() {
       public void removeHandler() {

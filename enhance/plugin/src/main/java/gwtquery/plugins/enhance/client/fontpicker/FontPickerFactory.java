@@ -33,7 +33,7 @@ public class FontPickerFactory implements WidgetFactory<TextBox> {
     } else if (WidgetsUtils.matchesTags(e, "div", "span")) {
       ret = new TextBox();
       val = e.getInnerText();
-      WidgetsUtils.replace(e, ret);
+      WidgetsUtils.replaceOrAppend(e, ret);
     } else {
       ret = null;
     }
@@ -46,7 +46,7 @@ public class FontPickerFactory implements WidgetFactory<TextBox> {
       } else {
         $(ret).css("font-size", val);
       }
-      $(ret).css("backgroundColor", ret.getValue());
+      $(ret).css("backgroundColor", "#D8ECFD");
       p.addValueChangeHandler(new ValueChangeHandler<FontPicker>() {
         public void onValueChange(ValueChangeEvent<FontPicker> value) {
           if (type == FontPickerType.FONT_FAMILY) {

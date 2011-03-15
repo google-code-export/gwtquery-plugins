@@ -18,13 +18,14 @@ import com.google.gwt.user.client.ui.TextBox;
  */
 public class ColorPickerFactory implements WidgetFactory<TextBox> {
   
-  boolean full = false;
-  
-  public ColorPickerFactory() {
+  public enum ColorPickerType {
+    SIMPLE, ADVANCED
   }
   
-  public ColorPickerFactory(boolean advanced) {
-    this.full = advanced;
+  ColorPickerType type;
+  
+  public ColorPickerFactory(ColorPickerType type) {
+    this.type = type;
   }
   
   @SuppressWarnings("unchecked")
@@ -38,13 +39,13 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
     } else if (WidgetsUtils.matchesTags(e, "div", "span")) {
       ret = new TextBox();
       val = e.getInnerText();
-      WidgetsUtils.replace(e, ret);
+      WidgetsUtils.replaceOrAppend(e, ret);
     } else {
       ret = null;
     }
     
     if (ret != null) {
-      final PopupPanel p = full ? new ColorPickerFull() : new ColorPicker();
+      final PopupPanel p = type == ColorPickerType.ADVANCED ? new ColorPickerFull() : new ColorPicker();
       String value = val.replaceAll("[^\\da-fA-F]", "");
       ret.setValue("#" + value);
       ((HasValue<String>)p).setValue(value);
@@ -52,7 +53,11 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
       ((HasValue<String>)p).addValueChangeHandler(new ValueChangeHandler<String>() {
         public void onValueChange(ValueChangeEvent<String> value) {
           ret.setValue(value.getValue());
-          $(ret).css("backgroundColor", value.getValue());
+          long bg = Integer.valueOf(value.getValue().replaceAll("[^\\d]+", ""));
+          String fg = bg > 888888 ? "#000000" : "#ffffff";
+          System.out.println(value.getValue() + " " + bg + " " + fg);
+          $(ret).css("backgroundColor", value.getValue()).css("color", fg);
+          System.out.println($(ret));
           p.hide();
         }
       });
