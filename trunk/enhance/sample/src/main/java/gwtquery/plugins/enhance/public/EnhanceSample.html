@@ -12,6 +12,11 @@
   .gq-richtext {
     border: solid 1px;
   }
+  
+  .gwt-Button {
+    width: 15em;
+}
+
 </style>
     <script language="javascript" src="Enhance.nocache.js"></script>
 </head>
@@ -29,9 +34,10 @@
       public void f(Element e) {
         $(".editable").as(Enhance).richText();
         $(".color").as(Enhance).colorBox();
-        $(".colorfull").as(Enhance).colorBox(true);
+        $(".colorfull").as(Enhance).colorBox(ColorPickerType.ADVANCED);
         $(".ffamily").as(Enhance).fontFamilyBox();
         $(".fsize").as(Enhance).fontSizeBox();
+        $(".slider").as(Enhance).slider(0, 2);
         $(e).hide();
       }
     });
@@ -56,6 +62,11 @@
   <tr>
 	  <td>
 	    Font-Size:<br/> <input class='fsize' type='text' value="small"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td colspan="2">
+	    Numeric slider:<br/> <input class='slider' type='text' name="aname" value="1.5"> <br/>
 	  </td>
   </tr>
   <tr>

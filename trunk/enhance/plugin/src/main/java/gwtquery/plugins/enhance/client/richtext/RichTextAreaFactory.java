@@ -5,7 +5,6 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.InitializeEvent;
 import com.google.gwt.event.logical.shared.InitializeHandler;
-import com.google.gwt.query.client.plugins.widgets.Attachable;
 import com.google.gwt.query.client.plugins.widgets.WidgetFactory;
 import com.google.gwt.query.client.plugins.widgets.WidgetsUtils;
 import com.google.gwt.user.client.ui.Button;
@@ -20,7 +19,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class RichTextAreaFactory implements WidgetFactory<RichTextArea> {
   
-  public static class RichTextWithToolbar extends VerticalPanel implements Attachable {
+  public static class RichTextWithToolbar extends VerticalPanel {
 
     RichTextArea area = new RichTextArea();
 
@@ -68,7 +67,7 @@ public class RichTextAreaFactory implements WidgetFactory<RichTextArea> {
       RichTextWithToolbar b = new RichTextWithToolbar(a);
       a = b.area;
       a.setHTML(v);
-      WidgetsUtils.replace(e, b);
+      WidgetsUtils.replaceOrAppend(e, b);
       return a;
     }
     return null;

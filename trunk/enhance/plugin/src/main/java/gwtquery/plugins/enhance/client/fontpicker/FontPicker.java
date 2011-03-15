@@ -86,7 +86,6 @@ public class FontPicker extends PopupPanel implements ClickHandler,
 
   public HandlerRegistration addValueChangeHandler(
       ValueChangeHandler<FontPicker> handler) {
-    assert changeHandler == null : "Change handler is already defined";
     changeHandler = handler;
     return new HandlerRegistration() {
       public void removeHandler() {
