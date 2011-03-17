@@ -22,8 +22,8 @@ import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Predicate;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -145,8 +145,8 @@ public class MultiSelect extends FlexTable {
     add.setStyleName("gq-MultiSelect-Add");
     p.add(add);
     setAddText("Add");
-    box.addKeyPressHandler(new KeyPressHandler() {
-      public void onKeyPress(KeyPressEvent event) {
+    box.addKeyUpHandler(new KeyUpHandler() {
+      public void onKeyUp(KeyUpEvent event) {
         new Timer(){
           public void run() {
             filter(box.getValue().trim());
