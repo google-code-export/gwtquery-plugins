@@ -3,18 +3,15 @@ package gwtquery.plugins.enhance.client;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.enhance.client.Enhance.Enhance;
 import gwtquery.plugins.enhance.client.colorpicker.ColorPickerFactory.ColorPickerType;
-import gwtquery.plugins.enhance.client.slider.SliderBar;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.RootPanel;
-
 /**
  * Example code for the GwtQuery Enhance plugin.
  */
 public class EnhanceSample implements EntryPoint {
-
+  
   public void onModuleLoad() {
     
     $("button").click(new Function(){
@@ -25,9 +22,13 @@ public class EnhanceSample implements EntryPoint {
         $(".ffamily").as(Enhance).fontFamilyBox();
         $(".fsize").as(Enhance).fontSizeBox();
         $(".slider").as(Enhance).slider(0, 2);
+        $(".multiselect").as(Enhance).multiselect();
+        
         $(e).hide();
       }
     });
     
   }
+  
+
 }

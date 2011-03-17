@@ -4,6 +4,7 @@ import gwtquery.plugins.enhance.client.colorpicker.ColorPickerFactory;
 import gwtquery.plugins.enhance.client.colorpicker.ColorPickerFactory.ColorPickerType;
 import gwtquery.plugins.enhance.client.fontpicker.FontPicker.FontPickerType;
 import gwtquery.plugins.enhance.client.fontpicker.FontPickerFactory;
+import gwtquery.plugins.enhance.client.multiselect.MultiSelectFactory;
 import gwtquery.plugins.enhance.client.richtext.RichTextAreaFactory;
 import gwtquery.plugins.enhance.client.slider.SliderBar;
 import gwtquery.plugins.enhance.client.slider.SliderFactory;
@@ -80,5 +81,9 @@ public class Enhance extends Widgets {
   
   public Widgets slider(double min, double max, int steps, WidgetInitializer<SliderBar> initializer) {
     return widgets(new SliderFactory(min, max, steps), initializer);
+  }
+  
+  public Widgets multiselect() {
+    return widgets(new MultiSelectFactory(), null);
   }
 }

@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.googlecode.gwtquery.plugins</groupId>
         <artifactId>enhance</artifactId>
-        <version>1.0</version>
+        <version>1.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -103,8 +103,8 @@
                   </goals>
                   <phase>generate-resources</phase>
                   <configuration>
-                    <includeGroupIds>net.auroris</includeGroupIds>
-                    <includeArtifactIds>gwt-colorpicker</includeArtifactIds>
+                    <includeGroupIds>net.auroris,com.googlecode.gwtquery.plugins</includeGroupIds>
+                    <includeArtifactIds>gwt-colorpicker,draggable-plugin,droppable-plugin</includeArtifactIds>
                     <excludeTransitive>true</excludeTransitive>
                     <includes>**/*.java,**/*.class,**/*.xml,**/*.html,**/*.css,**/*.jpg,**/*.png,**/*.gif</includes>
                     <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
@@ -113,6 +113,7 @@
               </executions>
             </plugin>
         </plugins>
+
         <resources>
             <resource>
                 <directory>${basedir}/src/main/java</directory>
