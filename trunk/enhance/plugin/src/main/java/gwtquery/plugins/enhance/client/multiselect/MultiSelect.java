@@ -151,7 +151,7 @@ public class MultiSelect extends FlexTable {
           public void run() {
             filter(box.getValue().trim());
           }
-        }.schedule(1);
+        }.schedule(10);
       }
     });
     add.addClickHandler(new ClickHandler() {
@@ -222,7 +222,7 @@ public class MultiSelect extends FlexTable {
   private void filter(final String prefix) {
     GQuery.$(".gwtQuery-draggable", getWidget(1, 0)).show().filter(new Predicate() {
       public boolean f(Element e, int index) {
-        return !GQuery.$(e).text().toLowerCase().startsWith(prefix.toLowerCase());
+        return prefix.isEmpty() || !GQuery.$(e).text().toLowerCase().startsWith(prefix.toLowerCase());
       }
     }).hide();
   }
