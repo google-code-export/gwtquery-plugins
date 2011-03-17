@@ -93,12 +93,21 @@ public class MultiSelect extends FlexTable {
 
     getCellFormatter().getElement(0, 1).getStyle().setPaddingLeft(10, Unit.PX);
     getCellFormatter().getElement(1, 1).getStyle().setPaddingLeft(10, Unit.PX);
-
+    
     if (se != null) {
       setVisibleItems(se.getSize());
       select = se;
     }
     update();
+  }
+  
+  protected void onAttach() {
+    super.onAttach();
+    int w = getElement().getOffsetWidth();
+    if (w > 0) {
+      getCellFormatter().setWidth(0, 0, w / 2 + "px");
+      getCellFormatter().setWidth(0, 1, w / 2 + "px");
+    }
   }
 
   public List<String> getSelectedItems() {
@@ -220,11 +229,15 @@ public class MultiSelect extends FlexTable {
   }
   
   private void filter(final String prefix) {
-    GQuery.$(".gwtQuery-draggable", getWidget(1, 0)).show().filter(new Predicate() {
-      public boolean f(Element e, int index) {
-        return !prefix.isEmpty() || !GQuery.$(e).text().toLowerCase().startsWith(prefix.toLowerCase());
-      }
-    }).hide();
+    GQuery g = GQuery.$(".gwtQuery-draggable", getWidget(1, 0)).show();
+    if (!prefix.isEmpty()) {
+      g.filter(new Predicate() {
+        public boolean f(Element e, int index) {
+          String t = GQuery.$(e).text();
+          return !t.toLowerCase().startsWith(prefix.toLowerCase());
+        }
+      }).hide();
+    }
   }
     
   private void update() {

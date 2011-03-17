@@ -1,8 +1,12 @@
 
 @external .gq-MultiSelect*;
 
+.gq-MultiSelect {
+  border: 1px #999999 solid;
+  padding: 3px;	
+}
 .gq-MultiSelect-Panel {
-  border: thin grey solid;
+  border: thin #cccccc solid;
 }
 
 .gq-MultiSelect-Panel div {
@@ -11,7 +15,7 @@
 
 .gq-MultiSelect-DropableHover {
   background-color: #D8ECFD;
-  border: thin orange solid;
+  border: thin #ffcc66 solid;
 }
 
 .gq-MultiSelect-Label {
