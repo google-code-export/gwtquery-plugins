@@ -22,6 +22,9 @@ public class MultiSelectFactory implements WidgetFactory<MultiSelect> {
     if ($(e).filter("select[multiple]").get(0) != null) {
       se = SelectElement.as(e);
       for (OptionElement oe : asArray(se.getOptions())) {
+        if (oe.getValue().isEmpty()) {
+          oe.setValue(oe.getText().trim());
+        }
         if (oe.isSelected()) {
           selected.add(oe.getValue());
         } else {
