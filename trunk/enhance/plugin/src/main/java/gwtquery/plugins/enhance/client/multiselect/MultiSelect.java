@@ -222,7 +222,7 @@ public class MultiSelect extends FlexTable {
   private void filter(final String prefix) {
     GQuery.$(".gwtQuery-draggable", getWidget(1, 0)).show().filter(new Predicate() {
       public boolean f(Element e, int index) {
-        return prefix.isEmpty() || !GQuery.$(e).text().toLowerCase().startsWith(prefix.toLowerCase());
+        return !prefix.isEmpty() || !GQuery.$(e).text().toLowerCase().startsWith(prefix.toLowerCase());
       }
     }).hide();
   }
