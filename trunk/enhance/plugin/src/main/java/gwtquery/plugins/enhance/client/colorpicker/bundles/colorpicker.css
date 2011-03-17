@@ -1,23 +1,31 @@
 @external colorPicker;
-.colorPicker input {
+.colorPicker input[type=text] {
   height: 9px;
   font-size: 10px;
   width: 40px;
   color-grey;
   border: thin;
   background-color: beige;
+  border: 1px #888888 solid;
 }
-.colorPicker label {
+
+.colorPicker input[type=radio] {
+  height: 11px;
+  width: 11px;
+}
+
+.colorPicker label, .colorPicker td {
   font-size: 10px;
   vertical-align: middle;
 }
+
 .colorPicker table {
 }
 .colorPicker td {
 }
-.colorPicker label {
-  margin-bottom: 2px;
-}
+/* .colorPicker label { */
+/*   margin-bottom: 2px; */
+/* } */
 .colorPicker button {
   width: 60px;
   height: 27px;
