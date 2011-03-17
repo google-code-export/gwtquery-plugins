@@ -14,6 +14,8 @@ public class EnhanceSample implements EntryPoint {
   
   public void onModuleLoad() {
     
+    $(".multiselect").as(Enhance).multiselect();
+    
     $("button").click(new Function(){
       public void f(Element e) {
         $(".editable").as(Enhance).richText();
@@ -22,7 +24,7 @@ public class EnhanceSample implements EntryPoint {
         $(".ffamily").as(Enhance).fontFamilyBox();
         $(".fsize").as(Enhance).fontSizeBox();
         $(".slider").as(Enhance).slider(0, 2);
-        $(".multiselect").as(Enhance).multiselect();
+        
         
         $(e).hide();
       }
