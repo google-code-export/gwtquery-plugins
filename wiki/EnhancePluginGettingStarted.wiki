@@ -67,5 +67,15 @@ It enhances the input with the name color with a colorpicker, and the input with
 
 =Samples=
 
+{{{
+        $("textarea").as(Enhance).richText();
+        $(".color input").as(Enhance).colorBox();
+        $(".colorfull input").as(Enhance).colorBox(ColorPickerType.ADVANCED);
+        $(".ffamily input").as(Enhance).fontFamilyBox();
+        $(".fsize input").as(Enhance).fontSizeBox();
+        $(".slider input").as(Enhance).slider(0, 2);
+        $(".multiselect select").as(Enhance).multiselect();
+}}}
+
 To better understand the plugin, take a look to the example:
   * [http://gwtquery-plugins.googlecode.com/svn/trunk/enhance/demos/Enhance/EnhanceSample.html]
