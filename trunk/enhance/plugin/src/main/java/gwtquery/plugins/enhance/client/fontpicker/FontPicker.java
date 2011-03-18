@@ -1,18 +1,22 @@
 package gwtquery.plugins.enhance.client.fontpicker;
 
-import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RichTextArea.FontSize;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class FontPicker extends PopupPanel implements ClickHandler,
-    HasValueChangeHandlers<FontPicker> {
+public class FontPicker extends PopupPanel implements ClickHandler, HasValue<String> {
 
   private class FontCell extends HTML {
     String cellFont;
@@ -53,7 +57,7 @@ public class FontPicker extends PopupPanel implements ClickHandler,
 
   private String font = "";
 
-  ValueChangeHandler<FontPicker> changeHandler = null;
+  ValueChangeHandler<String> changeHandler = null;
 
   public FontPicker(FontPickerType type) {
     super(true);
@@ -85,7 +89,7 @@ public class FontPicker extends PopupPanel implements ClickHandler,
   }
 
   public HandlerRegistration addValueChangeHandler(
-      ValueChangeHandler<FontPicker> handler) {
+      ValueChangeHandler<String> handler) {
     changeHandler = handler;
     return new HandlerRegistration() {
       public void removeHandler() {
@@ -142,8 +146,23 @@ public class FontPicker extends PopupPanel implements ClickHandler,
     FontCell cell = (FontCell) event.getSource();
     this.font = cell.getFont();
     if (changeHandler != null)
-      changeHandler.onValueChange(new ValueChangeEvent<FontPicker>(this) {
-      });
+      changeHandler.onValueChange(new ValueChangeEvent<String>(font) {
+    });
   }
 
+  public String getValue() {
+    return font;
+  }
+
+  public void setValue(String value) {
+    font = value;
+  }
+
+  public void setValue(String value, boolean fireEvents) {
+    setValue(value);
+    if (fireEvents && changeHandler != null) {
+      changeHandler.onValueChange(new ValueChangeEvent<String>(font) {
+      });
+    }
+  }
 }

@@ -3,6 +3,9 @@ package gwtquery.plugins.enhance.client.richtext;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.TextAreaElement;
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.logical.shared.InitializeEvent;
 import com.google.gwt.event.logical.shared.InitializeHandler;
 import com.google.gwt.query.client.plugins.widgets.WidgetFactory;
@@ -23,7 +26,7 @@ public class RichTextAreaFactory implements WidgetFactory<RichTextArea> {
 
     RichTextArea area = new RichTextArea();
 
-    public RichTextWithToolbar(RichTextArea a) {
+    public RichTextWithToolbar(RichTextArea a, final TextAreaElement e) {
       area = a != null ?  a : new RichTextArea();
       
       area.ensureDebugId("editorArea");
@@ -44,6 +47,14 @@ public class RichTextAreaFactory implements WidgetFactory<RichTextArea> {
           $(area).contents().find("body").css("fontFamily", "arial").css("fontSize", "80%");
         }
       });
+      
+      if (e != null) {
+        area.addBlurHandler(new BlurHandler() {
+          public void onBlur(BlurEvent event) {
+            e.setValue(area.getHTML().trim());
+          }
+        });
+      }
     }
     
     public void attach() {
@@ -54,21 +65,27 @@ public class RichTextAreaFactory implements WidgetFactory<RichTextArea> {
 
   public RichTextArea create(Element e) {
     String v = null;
-    RichTextArea a = null;
+    RichTextArea richArea = null;
+    TextAreaElement textElement = null;
     if ($(e).widget(0) != null && $(e).widget(0) instanceof RichTextArea) {
-      a = $(e).widget(0);
-      v = a.getHTML();
+      richArea = $(e).widget(0);
+      v = richArea.getHTML();
     } else if ("textarea".equalsIgnoreCase(e.getTagName())) {
       v = $(e).val();
+      textElement = TextAreaElement.as(e);
     } else if (WidgetsUtils.matchesTags(e, "div", "span")) {
       v = $(e).html();
     }
     if (v != null) {
-      RichTextWithToolbar b = new RichTextWithToolbar(a);
-      a = b.area;
-      a.setHTML(v);
-      WidgetsUtils.replaceOrAppend(e, b);
-      return a;
+      final RichTextWithToolbar richWidget = new RichTextWithToolbar(richArea, textElement);
+      richArea = richWidget.area;
+      richArea.setHTML(v);
+      if (textElement != null) {
+        WidgetsUtils.hideAndAppend(textElement, richWidget);
+      } else {
+        WidgetsUtils.replaceOrAppend(e, richWidget);
+      }
+      return richArea;
     }
     return null;
   }
