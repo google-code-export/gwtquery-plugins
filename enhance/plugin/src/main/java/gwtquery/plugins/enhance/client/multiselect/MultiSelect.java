@@ -256,4 +256,13 @@ public class MultiSelect extends FlexTable {
       }
     }
   }
+  
+  public void setValues(String... vals) {
+    getUnselectedItems().addAll(getSelectedItems());
+    for (String v : vals) {
+      getUnselectedItems().remove(v);
+      getSelectedItems().add(v);
+    }
+    update();
+  }
 }

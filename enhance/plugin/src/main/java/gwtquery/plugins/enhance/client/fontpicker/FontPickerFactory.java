@@ -47,14 +47,14 @@ public class FontPickerFactory implements WidgetFactory<TextBox> {
         $(ret).css("font-size", val);
       }
       $(ret).css("backgroundColor", "#D8ECFD");
-      p.addValueChangeHandler(new ValueChangeHandler<FontPicker>() {
-        public void onValueChange(ValueChangeEvent<FontPicker> value) {
+      p.addValueChangeHandler(new ValueChangeHandler<String>() {
+        public void onValueChange(ValueChangeEvent<String> value) {
+          ret.setValue(value.getValue());
           if (type == FontPickerType.FONT_FAMILY) {
-            ret.setValue(value.getValue().getFontName());
-            $(ret).css("font-family", value.getValue().getFontName());
+            $(ret).css("font-family", value.getValue());
           } else {
-            ret.setValue(value.getValue().getFontSizeCssName());
-            $(ret).css("font-size", value.getValue().getFontSizeCssName());
+            ret.setValue(value.getValue());
+            $(ret).css("font-size", value.getValue());
           }
           p.hide();
         }

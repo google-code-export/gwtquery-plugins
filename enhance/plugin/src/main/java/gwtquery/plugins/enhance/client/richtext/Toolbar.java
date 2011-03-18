@@ -120,15 +120,18 @@ public class Toolbar extends Composite {
       foreColorsPicker.hide();
     }
   };
-  private ValueChangeHandler<FontPicker> fontHandler = new ValueChangeHandler<FontPicker>() {
-    public void onValueChange(ValueChangeEvent<FontPicker> event) {
-      FontPicker sender = event.getValue();
-      if (sender == fontFamilyPicker) {
-        basic.setFontName(sender.getFontName());
-      } else if (sender == fontSizePicker) {
-        basic.setFontSize(sender.getFontSize());
-      }
-      sender.hide();
+  
+  private ValueChangeHandler<String> fontFamilyHandler = new ValueChangeHandler<String>() {
+    public void onValueChange(ValueChangeEvent<String> event) {
+      basic.setFontName(event.getValue());
+      fontFamilyPicker.hide();
+    }
+  };
+  
+  private ValueChangeHandler<String> fontSizeHandler = new ValueChangeHandler<String>() {
+    public void onValueChange(ValueChangeEvent<String> event) {
+      basic.setFontSize(fontSizePicker.getFontSize());
+      fontSizePicker.hide();
     }
   };
 
@@ -231,8 +234,8 @@ public class Toolbar extends Composite {
     richText.addClickHandler(handler);
     backColorsPicker.addValueChangeHandler(bgColorHandler);
     foreColorsPicker.addValueChangeHandler(fgColorHandler);
-    fontFamilyPicker.addValueChangeHandler(fontHandler);
-    fontSizePicker.addValueChangeHandler(fontHandler);
+    fontFamilyPicker.addValueChangeHandler(fontFamilyHandler);
+    fontSizePicker.addValueChangeHandler(fontSizeHandler);
   }
 
   private PushButton createPushButton(ImageResource img, String tip) {

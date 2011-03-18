@@ -25,7 +25,8 @@
   <table>
   <tr>
 	  <td>
-	    <button>Enhance me</button>
+	    <button id="enhance">Enhance me</button>
+	    <button id="values">Show Values</button>
 	  </td>
 	  <td rowspan='5'>
 	    <br/>Code:
@@ -47,33 +48,33 @@
   </tr>
   <tr>
 	  <td>
-	    Color Picker:<br/> <input class='color' type='text' value="#ff00ff"> <br/>
+	    Color Picker:<br/> <input name="color" class='color' type='text' value="#ff00ff"> <br/>
 	  </td>
   </tr>
   <tr>
 	  <td>
-	    Full Color Picker:<br/> <input class='colorfull' type='text' value="#d8db2b"> <br/>
+	    Full Color Picker:<br/> <input name="colorfull" class='colorfull' type='text' value="#d8db2b"> <br/>
 	  </td>
   </tr>
   <tr>
 	  <td>
-	    Font-Family Picker:<br/> <input class='ffamily' type='text' value="Comic Sans MS"> <br/>
+	    Font-Family Picker:<br/> <input name="fontfamily" class='ffamily' type='text' value="Comic Sans MS"> <br/>
 	  </td>
   </tr>
   <tr>
 	  <td>
-	    Font-Size Picker:<br/> <input class='fsize' type='text' value="small"> <br/>
+	    Font-Size Picker:<br/> <input name="fontsize" class='fsize' type='text' value="small"> <br/>
 	  </td>
   </tr>
   <tr>
 	  <td colspan="2">
-	    Numeric Slider:<br/> <input class='slider' type='text' name="aname" value="1.5"> <br/>
+	    Numeric Slider:<br/> <input class='slider' type='text' name="number" value="1.5"> <br/>
 	  </td>
   </tr>
   <tr>
 	  <td colspan="2">
 		  Multi Select:<br/>
-		  <select class="multiselect" multiple="multiple" size="10">  
+		  <select class="multiselect" multiple="multiple" size="10" name="animals">  
 			<option>burro</option>
 			<option>camel</option>
 			<option>canary</option>
@@ -126,11 +127,9 @@
   <tr>
 	  <td colspan="2">
         Rich Text:<br/>
-	    <textarea class='editable' rows="10" cols="80">
-Cuando, en los albores de la Baja Edad Media, los Juglares y Trovadores 
+	    <textarea name="text" class='editable' rows="10" cols="80">Cuando, en los albores de la Baja Edad Media, los Juglares y Trovadores 
 recorrían los caminos de Europa, ninguno de ellos podía imaginar que 
-seiscientos años después persistieran algunos de sus usos y costumbres.
-		</textarea>
+seiscientos años después persistieran algunos de sus usos y costumbres.</textarea>
 	  </td>
   </tr>
   </table>
