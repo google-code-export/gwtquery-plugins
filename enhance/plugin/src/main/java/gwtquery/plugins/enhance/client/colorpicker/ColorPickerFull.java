@@ -85,7 +85,6 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
     return "#" + picker.getHexColor();
   }
 
-  @Override
   public void setValue(String value) {
     try {
       picker.setHex(value.replaceFirst("^#", ""));
@@ -93,7 +92,6 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
     }
   }
 
-  @Override
   public void setValue(String value, boolean fireEvents) {
     setValue(value);
     if (fireEvents) {

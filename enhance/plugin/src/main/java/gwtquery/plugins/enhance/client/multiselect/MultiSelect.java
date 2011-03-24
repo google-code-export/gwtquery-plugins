@@ -10,7 +10,9 @@ import gwtquery.plugins.droppable.client.gwt.DragAndDropCellList;
 import gwtquery.plugins.droppable.client.gwt.DroppableWidget;
 import gwtquery.plugins.enhance.client.multiselect.bundles.MultiSelectCss;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,21 +55,28 @@ public class MultiSelect extends FlexTable {
       sb.appendHtmlConstant(value);
     }
   }
+  
   public static interface Validator {
     boolean validate(String value);
   }
+  
   private Anchor add = new Anchor();
   
   private TextBox box = new TextBox();
+  
   @SuppressWarnings("unchecked")
   private List<ListDataProvider<String>> providers = Arrays.asList(new ListDataProvider<String>(), new ListDataProvider<String>());
+  @SuppressWarnings("unchecked")
+  private List<DragAndDropCellList<String>> celllists = Arrays.asList(new DragAndDropCellList<String>(new SimpleCell()), new DragAndDropCellList<String>(new SimpleCell()));
+  
   private SelectElement select;
+  
   private String selectedText = "Selected";
   
   private Label selectedLabel = new Label(selectedText);
   
   private boolean sortItems = false;
-  
+
   private Validator validator = null;
  
   private int visibleItems = 20;
@@ -81,8 +90,14 @@ public class MultiSelect extends FlexTable {
     
     MultiSelectCss.INSTANCE.css().ensureInjected();
     
-    providers.get(0).setList(unselected);
-    providers.get(1).setList(selected);
+    providers.get(0).setList(new ArrayList<String>());
+    providers.get(1).setList(new ArrayList<String>());
+    if (unselected != null) {
+      getUnselectedItems().addAll(unselected);
+    }
+    if (selected != null) {
+      getSelectedItems().addAll(selected);
+    }
     
     setWidget(0, 0, selectedLabel);
     setWidget(0, 1, createBox());
@@ -132,7 +147,9 @@ public class MultiSelect extends FlexTable {
   
   public void setSelectedText(String text) {
     selectedText = text;
-    selectedLabel.setText(selectedText + " [" + getSelectedItems().size() + "]");;
+    int selected = getSelectedItems().size();
+    int total = selected + getUnselectedItems().size();
+    selectedLabel.setText(selectedText + " [" + selected + "/" + total + "]");;
   }
   
   public void setSortItems(boolean b){
@@ -172,8 +189,7 @@ public class MultiSelect extends FlexTable {
             oe.setValue(v);
             select.appendChild(oe);
           }
-          providers.get(1).getList().add(v);
-          providers.get(0).getList().remove(v);
+          selectItem(v);
           update();
         }
       }
@@ -190,16 +206,12 @@ public class MultiSelect extends FlexTable {
   }
   
   private Widget createList(final int ord) {
-    SimpleCell cell = new SimpleCell();
-
-    DragAndDropCellList<String> cellList = new DragAndDropCellList<String>(cell);
+    DragAndDropCellList<String> cellList = celllists.get(ord % 2);
     providers.get(ord % 2).addDataDisplay(cellList);
     
     cellList.setCellDraggableOnly();
     cellList.setDraggableOptions(createDraggableOptions());
-    cellList.setPageSize(2 * (getUnselectedItems().size() + getSelectedItems().size()));
-    DroppableWidget<Widget> dropable = 
-      new DroppableWidget<Widget>(cellList);
+    DroppableWidget<Widget> dropable = new DroppableWidget<Widget>(cellList);
     GQuery.$(cellList).css("overflow-y", "auto").css("overflow-x", "hidden");
     
     dropable.setStyleName("gq-MultiSelect-Panel");
@@ -248,6 +260,9 @@ public class MultiSelect extends FlexTable {
       Collections.sort(getSelectedItems());
       Collections.sort(getUnselectedItems());
     }
+    int page = getSelectedItems().size() + getUnselectedItems().size();
+    celllists.get(0).setPageSize(page);
+    celllists.get(1).setPageSize(page);
     if (select != null) {
       NodeList<OptionElement> n = select.getOptions();
       for (int i = 0; i < n.getLength(); i++) {
@@ -257,12 +272,44 @@ public class MultiSelect extends FlexTable {
     }
   }
   
-  public void setValues(String... vals) {
-    getUnselectedItems().addAll(getSelectedItems());
-    for (String v : vals) {
-      getUnselectedItems().remove(v);
-      getSelectedItems().add(v);
+  public void setAllValues(Collection<String> vals) {
+    getUnselectedItems().clear();
+    if (vals != null) for (String v : vals) {
+      if (!v.isEmpty() && !getSelectedItems().contains(v)) {
+        getUnselectedItems().add(v);
+      }
     }
     update();
+  }
+
+  public void setSelectedValues(Collection<String> vals) {
+    getSelectedItems().clear();
+    if (vals != null) for (String v : vals) {
+      selectItem(v);
+    }
+    update();
+  }
+  
+  public void selectItem(String v) {
+    if (v == null || v.isEmpty() || getSelectedItems().contains(v)) {
+      return;
+    }
+    if (!addItemsEnabled && !getUnselectedItems().contains(v)) {
+      return;
+    }
+    getUnselectedItems().remove(v);
+    getSelectedItems().add(v);
+  }
+  
+  public void setValues(String... vals) {
+    setSelectedValues(Arrays.asList(vals));
+  }
+  
+  public void setValidator(Validator validator) {
+    this.validator = validator;
+  }
+
+  public void setAddItemsEnabled(boolean addItemsEnabled) {
+    this.addItemsEnabled = addItemsEnabled;
   }
 }

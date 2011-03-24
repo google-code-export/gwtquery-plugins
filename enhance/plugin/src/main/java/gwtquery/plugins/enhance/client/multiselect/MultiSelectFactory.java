@@ -11,6 +11,13 @@ import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.widgets.WidgetFactory;
 import com.google.gwt.query.client.plugins.widgets.WidgetsUtils;
+import com.google.gwt.user.client.ui.ComplexPanel;
+import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class MultiSelectFactory implements WidgetFactory<MultiSelect> {
   
@@ -39,9 +46,9 @@ public class MultiSelectFactory implements WidgetFactory<MultiSelect> {
       });
     }
 
-    if (unselected.size() + selected.size() > 0) {
+    if (se != null || unselected.size() + selected.size() > 0) {
       MultiSelect multiselect = new MultiSelect(unselected, selected, se);
-      WidgetsUtils.hideAndAppend(e, multiselect);
+      WidgetsUtils.hideAndAfter(e, multiselect);
       int w = $(e).width();
       int h = $(e).height();
       if ( w > 0) {

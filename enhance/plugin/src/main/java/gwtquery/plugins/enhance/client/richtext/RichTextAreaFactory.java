@@ -81,7 +81,7 @@ public class RichTextAreaFactory implements WidgetFactory<RichTextArea> {
       richArea = richWidget.area;
       richArea.setHTML(v);
       if (textElement != null) {
-        WidgetsUtils.hideAndAppend(textElement, richWidget);
+        WidgetsUtils.hideAndAfter(textElement, richWidget);
       } else {
         WidgetsUtils.replaceOrAppend(e, richWidget);
       }
