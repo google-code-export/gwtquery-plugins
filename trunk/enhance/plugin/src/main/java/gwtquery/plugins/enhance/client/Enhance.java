@@ -91,7 +91,11 @@ public class Enhance extends Widgets {
   }
   
   public Widgets multiselect() {
-    return widgets(new MultiSelectFactory(), null);
+    return multiselect(null);
+  }
+  
+  public Widgets multiselect(WidgetInitializer<MultiSelect> initializer) {
+    return widgets(new MultiSelectFactory(), initializer);
   }
   
   public String[] vals() {

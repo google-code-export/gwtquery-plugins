@@ -309,8 +309,6 @@ HasValueChangeHandlers<Double> {
     sinkEvents(Event.MOUSEEVENTS | Event.KEYEVENTS | Event.FOCUSEVENTS);
   }
 
-  
-  @Override
   public HandlerRegistration addValueChangeHandler(
       ValueChangeHandler<Double> handler) {
     changeHandler = handler;
