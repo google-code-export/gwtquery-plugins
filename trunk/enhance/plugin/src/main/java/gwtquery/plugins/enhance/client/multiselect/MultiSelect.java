@@ -275,7 +275,7 @@ public class MultiSelect extends FlexTable {
   public void setAllValues(Collection<String> vals) {
     getUnselectedItems().clear();
     if (vals != null) for (String v : vals) {
-      if (!v.isEmpty() && !getSelectedItems().contains(v)) {
+      if (!v.isEmpty() && !getSelectedItems().contains(v) && !getUnselectedItems().contains(v)) {
         getUnselectedItems().add(v);
       }
     }
