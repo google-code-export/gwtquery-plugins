@@ -3,6 +3,8 @@ package gwtquery.plugins.enhance.client.colorpicker;
 import gwtquery.plugins.enhance.client.colorpicker.bundles.ColorPickerCss;
 import net.auroris.ColorPicker.client.ColorPicker;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
@@ -18,16 +20,32 @@ import com.google.gwt.user.client.ui.PopupPanel;
 
 public class ColorPickerFull extends PopupPanel implements HasValueChangeHandlers<String>, HasValue<String> {
   
-  ColorPicker picker = new ColorPicker();
+  ColorPicker picker;
+  FlexTable t = new FlexTable();
   Button ok = new Button("OK");
   Button cancel = new Button("Cancel");
+  
+  @Override
+  protected void onAttach() {
+    super.onAttach();
+    if (picker == null) {
+      GWT.runAsync(new RunAsyncCallback() {
+        public void onFailure(Throwable reason) {
+        }
+        public void onSuccess() {
+          System.out.println("Loaded ");
+          picker = new ColorPicker();
+          t.setWidget(0, 0, picker);
+        }
+      });
+    }
+  }
   
   public ColorPickerFull() {
     super(true);
     ColorPickerCss.INSTANCE.css().ensureInjected();
     
     setAnimationEnabled(true);
-    FlexTable t = new FlexTable();
     t.setCellPadding(5);
     t.setCellSpacing(0);
     DOM.setStyleAttribute(t.getElement(), "backgroundColor", "white");
@@ -36,6 +54,7 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
     DOM.setStyleAttribute(t.getElement(), "fontSize", "8px");
     
     t.setWidth("420px");
+    t.setText(0, 0, "loading ...");
     t.setWidget(0, 0, picker);
     t.getFlexCellFormatter().setColSpan(0, 0, 3);
     t.setWidget(1, 1, cancel);

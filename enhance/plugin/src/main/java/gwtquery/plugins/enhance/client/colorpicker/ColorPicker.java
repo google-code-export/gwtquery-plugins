@@ -68,8 +68,9 @@ public class ColorPicker extends PopupPanel implements HasValueChangeHandlers<St
   ValueChangeHandler<String> changeHandler = null;
 
   private String color = "";
+  private FlexTable t;
 
-  long[] colors = new long[]{
+  private static final long[] DEFAULT_COLORS = new long[]{
       0xffffff, 0xcccccc, 0xc0c0c0, 0x999999, 0x666666, 0x333333, 0x000000,
       0xffcccc, 0xff6666, 0xff0000, 0xcc0000, 0x990000, 0x660000, 0x330000,
       0xffcc99, 0xff9966, 0xff9900, 0xfd6500, 0xcb6500, 0x983200, 0x653200,
@@ -87,19 +88,29 @@ public class ColorPicker extends PopupPanel implements HasValueChangeHandlers<St
     t.setCellPadding(0);
     t.setCellSpacing(0);
     DOM.setStyleAttribute(t.getElement(), "border", "1px solid #cccccc");
-
+    add(t);
+    setAnimationEnabled(true);
+    setStyleName("colorPicker");
+    setColors(DEFAULT_COLORS);
+  }
+  
+  public void setColors(long[] colors) {
+    int rows = 7;
+    for (int i = 12; i > 6; i--){
+      if (colors.length % i == 0) {
+        rows = i;
+        break;
+      }
+    }
     int i = 0;
+    t.clear();
     for (int r = 0; i < colors.length; r++) {
-      for (int c = 0; c < 7 && i < colors.length; c++, i++) {
+      for (int c = 0; c < rows && i < colors.length; c++, i++) {
         ColorCell cell = new ColorCell(colors[i]);
         cell.addClickHandler(this);
         t.setWidget(r, c, cell);
       }
     }
-
-    add(t);
-    setAnimationEnabled(true);
-    setStyleName("colorPicker");
   }
 
   public HandlerRegistration addValueChangeHandler(
