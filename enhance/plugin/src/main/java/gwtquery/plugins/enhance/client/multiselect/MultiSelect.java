@@ -1,5 +1,6 @@
 package gwtquery.plugins.enhance.client.multiselect;
 
+import static com.google.gwt.query.client.GQuery.$;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
 import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
@@ -24,6 +25,8 @@ import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.query.client.GQuery;
@@ -39,7 +42,6 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
-import static com.google.gwt.query.client.GQuery.$;
 
 /**
  * 
@@ -76,7 +78,8 @@ public class MultiSelect extends FlexTable {
   
   private Label selectedLabel = new Label(selectedText);
   
-  private boolean sortItems = false;
+  private boolean sortUnselected = true;
+  private boolean sortSelected = false;
 
   private Validator validator = null;
  
@@ -154,8 +157,19 @@ public class MultiSelect extends FlexTable {
   }
   
   public void setSortItems(boolean b){
-    sortItems  = b;
-    update();
+    sortSelected  = b;
+    sortUnselected  = b;
+    if (b) update();
+  }
+
+  public void setSortUnselectedItems(boolean b){
+    sortUnselected  = b;
+    if (b) update();
+  }
+  
+  public void setSortSelectedItems(boolean b){
+    sortSelected  = b;
+    if (b) update();
   }
   
   public void setVisibleItems(int i) {
@@ -219,13 +233,13 @@ public class MultiSelect extends FlexTable {
     dropable.setDroppableHoverClass("gq-MultiSelect-DropableHover");
     dropable.setDraggableHoverClass("gq-MultiSelect-DraggableHover");
     dropable.setActiveClass("gq-MultiSelect-Active");
-    
+
+    final List<String> thisList = providers.get((ord) % 2).getList(); 
+    final List<String> otherList = providers.get((ord+1) % 2).getList();
+
     dropable.addDropHandler(new DropEventHandler(){
       public void onDrop(DropEvent event) {
         String row = event.getDraggableData();
-        List<String> thisList = providers.get((ord) % 2).getList(); 
-        List<String> otherList = providers.get((ord+1) % 2).getList();
-
         int top = event.getDragDropContext().getHelperPosition().top;
         GQuery rows = $(".gwtQuery-draggable", event.getDroppableWidget());
         int pos = 0;
@@ -237,13 +251,26 @@ public class MultiSelect extends FlexTable {
         if (pos == thisList.size() && thisList.contains(row)) {
           pos --;
         }
-        
         thisList.remove(row);
         otherList.remove(row);
         thisList.add(pos, row);
         update();
       }
     });
+    
+    cellList.addDomHandler(new DoubleClickHandler() {
+      public void onDoubleClick(DoubleClickEvent event) {
+        for (Element e : $(".gwtQuery-draggable", dropable).elements()) {
+          int top = event.getClientY();
+          if ($(e).offset().top < top && top < $(e).offset().top + $(e).height()) {
+            String row = $(e).text().trim();
+            thisList.remove(row);
+            otherList.add(row);
+            update();
+          }
+        }
+      }
+    }, DoubleClickEvent.getType()) ;
 
     dropable.setAccept(new AcceptFunction() {
       public boolean acceptDrop(DragAndDropContext ctx) {
@@ -271,8 +298,10 @@ public class MultiSelect extends FlexTable {
     box.setValue("");
     filter("");
     setSelectedText(selectedText);
-    if (sortItems) {
+    if (sortSelected) {
       Collections.sort(getSelectedItems());
+    }
+    if (sortUnselected) {
       Collections.sort(getUnselectedItems());
     }
     int page = getSelectedItems().size() + getUnselectedItems().size();
