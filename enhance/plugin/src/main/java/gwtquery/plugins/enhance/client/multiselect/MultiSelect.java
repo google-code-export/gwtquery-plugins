@@ -39,6 +39,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import static com.google.gwt.query.client.GQuery.$;
 
 /**
  * 
@@ -211,7 +212,7 @@ public class MultiSelect extends FlexTable {
     
     cellList.setCellDraggableOnly();
     cellList.setDraggableOptions(createDraggableOptions());
-    DroppableWidget<Widget> dropable = new DroppableWidget<Widget>(cellList);
+    final DroppableWidget<Widget> dropable = new DroppableWidget<Widget>(cellList);
     GQuery.$(cellList).css("overflow-y", "auto").css("overflow-x", "hidden");
     
     dropable.setStyleName("gq-MultiSelect-Panel");
@@ -222,11 +223,25 @@ public class MultiSelect extends FlexTable {
     dropable.addDropHandler(new DropEventHandler(){
       public void onDrop(DropEvent event) {
         String row = event.getDraggableData();
-        if (providers.get((ord+1) % 2).getList().contains(row)) {
-          providers.get(ord % 2).getList().add(row);
-          providers.get((ord+1) % 2).getList().remove(row);
-          update();
+        List<String> thisList = providers.get((ord) % 2).getList(); 
+        List<String> otherList = providers.get((ord+1) % 2).getList();
+
+        int top = event.getDragDropContext().getHelperPosition().top;
+        GQuery rows = $(".gwtQuery-draggable", event.getDroppableWidget());
+        int pos = 0;
+        for (;pos < rows.size(); pos++ ) {
+          if (top < rows.eq(pos).offset().top) {
+            break;
+          }
         }
+        if (pos == thisList.size() && thisList.contains(row)) {
+          pos --;
+        }
+        
+        thisList.remove(row);
+        otherList.remove(row);
+        thisList.add(pos, row);
+        update();
       }
     });
 

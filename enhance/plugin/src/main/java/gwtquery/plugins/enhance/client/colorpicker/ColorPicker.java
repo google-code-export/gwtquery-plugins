@@ -68,7 +68,7 @@ public class ColorPicker extends PopupPanel implements HasValueChangeHandlers<St
   ValueChangeHandler<String> changeHandler = null;
 
   private String color = "";
-  private FlexTable t;
+  private FlexTable t = new FlexTable();
 
   private static final long[] DEFAULT_COLORS = new long[]{
       0xffffff, 0xcccccc, 0xc0c0c0, 0x999999, 0x666666, 0x333333, 0x000000,
@@ -84,7 +84,6 @@ public class ColorPicker extends PopupPanel implements HasValueChangeHandlers<St
 
   public ColorPicker() {
     super(true);
-    FlexTable t = new FlexTable();
     t.setCellPadding(0);
     t.setCellSpacing(0);
     DOM.setStyleAttribute(t.getElement(), "border", "1px solid #cccccc");
