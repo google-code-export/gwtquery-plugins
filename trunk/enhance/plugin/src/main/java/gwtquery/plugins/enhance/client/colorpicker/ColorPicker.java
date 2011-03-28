@@ -95,7 +95,7 @@ public class ColorPicker extends PopupPanel implements HasValueChangeHandlers<St
   
   public void setColors(long[] colors) {
     int rows = 7;
-    for (int i = 12; i > 6; i--){
+    for (int i = 7; i < 12; i++){
       if (colors.length % i == 0) {
         rows = i;
         break;

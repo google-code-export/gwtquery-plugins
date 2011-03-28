@@ -73,6 +73,7 @@
                  </systemProperties>
                </configuration>
             </plugin>
+<!--
             <plugin>
                 <groupId>org.riedelcastro</groupId>
                 <artifactId>gcupload-maven-plugin</artifactId>
@@ -96,6 +97,7 @@
                   </uploads>
                 </configuration>
             </plugin>
+-->
             <plugin>
               <artifactId>maven-clean-plugin</artifactId>
               <configuration>
