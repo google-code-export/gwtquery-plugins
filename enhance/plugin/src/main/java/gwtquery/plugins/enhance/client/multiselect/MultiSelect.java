@@ -19,7 +19,6 @@ import java.util.List;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.OptionElement;
 import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.dom.client.Style.Unit;
@@ -41,11 +40,10 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.AbstractDataProvider;
 import com.google.gwt.view.client.ListDataProvider;
 
 /**
- * 
- * TODO: implement double click, multiple mouse selection, filter
  * 
  * @author Manuel Carrasco Moñino
  *
@@ -63,7 +61,7 @@ public class MultiSelect extends FlexTable {
     boolean validate(String value);
   }
   
-  private Anchor add = new Anchor();
+  private Anchor addLink = new Anchor("Add");
   
   private TextBox box = new TextBox();
   
@@ -74,14 +72,13 @@ public class MultiSelect extends FlexTable {
   
   private SelectElement select;
   
-  private String selectedText = "Selected";
-  
-  private Label selectedLabel = new Label(selectedText);
-  
   private boolean sortUnselected = true;
   private boolean sortSelected = false;
 
   private Validator validator = null;
+  
+  private String selectedText = "Selected {0} of {1}";
+  private Label selectedLabel = new Label();
  
   private int visibleItems = 20;
 
@@ -90,7 +87,6 @@ public class MultiSelect extends FlexTable {
   public MultiSelect(List<String> unselected, List<String> selected, SelectElement se) {
     
     setStyleName("gq-MultiSelect");
-    selectedLabel.setStyleName("gq-MultiSelect-Label");
     
     MultiSelectCss.INSTANCE.css().ensureInjected();
     
@@ -103,19 +99,29 @@ public class MultiSelect extends FlexTable {
       getSelectedItems().addAll(selected);
     }
     
-    setWidget(0, 0, selectedLabel);
+    setText(0, 0, "Choose items");
     setWidget(0, 1, createBox());
-    setWidget(1, 0, createList(0));
+    setText(1, 0, "Available");
+    setWidget(1, 1, selectedLabel);
+    setWidget(2, 0, createList(0));
     getCellFormatter().setWidth(0, 0, "50%");
-    setWidget(1, 1, createList(1));
+    setWidget(2, 1, createList(1));
     getCellFormatter().setWidth(0, 1, "50%");
 
     getCellFormatter().getElement(0, 1).getStyle().setPaddingLeft(10, Unit.PX);
     getCellFormatter().getElement(1, 1).getStyle().setPaddingLeft(10, Unit.PX);
+    getCellFormatter().getElement(2, 1).getStyle().setPaddingLeft(10, Unit.PX);
+    getCellFormatter().getElement(0, 0).setClassName("gq-MultiSelect-Name");
+    getCellFormatter().getElement(1, 0).setClassName("gq-MultiSelect-Label");
+    getCellFormatter().getElement(1, 1).setClassName("gq-MultiSelect-Label");
     
     if (se != null) {
       setVisibleItems(se.getSize());
       select = se;
+      String name = se.getName();
+      if (name != null && !name.isEmpty()) {
+        setText(0, 0, name);
+      }
     }
     update();
   }
@@ -141,19 +147,26 @@ public class MultiSelect extends FlexTable {
     addItemsEnabled  = b;
   }
   
-  public void setAddText(String text) {
-    add.setText(text);
-  }
-
   public void setNewItemsValidator(Validator validator) {
     this.validator = validator;
   }
   
-  public void setSelectedText(String text) {
-    selectedText = text;
-    int selected = getSelectedItems().size();
-    int total = selected + getUnselectedItems().size();
-    selectedLabel.setText(selectedText + " [" + selected + "/" + total + "]");;
+  public void updateCounters() {
+    Integer selected = getSelectedItems().size();
+    Integer total = selected + getUnselectedItems().size();
+    selectedLabel.setText(selectedText.replace("{0}", selected.toString()).replace("{1}", total.toString()));
+  }
+  
+  public void setSelectedText(String name) {
+    setText(0, 0, name);
+  }
+  
+  public void setLabels(String name, String available, String selected, String addLabel) {
+    setText(0, 0, name);
+    setText(1, 0, available);
+    setText(1, 1, selected);
+    addLink.setText(addLabel);
+    update();
   }
   
   public void setSortItems(boolean b){
@@ -174,8 +187,8 @@ public class MultiSelect extends FlexTable {
   
   public void setVisibleItems(int i) {
     if (i > 0) {
-      getWidget(1, 0).setHeight(i + "em");
-      getWidget(1, 1).setHeight(i + "em");
+      getWidget(2, 0).setHeight(i + "em");
+      getWidget(2, 1).setHeight(i + "em");
     }
   }
   private Widget createBox() {
@@ -183,9 +196,8 @@ public class MultiSelect extends FlexTable {
     p.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
     p.add(box);
     box.setStyleName("gq-MultiSelect-Input");
-    add.setStyleName("gq-MultiSelect-Add");
-    p.add(add);
-    setAddText("Add");
+    addLink.setStyleName("gq-MultiSelect-Add");
+    p.add(addLink);
     box.addKeyUpHandler(new KeyUpHandler() {
       public void onKeyUp(KeyUpEvent event) {
         new Timer(){
@@ -195,7 +207,7 @@ public class MultiSelect extends FlexTable {
         }.schedule(10);
       }
     });
-    add.addClickHandler(new ClickHandler() {
+    addLink.addClickHandler(new ClickHandler() {
       public void onClick(ClickEvent event) {
         String v = box.getValue().trim();
         if (addItemsEnabled && (validator == null || validator.validate(v)) && !v.isEmpty() && !getSelectedItems().contains(v)) {
@@ -226,7 +238,7 @@ public class MultiSelect extends FlexTable {
     
     cellList.setCellDraggableOnly();
     cellList.setDraggableOptions(createDraggableOptions());
-    final DroppableWidget<Widget> dropable = new DroppableWidget<Widget>(cellList);
+    final DroppableWidget<DragAndDropCellList<String>> dropable = new DroppableWidget<DragAndDropCellList<String>>(cellList);
     GQuery.$(cellList).css("overflow-y", "auto").css("overflow-x", "hidden");
     
     dropable.setStyleName("gq-MultiSelect-Panel");
@@ -283,7 +295,7 @@ public class MultiSelect extends FlexTable {
   }
   
   private void filter(final String prefix) {
-    GQuery g = GQuery.$(".gwtQuery-draggable", getWidget(1, 0)).show();
+    GQuery g = GQuery.$(".gwtQuery-draggable", getWidget(2, 0)).show();
     if (!prefix.isEmpty()) {
       g.filter(new Predicate() {
         public boolean f(Element e, int index) {
@@ -297,7 +309,7 @@ public class MultiSelect extends FlexTable {
   private void update() {
     box.setValue("");
     filter("");
-    setSelectedText(selectedText);
+    updateCounters();
     if (sortSelected) {
       Collections.sort(getSelectedItems());
     }
@@ -308,10 +320,17 @@ public class MultiSelect extends FlexTable {
     celllists.get(0).setPageSize(page);
     celllists.get(1).setPageSize(page);
     if (select != null) {
-      NodeList<OptionElement> n = select.getOptions();
-      for (int i = 0; i < n.getLength(); i++) {
-        OptionElement oe = n.getItem(i);
-        oe.setSelected(getSelectedItems().contains(oe.getValue()) ? true : false);
+      select.clear();
+      for (String s : getSelectedItems()) {
+        OptionElement oe = DOM.createOption().cast();
+        oe.setValue(s);
+        oe.setSelected(true);
+        select.appendChild(oe);
+      }
+      for (String s : getUnselectedItems()) {
+        OptionElement oe = DOM.createOption().cast();
+        oe.setValue(s);
+        select.appendChild(oe);
       }
     }
   }
@@ -324,6 +343,12 @@ public class MultiSelect extends FlexTable {
       }
     }
     update();
+  }
+  
+  public void setDataProvider(AbstractDataProvider<String> o) {
+    DragAndDropCellList<String> d = $(getWidget(2, 0)).widget();
+    o.addDataDisplay(d);
+    providers.get(0).removeDataDisplay(d);
   }
 
   public void setSelectedValues(Collection<String> vals) {

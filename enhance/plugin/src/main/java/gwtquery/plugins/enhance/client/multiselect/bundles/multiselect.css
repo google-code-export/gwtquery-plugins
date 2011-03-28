@@ -18,8 +18,11 @@
   border: thin #ffcc66 solid;
 }
 
-.gq-MultiSelect-Label {
+.gq-MultiSelect-Name {
   font-weight: bold;
+}
+
+.gq-MultiSelect-Label {
   margin-bottom: 4px;
 }
 
