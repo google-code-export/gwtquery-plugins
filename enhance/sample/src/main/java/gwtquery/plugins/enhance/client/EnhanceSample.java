@@ -2,10 +2,9 @@ package gwtquery.plugins.enhance.client;
 
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.enhance.client.Enhance.Enhance;
+import gwtquery.plugins.enhance.client.colorpicker.ColorPickerFactory.ColorPickerType;
 
 import java.util.Arrays;
-
-import gwtquery.plugins.enhance.client.colorpicker.ColorPickerFactory.ColorPickerType;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Element;
@@ -17,7 +16,6 @@ import com.google.gwt.user.client.Window;
 public class EnhanceSample implements EntryPoint {
   
   public void onModuleLoad() {
-    
     $("#enhance").click(new Function(){
       public void f(Element e) {
         $(".editable").as(Enhance).richText();
@@ -46,8 +44,5 @@ public class EnhanceSample implements EntryPoint {
         Window.alert(txt);
       }
     });
-    
   }
-  
-
 }
