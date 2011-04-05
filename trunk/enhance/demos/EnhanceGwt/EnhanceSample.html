@@ -1,0 +1,138 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>GwtQuery: Enhance plugin example</title>
+<style type="text/css">
+  .body {
+    font-family: helvetica, arial;
+    font-size: small;
+    padding: 30px;
+  }
+  .gq-richtext {
+    border: solid 1px;
+  }
+  
+  .gwt-Button {
+    width: 15em;
+}
+
+</style>
+    <script language="javascript" src="Enhance.nocache.js"></script>
+</head>
+ <body class='body'>
+  <h1>GwtQuery Enhance plugin</h1>
+  <table>
+  <tr>
+	  <td>
+	    <button id="enhance">Enhance me</button>
+	    <button id="values">Show Values</button>
+	  </td>
+	  <td rowspan='5'>
+	    <br/>Code:
+	    <pre>
+    $("button").click(new Function(){
+      public void f(Element e) {
+        $(".editable").as(Enhance).richText();
+        $(".color").as(Enhance).colorBox();
+        $(".colorfull").as(Enhance).colorBox(ColorPickerType.ADVANCED);
+        $(".ffamily").as(Enhance).fontFamilyBox();
+        $(".fsize").as(Enhance).fontSizeBox();
+        $(".slider").as(Enhance).slider(0, 2);
+        $(".multiselect").as(Enhance).multiselect();
+        $(e).hide();
+      }
+    });
+	    </pre>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Color Picker:<br/> <input name="color" class='color' type='text' value="#ff00ff"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Full Color Picker:<br/> <input name="colorfull" class='colorfull' type='text' value="#d8db2b"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Font-Family Picker:<br/> <input name="fontfamily" class='ffamily' type='text' value="Comic Sans MS"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td>
+	    Font-Size Picker:<br/> <input name="fontsize" class='fsize' type='text' value="small"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td colspan="2">
+	    Numeric Slider:<br/> <input class='slider' type='text' name="number" value="1.5"> <br/>
+	  </td>
+  </tr>
+  <tr>
+	  <td colspan="2">
+		  Multi Select:<br/>
+		  <select class="multiselect" multiple="multiple" size="10" name="animals">  
+			<option>burro</option>
+			<option>camel</option>
+			<option>canary</option>
+			<option>capybara</option>
+			<option>cat</option>
+			<option>chameleon</option>
+			<option>chamois</option>
+			<option>cheetah</option>
+			<option>chimpanzee</option>
+			<option>chinchilla</option>
+			<option>chipmunk</option>
+			<option>civet</option>
+			<option>coati</option>
+			<option>colt</option>
+			<option>cony</option>
+			<option>cougar</option>
+			<option>cow</option>
+			<option>coyote</option>
+			<option>crocodile</option>
+			<option>crow</option>
+			<option>deer</option>
+			<option>fox</option>
+			<option>frog</option>
+			<option>gazelle</option>
+			<option>gemsbok</option>
+			<option>gila</option>
+			<option>monster</option>
+			<option>giraffe</option>
+			<option>gnu</option>
+			<option>goat</option>
+			<option>gopher</option>
+			<option>gorilla</option>
+			<option>grizzly</option>
+			<option>bear</option>
+			<option>ground</option>
+			<option>hog</option>
+			<option>guanaco</option>
+			<option>guinea</option>
+			<option>pig</option>
+			<option>hamster</option>
+			<option>hare</option>
+			<option>hartebeest</option>
+			<option>hedgehog</option>
+			<option>hippopotamus</option>
+			<option>hog</option>
+			<option>horse</option>
+		  </select>
+	  </td>
+  </tr>
+  <tr>
+	  <td colspan="2">
+        Rich Text:<br/>
+	    <textarea name="text" class='editable' rows="10" cols="80">Cuando, en los albores de la Baja Edad Media, los Juglares y Trovadores 
+recorrían los caminos de Europa, ninguno de ellos podía imaginar que 
+seiscientos años después persistieran algunos de sus usos y costumbres.</textarea>
+	  </td>
+  </tr>
+  </table>
+  
+ </body>
+</html>
