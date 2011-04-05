@@ -38,7 +38,8 @@
                     <logLevel>${gwt.loglevel}</logLevel>
                     <style>${gwt.outputstyle}</style>
                     <gwtVersion>${gwtversion}</gwtVersion>
-                    <compileReport>false</compileReport>
+                    <compileReport>true</compileReport>
+                    <soycDetailed>true</soycDetailed>
                     <runTarget>Enhance/EnhanceSample.html</runTarget>
                     <hostedWebapp>src/main/webapp</hostedWebapp>
                 </configuration>
