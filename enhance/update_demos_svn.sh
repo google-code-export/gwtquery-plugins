@@ -11,7 +11,8 @@ mvn package -Dmaven.test.skip || exit
 
 mkdir -p demos
 
-cp -r sample/target/$A-$V/$P demos/ || exit
+cp -r sample/target/$A-$V/Enhance demos/ || exit
+cp -r sample/target/$A-$V/EnhanceGwt demos/ || exit
 cp -r sample/target/$A-$V/index.html demos/ || exit
 
 for i in `find demos -type d | grep -v .svn | sed -e 's,^demos/,,g'`
