@@ -31,7 +31,6 @@ public class SliderFactory implements WidgetFactory<SliderBar> {
   }
   
   public SliderBar create(Element e) {
-    
     String val = null;
     String name = null;
     if ($(e).filter("input[type='text']").get(0) != null) {
@@ -42,7 +41,8 @@ public class SliderFactory implements WidgetFactory<SliderBar> {
     }
     
     if (val != null) {
-      double value = Double.parseDouble(val.replaceAll("^.*(\\d+\\.?\\d+).*$", "$1"));
+      val = val.replaceAll("^.*(\\d+\\.?\\d+).*$", "$1");
+      double value = val.isEmpty() ? min : Double.parseDouble(val);
       final SliderBar slider = new SliderBar(min, max);
       slider.setNumLabels((int)steps);
       slider.setStepSize((max - min) / steps);
@@ -57,7 +57,7 @@ public class SliderFactory implements WidgetFactory<SliderBar> {
         g.attr("name", name); 
         slider.addValueChangeHandler(new ValueChangeHandler<Double>() {
           public void onValueChange(ValueChangeEvent<Double> value) {
-            g.val(value.getValue() + " "); 
+            g.val(value.getValue() + ""); 
           }
         });
       }

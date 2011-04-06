@@ -11,6 +11,7 @@
 
 .gq-MultiSelect-Panel div {
   padding-right: 10px;
+  white-space: nowrap;
 }
 
 .gq-MultiSelect-DropableHover {
@@ -34,5 +35,9 @@
 .gq-MultiSelect-Add {
   cursor: pointer;
   margin-left: 4px;
+}
+
+.gq-MultiSelect-Item {
+  background-color: #f2f2f2;
 }
 

@@ -3,8 +3,6 @@ package gwtquery.plugins.enhance.client.multiselect;
 import static com.google.gwt.query.client.GQuery.$;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.HelperType;
-import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
-import gwtquery.plugins.droppable.client.events.DragAndDropContext;
 import gwtquery.plugins.droppable.client.events.DropEvent;
 import gwtquery.plugins.droppable.client.events.DropEvent.DropEventHandler;
 import gwtquery.plugins.droppable.client.gwt.DragAndDropCellList;
@@ -24,14 +22,14 @@ import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Predicate;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -266,32 +264,45 @@ public class MultiSelect extends FlexTable {
         thisList.remove(row);
         otherList.remove(row);
         thisList.add(pos, row);
+        setCurrent(row);
         update();
       }
     });
     
-    cellList.addDomHandler(new DoubleClickHandler() {
-      public void onDoubleClick(DoubleClickEvent event) {
-        for (Element e : $(".gwtQuery-draggable", dropable).elements()) {
-          int top = event.getClientY();
-          if ($(e).offset().top < top && top < $(e).offset().top + $(e).height()) {
-            String row = $(e).text().trim();
-            thisList.remove(row);
-            otherList.add(row);
-            update();
-          }
-        }
+    $(cellList).dblclick(new Function(){
+      public boolean f(Event ev) {
+        Element e = ev.getEventTarget().cast();
+        String row = $(e).text().trim();
+        thisList.remove(row);
+        otherList.add(row);
+        update();
+        return false;
       }
-    }, DoubleClickEvent.getType()) ;
-
-    dropable.setAccept(new AcceptFunction() {
-      public boolean acceptDrop(DragAndDropContext ctx) {
-        return !providers.get(ord % 2).getList().contains(ctx.getDraggable());
+    }).mousedown(new Function() {
+      public boolean f(Event ev) {
+        Element e = ev.getEventTarget().cast();
+        setCurrent($(e).text());
+        return false;
       }
     });
-    
+
     cellList.setHeight(visibleItems + "em");
     return dropable;
+  }
+  
+  private void setCurrent(final String txt) {
+    new Timer() {
+      public void run() {
+        $(".gwtQuery-draggable", MultiSelect.this).removeClass("gq-MultiSelect-Item").each(new Function() {
+          public void f(Element e) {
+            if (txt.equals($(e).text())) {
+              $(e).addClass("gq-MultiSelect-Item").scrollIntoView(true);
+              return;
+            }
+          }
+        });
+      }
+    }.schedule(5);
   }
   
   private void filter(final String prefix) {
@@ -300,7 +311,7 @@ public class MultiSelect extends FlexTable {
       g.filter(new Predicate() {
         public boolean f(Element e, int index) {
           String t = GQuery.$(e).text();
-          return !t.toLowerCase().startsWith(prefix.toLowerCase());
+          return !t.toLowerCase().contains(prefix.toLowerCase());
         }
       }).hide();
     }
@@ -367,7 +378,8 @@ public class MultiSelect extends FlexTable {
       return;
     }
     getUnselectedItems().remove(v);
-    getSelectedItems().add(v);
+    getSelectedItems().add(0, v);
+    setCurrent(v);
   }
   
   public void setValues(String... vals) {
