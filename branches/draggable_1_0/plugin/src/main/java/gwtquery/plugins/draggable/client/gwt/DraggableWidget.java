@@ -25,7 +25,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
+import com.google.gwt.query.client.js.JsNodeArray;
 import com.google.gwt.query.client.plugins.events.EventsListener;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
@@ -512,7 +512,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     if (snapWidgets == null) {
       return;
     }
-    JSArray snapElements = JSArray.create();
+    JsNodeArray snapElements = JsNodeArray.create();
     for (Widget w : snapWidgets) {
       snapElements.addNode(w.getElement());
     }
@@ -550,7 +550,7 @@ public class DraggableWidget<T extends Widget> extends Composite implements
     if (stackWidgets == null) {
       return;
     }
-    JSArray stackElements = JSArray.create();
+    JsNodeArray stackElements = JsNodeArray.create();
     for (Widget w : stackWidgets) {
       stackElements.addNode(w.getElement());
     }
