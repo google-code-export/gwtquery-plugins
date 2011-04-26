@@ -26,8 +26,6 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.js.JsNodeArray;
-import com.google.gwt.query.client.plugins.events.EventsListener;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -609,12 +607,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   @Override
   protected void onLoad() {
     super.onLoad();
-    // force using of EventListener from GQuery !
-    EventsListener gQueryEventListener = EventsListener
-        .getInstance(getElement());
-    if (DOM.getEventListener(getElement()) != gQueryEventListener) {
-      DOM.setEventListener(getElement(), gQueryEventListener);
-    }
 
     $(getElement()).as(Draggable).draggable(options, ensureDragHandlers())
         .data(DRAGGABLE_WIDGET_KEY, this);
