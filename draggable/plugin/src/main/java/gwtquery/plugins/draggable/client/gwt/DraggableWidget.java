@@ -16,7 +16,6 @@
 package gwtquery.plugins.draggable.client.gwt;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Cursor;
@@ -27,10 +26,12 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.js.JsNodeArray;
-import com.google.gwt.query.client.plugins.events.EventsListener;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+
+import java.util.List;
+
+import static gwtquery.plugins.draggable.client.Draggable.Draggable;
 
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.AxisOption;
@@ -53,8 +54,6 @@ import gwtquery.plugins.draggable.client.events.DragStartEvent.DragStartEventHan
 import gwtquery.plugins.draggable.client.events.DragStopEvent.DragStopEventHandler;
 import gwtquery.plugins.draggable.client.events.DraggableSelectedEvent.DraggableSelectedHandler;
 import gwtquery.plugins.draggable.client.events.DraggableUnselectedEvent.DraggableUnselectedHandler;
-
-import java.util.List;
 
 /**
  * Wrapper widget that wrap an GWT widget and allows dragging it.
@@ -653,13 +652,6 @@ public class DraggableWidget<T extends Widget> extends Composite implements
   @Override
   protected void onLoad() {
     super.onLoad();
-    // force using of EventListener from GQuery !
-    EventsListener gQueryEventListener = EventsListener
-        .getInstance(getElement());
-    if (DOM.getEventListener(getElement()) != gQueryEventListener) {
-      DOM.setEventListener(getElement(), gQueryEventListener);
-    }
-
     $(getElement()).as(Draggable).draggable(options, ensureDragHandlers())
         .data(DRAGGABLE_WIDGET_KEY, this);
   }
