@@ -4,8 +4,8 @@
 ----
 
 || *Plugin name* ||Draggable||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=draggable-plugin-1.0.2.jar 1.0.2]||
-|| *Latest release date* ||Oct 26 2010||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=draggable-plugin-1.0.3.jar 1.0.3]||
+|| *Latest release date* ||April 27 2011||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADraggable Open issues]||
 
