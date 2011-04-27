@@ -214,7 +214,7 @@ public class MultiSelect extends FlexTable {
             oe.setValue(v);
             select.appendChild(oe);
           }
-          selectItem(v);
+          selectItem(v, 0);
           update();
         }
       }
@@ -264,8 +264,8 @@ public class MultiSelect extends FlexTable {
         thisList.remove(row);
         otherList.remove(row);
         thisList.add(pos, row);
-        setCurrent(row);
         update();
+        setCurrent(row);
       }
     });
     
@@ -276,6 +276,7 @@ public class MultiSelect extends FlexTable {
         thisList.remove(row);
         otherList.add(row);
         update();
+        setCurrent(row);
         return false;
       }
     }).mousedown(new Function() {
@@ -293,9 +294,10 @@ public class MultiSelect extends FlexTable {
   private void setCurrent(final String txt) {
     new Timer() {
       public void run() {
-        $(".gwtQuery-draggable", MultiSelect.this).removeClass("gq-MultiSelect-Item").each(new Function() {
+        $(".gwtQuery-draggable", MultiSelect.this).each(new Function() {
           public void f(Element e) {
             if (txt.equals($(e).text())) {
+              $(".gq-MultiSelect-Item", MultiSelect.this).removeClass("gq-MultiSelect-Item");
               $(e).addClass("gq-MultiSelect-Item").scrollIntoView(true);
               return;
             }
@@ -371,14 +373,26 @@ public class MultiSelect extends FlexTable {
   }
   
   public void selectItem(String v) {
+    selectItem(v, -1);
+  }
+  
+  public void selectItem(String v, int pos) {
     if (v == null || v.isEmpty() || getSelectedItems().contains(v)) {
       return;
     }
     if (!addItemsEnabled && !getUnselectedItems().contains(v)) {
       return;
     }
+    
     getUnselectedItems().remove(v);
-    getSelectedItems().add(0, v);
+    
+    int length = getSelectedItems().size();
+    if (pos < 0) {
+      pos = length - pos + 1;
+    }
+    pos = Math.max(Math.min(pos, length), 0);
+    getSelectedItems().add(pos, v);
+    
     setCurrent(v);
   }
   

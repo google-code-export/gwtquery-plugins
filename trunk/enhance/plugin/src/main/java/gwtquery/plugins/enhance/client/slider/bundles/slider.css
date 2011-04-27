@@ -18,11 +18,12 @@
   width: 11px;
   height: 21px;
   cursor: pointer;
+  z-index: 1;
 }
 .gwt-SliderBar-shell .gwt-SliderBar-tick {
-  top: 7pt;
+  top: 11pt;
   width: 1px;
-  height: 8pt;
+  height: 5pt;
   background: black;
   overflow: hidden;
 }
