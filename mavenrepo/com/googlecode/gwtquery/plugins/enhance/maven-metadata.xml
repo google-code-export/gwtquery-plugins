@@ -2,12 +2,11 @@
 <metadata>
   <groupId>com.googlecode.gwtquery.plugins</groupId>
   <artifactId>enhance</artifactId>
-  <version>1.0.0</version>
   <versioning>
     <versions>
       <version>1.0.0</version>
       <version>1.0.1-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20110321173843</lastUpdated>
+    <lastUpdated>20110427084842</lastUpdated>
   </versioning>
 </metadata>
