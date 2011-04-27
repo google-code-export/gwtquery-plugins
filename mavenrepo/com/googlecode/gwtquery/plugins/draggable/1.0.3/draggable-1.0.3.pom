@@ -13,7 +13,6 @@
 		<maven.compiler.target>1.5</maven.compiler.target>
 		<gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
 		<gwtversion>2.2.0</gwtversion>
-		<gCommonUiVersion>1.0.3</gCommonUiVersion>
 	</properties>
 
 	<repositories>
