@@ -15,7 +15,9 @@ The Draggable plugin enables draggable functionality on any DOM element and GWT 
 
 =Changelog=
 ----
-
+==v1.0.3==
+  * Compliant with first release of GwtQuery
+  * Remove dependency with CommoUi plugin
 ==v1.0.2==
   * Change release numbering
   * Chenges needed for droppable plugin
