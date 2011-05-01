@@ -20,7 +20,7 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +74,7 @@ public class SnapPlugin implements DraggablePlugin {
   }
 
   @SuppressWarnings("unchecked")
-  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler, Element draggableElement, GqEvent e) {
 
     List<SnapElement> snapElements = $(draggableElement).data(
         SNAP_ELEMENTS_KEY, ArrayList.class);
@@ -188,7 +188,7 @@ public class SnapPlugin implements DraggablePlugin {
   }
 
   public void onStart(DraggableHandler handler, Element draggableElement,
-      Event e) {
+      GqEvent e) {
     List<SnapElement> snapElements = new ArrayList<SnapElement>();
     GQuery snap = (handler.getOptions().getSnap_$() != null ? handler
         .getOptions().getSnap_$() : $(handler.getOptions().getSnap()));
@@ -204,7 +204,7 @@ public class SnapPlugin implements DraggablePlugin {
 
   }
   
-  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler handler, Element draggableElement, GqEvent e) {
     // nothing to do
   }
 

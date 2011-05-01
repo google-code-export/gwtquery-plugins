@@ -17,7 +17,7 @@ package gwtquery.plugins.draggable.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import java.util.Collection;
 
@@ -57,7 +57,7 @@ public class DragAndDropManager {
    * @param draggable
    * @param e
    */
-  public void drag(Element draggable, Event e) {
+  public void drag(Element draggable, GqEvent e) {
   }
 
   /**
@@ -67,7 +67,7 @@ public class DragAndDropManager {
    * @param e
    * @return
    */
-  public boolean drop(Element draggable, Event e) {
+  public boolean drop(Element draggable, GqEvent e) {
     return false;
   }
 
@@ -94,7 +94,7 @@ public class DragAndDropManager {
    * Method call at the begin of a drag operation to initialize all visible
    * droppables.
    */
-  public void initialize(Element draggable, Event e) {
+  public void initialize(Element draggable, GqEvent e) {
   }
 
   /**
