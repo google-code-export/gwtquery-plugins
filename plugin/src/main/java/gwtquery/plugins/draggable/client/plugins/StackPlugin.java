@@ -17,7 +17,7 @@ package gwtquery.plugins.draggable.client.plugins;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -59,10 +59,10 @@ public class StackPlugin implements DraggablePlugin {
     return options.getStack() != null && options.getStack().length() != 0;
   }
 
-  public void onDrag(DraggableHandler info, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler info, Element draggableElement, GqEvent e) {
   }
 
-  public void onStart(DraggableHandler info, Element draggableElement, Event e) {
+  public void onStart(DraggableHandler info, Element draggableElement, GqEvent e) {
 
     GQuery stackElements = info.getOptions().getStack();
     Element[] sortedElementArray = stackElements.elements();
@@ -84,7 +84,7 @@ public class StackPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler info, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler info, Element draggableElement, GqEvent e) {
   }
 
 }

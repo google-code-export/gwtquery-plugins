@@ -20,7 +20,7 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -45,11 +45,11 @@ public class ZIndexPlugin implements DraggablePlugin {
     return options.getZIndex() != null;
   }
 
-  public void onDrag(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onDrag(DraggableHandler handler, Element draggableElement, GqEvent e) {
   }
 
   public void onStart(DraggableHandler handler, Element draggableElement,
-      Event e) {
+      GqEvent e) {
     GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? $(draggableElement) :  handler.getHelper();
     if ($element == null || $element.length() == 0){
       return;
@@ -63,7 +63,7 @@ public class ZIndexPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler handler, Element draggableElement, Event e) {
+  public void onStop(DraggableHandler handler, Element draggableElement, GqEvent e) {
     //helper can be null if the draggableElement was unloaded and after loaded
     GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(draggableElement);
     if ($element == null || $element.length() == 0){

@@ -16,7 +16,7 @@
 package gwtquery.plugins.draggable.client.plugins;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -27,9 +27,9 @@ public interface DraggablePlugin {
 
   boolean hasToBeExecuted(DraggableOptions options);
 
-  void onDrag(DraggableHandler handler, Element draggableElement, Event e);
+  void onDrag(DraggableHandler handler, Element draggableElement, GqEvent e);
 
-  void onStart(DraggableHandler handler, Element draggableElement, Event e);
+  void onStart(DraggableHandler handler, Element draggableElement, GqEvent e);
 
-  void onStop(DraggableHandler handler, Element draggableElement, Event e);
+  void onStop(DraggableHandler handler, Element draggableElement, GqEvent e);
 }
