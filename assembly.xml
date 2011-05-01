@@ -2,15 +2,15 @@
   <formats>
     <format>zip</format>
   </formats>
-  <baseDirectory>/draggable-1.0.3</baseDirectory>
+  <baseDirectory>/draggable-1.0.4</baseDirectory>
   <files>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>plugin/target/draggable-plugin-1.0.3.jar</source>
+     <source>plugin/target/draggable-plugin-1.0.4.jar</source>
    </file>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>sample/target/draggable-sample-1.0.3.war</source>
+     <source>sample/target/draggable-sample-1.0.4.war</source>
    </file>
   </files>
   <fileSets>
