@@ -21,7 +21,7 @@ import static com.google.gwt.user.client.Event.ONMOUSEDOWN;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,7 +74,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
    * @param e
    */
   @Override
-  public void drag(Element draggable, Event e) {
+  public void drag(Element draggable, GqEvent e) {
     DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
     Collection<Element> droppables = getDroppablesByScope(draggableHandler
         .getOptions().getScope());
@@ -97,7 +97,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
    * @return
    */
   @Override
-  public boolean drop(Element draggable, Event e) {
+  public boolean drop(Element draggable, GqEvent e) {
     boolean dropped = false;
     DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
     Collection<Element> droppables = getDroppablesByScope(draggableHandler
@@ -137,7 +137,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
   }
 
   @Override
-  public void initialize(Element draggable, Event e) {
+  public void initialize(Element draggable, GqEvent e) {
     DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
     Collection<Element> droppables = getDroppablesByScope(draggableHandler
         .getOptions().getScope());

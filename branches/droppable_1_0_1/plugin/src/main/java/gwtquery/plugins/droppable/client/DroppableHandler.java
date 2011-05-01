@@ -24,7 +24,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
@@ -75,7 +75,7 @@ public class DroppableHandler {
 
   }
 
-  public void activate(Element droppable, Event e) {
+  public void activate(Element droppable, GqEvent e) {
     if (options.getActiveClass() != null) {
       droppable.addClassName(options.getActiveClass());
     }
@@ -90,7 +90,7 @@ public class DroppableHandler {
     }
   }
 
-  public void deactivate(Element droppable, Event e) {
+  public void deactivate(Element droppable, GqEvent e) {
     if (options.getActiveClass() != null) {
       droppable.removeClassName(options.getActiveClass());
     }
@@ -111,7 +111,7 @@ public class DroppableHandler {
 
   }
 
-  public void drag(Element droppable, Element draggable, Event e) {
+  public void drag(Element droppable, Element draggable, GqEvent e) {
     if (options.isDisabled() || greedyChild || !visible) {
       return;
     }
@@ -166,7 +166,7 @@ public class DroppableHandler {
 
   }
 
-  public boolean drop(Element droppable, Element draggable, Event e,
+  public boolean drop(Element droppable, Element draggable, GqEvent e,
       boolean alreadyDrop) {
     if (options == null) {
       return false;
@@ -231,7 +231,7 @@ public class DroppableHandler {
     return visible;
   }
 
-  public void out(Element droppable, Element currentDraggable, Event e) {
+  public void out(Element droppable, Element currentDraggable, GqEvent e) {
     if (currentDraggable == null || currentDraggable == droppable) {
       return;
     }
@@ -258,7 +258,7 @@ public class DroppableHandler {
     }
   }
 
-  public void over(Element droppable, Element currentDraggable, Event e) {
+  public void over(Element droppable, Element currentDraggable, GqEvent e) {
 
     if (currentDraggable == null || currentDraggable == droppable) {
       return;
