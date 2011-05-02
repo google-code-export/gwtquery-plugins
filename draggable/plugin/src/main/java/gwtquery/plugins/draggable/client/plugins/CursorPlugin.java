@@ -19,7 +19,7 @@ import static com.google.gwt.query.client.GQuery.$;
 import static com.google.gwt.query.client.GQuery.body;
 
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -45,12 +45,12 @@ public class CursorPlugin implements DraggablePlugin {
     return options.getCursor() != null;
   }
 
-  public void onDrag(DraggableHandler handler,  DragContext ctx, Event e) {
+  public void onDrag(DraggableHandler handler,  DragContext ctx, GqEvent e) {
     // nothing to do
   }
 
   public void onStart(DraggableHandler handler,  DragContext ctx,
-      Event e) {
+      GqEvent e) {
 
     if (ctx.getInitialDraggable() == ctx.getDraggable() && !isStarting){
       isStarting = true;
@@ -64,7 +64,7 @@ public class CursorPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
+  public void onStop(DraggableHandler handler,  DragContext ctx, GqEvent e) {
     if (ctx.getInitialDraggable() != ctx.getDraggable()){
       return;
     }

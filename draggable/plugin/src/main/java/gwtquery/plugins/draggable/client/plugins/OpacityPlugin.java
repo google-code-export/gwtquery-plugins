@@ -18,7 +18,7 @@ package gwtquery.plugins.draggable.client.plugins;
 import static com.google.gwt.query.client.GQuery.$;
 
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -45,12 +45,12 @@ public class OpacityPlugin implements DraggablePlugin {
     return opacity != null && opacity.floatValue() >= 0;
   }
 
-  public void onDrag(DraggableHandler handler, DragContext ctx, Event e) {
+  public void onDrag(DraggableHandler handler, DragContext ctx, GqEvent e) {
     // do nothing
   }
 
   public void onStart(DraggableHandler handler,  DragContext ctx,
-      Event e) {
+      GqEvent e) {
     Float opacity = handler.getOptions().getOpacity();
 
     GQuery $helper = handler.getHelper();
@@ -62,7 +62,7 @@ public class OpacityPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
+  public void onStop(DraggableHandler handler,  DragContext ctx, GqEvent e) {
     GQuery $element = (handler.getOptions().getHelperType() == HelperType.ORIGINAL) ? handler.getHelper() : $(ctx.getDraggable());
     if ($element == null || $element.length() == 0){
       return;

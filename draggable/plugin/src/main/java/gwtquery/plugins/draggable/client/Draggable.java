@@ -27,6 +27,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.MousePlugin;
 import com.google.gwt.query.client.plugins.Plugin;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class Draggable extends MousePlugin {
 
   private class DragCaller extends StartCaller {
 
-    public DragCaller(DragContext ctx, DraggableHandler dragHandler, Event e) {
+    public DragCaller(DragContext ctx, DraggableHandler dragHandler, GqEvent e) {
       super(ctx, dragHandler, e);
     }
 
@@ -86,9 +87,9 @@ public class Draggable extends MousePlugin {
   private class StartCaller implements PluginCaller {
     protected DragContext ctx;
     protected DraggableHandler dragHandler;
-    protected Event e;
+    protected GqEvent e;
 
-    public StartCaller(DragContext ctx, DraggableHandler dragHandler, Event e) {
+    public StartCaller(DragContext ctx, DraggableHandler dragHandler, GqEvent e) {
       this.ctx = ctx;
       this.dragHandler = dragHandler;
       this.e = e;
@@ -101,7 +102,7 @@ public class Draggable extends MousePlugin {
 
   private class StopCaller extends StartCaller {
 
-    public StopCaller(DragContext ctx, DraggableHandler dragHandler, Event e) {
+    public StopCaller(DragContext ctx, DraggableHandler dragHandler, GqEvent e) {
       super(ctx, dragHandler, e);
     }
 
@@ -293,7 +294,7 @@ public class Draggable extends MousePlugin {
   }
 
   @Override
-  protected boolean mouseCapture(Element draggable, Event event) {
+  protected boolean mouseCapture(Element draggable, GqEvent event) {
 
     DraggableHandler handler = $(draggable).data(DRAGGABLE_HANDLER_KEY,
         DraggableHandler.class);
@@ -303,7 +304,7 @@ public class Draggable extends MousePlugin {
   }
 
   @Override
-  protected boolean mouseClick(Element element, Event event) {
+  protected boolean mouseClick(Element element, GqEvent event) {
     // react on click event only if no metakey is pressed, if no drag occurs and
     // if more than one element are selected
 
@@ -321,7 +322,7 @@ public class Draggable extends MousePlugin {
   }
 
   @Override
-  protected boolean mouseDown(Element draggable, Event event) {
+  protected boolean mouseDown(Element draggable, GqEvent event) {
 
     DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
     DraggableOptions options = dragHandler.getOptions();
@@ -353,7 +354,7 @@ public class Draggable extends MousePlugin {
   }
 
   @Override
-  protected boolean mouseDrag(Element currentDraggable, Event event) {
+  protected boolean mouseDrag(Element currentDraggable, GqEvent event) {
     dragStart = true;
 
     boolean result = false;
@@ -376,7 +377,7 @@ public class Draggable extends MousePlugin {
   }
 
   @Override
-  protected boolean mouseStart(Element currentDraggable, Event event) {
+  protected boolean mouseStart(Element currentDraggable, GqEvent event) {
 
     boolean result = false;
 
@@ -431,7 +432,7 @@ public class Draggable extends MousePlugin {
   }
 
   @Override
-  protected boolean mouseStop(Element initialDraggable, final Event event) {
+  protected boolean mouseStop(Element initialDraggable, final GqEvent event) {
     boolean result = false;
 
     DragContext ctx = new DragContext(initialDraggable, initialDraggable,
@@ -497,7 +498,7 @@ public class Draggable extends MousePlugin {
     return handler != null ? handler.getOptions() : null;
   }
 
-  private boolean isHandleClicked(Element draggable, final Event event) {
+  private boolean isHandleClicked(Element draggable, final GqEvent event) {
     DraggableOptions options = getOptions(draggable);
     // if no handle or if specified handle is not inside the draggable element,
     // continue
@@ -521,7 +522,7 @@ public class Draggable extends MousePlugin {
    * implementation of mouse drag
    */
   private boolean mouseDragImpl(DragContext ctx, DraggableHandler dragHandler,
-      Event event, boolean noPropagation) {
+      GqEvent event, boolean noPropagation) {
     Element draggable = ctx.getDraggable();
 
     dragHandler.regeneratePositions(event);
@@ -553,7 +554,7 @@ public class Draggable extends MousePlugin {
     return false;
   }
 
-  private boolean mouseStartImpl(final DragContext ctx, final Event event) {
+  private boolean mouseStartImpl(final DragContext ctx, final GqEvent event) {
 
     Element draggable = ctx.getDraggable();
     final DraggableHandler dragHandler = DraggableHandler.getInstance(draggable);
@@ -609,7 +610,7 @@ public class Draggable extends MousePlugin {
     return true;
   }
 
-  private boolean mouseStopImpl(final DragContext ctx, final Event event) {
+  private boolean mouseStopImpl(final DragContext ctx, final GqEvent event) {
     final Element draggable = ctx.getDraggable();
     final DraggableHandler handler = getHandler(draggable);
     final DraggableOptions options = handler.getOptions();
@@ -642,7 +643,7 @@ public class Draggable extends MousePlugin {
     return false;
   }
 
-  private boolean isDropped(DragContext ctx, Event event) {
+  private boolean isDropped(DragContext ctx, GqEvent event) {
 
     boolean dropped = false;
 

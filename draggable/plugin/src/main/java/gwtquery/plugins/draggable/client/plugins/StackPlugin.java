@@ -17,14 +17,14 @@ package gwtquery.plugins.draggable.client.plugins;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
+
+import java.util.Arrays;
+import java.util.Comparator;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.events.DragContext;
-
-import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * This add-on manage the z-index for the helper while being dragged.
@@ -60,10 +60,10 @@ public class StackPlugin implements DraggablePlugin {
     return options.getStack() != null && options.getStack().length() != 0;
   }
 
-  public void onDrag(DraggableHandler info,  DragContext ctx, Event e) {
+  public void onDrag(DraggableHandler info,  DragContext ctx, GqEvent e) {
   }
 
-  public void onStart(DraggableHandler info,  DragContext ctx, Event e) {
+  public void onStart(DraggableHandler info,  DragContext ctx, GqEvent e) {
 
     GQuery stackElements = info.getOptions().getStack();
     Element[] sortedElementArray = stackElements.elements();
@@ -85,7 +85,7 @@ public class StackPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler info, DragContext ctx, Event e) {
+  public void onStop(DraggableHandler info, DragContext ctx, GqEvent e) {
   }
 
 }

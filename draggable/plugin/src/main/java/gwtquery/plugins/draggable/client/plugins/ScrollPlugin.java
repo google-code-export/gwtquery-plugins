@@ -21,7 +21,7 @@ import static com.google.gwt.query.client.GQuery.document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 import com.google.gwt.user.client.Window;
 
 import gwtquery.plugins.draggable.client.DragAndDropManager;
@@ -48,7 +48,7 @@ public class ScrollPlugin implements DraggablePlugin {
     return options.isScroll();
   }
 
-  public void onDrag(DraggableHandler handler,  DragContext ctx, Event e) {
+  public void onDrag(DraggableHandler handler,  DragContext ctx, GqEvent e) {
     DraggableOptions options = handler.getOptions();
     Element draggableElement = ctx.getDraggable();
     GQuery scrollParent = handler.getHelperScrollParent();
@@ -130,7 +130,7 @@ public class ScrollPlugin implements DraggablePlugin {
   }
 
   public void onStart(DraggableHandler handler,  DragContext ctx,
-      Event e) {
+      GqEvent e) {
 
     GQuery scrollParent = handler.getHelperScrollParent();
     Element scrollParentElement = scrollParent.get(0);
@@ -142,7 +142,7 @@ public class ScrollPlugin implements DraggablePlugin {
     }
   }
 
-  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
+  public void onStop(DraggableHandler handler,  DragContext ctx, GqEvent e) {
     $(ctx.getDraggable()).removeData(OVERFLOW_OFFSET_KEY);
 
   }

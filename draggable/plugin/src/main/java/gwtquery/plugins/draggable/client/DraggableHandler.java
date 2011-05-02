@@ -29,8 +29,8 @@ import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.Effects;
 import com.google.gwt.query.client.plugins.UiPlugin;
 import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
 import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.Easing;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 import com.google.gwt.user.client.Window;
 
 import static gwtquery.plugins.draggable.client.Draggable.DRAGGABLE_HANDLER_KEY;
@@ -178,7 +178,7 @@ public class DraggableHandler {
     return relativeOffset;
   }
 
-  public void initialize(Element element, Event e) {
+  public void initialize(Element element, GqEvent e) {
 
     helperCssPosition = helper.css("position");
     helperScrollParent = helper.as(UiPlugin.GQueryUi).scrollParent();
@@ -214,7 +214,7 @@ public class DraggableHandler {
 
   }
 
-  private Offset calculateOriginalPosition(Element element, Event e) {
+  private Offset calculateOriginalPosition(Element element, GqEvent e) {
     if (HelperType.ORIGINAL == options.getHelperType()) {
       return impl.getCssPosition(element);
     } else {
@@ -241,7 +241,7 @@ public class DraggableHandler {
     }
   }
 
-  public void regeneratePositions(Event e) {
+  public void regeneratePositions(GqEvent e) {
     position = generatePosition(e, false);
     offset = convertPositionTo(true, position);
     absPosition = offset.add(margin.left, margin.top);
@@ -302,7 +302,7 @@ public class DraggableHandler {
 
   }
 
-  void createHelper(Element draggable, Event e) {
+  void createHelper(Element draggable, GqEvent e) {
     helper = options.getHelperType().createHelper(draggable,
         options.getHelper());
     if (!isElementAttached(helper)) {
@@ -419,7 +419,7 @@ public class DraggableHandler {
     return new Offset(0, 0);
   }
 
-  private Offset generatePosition(Event e, boolean initPosition) {
+  private Offset generatePosition(GqEvent e, boolean initPosition) {
 
     GQuery scroll = getScrollParent();
     boolean scrollIsRootNode = isRootNode(scroll.get(0));
