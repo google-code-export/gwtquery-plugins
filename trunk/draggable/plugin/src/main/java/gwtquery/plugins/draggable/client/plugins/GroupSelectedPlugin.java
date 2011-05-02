@@ -20,7 +20,7 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -62,10 +62,10 @@ public class GroupSelectedPlugin implements DraggablePlugin {
     return options.getGroupingMode() != null;
   }
 
-  public void onDrag(DraggableHandler handler, DragContext ctx, Event e) {
+  public void onDrag(DraggableHandler handler, DragContext ctx, GqEvent e) {
   }
 
-  public void onStart(DraggableHandler handler, DragContext ctx, Event e) {
+  public void onStart(DraggableHandler handler, DragContext ctx, GqEvent e) {
 
     Element initialDraggable = ctx.getInitialDraggable();
 
@@ -153,7 +153,7 @@ public class GroupSelectedPlugin implements DraggablePlugin {
 
   }
 
-  public void onStop(DraggableHandler handler, DragContext ctx, Event e) {
+  public void onStop(DraggableHandler handler, DragContext ctx, GqEvent e) {
     Element initialDraggable = ctx.getInitialDraggable();
 
     if (initialDraggable == ctx.getDraggable()) {

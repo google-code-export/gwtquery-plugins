@@ -17,11 +17,11 @@ package gwtquery.plugins.draggable.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
-
-import gwtquery.plugins.draggable.client.events.DragContext;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 import java.util.Collection;
+
+import gwtquery.plugins.draggable.client.events.DragContext;
 
 /**
  * The goal of this class is to manage the interactions between draggable and droppable objects.
@@ -56,7 +56,7 @@ public class DragAndDropManager {
    * @param draggable
    * @param e
    */
-  public void drag(DragContext ctx, Event e) {
+  public void drag(DragContext ctx, GqEvent e) {
   }
 
 
@@ -66,7 +66,7 @@ public class DragAndDropManager {
    * @param e
    * @return
    */
-  public boolean drop(DragContext ctx, Event e) {
+  public boolean drop(DragContext ctx, GqEvent e) {
     return false;
   }
 
@@ -80,7 +80,7 @@ public class DragAndDropManager {
     return null;
   }
   
-  public void initialize(DragContext ctx, Event e) {
+  public void initialize(DragContext ctx, GqEvent e) {
   }
 
 

@@ -20,15 +20,15 @@ import static com.google.gwt.query.client.GQuery.$;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
 import gwtquery.plugins.draggable.client.DraggableOptions.SnapMode;
 import gwtquery.plugins.draggable.client.events.DragContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Add-on allow the draggable to snap other elements
@@ -75,7 +75,7 @@ public class SnapPlugin implements DraggablePlugin {
   }
 
   @SuppressWarnings("unchecked")
-  public void onDrag(DraggableHandler handler,  DragContext ctx, Event e) {
+  public void onDrag(DraggableHandler handler,  DragContext ctx, GqEvent e) {
 
     List<SnapElement> snapElements = $(ctx.getDraggable()).data(
         SNAP_ELEMENTS_KEY, ArrayList.class);
@@ -189,7 +189,7 @@ public class SnapPlugin implements DraggablePlugin {
   }
 
   public void onStart(DraggableHandler handler,  DragContext ctx,
-      Event e) {
+      GqEvent e) {
     Element draggableElement = ctx.getDraggable();
     List<SnapElement> snapElements = new ArrayList<SnapElement>();
     GQuery snap = (handler.getOptions().getSnap_$() != null ? handler
@@ -206,7 +206,7 @@ public class SnapPlugin implements DraggablePlugin {
 
   }
   
-  public void onStop(DraggableHandler handler,  DragContext ctx, Event e) {
+  public void onStop(DraggableHandler handler,  DragContext ctx, GqEvent e) {
     // nothing to do
   }
 
