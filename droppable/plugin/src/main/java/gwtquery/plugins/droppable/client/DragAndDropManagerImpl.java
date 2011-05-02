@@ -21,7 +21,12 @@ import static com.google.gwt.user.client.Event.ONMOUSEDOWN;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import gwtquery.plugins.draggable.client.DragAndDropManager;
 import gwtquery.plugins.draggable.client.DraggableHandler;
@@ -29,11 +34,6 @@ import gwtquery.plugins.draggable.client.events.DragContext;
 import gwtquery.plugins.droppable.client.Droppable.CssClassNames;
 import gwtquery.plugins.droppable.client.DroppableOptions.AcceptFunction;
 import gwtquery.plugins.droppable.client.events.DragAndDropContext;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Implementation of the {@link DragAndDropManager} for drop operations
@@ -74,7 +74,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
    * @param e
    */
   @Override
-  public void drag(DragContext ctx, Event e) {
+  public void drag(DragContext ctx, GqEvent e) {
     Element draggable = ctx.getDraggable();
     DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
     Collection<Element> droppables = getDroppablesByScope(draggableHandler
@@ -99,7 +99,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
    * @return
    */
   @Override
-  public boolean drop(DragContext ctx, Event e) {
+  public boolean drop(DragContext ctx, GqEvent e) {
     Element draggable = ctx.getDraggable();
     boolean dropped = false;
     DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
@@ -132,7 +132,7 @@ public class DragAndDropManagerImpl extends DragAndDropManager {
   }
 
   @Override
-  public void initialize(DragContext ctx, Event e) {
+  public void initialize(DragContext ctx, GqEvent e) {
     Element draggable = ctx.getDraggable();
     DraggableHandler draggableHandler = DraggableHandler.getInstance(draggable);
     Collection<Element> droppables = getDroppablesByScope(draggableHandler

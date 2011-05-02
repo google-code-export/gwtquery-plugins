@@ -16,9 +16,7 @@
 package gwtquery.plugins.droppable.client;
 
 import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.Element;
@@ -26,7 +24,9 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.GQuery.Offset;
 import com.google.gwt.query.client.plugins.UiPlugin.Dimension;
-import com.google.gwt.query.client.plugins.UiPlugin.Event;
+import com.google.gwt.query.client.plugins.events.GqEvent;
+
+import static gwtquery.plugins.droppable.client.Droppable.DROPPABLE_HANDLER_KEY;
 
 import gwtquery.plugins.draggable.client.DraggableHandler;
 import gwtquery.plugins.draggable.client.DraggableOptions;
@@ -74,7 +74,7 @@ public class DroppableHandler {
 
   }
 
-  public void activate(DragAndDropContext ctx, Event e) {
+  public void activate(DragAndDropContext ctx, GqEvent e) {
     Element droppable = ctx.getDroppable();
 
     if (options.getActiveClass() != null) {
@@ -92,7 +92,7 @@ public class DroppableHandler {
 
   }
 
-  public void deactivate(DragAndDropContext ctx, Event e) {
+  public void deactivate(DragAndDropContext ctx, GqEvent e) {
     Element droppable = ctx.getDroppable();
 
     if (options.getActiveClass() != null) {
@@ -114,7 +114,7 @@ public class DroppableHandler {
 
   }
 
-  public void drag(DragAndDropContext ctx, Event e) {
+  public void drag(DragAndDropContext ctx, GqEvent e) {
     Element droppable = ctx.getDroppable();
     Element draggable = ctx.getDraggable();
 
@@ -174,7 +174,7 @@ public class DroppableHandler {
 
   }
 
-  public boolean drop(final DragAndDropContext ctx, boolean alreadyDrop, Event e) {
+  public boolean drop(final DragAndDropContext ctx, boolean alreadyDrop, GqEvent e) {
 
     Element draggable = ctx.getDraggable();
 
@@ -237,7 +237,7 @@ public class DroppableHandler {
     return visible;
   }
 
-  public void out(DragAndDropContext ctx, Event e) {
+  public void out(DragAndDropContext ctx, GqEvent e) {
     Element droppable = ctx.getDroppable();
     Element currentDraggable = ctx.getDraggable();
 
@@ -269,7 +269,7 @@ public class DroppableHandler {
     }
   }
 
-  public void over(DragAndDropContext ctx, Event e) {
+  public void over(DragAndDropContext ctx, GqEvent e) {
     Element droppable = ctx.getDroppable();
     Element currentDraggable = ctx.getDraggable();
 
