@@ -34,7 +34,7 @@
         <dependency>
             <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
-            <classifier>2.2.0</classifier>
+            <!--  classifier>2.2.0</classifier-->
             <scope>provided</scope>
             <version>${gQueryVersion}</version>
         </dependency>
