@@ -1,4 +1,0 @@
-<module>
-    <inherits name='com.google.gwt.query.Query'/>
-    <stylesheet src='ratings/ratings.css'/>
-</module>
