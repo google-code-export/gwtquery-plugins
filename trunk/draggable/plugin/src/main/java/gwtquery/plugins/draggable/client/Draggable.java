@@ -718,7 +718,6 @@ public class Draggable extends MousePlugin {
   }
 
   private void unselectAll() {
-    GWT.log("unselectall()");
     // TODO concurent modification list !
     while (selectedDraggables.size() != 0) {
       unselect(selectedDraggables.get(0));
