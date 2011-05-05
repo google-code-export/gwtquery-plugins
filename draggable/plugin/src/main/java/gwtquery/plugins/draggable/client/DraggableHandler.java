@@ -232,6 +232,9 @@ public class DraggableHandler {
    *          care to the axis options
    */
   public void moveHelper(boolean firstTime) {
+    if (helper == null || helper.size() == 0) {
+      return;
+    }
     AxisOption axis = options.getAxis();
     if (AxisOption.NONE == axis || AxisOption.X_AXIS == axis || firstTime) {
       helper.get(0).getStyle().setLeft(position.left, Unit.PX);
