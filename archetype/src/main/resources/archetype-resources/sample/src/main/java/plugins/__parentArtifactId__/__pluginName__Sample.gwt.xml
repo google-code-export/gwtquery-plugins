@@ -1,8 +1,0 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
-<module rename-to='${pluginName}'>
-    <inherits name='${package}.plugins.${parentArtifactId}.${pluginName}'/>
-    <entry-point class='${package}.plugins.${parentArtifactId}.client.${pluginName}Sample'/>
-</module>
-    

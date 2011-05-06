@@ -1,6 +1,0 @@
-<module rename-to="EnhanceGwt">
-    <inherits name='gwtquery.plugins.enhance.Enhance'/>
-    <inherits name='com.google.gwt.user.theme.chrome.Chrome' />
-    <entry-point class='gwtquery.plugins.enhance.client.EnhanceGwtSample'/>
-</module>
-    
