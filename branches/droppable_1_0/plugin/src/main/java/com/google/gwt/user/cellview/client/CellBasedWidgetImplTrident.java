@@ -29,7 +29,7 @@ import java.util.Set;
  *  
  * IE specified Impl used by cell based widgets.
  * 
- * last revision : r9620
+ * last revision : r9985
  * 
  */
 
@@ -376,8 +376,9 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
    * @return the tab index, or -1 if not specified
    */
   private native int getTabIndexIfSpecified(Element elem) /*-{
-    return elem.getAttributeNode('tabIndex').specified ? elem.tabIndex : -1;
-  }-*/;
+  var attrNode = elem.getAttributeNode('tabIndex');
+  return (attrNode != null && attrNode.specified) ? elem.tabIndex : -1;
+}-*/;
 
 
   /**
