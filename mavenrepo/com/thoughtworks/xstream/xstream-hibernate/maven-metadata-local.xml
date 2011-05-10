@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.thoughtworks.xstream</groupId>
+  <artifactId>xstream-hibernate</artifactId>
+  <versioning>
+    <versions>
+      <version>1.4-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20110510040621</lastUpdated>
+  </versioning>
+</metadata>
