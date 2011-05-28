@@ -380,12 +380,6 @@ public class DroppableWidget<T extends Widget> extends Composite implements
   @Override
   protected void onLoad() {
     super.onLoad();
-    // force using of EventListener from GQuery !
-    EventsListener gQueryEventListener = EventsListener
-        .getInstance(getElement());
-    if (DOM.getEventListener(getElement()) != gQueryEventListener) {
-      DOM.setEventListener(getElement(), gQueryEventListener);
-    }
     $(getElement()).as(Droppable).droppable(options, ensureDropHandlers())
         .data(DROPPABLE_WIDGET_KEY, this);
   }
