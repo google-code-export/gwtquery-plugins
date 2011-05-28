@@ -91,6 +91,7 @@
 			<groupId>com.googlecode.gwtquery</groupId>
 			<artifactId>gwtquery</artifactId>
 			<version>${gQueryVersion}</version>
+			<classifier>${gwtversion}</classifier>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
