@@ -12,7 +12,7 @@ This article explains how to use this API in your GWT project.
 !GwtQuery provides a bundle containing everything needed to use gwtquery and its draggable and dropable plugin.
 
 
-If you don't use maven, you will have to download either the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.2.jar gquery-dnd-bundle-1.0.2 jar file] for GWT 2.1.X or the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.3.jar gquery-dnd-bundle-1.0.3 jar file] for GWT 2.2 and include it in the classpath of you project.
+If you don't use maven, you will have to download either the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.2.jar gquery-dnd-bundle-1.0.2 jar file] for GWT 2.1.X or the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.3.jar gquery-dnd-bundle-1.0.3 jar file] for GWT 2.2  or the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.4.jar gquery-dnd-bundle-1.0.4 jar file] for GWT 2.3 and include it in the classpath of you project.
 
 If you use maven, you have to add these blocks to your pom.xml
 {{{
@@ -31,6 +31,8 @@ If you use maven, you have to add these blocks to your pom.xml
             <version>1.0.2</version>
             <!-- for gwt 2.2 -->
             <version>1.0.3</version>
+           <!-- for gwt 2.3 -->
+            <version>1.0.4</version>
             <scope>provided</scope>
         </dependency>
    </dependencies>
