@@ -4,5 +4,9 @@
     <inherits name='gwtquery.plugins.draggable.Draggable' />
     <inherits name='gwtquery.plugins.droppable.Droppable' />
     <inherits name='net.auroris.ColorPicker.ColorPicker' />
+    <replace-with class="gwtquery.plugins.draggable.client.impl.DraggableHandlerImplIE8">
+      <when-type-is class="gwtquery.plugins.draggable.client.impl.DraggableHandlerImpl" />
+      <when-property-is name="user.agent" value="ie9" />
+    </replace-with>
 </module>
     
