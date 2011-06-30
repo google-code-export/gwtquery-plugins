@@ -6,13 +6,14 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>enhance</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-2-SNAPSHOT</version>
 
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>
       <maven.compiler.target>1.5</maven.compiler.target>
-      <gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
-      <gwtversion>2.1.1</gwtversion>
+      <gQueryVersion>1.0.0</gQueryVersion>
+      <gQueryClassifier>2.3.0</gQueryClassifier>
+      <gwtversion>2.3.0</gwtversion>
       <gwtmaven>2.1.0-1</gwtmaven>
       <gwtcolorpicker>2.1</gwtcolorpicker>
     </properties>
@@ -81,36 +82,32 @@
             <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
             <version>${gQueryVersion}</version>
+            <classifier>${gQueryClassifier}</classifier>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>net.auroris</groupId>
-            <artifactId>gwt-colorpicker</artifactId>
-            <version>${gwtcolorpicker}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.gwtquery.plugins</groupId>
-            <artifactId>draggable-plugin</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.gwtquery.plugins</groupId>
-            <artifactId>droppable-plugin</artifactId>
-            <version>1.1.0-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>        
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
             <version>${gwtversion}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-dev</artifactId>
             <version>${gwtversion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <classifier>sources</classifier>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -137,6 +134,24 @@
           <url>svn:https://gwtquery-plugins.googlecode.com/svn/mavenrepo/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <profiles>
+        <profile>
+           <id>local</id>
+           <properties>
+             <repoId>local mavenrepo</repoId>
+             <repoUrl>file://mavenrepo</repoUrl>
+           </properties>
+           <distributionManagement>
+             <snapshotRepository>
+               <uniqueVersion>false</uniqueVersion>
+               <id>local mavenrepo</id>
+               <url>file://mavenrepo</url>
+             </snapshotRepository>
+           </distributionManagement>
+        </profile>
+    </profiles>
+
   <modules>
     <module>plugin</module>
     <module>sample</module>
