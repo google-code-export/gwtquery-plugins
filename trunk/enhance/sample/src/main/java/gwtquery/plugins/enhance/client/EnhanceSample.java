@@ -3,6 +3,7 @@ package gwtquery.plugins.enhance.client;
 import static com.google.gwt.query.client.GQuery.$;
 import static gwtquery.plugins.enhance.client.Enhance.Enhance;
 import gwtquery.plugins.enhance.client.colorpicker.ColorPickerFactory.ColorPickerType;
+import gwtquery.plugins.enhance.client.multiselect.MultiSelect;
 import gwtquery.plugins.enhance.client.slider.SliderBar;
 import gwtquery.plugins.enhance.client.slider.SliderBar.LabelFormatter;
 
@@ -10,6 +11,10 @@ import java.util.Arrays;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.widgets.WidgetInitializer;
 import com.google.gwt.user.client.Window;
@@ -33,6 +38,11 @@ public class EnhanceSample implements EntryPoint {
             w.setLabelFormatter(new LabelFormatter() {
               public String formatLabel(SliderBar slider, double value) {
                 return value == 0 ? "" : (int)value + " days";
+              }
+            });
+            w.addValueChangeHandler(new ValueChangeHandler<Double>() {
+              public void onValueChange(ValueChangeEvent<Double> event) {
+                System.out.println("Changed -> " + event.getValue());
               }
             });
           }
