@@ -22,6 +22,7 @@ import com.google.gwt.dom.client.SelectElement;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.query.client.Function;
@@ -121,6 +122,7 @@ public class MultiSelect extends FlexTable {
         setText(0, 0, name);
       }
     }
+
     update();
   }
   
@@ -231,7 +233,7 @@ public class MultiSelect extends FlexTable {
   }
   
   private Widget createList(final int ord) {
-    DragAndDropCellList<String> cellList = celllists.get(ord % 2);
+    final DragAndDropCellList<String> cellList = celllists.get(ord % 2);
     providers.get(ord % 2).addDataDisplay(cellList);
     
     cellList.setCellDraggableOnly();
@@ -269,24 +271,46 @@ public class MultiSelect extends FlexTable {
       }
     });
     
-    $(cellList).dblclick(new Function(){
-      public boolean f(Event ev) {
-        Element e = ev.getEventTarget().cast();
-        String row = $(e).text().trim();
-        thisList.remove(row);
-        otherList.add(row);
-        update();
-        setCurrent(row);
-        return false;
+    new Timer() {
+      public void run() {
+        final Function f = new Function(){
+          public boolean f(Event ev) {
+            Element e = ev.getEventTarget().cast();
+            String row = $(e).text().trim();
+            thisList.remove(row);
+            otherList.add(row);
+            update();
+            setCurrent(row);
+            return false;
+          }
+        };
+        $(cellList).dblclick(f).mousedown( new Function() {
+          public boolean f(Event ev) {
+            Element e = ev.getEventTarget().cast();
+            setCurrent($(e).text());
+            return false;
+          }
+        }).keypress(new Function(){
+          public boolean f(Event e) {
+            if (e.getKeyCode() == KeyCodes.KEY_ENTER ||
+                e.getCharCode() == 32) {
+              f.f(e);
+            }
+            return false;
+          };
+        }).mouseover(new Function() {
+          public boolean f(Event e) {
+            Element r = e.getEventTarget().cast();
+            if ($(r).hasClass("gwtQuery-draggable")) {
+              $(".gq-MultiSelect-Item", cellList).removeClass("gq-MultiSelect-Item");
+              $(r).addClass("gq-MultiSelect-Item");
+            }
+            return false;
+          };
+        });
       }
-    }).mousedown(new Function() {
-      public boolean f(Event ev) {
-        Element e = ev.getEventTarget().cast();
-        setCurrent($(e).text());
-        return false;
-      }
-    });
-
+    }.schedule(1000);
+    
     cellList.setHeight(visibleItems + "em");
     return dropable;
   }

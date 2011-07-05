@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -32,7 +33,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.KeyboardListener;
 
 /**
  * 
@@ -72,6 +72,8 @@ import com.google.gwt.user.client.ui.KeyboardListener;
  */
 public class SliderBar extends FocusPanel implements ResizableWidget,
 HasValueChangeHandlers<Double> {
+  private static final int TIMERS_INTERVAL = 250;
+
   /**
    * The timer used to continue to shift the knob as the user holds down one of
    * the left/right arrow keys. Only IE auto-repeats, so we just keep catching
@@ -157,7 +159,7 @@ HasValueChangeHandlers<Double> {
   /**
    * The change listener.
    */
-  ValueChangeHandler<Double> changeHandler = null;
+  List<ValueChangeHandler<Double>> changeHandlers = null;
 
   /**
    * The current value.
@@ -310,11 +312,14 @@ HasValueChangeHandlers<Double> {
   }
 
   public HandlerRegistration addValueChangeHandler(
-      ValueChangeHandler<Double> handler) {
-    changeHandler = handler;
+      final ValueChangeHandler<Double> handler) {
+    if (changeHandlers == null) {
+      changeHandlers = new ArrayList<ValueChangeHandler<Double>>();
+    }
+    changeHandlers.add(handler);
     return new HandlerRegistration() {
       public void removeHandler() {
-        changeHandler = null;
+        changeHandlers.remove(handler);
       }
     };
   }
@@ -452,22 +457,22 @@ HasValueChangeHandlers<Double> {
             }
 
             switch (DOM.eventGetKeyCode(event)) {
-              case KeyboardListener.KEY_HOME:
+              case KeyCodes.KEY_HOME:
                 DOM.eventPreventDefault(event);
                 setCurrentValue(minValue);
                 break;
-              case KeyboardListener.KEY_END:
+              case KeyCodes.KEY_END:
                 DOM.eventPreventDefault(event);
                 setCurrentValue(maxValue);
                 break;
-              case KeyboardListener.KEY_LEFT:
+              case KeyCodes.KEY_LEFT:
                 DOM.eventPreventDefault(event);
                 slidingKeyboard = true;
                 startSliding(false, true);
                 shiftLeft(multiplier);
-                keyTimer.schedule(400, false, multiplier);
+                keyTimer.schedule(TIMERS_INTERVAL, false, multiplier);
                 break;
-              case KeyboardListener.KEY_RIGHT:
+              case KeyCodes.KEY_RIGHT:
                 DOM.eventPreventDefault(event);
                 slidingKeyboard = true;
                 startSliding(false, true);
@@ -487,6 +492,7 @@ HasValueChangeHandlers<Double> {
           if (slidingKeyboard) {
             slidingKeyboard = false;
             stopSliding(true, true);
+            changeTimer.run();
           }
           break;
 
@@ -503,8 +509,8 @@ HasValueChangeHandlers<Double> {
           if (slidingMouse) {
             DOM.releaseCapture(getElement());
             slidingMouse = false;
-            slideKnob(event);
             stopSliding(true, true);
+            slideKnob(event);
           }
           break;
         case Event.ONMOUSEMOVE:
@@ -555,6 +561,15 @@ HasValueChangeHandlers<Double> {
     setCurrentValue(curValue, true);
   }
 
+  private Timer changeTimer = new Timer() {
+    public void run() {
+      cancel();
+      for (ValueChangeHandler<Double> h : changeHandlers) {
+        h.onValueChange(new ValueChangeEvent<Double>(getCurrentValue()) {});
+      }
+    }
+  };
+  
   /**
    * Set the current value and optionally fire the onValueChange event.
    * 
@@ -563,22 +578,27 @@ HasValueChangeHandlers<Double> {
    */
   public void setCurrentValue(double curValue, boolean fireEvent) {
     // Confine the value to the range
-    this.curValue = Math.max(minValue, Math.min(maxValue, curValue));
-    double remainder = (this.curValue - minValue) % stepSize;
-    this.curValue -= remainder;
+    double newValue = Math.max(minValue, Math.min(maxValue, curValue));
+    double remainder = (newValue - minValue) % stepSize;
+    newValue -= remainder;
 
     // Go to next step if more than halfway there
     if ((remainder > (stepSize / 2))
-        && ((this.curValue + stepSize) <= maxValue)) {
-      this.curValue += stepSize;
+        && ((newValue + stepSize) <= maxValue)) {
+      newValue += stepSize;
     }
-
-    // Redraw the knob
-    drawKnob();
-
-    // Fire the onValueChange event
-    if (fireEvent && (changeHandler != null)) {
-      changeHandler.onValueChange(new ValueChangeEvent<Double>(getCurrentValue()) {});
+    
+    if (this.curValue != newValue) {
+      this.curValue = newValue;
+      // Redraw the knob
+      drawKnob();
+      
+      // Fire the onValueChange event
+      if (fireEvent && changeHandlers != null && changeHandlers.size() > 0) {
+        // If the user moves fast the slider we do not run the change handler
+        // until she stops.
+        changeTimer.schedule(TIMERS_INTERVAL);
+      }
     }
   }
 
@@ -879,6 +899,9 @@ HasValueChangeHandlers<Double> {
       for (int i = (numTicks + 1); i < tickElements.size(); i++) {
         DOM.setStyleAttribute(tickElements.get(i), "display", "none");
       }
+      
+      // Reattach the image to avoid using zindex
+      DOM.appendChild(getElement(), knobImage.getElement());
     } else { // Hide all ticks
       for (Element elem : tickElements) {
         DOM.setStyleAttribute(elem, "display", "none");
@@ -902,6 +925,7 @@ HasValueChangeHandlers<Double> {
   private void resetCurrentValue() {
     setCurrentValue(getCurrentValue());
   }
+  
 
   /**
    * Slide the knob to a new location.

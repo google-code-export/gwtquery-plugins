@@ -6,7 +6,7 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>enhance</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-2-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>
@@ -143,6 +143,11 @@
              <repoUrl>file://mavenrepo</repoUrl>
            </properties>
            <distributionManagement>
+             <repository>
+               <uniqueVersion>false</uniqueVersion>
+               <id>local mavenrepo</id>
+               <url>file://mavenrepo</url>
+             </repository>
              <snapshotRepository>
                <uniqueVersion>false</uniqueVersion>
                <id>local mavenrepo</id>

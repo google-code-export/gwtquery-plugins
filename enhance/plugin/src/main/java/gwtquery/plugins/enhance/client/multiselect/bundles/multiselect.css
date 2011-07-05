@@ -38,6 +38,7 @@
 }
 
 .gq-MultiSelect-Item {
-  background-color: #f2f2f2;
+/*   background-color: #f2f2f2; */
+ font-weight: bold;
 }
 
