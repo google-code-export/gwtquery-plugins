@@ -308,7 +308,7 @@ HasValueChangeHandlers<Double> {
     DOM.setStyleAttribute(knobElement, "position", "absolute");
     DOM.setElementProperty(knobElement, "className", "gwt-SliderBar-knob");
 
-    sinkEvents(Event.MOUSEEVENTS | Event.KEYEVENTS | Event.FOCUSEVENTS);
+    sinkEvents(Event.MOUSEEVENTS | Event.KEYEVENTS | Event.FOCUSEVENTS | Event.ONMOUSEWHEEL);
   }
 
   public HandlerRegistration addValueChangeHandler(
@@ -441,7 +441,7 @@ HasValueChangeHandlers<Double> {
         case Event.ONMOUSEWHEEL:
           int velocityY = DOM.eventGetMouseWheelVelocityY(event);
           DOM.eventPreventDefault(event);
-          if (velocityY > 0) {
+          if (velocityY < 0) {
             shiftRight(1);
           } else {
             shiftLeft(1);
@@ -518,6 +518,7 @@ HasValueChangeHandlers<Double> {
             slideKnob(event);
           }
           break;
+          
       }
     }
   }
