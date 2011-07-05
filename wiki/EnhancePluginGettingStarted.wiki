@@ -3,7 +3,7 @@
 =Plugin Information=
 
 || *Plugin name* ||Enhance||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=enhance-plugin-1.0.0.jar 1.0.0]||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=enhance-plugin-1.0.1.jar 1.0.2]||
 || *Latest release date* ||Mar 08, 2011||
 || *Maintainer* ||[http://code.google.com/u/manuel.carrasco.m/ Manolo Carrasco]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3AEnhance Open issues]||
