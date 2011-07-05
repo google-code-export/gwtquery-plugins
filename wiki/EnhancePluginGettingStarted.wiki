@@ -19,6 +19,10 @@ The Ratings plugin is a plugin for the [http://code.google.com/p/gwtquery/ GwtQu
  * All widgets in this plugins are available as standard gwt plugins as well.
 
 =Changelog=
+==v1.0.2==
+ * Upgrade to gwt-2.2.0 and many fixes
+==v1.0.0==
+ * Compatibility release for gwt-2.1.1 and gquery-1.0.0
 ==v1.0.0==
  * First release 
  
