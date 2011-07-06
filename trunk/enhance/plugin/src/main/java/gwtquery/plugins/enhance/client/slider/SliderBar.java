@@ -565,8 +565,13 @@ HasValueChangeHandlers<Double> {
   private Timer changeTimer = new Timer() {
     public void run() {
       cancel();
+      ValueChangeEvent<Double> event = new ValueChangeEvent<Double>(getCurrentValue()){
+        public Object getSource() {
+          return SliderBar.this;
+        };
+      };
       for (ValueChangeHandler<Double> h : changeHandlers) {
-        h.onValueChange(new ValueChangeEvent<Double>(getCurrentValue()) {});
+        h.onValueChange(event);
       }
     }
   };
