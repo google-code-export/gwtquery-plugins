@@ -24,28 +24,6 @@ import com.google.gwt.user.client.ui.TextBox;
 public class EnhanceSample implements EntryPoint {
   
   public void onModuleLoad() {
-    
-    TextBox t = new TextBox();
-    t.addValueChangeHandler(new ValueChangeHandler<String>() {
-      public void onValueChange(ValueChangeEvent<String> event) {
-        GWT.log("event.getValue():" + event.getValue());
-        GWT.log("event.getSource():" + event.getSource());
-      }
-    });
-    SliderBar slider = new SliderBar(0, 10);
-    slider.setStepSize(1);
-    ValueChangeHandler<Double> v = new ValueChangeHandler<Double>() {
-      public void onValueChange(ValueChangeEvent<Double> event) {
-        System.out.println("Change");
-        GWT.log("event.getValue():" + event.getValue());
-        GWT.log("event.getSource():" + event.getSource());
-      }
-    };
-    slider.addValueChangeHandler(v);
-
-    RootPanel.get().add(t);
-    RootPanel.get().add(slider);
-    if (true) return;
     $("#enhance").click(new Function(){
       public void f(Element e) {
         $(".editable").as(Enhance).richText();
@@ -64,7 +42,7 @@ public class EnhanceSample implements EntryPoint {
             });
             w.addValueChangeHandler(new ValueChangeHandler<Double>() {
               public void onValueChange(ValueChangeEvent<Double> event) {
-                System.out.println("Changed -> " + event.getValue());
+                System.out.println("Changed -> " + event.getValue() + " " + event.getSource().getClass().getName());
               }
             });
           }
