@@ -32,7 +32,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.gwt</groupId>
+           <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
             <scope>provided</scope>
             <classifier>${gwtversion}</classifier>
