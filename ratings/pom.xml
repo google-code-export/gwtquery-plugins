@@ -6,7 +6,7 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>ratings</artifactId>
     <packaging>pom</packaging>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <description>This is a demo plugin and it is maintained by GwtQuery team</description>
 
     <developers>
@@ -21,8 +21,8 @@
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>
       <maven.compiler.target>1.5</maven.compiler.target>
-      <gQueryVersion>1.0.0-SNAPSHOT</gQueryVersion>
-      <gwtversion>2.1.0</gwtversion>
+      <gQueryVersion>1.0.0</gQueryVersion>
+      <gwtversion>2.3.0</gwtversion>
     </properties>
 
     <repositories>
@@ -31,9 +31,9 @@
          <url>http://repo1.maven.org/maven2</url>
        </repository>
        <repository>
-         <id>site</id>
-         <url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
-       </repository>
+			<id>site</id>
+			<url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
+		</repository>
        <repository>
          <id>m.g.o</id>
          <url>http://maven.glassfish.org/content/groups/public/</url>
@@ -69,9 +69,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.gwt</groupId>
+            <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
             <version>${gQueryVersion}</version>
+            <classifier>${gwtversion}</classifier>
             <scope>provided</scope>
         </dependency>
     </dependencies>
