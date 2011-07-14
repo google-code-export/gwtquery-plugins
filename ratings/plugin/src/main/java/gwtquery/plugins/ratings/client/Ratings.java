@@ -5,12 +5,13 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.JSArray;
-import com.google.gwt.query.client.Plugin;
 import com.google.gwt.query.client.Properties;
-import com.google.gwt.query.client.Regexp;
+import com.google.gwt.query.client.js.JsNamedArray;
+import com.google.gwt.query.client.js.JsObjectArray;
+import com.google.gwt.query.client.js.JsRegexp;
+import com.google.gwt.query.client.js.JsUtils;
+import com.google.gwt.query.client.plugins.Plugin;
 
 /**
  * Ratings plugin for GwtQuery.
@@ -131,7 +132,7 @@ public class Ratings extends GQuery {
 
   public static class Raters {
 
-    private GQuery.DataCache cache = GQuery.DataCache.createObject().cast();
+    private JsNamedArray<GQuery> cache = JsNamedArray.create();
 
     private int calls;
 
@@ -147,7 +148,7 @@ public class Ratings extends GQuery {
     }
 
     public GQuery get(String eid) {
-      return (GQuery) cache.getObject(eid);
+      return (GQuery) cache.get(eid);
     }
 
     public int getCalls() {
@@ -258,7 +259,7 @@ public class Ratings extends GQuery {
     Control control = null;
     for (Element e : elements()) {
       GQuery input = $(e);
-      String eid = GQUtils.or(e.getPropertyString("name"), "unnamed-rating")
+      String eid = JsUtils.or(e.getPropertyString("name"), "unnamed-rating")
           .replaceAll("\\[|\\]", "_").replaceAll("^\\_+|\\_$", "");
       GQuery context = $(getContext(e));
       Raters raters = (Raters) context.data("rating");
@@ -286,7 +287,7 @@ public class Ratings extends GQuery {
         rater.addClass("rating-to-be-drawn");
 
         // Accept readOnly setting from 'disabled' property
-        if (GQUtils.truth(input.attr("disabled"))) {
+        if (JsUtils.truth(input.attr("disabled"))) {
           control.setReadOnly(true);
         } else {
           // Create 'cancel' button
@@ -315,7 +316,7 @@ public class Ratings extends GQuery {
       // insert rating star
       GQuery star = $("<div class=\"star-rating rater-" + control.getSerial()
           + "\"><a title=\""
-          + (GQUtils.or(e.getTitle(), e.getPropertyString("value"))) + "\">"
+          + (JsUtils.or(e.getTitle(), e.getPropertyString("value"))) + "\">"
           + e.getPropertyString("value") + "</a></div>")
           .appendTo(rater);
 
@@ -477,10 +478,10 @@ public class Ratings extends GQuery {
     if (className.indexOf("{") == -1) {
       return Properties.createObject().cast();
     }
-    Regexp re = new Regexp("{(.*)}");
-    JSArray match = re.exec(className);
-    if (match != null && match.size() > 1) {
-      return Properties.create(match.getStr(1));
+    JsRegexp re = new JsRegexp("{(.*)}");
+    JsObjectArray<String> match = re.exec(className);
+    if (match != null && match.length() > 1) {
+      return Properties.create(match.get(1));
     }
     return Properties.createObject().cast();
   }

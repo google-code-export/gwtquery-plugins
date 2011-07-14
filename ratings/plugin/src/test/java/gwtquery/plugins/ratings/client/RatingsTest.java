@@ -1,13 +1,12 @@
 package gwtquery.plugins.ratings.client;
 
-import static gwtquery.plugins.ratings.client.Ratings.*;
+import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.document;
 
 import com.google.gwt.junit.client.GWTTestCase;
-import com.google.gwt.query.client.GQUtils;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.Effects.Speed;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Timer;
+
+import static gwtquery.plugins.ratings.client.Ratings.Ratings;
 /**
  * Test class for Ratings plugin
  */
