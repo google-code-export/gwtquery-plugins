@@ -1,5 +1,5 @@
 #summary How to use the drag-and-drop plugin with GWT widgets
-
+<g:plusone size="medium"></g:plusone>
 <wiki:toc max_depth="3" />
 = Introduction =
 ----
