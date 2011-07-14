@@ -1,3 +1,4 @@
+<g:plusone size="medium"></g:plusone>
 #summary Creating new plugins for gwtquery
 
 <wiki:toc max_depth="3" />
