@@ -6,7 +6,7 @@
 || *Plugin name* ||Ratings||
 || *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=Ratings-plugin-1.0.jar 1.0]||
 || *Latest release date* ||Sep 08, 2010||
-|| *Maintainer* ||[http://code.google.com/p/gwt-query GQuery Team]||
+|| *Maintainer* ||[http://code.google.com/p/gwtquery/people/list GQuery Team]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ARatings Open issues]||
 
 This plugin is a gwt port of the [http://www.fyneworks.com/jquery/star-rating/ jQuery Star Rating Plugin]
