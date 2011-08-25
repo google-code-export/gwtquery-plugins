@@ -9,8 +9,10 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.widgets.WidgetFactory;
 import com.google.gwt.query.client.plugins.widgets.WidgetsUtils;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -71,6 +73,25 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
           Element e = ret.getElement();
           p.setPopupPosition(e.getAbsoluteLeft(), e.getAbsoluteTop() + e.getClientHeight());
           p.show();
+          
+          // Move the popup to avoid buttons being not visible.
+          GQuery g = $(p);
+          int t = g.get(0).getAbsoluteTop();
+          int l = g.get(0).getAbsoluteLeft();
+          int w = g.width();
+          int h = g.height();
+          int ww = Window.getClientWidth();
+          int wh = Window.getClientHeight();
+          int y = wh - (t+h);
+          int x = ww - (t+w);
+          y = y < 0 ? Math.max(0, y + t) : -1;
+          x = x < 0 ? Math.max(0, x + l) : -1;
+          if (y >= 0) {
+            g.css("top", y + "px");
+          }
+          if (x >= 0) {
+            g.css("left", x + "px");
+          }
         }
       });
       ret.addChangeHandler(new ChangeHandler() {

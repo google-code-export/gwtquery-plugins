@@ -6,7 +6,7 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>enhance</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>

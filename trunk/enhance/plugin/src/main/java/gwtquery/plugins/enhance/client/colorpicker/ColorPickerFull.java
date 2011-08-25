@@ -24,6 +24,7 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
   FlexTable t = new FlexTable();
   Button ok = new Button("OK");
   Button cancel = new Button("Cancel");
+  String initialValue = "#ff0000";
   
   @Override
   protected void onAttach() {
@@ -33,9 +34,9 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
         public void onFailure(Throwable reason) {
         }
         public void onSuccess() {
-          System.out.println("Loaded ");
           picker = new ColorPicker();
           t.setWidget(0, 0, picker);
+          setValue(initialValue);
         }
       });
     }
@@ -105,9 +106,13 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
   }
 
   public void setValue(String value) {
-    try {
-      picker.setHex(value.replaceFirst("^#", ""));
-    } catch (Exception e) {
+    if (picker != null) {
+      try {
+        picker.setHex(value.replaceFirst("^#", ""));
+      } catch (Exception e) {
+      }
+    } else {
+      initialValue = value;
     }
   }
 
