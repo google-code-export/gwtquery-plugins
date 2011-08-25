@@ -9,7 +9,9 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.plugins.Effects;
 import com.google.gwt.query.client.plugins.widgets.WidgetFactory;
 import com.google.gwt.query.client.plugins.widgets.WidgetsUtils;
 import com.google.gwt.user.client.Window;
@@ -58,7 +60,6 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
       if (!value.isEmpty()) {
         ret.setValue("#" + value);
       }
-      ((HasValue<String>)p).setValue(value);
       setColor(ret.getValue(), ret.getElement());
       
       ((HasValue<String>)p).addValueChangeHandler(new ValueChangeHandler<String>() {
@@ -71,27 +72,35 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
       ret.addClickHandler(new ClickHandler() {
         public void onClick(ClickEvent event) {
           Element e = ret.getElement();
+          ((HasValue<String>)p).setValue(ret.getValue());
           p.setPopupPosition(e.getAbsoluteLeft(), e.getAbsoluteTop() + e.getClientHeight());
           p.show();
-          
-          // Move the popup to avoid buttons being not visible.
-          GQuery g = $(p);
-          int t = g.get(0).getAbsoluteTop();
-          int l = g.get(0).getAbsoluteLeft();
-          int w = g.width();
-          int h = g.height();
-          int ww = Window.getClientWidth();
-          int wh = Window.getClientHeight();
-          int y = wh - (t+h);
-          int x = ww - (t+w);
-          y = y < 0 ? Math.max(0, y + t) : -1;
-          x = x < 0 ? Math.max(0, x + l) : -1;
-          if (y >= 0) {
-            g.css("top", y + "px");
-          }
-          if (x >= 0) {
-            g.css("left", x + "px");
-          }
+          $(p).stop(true).hide().as(Effects.Effects).clipAppear(new Function(){
+            // Move the popup if it is out of the window limits
+            public void f(Element e) {
+              GQuery g = $(e);
+              int t = g.get(0).getAbsoluteTop();
+              int l = g.get(0).getAbsoluteLeft();
+              int w = g.width();
+              int h = g.height();
+              int ww = Window.getClientWidth();
+              int wh = Window.getClientHeight();
+              int y = wh - (t+h);
+              int x = ww - (t+w);
+              y = y < 0 ? Math.max(0, y + t) : -1;
+              x = x < 0 ? Math.max(0, x + l) : -1;
+              String s = "";
+              if (y >= 0) {
+                s += "top: " + y + "px";
+              }
+              if (x >= 0) {
+                s += (y>=0 ? ";" : "") + "left: " + x + "px";
+              }
+              if (!s.isEmpty()) {
+                g.animate(s);
+              }
+            };
+          });
         }
       });
       ret.addChangeHandler(new ChangeHandler() {

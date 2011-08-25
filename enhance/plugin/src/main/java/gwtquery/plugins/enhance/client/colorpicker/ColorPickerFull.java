@@ -46,7 +46,6 @@ public class ColorPickerFull extends PopupPanel implements HasValueChangeHandler
     super(true);
     ColorPickerCss.INSTANCE.css().ensureInjected();
     
-    setAnimationEnabled(true);
     t.setCellPadding(5);
     t.setCellSpacing(0);
     DOM.setStyleAttribute(t.getElement(), "backgroundColor", "white");

@@ -88,7 +88,6 @@ public class ColorPicker extends PopupPanel implements HasValueChangeHandlers<St
     t.setCellSpacing(0);
     DOM.setStyleAttribute(t.getElement(), "border", "1px solid #cccccc");
     add(t);
-    setAnimationEnabled(true);
     setStyleName("colorPicker");
     setColors(DEFAULT_COLORS);
   }

@@ -14,7 +14,7 @@
       <gQueryVersion>1.0.0</gQueryVersion>
       <gQueryClassifier>2.3.0</gQueryClassifier>
       <gwtversion>2.3.0</gwtversion>
-      <gwtmaven>2.1.0-1</gwtmaven>
+      <gwtmaven>2.3.0</gwtmaven>
       <gwtcolorpicker>2.1</gwtcolorpicker>
     </properties>
 
