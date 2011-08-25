@@ -9,15 +9,12 @@ import gwtquery.plugins.enhance.client.slider.SliderBar.LabelFormatter;
 import java.util.Arrays;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.widgets.WidgetInitializer;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.RootPanel;
-import com.google.gwt.user.client.ui.TextBox;
 /**
  * Example code for the GwtQuery Enhance plugin.
  */

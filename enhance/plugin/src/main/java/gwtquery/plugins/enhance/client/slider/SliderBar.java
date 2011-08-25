@@ -593,9 +593,9 @@ HasValueChangeHandlers<Double> {
         && ((newValue + stepSize) <= maxValue)) {
       newValue += stepSize;
     }
-    
     if (this.curValue != newValue) {
       this.curValue = newValue;
+
       // Redraw the knob
       drawKnob();
       
@@ -930,6 +930,8 @@ HasValueChangeHandlers<Double> {
    */
   private void resetCurrentValue() {
     setCurrentValue(getCurrentValue());
+    // Redraw the knob
+    drawKnob();
   }
   
 
