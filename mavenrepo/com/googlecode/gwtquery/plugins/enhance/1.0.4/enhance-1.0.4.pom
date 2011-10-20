@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    
+    <name>Enchance plugin project</name>
+    <groupId>com.googlecode.gwtquery.plugins</groupId>
+    <artifactId>enhance</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.4</version>
+
+    <properties>
+      <maven.compiler.source>1.5</maven.compiler.source>
+      <maven.compiler.target>1.5</maven.compiler.target>
+      <gQueryVersion>1.1.0</gQueryVersion>
+      <gwtversion>2.4.0</gwtversion>
+      <gwtmaven>2.4.0</gwtmaven>
+      <gwtcolorpicker>2.1</gwtcolorpicker>
+    </properties>
+
+    <developers>
+      <developer>
+        <id>manolo</id>
+        <name>Manuel Carrasco Moñino</name>
+        <email>manolo@apache.org</email>
+        <organization>ASF</organization>
+      </developer>
+    </developers>
+
+    <repositories>
+       <repository>
+         <id>central</id>
+         <url>http://repo1.maven.org/maven2</url>
+         <snapshots><enabled>false</enabled></snapshots>
+       </repository>
+       <repository>
+         <id>sonatype</id>
+         <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+         <snapshots><enabled>true</enabled></snapshots>
+         <releases><enabled>false</enabled></releases>
+       </repository>
+       <repository>
+         <id>m.g.o</id>
+         <url>http://maven.glassfish.org/content/groups/public/</url>
+         <snapshots><enabled>false</enabled></snapshots>
+       </repository>
+       <repository>
+         <id>plugins</id>
+         <url>http://gwtquery-plugins.googlecode.com/svn/mavenrepo</url>
+       </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gcupload</id>
+            <name>Repository for gcupload plugin</name>
+            <url>http://gwtupload.googlecode.com/svn/mavenrepo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <scm>
+        <connection>scm:svn:http://gwtquery-plugins.googlecode.com/svn/trunk/enhance
+        </connection>
+        <developerConnection>scm:svn:https://gwtquery-plugins.googlecode.com/svn/trunk/enhance
+        </developerConnection>
+        <url>http://code.google.com/p/gwtquery-plugins/source/browse/trunk/enhance</url>
+    </scm>
+
+    <issueManagement>
+        <system>Google Code</system>
+        <url>http://code.google.com/p/gwtquery-plugins/issues/list</url>
+    </issueManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.gwtquery</groupId>
+            <artifactId>gwtquery</artifactId>
+            <version>${gQueryVersion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwtversion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwtversion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.0.0.GA</version>
+            <classifier>sources</classifier>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.jvnet.wagon-svn</groupId>
+                <artifactId>wagon-svn</artifactId>
+                <version>1.8</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <distributionManagement>
+        <repository>
+          <uniqueVersion>false</uniqueVersion>
+          <id>googlecode</id>
+          <url>svn:https://gwtquery-plugins.googlecode.com/svn/mavenrepo/</url>
+        </repository>
+        <snapshotRepository>
+          <uniqueVersion>false</uniqueVersion>
+          <id>googlecode</id>
+          <url>svn:https://gwtquery-plugins.googlecode.com/svn/mavenrepo/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <profiles>
+        <profile>
+           <id>local</id>
+           <properties>
+             <repoId>local mavenrepo</repoId>
+             <repoUrl>file://mavenrepo</repoUrl>
+           </properties>
+           <distributionManagement>
+             <repository>
+               <uniqueVersion>false</uniqueVersion>
+               <id>local mavenrepo</id>
+               <url>file://mavenrepo</url>
+             </repository>
+             <snapshotRepository>
+               <uniqueVersion>false</uniqueVersion>
+               <id>local mavenrepo</id>
+               <url>file://mavenrepo</url>
+             </snapshotRepository>
+           </distributionManagement>
+        </profile>
+    </profiles>
+
+  <modules>
+    <module>plugin</module>
+    <module>sample</module>
+  </modules>
+</project>
