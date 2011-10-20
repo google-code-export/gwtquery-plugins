@@ -150,7 +150,7 @@ public class Enhance extends Widgets {
     } else {
       ret = super.vals();
     }
-    return ret;
+    return ret == null ? new String[0] : ret;
   }
   
   public Enhance val(String...vals) {

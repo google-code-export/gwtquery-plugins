@@ -22,8 +22,6 @@ import com.google.gwt.query.client.plugins.widgets.WidgetsUtils;
 import com.google.gwt.user.client.ui.TextBoxBase;
 
 /**
- * 
- * 
  */
 public abstract class TextBoxBaseWidgetFactory<T extends TextBoxBase>
     implements WidgetFactory<T> {
@@ -53,7 +51,8 @@ public abstract class TextBoxBaseWidgetFactory<T extends TextBoxBase>
     destination.setAccessKey(source.getAccessKey());
     destination.setDefaultValue(source.getDefaultValue());
     destination.setDisabled(source.isDisabled());
-    destination.setMaxLength(source.getMaxLength());
+    if (source.getMaxLength() > 0)
+      destination.setMaxLength(source.getMaxLength());
     destination.setReadOnly(source.isReadOnly());
     destination.setSize(source.getSize());
     destination.setName(source.getName());
