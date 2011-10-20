@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.googlecode.gwtquery.plugins</groupId>
         <artifactId>enhance</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.4</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
