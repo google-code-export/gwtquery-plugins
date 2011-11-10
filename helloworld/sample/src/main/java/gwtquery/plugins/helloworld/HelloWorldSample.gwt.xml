@@ -1,5 +1,0 @@
-<module rename-to='HelloWorld'>
-    <inherits name='gwtquery.plugins.helloworld.HelloWorld'/>
-    <entry-point class='gwtquery.plugins.helloworld.client.HelloWorldSample'/>
-</module>
-    
