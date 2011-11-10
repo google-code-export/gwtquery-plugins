@@ -35,7 +35,7 @@ import java.util.Set;
  * Use {@link com.google.gwt.user.cellview.client.CellBasedWidgetImplStandard} instead.
  *             This class will be removed in future release.
  *             
- * last revision : r9620
+ * last revision : r10339
  */
 
 class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
@@ -67,11 +67,16 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
     }
     com.google.gwt.user.client.Element target = eventTarget.cast();
 
-    // Get the event listener.
+    // Get the event listener, which is the first widget that handles the
+	// specified event type.
+    String typeName = event.getType();
     EventListener listener = DOM.getEventListener(target);
     while (target != null && listener == null) {
       target = target.getParentElement().cast();
-      listener = (target == null) ? null : DOM.getEventListener(target);
+      if (target != null && isNonBubblingEventHandled(target, typeName)) {
+    	  // The target handles the event, so this must be the event listener.
+    	  listener = DOM.getEventListener(target);
+      }
       //check if it's not the GQuery event listener or if it have a original event listener
       if (listener instanceof EventsListener && ((EventsListener)listener).getOriginalEventListener() == null){
         //continue the lookup of GWT listener
@@ -83,6 +88,16 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
     if (listener != null) {
       dispatchEvent(event, target, listener);
     }
+  }
+  /**
+   * Check if the specified element handles the a non-bubbling event.
+   *
+   * @param elem the element to check
+   * @param typeName the non-bubbling event
+   * @return true if the event is handled, false if not
+   */
+  private static boolean isNonBubblingEventHandled(Element elem, String typeName) {
+	  return "true".equals(elem.getAttribute("__gwtCellBasedWidgetImplDispatching" + typeName));
   }
 
   /**
@@ -109,9 +124,8 @@ class CellBasedWidgetImplStandard extends CellBasedWidgetImpl {
 
       // Sink the non-bubbling event.
       Element elem = widget.getElement();
-      String attr = "__gwtCellBasedWidgetImplDispatching" + typeName;
-      if (!"true".equals(elem.getAttribute(attr))) {
-        elem.setAttribute(attr, "true");
+      if (!isNonBubblingEventHandled(elem, typeName)) {
+    	elem.setAttribute("__gwtCellBasedWidgetImplDispatching" + typeName, "true");
         sinkEventImpl(elem, typeName);
       }
       return -1;
