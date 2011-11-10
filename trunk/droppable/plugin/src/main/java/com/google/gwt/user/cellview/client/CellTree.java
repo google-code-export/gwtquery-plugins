@@ -15,6 +15,10 @@
  */
 package com.google.gwt.user.cellview.client;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -31,7 +35,10 @@ import com.google.gwt.resources.client.CssResource.ImportedWithPrefix;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.resources.client.ImageResource.ImageOptions;
 import com.google.gwt.resources.client.ImageResource.RepeatStyle;
+import com.google.gwt.safecss.shared.SafeStyles;
+import com.google.gwt.safecss.shared.SafeStylesBuilder;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Event;
@@ -40,10 +47,6 @@ import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.HasAnimation;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.view.client.TreeViewModel;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A view of a tree.
@@ -63,7 +66,7 @@ import java.util.Set;
  * <dd>{@example com.google.gwt.examples.cellview.CellTreeExample2}</dd>
  * </dl>
  * 
- * last revision : r9620
+ * last revision : r10339
  */
 public class CellTree extends AbstractCellTree implements HasAnimation,
     Focusable {
@@ -441,23 +444,8 @@ public class CellTree extends AbstractCellTree implements HasAnimation,
   }
 
   interface Template extends SafeHtmlTemplates {
-    @Template("<div class=\"{0}\" style=\"position:absolute;{1}:0px;"
-        + "width:{2}px;height:{3}px;\">{4}</div>")
-    SafeHtml imageWrapper(String classes, String direction, int width,
-        int height, SafeHtml image);
-  }
-
-  /**
-   * Implementation of {@link CellTree}.
-   */
-  private static class Impl {
-    /**
-     * Create an image wrapper.
-     */
-    public SafeHtml imageWrapper(String classes, String direction, int width,
-        int height, SafeHtml image) {
-      return template.imageWrapper(classes, direction, width, height, image);
-    }
+	  @Template("<div class=\"{0}\" style=\"{1}position:absolute;\">{2}</div>")
+	  SafeHtml imageWrapper(String classes, SafeStyles cssLayout, SafeHtml image);
   }
 
   /**
@@ -467,7 +455,6 @@ public class CellTree extends AbstractCellTree implements HasAnimation,
 
   private static Resources DEFAULT_RESOURCES;
 
-  private static Impl TREE_IMPL;
   private static Template template;
 
   private static Resources getDefaultResources() {
@@ -581,9 +568,6 @@ public class CellTree extends AbstractCellTree implements HasAnimation,
     super(viewModel);
     if (template == null) {
       template = GWT.create(Template.class);
-    }
-    if (TREE_IMPL == null) {
-      TREE_IMPL = GWT.create(Impl.class);
     }
     this.style = resources.cellTreeStyle();
     this.style.ensureInjected();
@@ -700,7 +684,7 @@ public class CellTree extends AbstractCellTree implements HasAnimation,
     final boolean isMouseDown = "mousedown".equals(eventType);
     final boolean isClick = "click".equals(eventType);
     final CellTreeNodeView<?> nodeView = findItemByChain(chain, 0, rootNode);
-    if (nodeView != null && nodeView != rootNode) {
+    if (nodeView != null) {
       if (isMouseDown) {
         Element showMoreElem = nodeView.getShowMoreElement();
         if (nodeView.getImageElement().isOrHasChild(target)) {
@@ -715,7 +699,7 @@ public class CellTree extends AbstractCellTree implements HasAnimation,
       }
 
       // Forward the event to the cell
-      if (nodeView.getSelectionElement().isOrHasChild(target)) {
+      if (nodeView != rootNode && nodeView.getSelectionElement().isOrHasChild(target)) {
         // Move the keyboard focus to the clicked item.
         if (isClick) {
           /*
@@ -965,22 +949,27 @@ public class CellTree extends AbstractCellTree implements HasAnimation,
    * @return the rendered HTML
    */
   private SafeHtml getImageHtml(ImageResource res, boolean isTop) {
-    StringBuilder classesBuilder = new StringBuilder(style.cellTreeItemImage());
+	// Build the classes.
+	StringBuilder classesBuilder = new StringBuilder(style.cellTreeItemImage());
     if (isTop) {
       classesBuilder.append(" ").append(style.cellTreeTopItemImage());
     }
 
-    String direction;
+    // Build the css.
+    SafeStylesBuilder cssBuilder = new SafeStylesBuilder();
     if (LocaleInfo.getCurrentLocale().isRTL()) {
-      direction = "right";
+    	cssBuilder.appendTrustedString("right: 0px;");
     } else {
-      direction = "left";
+    	 cssBuilder.appendTrustedString("left: 0px;");
     }
+    
+    cssBuilder.appendTrustedString("width: " + res.getWidth() + "px;");
+    cssBuilder.appendTrustedString("height: " + res.getHeight() + "px;");
 
     AbstractImagePrototype proto = AbstractImagePrototype.create(res);
     SafeHtml image = SafeHtmlUtils.fromTrustedString(proto.getHTML());
-    return TREE_IMPL.imageWrapper(classesBuilder.toString(), direction,
-        res.getWidth(), res.getHeight(), image);
+    return template
+    		.imageWrapper(classesBuilder.toString(), cssBuilder.toSafeStyles(), image);
   }
 
   /**

@@ -15,6 +15,13 @@
  */
 package com.google.gwt.user.cellview.client;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
 import com.google.gwt.core.client.GWT;
@@ -33,12 +40,15 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.safecss.shared.SafeStyles;
+import com.google.gwt.safecss.shared.SafeStylesUtils;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.cellview.client.HasDataPresenter.LoadingState;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
+import com.google.gwt.user.cellview.client.LoadingStateChangeEvent.LoadingState;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.impl.FocusImpl;
 import com.google.gwt.view.client.CellPreviewEvent;
@@ -52,32 +62,24 @@ import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.NodeInfo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 /**
  * A view of a tree node.
  *
  * @param <T> the type that this view contains
  * 
- * last revision : r9328
+ * last revision : r10339
  */
 // TODO(jlabanca): Convert this to be the type of the child and create lazily.
 public class CellTreeNodeView<T> extends UIObject {
 
   interface Template extends SafeHtmlTemplates {
-    @Template("<div onclick=\"\" style=\"position:relative;padding-{0}:{1}px;"
-        + "\" class=\"{2}\">{3}<div class=\"{4}\">{5}</div></div>")
-    SafeHtml innerDiv(String paddingDirection, int imageWidth, String classes,
-        SafeHtml image, String itemValueStyle, SafeHtml cellContents);
-
-    @Template("<div><div style=\"padding-{0}:{1}px;\" class=\"{2}\">{3}</div></div>")
-    SafeHtml outerDiv(String paddingDirection, int paddingAmount,
-        String classes, SafeHtml content);
+	  @Template("<div onclick=\"\" style=\"{0}position:relative;\""
+			  + " class=\"{1}\">{2}<div class=\"{3}\">{4}</div></div>")
+	  SafeHtml innerDiv(SafeStyles cssString, String classes, SafeHtml image,
+			  String itemValueStyle, SafeHtml cellContents);
+	  
+	  @Template("<div><div style=\"{0}\" class=\"{1}\">{2}</div></div>")
+	  SafeHtml outerDiv(SafeStyles cssString, String classes, SafeHtml content);  
   }
 
   private static final Template template = GWT.create(Template.class);
@@ -179,12 +181,18 @@ public class CellTreeNodeView<T> extends UIObject {
           Context context = new Context(i, 0, key);
           cell.render(context, value, cellBuilder);
 
-          SafeHtml innerDiv = template.innerDiv(paddingDirection, imageWidth,
-              innerClasses.toString(), image, itemValueStyle,
-              cellBuilder.toSafeHtml());
-
-          sb.append(template.outerDiv(paddingDirection, paddingAmount,
-              outerClasses.toString(), innerDiv));
+          SafeStyles innerPadding =
+        		  SafeStylesUtils.fromTrustedString("padding-" + paddingDirection + ": " + imageWidth
+        				  + "px;");
+          
+          SafeHtml innerDiv =
+        		  template.innerDiv(innerPadding, innerClasses.toString(), image, itemValueStyle,
+        				  cellBuilder.toSafeHtml());
+          
+          SafeStyles outerPadding =
+        		  SafeStylesUtils.fromTrustedString("padding-" + paddingDirection + ": " + paddingAmount
+        				  + "px;");
+          sb.append(template.outerDiv(outerPadding, outerClasses.toString(), innerDiv));
         }
       }
 
@@ -254,7 +262,8 @@ public class CellTreeNodeView<T> extends UIObject {
 
       public void setLoadingState(LoadingState state) {
         nodeView.updateImage(state == LoadingState.LOADING);
-        showOrHide(nodeView.emptyMessageElem, state == LoadingState.EMPTY);
+        showOrHide(nodeView.emptyMessageElem, state == LoadingState.LOADED
+        		 && presenter.isEmpty());
       }
 
       /**

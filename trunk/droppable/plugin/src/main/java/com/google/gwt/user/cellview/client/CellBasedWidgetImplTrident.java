@@ -29,7 +29,7 @@ import java.util.Set;
  *  
  * IE specified Impl used by cell based widgets.
  * 
- * last revision : r9620
+ * last revision : r10339
  * 
  */
 
@@ -84,7 +84,7 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
     // Temporary listen for events from the cell. The event listener will be
     // removed in onBrowserEvent().
     DOM.setEventListener(target, widget);
-    DOM.sinkEvents(target, eventBits);
+    DOM.sinkEvents(target, eventBits | DOM.getEventsSunk(target));
 
     // Dispatch the event to the cell.
     if (event != null) {
@@ -376,7 +376,8 @@ class CellBasedWidgetImplTrident extends CellBasedWidgetImpl {
    * @return the tab index, or -1 if not specified
    */
   private native int getTabIndexIfSpecified(Element elem) /*-{
-    return elem.getAttributeNode('tabIndex').specified ? elem.tabIndex : -1;
+  	var attrNode = elem.getAttributeNode('tabIndex');
+ 	return (attrNode != null && attrNode.specified) ? elem.tabIndex : -1;
   }-*/;
 
 
