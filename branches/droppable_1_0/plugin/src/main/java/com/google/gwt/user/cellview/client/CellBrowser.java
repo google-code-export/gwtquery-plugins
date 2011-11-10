@@ -15,6 +15,9 @@
  */
 package com.google.gwt.user.cellview.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.animation.client.Animation;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.Cell.Context;
@@ -42,10 +45,10 @@ import com.google.gwt.safecss.shared.SafeStyles;
 import com.google.gwt.safecss.shared.SafeStylesBuilder;
 import com.google.gwt.safecss.shared.SafeStylesUtils;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
+import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
@@ -61,9 +64,6 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.google.gwt.view.client.TreeViewModel.NodeInfo;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A "browsable" view of a tree in which only a single node per level may be
@@ -84,10 +84,10 @@ import java.util.List;
  * <dd>{@example com.google.gwt.examples.cellview.CellBrowserExample2}</dd>
  * </dl>
  * 
- * last revision : r9986
+ * last revision : r10339
  */
-public class CellBrowser extends AbstractCellTree implements ProvidesResize, RequiresResize,
-  HasAnimation {
+public class CellBrowser extends AbstractCellTree implements ProvidesResize,
+    RequiresResize, HasAnimation {
 
   /**
    * A ClientBundle that provides images for this widget.
@@ -179,23 +179,23 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
   }
 
   interface Template extends SafeHtmlTemplates {
-    @Template("<div onclick=\"\" __idx=\"{0}\" class=\"{1}\""
+	  @Template("<div onclick=\"\" __idx=\"{0}\" class=\"{1}\""
         + " style=\"{2}position:relative;outline:none;\">{3}<div>{4}</div></div>")
-    SafeHtml div(int idx, String classes, SafeStyles padding, SafeHtml imageHtml,
+	  SafeHtml div(int idx, String classes, SafeStyles padding, SafeHtml imageHtml,
         SafeHtml cellContents);
 
-    @Template("<div onclick=\"\" __idx=\"{0}\" class=\"{1}\""
-        + " style=\"{2}position:relative;outline:none;\" tabindex=\"{3}\">{4}<div>{5}</div></div>")
-    SafeHtml divFocusable(int idx, String classes, SafeStyles padding, int tabIndex,
-        SafeHtml imageHtml, SafeHtml cellContents);
+	  @Template("<div onclick=\"\" __idx=\"{0}\" class=\"{1}\""
+			  + " style=\"{2}position:relative;outline:none;\" tabindex=\"{3}\">{4}<div>{5}</div></div>")
+	  SafeHtml divFocusable(int idx, String classes, SafeStyles padding, int tabIndex,
+			  SafeHtml imageHtml, SafeHtml cellContents);
 
-    @Template("<div onclick=\"\" __idx=\"{0}\" class=\"{1}\""
-        + " style=\"{2}position:relative;outline:none;\" tabindex=\"{3}\" accessKey=\"{4}\">{5}<div>{6}</div></div>")
-    SafeHtml divFocusableWithKey(int idx, String classes, SafeStyles padding, int tabIndex,
-        char accessKey, SafeHtml imageHtml, SafeHtml cellContents);
-
-    @Template("<div style=\"{0}position:absolute;\">{1}</div>")
-    SafeHtml imageWrapper(SafeStyles css, SafeHtml image);
+	  @Template("<div onclick=\"\" __idx=\"{0}\" class=\"{1}\""
+			  + " style=\"{2}position:relative;outline:none;\" tabindex=\"{3}\" accessKey=\"{4}\">{5}<div>{6}</div></div>")
+	  SafeHtml divFocusableWithKey(int idx, String classes, SafeStyles padding, int tabIndex,
+			  char accessKey, SafeHtml imageHtml, SafeHtml cellContents);
+	  
+	  @Template("<div style=\"{0}position:absolute;\">{1}</div>")
+	  SafeHtml imageWrapper(SafeStyles css, SafeHtml image);
   }
 
   /**
@@ -231,7 +231,8 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
      */
     private final Element tmpElem = Document.get().createDivElement();
 
-    public BrowserCellList(final Cell<T> cell, int level, ProvidesKey<T> keyProvider) {
+    public BrowserCellList(final Cell<T> cell, int level,
+        ProvidesKey<T> keyProvider) {
       super(cell, cellListResources, keyProvider);
       this.level = level;
     }
@@ -281,10 +282,11 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
     }
 
     @Override
-    protected void renderRowValues(SafeHtmlBuilder sb, List<T> values, int start,
-        SelectionModel<? super T> selectionModel) {
+    protected void renderRowValues(SafeHtmlBuilder sb, List<T> values,
+        int start, SelectionModel<? super T> selectionModel) {
       Cell<T> cell = getCell();
-      String keyboardSelectedItem = " " + style.cellBrowserKeyboardSelectedItem();
+      String keyboardSelectedItem = " "
+          + style.cellBrowserKeyboardSelectedItem();
       String selectedItem = " " + style.cellBrowserSelectedItem();
       String openItem = " " + style.cellBrowserOpenItem();
       String evenItem = style.cellBrowserEvenItem();
@@ -294,7 +296,8 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
       int end = start + length;
       for (int i = start; i < end; i++) {
         T value = values.get(i - start);
-        boolean isSelected = selectionModel == null ? false : selectionModel.isSelected(value);
+        boolean isSelected = selectionModel == null ? false : selectionModel
+            .isSelected(value);
         boolean isOpen = isOpen(i);
         StringBuilder classesBuilder = new StringBuilder();
         classesBuilder.append(i % 2 == 0 ? evenItem : oddItem);
@@ -318,9 +321,10 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
         } else {
           image = closedImageHtml;
         }
-
+        
         SafeStyles padding =
-            SafeStylesUtils.fromTrustedString("padding-right: " + imageWidth + "px;");
+        		SafeStylesUtils.fromTrustedString("padding-right: " + imageWidth + "px;");
+
         if (i == keyboardSelectedRow) {
           // This is the focused item.
           if (isFocused) {
@@ -328,15 +332,15 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
           }
           char accessKey = getAccessKey();
           if (accessKey != 0) {
-            sb.append(template.divFocusableWithKey(i, classesBuilder.toString(), padding,
-                getTabIndex(), getAccessKey(), image, cellBuilder.toSafeHtml()));
+        	  sb.append(template.divFocusableWithKey(i, classesBuilder.toString(), padding,
+        			  getTabIndex(), getAccessKey(), image, cellBuilder.toSafeHtml()));
           } else {
-            sb.append(template.divFocusable(i, classesBuilder.toString(), padding, getTabIndex(),
-                image, cellBuilder.toSafeHtml()));
+        	  sb.append(template.divFocusable(i, classesBuilder.toString(), padding, getTabIndex(),
+        			  image, cellBuilder.toSafeHtml()));
           }
         } else {
-          sb.append(template.div(i, classesBuilder.toString(), padding, image, cellBuilder
-              .toSafeHtml()));
+        	sb.append(template.div(i, classesBuilder.toString(), padding, image, cellBuilder
+        			.toSafeHtml()));
         }
       }
 
@@ -345,7 +349,8 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
     }
 
     @Override
-    protected void setKeyboardSelected(int index, boolean selected, boolean stealFocus) {
+    protected void setKeyboardSelected(int index, boolean selected,
+        boolean stealFocus) {
       super.setKeyboardSelected(index, selected, stealFocus);
       if (!isRowWithinBounds(index)) {
         return;
@@ -367,7 +372,8 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
         image = closedImageHtml;
       }
       tmpElem.setInnerHTML(image.asString());
-      elem.replaceChild(tmpElem.getFirstChildElement(), elem.getFirstChildElement());
+      elem.replaceChild(tmpElem.getFirstChildElement(), elem
+          .getFirstChildElement());
 
       // Update the open state.
       updateChildState(this, true);
@@ -445,8 +451,8 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
      * @param widget
      *          the widget that wraps the display
      */
-    public TreeNodeImpl(final NodeInfo<C> nodeInfo, Object value, final BrowserCellList<C> display,
-        Widget widget) {
+    public TreeNodeImpl(final NodeInfo<C> nodeInfo, Object value,
+        final BrowserCellList<C> display, Widget widget) {
       this.display = display;
       this.nodeInfo = nodeInfo;
       this.value = value;
@@ -509,8 +515,9 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
     public boolean isChildOpen(int index) {
       assertNotDestroyed();
       checkChildBounds(index);
-      return (display.focusedKey == null || !display.isFocusedOpen) ? false : display.focusedKey
-          .equals(display.getValueKey(getChildValue(index)));
+      return (display.focusedKey == null || !display.isFocusedOpen) ? false
+          : display.focusedKey
+              .equals(display.getValueKey(getChildValue(index)));
     }
 
     public boolean isDestroyed() {
@@ -725,7 +732,7 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
       if (isAnimationEnabled()) {
         // Animate the scrolling.
         startScrollLeft = elem.getScrollLeft();
-        run(250);
+        run(250, elem);
       } else {
         // Scroll instantly.
         onComplete();
@@ -738,8 +745,8 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
   /**
    * The element used in place of an image when a node has no children.
    */
-  private static final SafeHtml LEAF_IMAGE =
-    SafeHtmlUtils.fromSafeConstant("<div style='position:absolute;display:none;'></div>");
+  private static final SafeHtml LEAF_IMAGE = SafeHtmlUtils
+      .fromSafeConstant("<div style='position:absolute;display:none;'></div>");
 
   private static Template template;
 
@@ -1080,17 +1087,16 @@ public class CellBrowser extends AbstractCellTree implements ProvidesResize, Req
     // Right-justify image if LTR, left-justify if RTL
     AbstractImagePrototype proto = AbstractImagePrototype.create(res);
     SafeHtml image = SafeHtmlUtils.fromTrustedString(proto.getHTML());
-    
     SafeStylesBuilder cssBuilder = new SafeStylesBuilder();
     if (LocaleInfo.getCurrentLocale().isRTL()) {
-      cssBuilder.appendTrustedString("left:0px;");
+    	cssBuilder.appendTrustedString("left:0px;");
     } else {
-      cssBuilder.appendTrustedString("right:0px;");
+    	cssBuilder.appendTrustedString("right:0px;");
     }
     cssBuilder.appendTrustedString("width: " + res.getWidth() + "px;");
     cssBuilder.appendTrustedString("height: " + res.getHeight() + "px;");
     return template.imageWrapper(cssBuilder.toSafeStyles(), image);
-    }
+  }
 
   /**
    * Get the {@link KeyboardSelectionPolicy} to apply to lists. We use keyboard
