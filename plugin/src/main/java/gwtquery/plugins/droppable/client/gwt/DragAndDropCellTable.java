@@ -53,15 +53,27 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
     Style cellTableStyle();
   }
   
-  public interface Resources extends com.google.gwt.user.cellview.client.CellTable.Resources{
-    Resources INSTANCE = GWT.create(Resources.class);
-    
+  public interface Resources extends com.google.gwt.user.cellview.client.CellTable.Resources{    
     /**
      * The styles used in this widget.
      */
     @Source("gwtquery/plugins/droppable/client/gwt/DragAndDropCellTable.css")
     Style cellTableStyle();
   }
+  
+  /**
+   * The default page size.
+   */
+  private static final int DEFAULT_PAGESIZE = 15;
+  
+  private static Resources DEFAULT_RESOURCES;
+
+	private static Resources getDefaultResources() {
+		if (DEFAULT_RESOURCES == null) {
+			DEFAULT_RESOURCES = GWT.create(Resources.class);
+		}
+		return DEFAULT_RESOURCES;
+	}
 
   private DragAndDropAbstractCellTableDelegate<T> delegate;
 
@@ -69,7 +81,7 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
    * Constructs a table with a default page size of 15.
    */
   public DragAndDropCellTable() {
-    super();
+    this(DEFAULT_PAGESIZE);
     delegate = new DragAndDropAbstractCellTableDelegate<T>();
   }
 
@@ -80,7 +92,7 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
    *          the page size
    */
   public DragAndDropCellTable(final int pageSize) {
-    this(pageSize,Resources.INSTANCE);
+    this(pageSize,getDefaultResources());
   }
 
   /**
@@ -94,7 +106,7 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
    *          act as its own key
    */
   public DragAndDropCellTable(final int pageSize, ProvidesKey<T> keyProvider) {
-    this(pageSize, Resources.INSTANCE,keyProvider);
+    this(pageSize, getDefaultResources(),keyProvider);
   }
 
   /**
@@ -139,7 +151,7 @@ public class DragAndDropCellTable<T> extends CellTable<T> {
    *          act as its own key
    */
   public DragAndDropCellTable(ProvidesKey<T> keyProvider) {
-    this(15,Resources.INSTANCE,keyProvider);
+    this(DEFAULT_PAGESIZE,getDefaultResources(),keyProvider);
   }
 
   public HandlerRegistration addActivateDroppableHandler(
