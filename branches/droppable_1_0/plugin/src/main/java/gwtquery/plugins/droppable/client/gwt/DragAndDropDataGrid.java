@@ -16,6 +16,7 @@ import gwtquery.plugins.droppable.client.events.OverDroppableEvent.OverDroppable
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.cellview.client.Column;
@@ -26,14 +27,34 @@ import com.google.gwt.view.client.ProvidesKey;
 
 public class DragAndDropDataGrid<T> extends DataGrid<T> {
 
+	public interface Resources extends
+			com.google.gwt.user.cellview.client.DataGrid.Resources {
+		Resources INSTANCE = GWT.create(Resources.class);
+
+		/**
+		 * The styles used in this widget.
+		 */
+		@Source("gwtquery/plugins/droppable/client/gwt/DragAndDropDataGrid.css")
+		Style dataGridStyle();
+	}
+
+	private static Resources DEFAULT_RESOURCES;
+	private static final int DEFAULT_PAGESIZE = 50;
+
+	private static Resources getDefaultResources() {
+		if (DEFAULT_RESOURCES == null) {
+			DEFAULT_RESOURCES = GWT.create(Resources.class);
+		}
+		return DEFAULT_RESOURCES;
+	}
+
 	private DragAndDropAbstractCellTableDelegate<T> delegate;
 
 	/**
 	 * Constructs a table with a default page size of 50.
 	 */
 	public DragAndDropDataGrid() {
-		super();
-		delegate = new DragAndDropAbstractCellTableDelegate<T>();
+		this(DEFAULT_PAGESIZE);
 	}
 
 	/**
@@ -43,7 +64,7 @@ public class DragAndDropDataGrid<T> extends DataGrid<T> {
 	 *            the page size
 	 */
 	public DragAndDropDataGrid(final int pageSize) {
-		super(pageSize);
+		super(pageSize, getDefaultResources());
 		delegate = new DragAndDropAbstractCellTableDelegate<T>();
 	}
 
@@ -58,7 +79,7 @@ public class DragAndDropDataGrid<T> extends DataGrid<T> {
 	 *            should act as its own key
 	 */
 	public DragAndDropDataGrid(int pageSize, ProvidesKey<T> keyProvider) {
-		super(pageSize, keyProvider);
+		super(pageSize, getDefaultResources(), keyProvider);
 		delegate = new DragAndDropAbstractCellTableDelegate<T>();
 	}
 
