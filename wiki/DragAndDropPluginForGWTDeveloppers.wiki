@@ -11,8 +11,14 @@ This article explains how to use this API in your GWT project.
 ----
 !GwtQuery provides a bundle containing everything needed to use gwtquery and its draggable and dropable plugin.
 
+If you don't use maven, you will have to download the jar file related to the gwt version you are using :
+  * [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.1.jar gquery-dnd-bundle 1.0.1 jar file] for GWT 2.1.0
+  * [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.2.jar gquery-dnd-bundle-1.0.2 jar file] for GWT 2.1.X with X > 0
+  * [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.3.jar gquery-dnd-bundle-1.0.3 jar file] for GWT 2.2 
+  * [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.4.jar gquery-dnd-bundle-1.0.4 jar file] for GWT 2.3 
+  * [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.5.jar gquery-dnd-bundle-1.0.5 jar file] for GWT 2.4 and above
 
-If you don't use maven, you will have to download either the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.2.jar gquery-dnd-bundle-1.0.2 jar file] for GWT 2.1.X or the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.3.jar gquery-dnd-bundle-1.0.3 jar file] for GWT 2.2  or the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.4.jar gquery-dnd-bundle-1.0.4 jar file] for GWT 2.3 and include it in the classpath of you project.
+and include it in the classpath of you project.
 
 If you use maven, you have to add these blocks to your pom.xml
 {{{
@@ -33,6 +39,8 @@ If you use maven, you have to add these blocks to your pom.xml
             <version>1.0.3</version>
            <!-- for gwt 2.3 -->
             <version>1.0.4</version>
+           <!-- for gwt 2.4 -->
+            <version>1.0.5</version>
             <scope>provided</scope>
         </dependency>
    </dependencies>
@@ -42,9 +50,6 @@ Then you need inherit the plugin in your Module.gwt.xml file:
 {{{
   <inherits name='gwtquery.plugins.droppable.Droppable'/>
 }}}
-
-Please note that the drag-and-drop plugin requires at least GWT 2.1.1 to work.
-the [http://code.google.com/p/gwtquery-plugins/downloads/detail?name=gquery-dnd-bundle-1.0.1.jar gquery-dnd-bundle 1.0.1 jar file] is compatible with GWT 2.1.0
 
 = Add drag support to your widgets =
 ----
@@ -384,7 +389,7 @@ Check out the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/P
 Please note taht the droppable plugins needs to override few gwt classes to open the API of CellTree and CellBrowser widget. So ensure that the gquery-dnd-bundle.jar are set before the gwt jar files in your compilation classpath. 
 
 
-== !DragAndDropCellTable and !DragAndDropColumn classes ==
+== !DragAndDropCellTable,  !DragAndDropDataGrid and !DragAndDropColumn classes ==
 
 To add drag-and-drop support in a `CellTable` :
  * Use a `DragAndDropCellTable` instead of a `CellTable`
