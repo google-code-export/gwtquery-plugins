@@ -2,15 +2,15 @@
   <formats>
     <format>zip</format>
   </formats>
-  <baseDirectory>/droppable-1.0.5</baseDirectory>
+  <baseDirectory>/droppable-1.0.7</baseDirectory>
   <files>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>plugin/target/droppable-plugin-1.0.5.jar</source>
+     <source>plugin/target/droppable-plugin-1.0.7.jar</source>
    </file>
    <file>
      <outputDirectory>/</outputDirectory>
-     <source>sample/target/droppable-sample-1.0.5.war</source>
+     <source>sample/target/droppable-sample-1.0.7.war</source>
    </file>
   </files>
   <fileSets>
