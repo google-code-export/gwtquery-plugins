@@ -62,6 +62,7 @@ import com.google.gwt.user.cellview.client.SimplePager.TextLocation;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment.HorizontalAlignmentConstant;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -218,7 +219,7 @@ public class DataGridSample implements EntryPoint {
   private void createDragAndDropDataGrid() {
 
     // Create a DragAndDropDataGrid.
-    dataGrid = new DragAndDropDataGrid<ContactInfo>(20, ContactDatabase.ContactInfo.KEY_PROVIDER);
+    dataGrid = new DragAndDropDataGrid<ContactInfo>(20,ContactDatabase.ContactInfo.KEY_PROVIDER);
     // Create a Pager to control the table.
     SimplePager.Resources pagerResources = GWT
         .create(SimplePager.Resources.class);
@@ -365,8 +366,10 @@ public class DataGridSample implements EntryPoint {
       }
     });
     checkColumn.setCellDraggableOnly();
+    checkColumn.setSortable(false);
     initDragOperation(checkColumn);
     dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br>"));
+    dataGrid.setColumnWidth(checkColumn, "20px");
 
     // First name.
     DragAndDropColumn<ContactInfo, String> firstNameColumn = new DragAndDropColumn<ContactInfo, String>(
