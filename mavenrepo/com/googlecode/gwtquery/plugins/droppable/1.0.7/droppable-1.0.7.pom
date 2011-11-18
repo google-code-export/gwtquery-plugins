@@ -116,7 +116,7 @@
 
 	<distributionManagement>
 		<repository>
-			<uniqueVersion>false</uniqueVersion>
+			<uniqueVersion>true</uniqueVersion>
 			<id>googlecode</id>
 			<url>svn:https://gwtquery-plugins.googlecode.com/svn/mavenrepo/</url>
 		</repository>
