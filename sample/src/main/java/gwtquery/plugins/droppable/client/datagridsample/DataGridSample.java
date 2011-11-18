@@ -369,7 +369,7 @@ public class DataGridSample implements EntryPoint {
     checkColumn.setSortable(false);
     initDragOperation(checkColumn);
     dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br>"));
-    dataGrid.setColumnWidth(checkColumn, "20px");
+    dataGrid.setColumnWidth(checkColumn, "60px");
 
     // First name.
     DragAndDropColumn<ContactInfo, String> firstNameColumn = new DragAndDropColumn<ContactInfo, String>(
