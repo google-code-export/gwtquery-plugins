@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   <modelVersion>4.0.0</modelVersion>
-  <name>GQuery drag and drop bundle compatible GWT 2.3.X</name>
+  <name>GQuery drag and drop bundle compatible GWT 2.4.X</name>
   <description>A jar containing all the necessary stuff to use gwtquery and its plugins draggable and dropable</description>
   <groupId>com.googlecode.gwtquery.bundles</groupId>
   <artifactId>gquery-dnd-bundle</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
 
   <properties>
     <maven.compiler.source>1.5</maven.compiler.source>
     <maven.compiler.target>1.5</maven.compiler.target>
     <includedArtifacts>gwtquery,commonui-plugin,draggable-plugin,droppable-plugin</includedArtifacts>
-    <gqueryVersion>1.0.0</gqueryVersion>
+    <gqueryVersion>1.1.0</gqueryVersion>
     <dragableVersion>1.0.4</dragableVersion>
-    <droppableVersion>1.0.6</droppableVersion>
+    <droppableVersion>1.0.7</droppableVersion>
   </properties>
 
   <dependencies>
   <dependency>
             <groupId>com.googlecode.gwtquery</groupId>
             <artifactId>gwtquery</artifactId>
-            <version>1.0.0</version>
-            <classifier>2.3.0</classifier>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
 
