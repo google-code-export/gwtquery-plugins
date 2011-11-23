@@ -51,6 +51,8 @@ Then you need inherit the plugin in your Module.gwt.xml file:
   <inherits name='gwtquery.plugins.droppable.Droppable'/>
 }}}
 
+*Please note that if you plan to add drag-and-drop support for !CellTree and/or !CellBrowser, the droppable plugins needs to override few gwt classes to open the API of !CellTree and !CellBrowser widget. So ensure that the gquery-dnd-bundle.jar are set before the gwt jar files in your compilation classpath.*
+
 = Add drag support to your widgets =
 ----
 
