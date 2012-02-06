@@ -83,7 +83,7 @@ To remove the draggable functionality completely, just call the `destroy()` meth
 $(".iWantToDrag").as(Draggable).destroy();
 }}}
 
-Please note that if you want just disable temporaly the drag operation for an element to reenable it later, just 
+Please note that if you want just disable temporary the drag operation for an element to reenable it later, just 
 {{{
 //disable the drag operation on these elements
 $(".iWantToDrag").as(Draggable).options().setDisabled(true);
