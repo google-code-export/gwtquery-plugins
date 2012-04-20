@@ -16,6 +16,14 @@
 
 package gwtquery.plugins.selectable.client;
 
+import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
+import gwtquery.plugins.selectable.client.event.SelectedEvent;
+import gwtquery.plugins.selectable.client.event.SelectingEvent;
+import gwtquery.plugins.selectable.client.event.SelectionStartEvent;
+import gwtquery.plugins.selectable.client.event.SelectionStopEvent;
+import gwtquery.plugins.selectable.client.event.UnselectedEvent;
+import gwtquery.plugins.selectable.client.event.UnselectingEvent;
+
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Position;
@@ -24,14 +32,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.MousePlugin;
 import com.google.gwt.query.client.plugins.Plugin;
-
-import gwtquery.plugins.selectable.client.SelectableOptions.Tolerance;
-import gwtquery.plugins.selectable.client.event.SelectedEvent;
-import gwtquery.plugins.selectable.client.event.SelectingEvent;
-import gwtquery.plugins.selectable.client.event.SelectionStartEvent;
-import gwtquery.plugins.selectable.client.event.SelectionStopEvent;
-import gwtquery.plugins.selectable.client.event.UnselectedEvent;
-import gwtquery.plugins.selectable.client.event.UnselectingEvent;
+import com.google.gwt.query.client.plugins.events.GqEvent;
 
 /**
  * Class implementing the JQuery-ui Selectable plugin.
@@ -338,15 +339,15 @@ public class Selectable extends MousePlugin {
   }
   
   @Override
-  protected boolean mouseCapture(Element selectable, Event event) {  
+  protected boolean mouseCapture(Element selectable, GqEvent event) {  
     return !options.isDisabled();
   }
   
-  private boolean isLassoSelectionEnable(Event e){
+  private boolean isLassoSelectionEnable(GqEvent e){
     return options.isMultiSelect() && (!options.isLassoOnMetaKey() || e.isMetaKeyPressed());
   }
 
-  protected void onSelection(Element selectable, Event event) {
+  protected void onSelection(Element selectable, GqEvent event) {
 
     if (!isLassoSelectionEnable(event)) {
       return;
@@ -419,7 +420,7 @@ public class Selectable extends MousePlugin {
 
   }
 
-  protected void onSelectionStart(Element selectable, Event event) {
+  protected void onSelectionStart(Element selectable, GqEvent event) {
 
     trigger(new SelectionStartEvent(selectable), options.getOnStartSelection(),
         selectable);
@@ -482,7 +483,7 @@ public class Selectable extends MousePlugin {
     }
   }
 
-  protected void onSelectionStop(Element selectable, Event event) {
+  protected void onSelectionStop(Element selectable, GqEvent event) {
 
     GQuery unselecting = $('.' + CssClassNames.UI_UNSELECTING, selectable);
     for (Element e : unselecting.elements()) {
@@ -510,24 +511,24 @@ public class Selectable extends MousePlugin {
   }
 
   @Override
-  protected boolean mouseDrag(Element element, Event event) {
+  protected boolean mouseDrag(Element element, GqEvent event) {
     onSelection(element, event);
     return false;
   }
 
   @Override
-  protected boolean mouseStart(Element element, Event event) {
+  protected boolean mouseStart(Element element, GqEvent event) {
     onSelectionStart(element, event);
     return true;
   }
 
   @Override
-  protected boolean mouseStop(Element element, Event event) {
+  protected boolean mouseStop(Element element, GqEvent event) {
     onSelectionStop(element, event);
     return false;
   }
 
-  private boolean isMetaKeyEnabled(Event event) {
+  private boolean isMetaKeyEnabled(GqEvent event) {
     return options.isMultiSelect()
         && event.isMetaKeyPressed();
   }
