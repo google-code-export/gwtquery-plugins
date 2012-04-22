@@ -5,7 +5,7 @@ var $gwt_version = "2.4.0";
 var $wnd = parent;
 var $doc = $wnd.document;
 var $moduleName, $moduleBase;
-var $strongName = '58A9D4CD0D9FF79FD61A35DCFBB6670C';
+var $strongName = '1CB015ACCFD113B58EE19DC27680E1E1';
 var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null,
 $sessionId = $wnd.__gwtStatsSessionId ? $wnd.__gwtStatsSessionId : null;
 $stats && $stats({moduleName:'GWTIntegrationSample',sessionId:$sessionId,subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
@@ -6700,6 +6700,7 @@ function MousePlugin$3(){
 _ = MousePlugin$3_0.prototype = MousePlugin$3.prototype = new Function_0;
 _.f = function f_6(event_0){
   this.this$0.preventClickEvent = this.this$0.preventClickEvent | (create_5(event_0) , false);
+  $add_3(($clinit_RootPanel() , get(null)), new Label_1('OnMouseClick ' + this.this$0.preventClickEvent));
   if (this.this$0.preventClickEvent) {
     this.this$0.preventClickEvent = false;
     $eventStopPropagation(event_0);
