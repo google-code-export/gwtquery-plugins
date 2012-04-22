@@ -5,7 +5,7 @@ var $gwt_version = "2.4.0";
 var $wnd = parent;
 var $doc = $wnd.document;
 var $moduleName, $moduleBase;
-var $strongName = '7D8CB32E7F160A7C030B5A1F5BAD2DE6';
+var $strongName = '17919A02339CD7E0DA7CB8C56F54E41D';
 var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null,
 $sessionId = $wnd.__gwtStatsSessionId ? $wnd.__gwtStatsSessionId : null;
 $stats && $stats({moduleName:'GWTIntegrationSample',sessionId:$sessionId,subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
@@ -6842,7 +6842,7 @@ function $mouseUp(this$static, element, event_0){
     this$static.preventClickEvent = currentEventTarget == currentEventTarget;
     $mouseStop(this$static, element, event_0);
   }
-  return false;
+  return true;
 }
 
 function MousePlugin(){
@@ -6896,6 +6896,7 @@ _.f = function f_5(event_0){
   if (event_0.touches.length > 1) {
     return true;
   }
+  $add_3(($clinit_RootPanel() , get(null)), new Label_1('start On touch start'));
   this.this$0.touchSupported = true;
   return $mouseDown(this.this$0, this.val$e, create_5(event_0));
 }
@@ -6944,6 +6945,7 @@ function MousePlugin$4(){
 
 _ = MousePlugin$4_0.prototype = MousePlugin$4.prototype = new Function_0;
 _.f = function f_7(e){
+  $add_3(($clinit_RootPanel() , get(null)), new Label_1('start OnMouseMove'));
   $mouseMove(this.this$0, this.val$element, create_5(e));
   return false;
 }
@@ -6965,6 +6967,7 @@ function MousePlugin$5(){
 
 _ = MousePlugin$5_0.prototype = MousePlugin$5.prototype = new Function_0;
 _.f = function f_8(e){
+  $add_3(($clinit_RootPanel() , get(null)), new Label_1('start OnMouseUp'));
   $mouseUp(this.this$0, this.val$element, create_5(e));
   return false;
 }
@@ -6986,6 +6989,7 @@ function MousePlugin$6(){
 
 _ = MousePlugin$6_0.prototype = MousePlugin$6.prototype = new Function_0;
 _.f = function f_9(e){
+  $add_3(($clinit_RootPanel() , get(null)), new Label_1('start OnMouseUp -> cancel'));
   $mouseUp(this.this$0, this.val$element, create_5(e));
   return false;
 }
