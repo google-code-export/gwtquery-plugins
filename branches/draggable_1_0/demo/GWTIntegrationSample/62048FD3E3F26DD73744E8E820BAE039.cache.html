@@ -5,7 +5,7 @@ var $gwt_version = "2.4.0";
 var $wnd = parent;
 var $doc = $wnd.document;
 var $moduleName, $moduleBase;
-var $strongName = 'A0CD3F7466C5CA3B8B8EB61BBBCBF156';
+var $strongName = '62048FD3E3F26DD73744E8E820BAE039';
 var $stats = $wnd.__gwtStatsEvent ? function(a) {return $wnd.__gwtStatsEvent(a);} : null,
 $sessionId = $wnd.__gwtStatsSessionId ? $wnd.__gwtStatsSessionId : null;
 $stats && $stats({moduleName:'GWTIntegrationSample',sessionId:$sessionId,subSystem:'startup',evtGroup:'moduleStartup',millis:(new Date()).getTime(),type:'moduleEvalStart'});
@@ -6214,7 +6214,7 @@ function $mouseDown(this$static, element, event_0){
   endEvents = this$static.touchSupported?4194304:8;
   $bind($bind(dynamicCast($as(($clinit_GQuery() , new GQuery_1(document_0)), Events), Q$Events), moveEvent, initValues(_3Lcom_google_gwt_query_client_Function_2_classLit, makeCastMap([Q$Serializable]), Q$Function, [new MousePlugin$4_0(this$static, element)])), endEvents, initValues(_3Lcom_google_gwt_query_client_Function_2_classLit, makeCastMap([Q$Serializable]), Q$Function, [new MousePlugin$5_0(this$static, element)]));
   this$static.touchSupported && $bind(dynamicCast($as(new GQuery_1(document_0), Events), Q$Events), 8388608, initValues(_3Lcom_google_gwt_query_client_Function_2_classLit, makeCastMap([Q$Serializable]), Q$Function, [new MousePlugin$6_0(this$static, element)]));
-  event_0.originalEvent.preventDefault();
+  this$static.touchSupported || (event_0.originalEvent.preventDefault() , undefined);
   event_0.mouseHandled = true;
   return true;
 }
