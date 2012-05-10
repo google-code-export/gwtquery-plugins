@@ -54,9 +54,11 @@ Then you need inherit the plugin in your Module.gwt.xml file:
 *Please note that if you plan to add drag-and-drop support for !CellTree and/or !CellBrowser, the droppable plugins needs to override few gwt classes to open the API of !CellTree and !CellBrowser widget. So ensure that the gquery-dnd-bundle.jar are set before the gwt jar files in your compilation classpath.*
 
 = A note about touch events support=
----
-The gwtquery draggable and droppable plugin can handle mobile device and react on touch events instead of mouse events only if it is used with the last snapshot of GwtQuery !
-Download the last snapshot of GwtQuery available [http://code.google.com/p/gwtquery/wiki/Downloads here] and add it  in your compilation classpath before the  gquery-dnd-bundle.jar.
+----
+
+The gwtquery draggable and droppable plugin can handle mobile device and react on touch events instead of mouse events only if it is used with the last snapshot of !GwtQuery !
+
+Download the last snapshot of !GwtQuery available [http://code.google.com/p/gwtquery/wiki/Downloads here] and add it  in your compilation classpath before the  gquery-dnd-bundle.jar.
 
 = Add drag support to your widgets =
 ----
