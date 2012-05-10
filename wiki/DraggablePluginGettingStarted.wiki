@@ -62,6 +62,9 @@ Then you need to inherit the plugin in your Module.gwt.xml file:
   <inherits name='gwtquery.plugins.draggable.Draggable'/>
 }}}
 
+==Support of touch events==
+The draggable plugin can handle mobile device and react on touch events instead of mouse events. The only thing you have to do is to use the last snapshot of GwtQuery : http://code.google.com/p/gwtquery/wiki/Downloads
+
 ==Call the plugin==
 
 Simply, as with all gwtQuery plugins, just call the selectable plugin like that :
