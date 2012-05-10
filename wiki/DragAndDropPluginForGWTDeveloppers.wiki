@@ -135,7 +135,7 @@ An example is always more understandable than a long text of explanation :
     ...
 }}}
 
-Don't hesitate to try our [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/TestOptionsSample/TestOptionsSample.html "options in action"] example to play around with most of the options of the `DraggableWidget`.
+Don't hesitate to try our [http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/TestOptionsSample/TestOptionsSample.html "options in action"] example to play around with most of the options of the `DraggableWidget`.
 
 == The drag events ==
 The drag-and-drop plugin fires different events during the drag operation that you can handle to implement your custom code.
@@ -224,7 +224,7 @@ Example with subclassing :
 == Configure the dropping behavior ==
 The `DroppableWidget` API offers a set of methods which allow you to configure the drop behavior of the widget. All available options are listed in the following [http://code.google.com/p/gwtquery-plugins/wiki/DroppablePluginGettingStarted#DroppableOptions_Object table].
 
-Please refer to our [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/TestOptionsSample/TestOptionsSample.html "options in action"] example to play around with most of the options of the `DroppableWidget`.
+Please refer to our [http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/TestOptionsSample/TestOptionsSample.html "options in action"] example to play around with most of the options of the `DroppableWidget`.
 
 == The drop events ==
 Different events are fired on the `DroppableWidget` during the drag-and-drop operation :
@@ -286,7 +286,7 @@ or an `AcceptFunction` object
 
 By default, the scope is defined to "default" and a droppable accepts all draggables with the same scope.
 
-The [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/DraughtsSample/DraughtsSample.html checkers example] use a `AcceptFunction` to authorize drop of a piece only in the authorized squares.
+The [http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/DraughtsSample/DraughtsSample.html checkers example] use a `AcceptFunction` to authorize drop of a piece only in the authorized squares.
 
 = The cell widgets =
 ----
@@ -320,7 +320,7 @@ To add drag-and-drop support in a `CellList`, you have simply to use a `DragAndD
 
 }}}
 
-Look at the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/ContactCellSample/ContactCellSample.html contact cell example], to see a more concrete example in action.
+Look at the [http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/ContactCellSample/ContactCellSample.html contact cell example], to see a more concrete example in action.
 
 == !DragAndDropCellTree, !DragAndDropCellBrowser and !DragAndDropNodeInfo classes==
 
@@ -393,7 +393,7 @@ In the same way, to add drag-and-drop in a `CellTree` (or a `CellBrowser`), just
 
 }}}
 
-Check out the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/PermissionManagerSample/PermissionManagerSample.html permission manager example] and the [http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GFinderSample/GFinderSample.html GFinder example] for more concrete examples.
+Check out the [http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/PermissionManagerSample/PermissionManagerSample.html permission manager example] and the [http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/GFinderSample/GFinderSample.html GFinder example] for more concrete examples.
 
 Please note that the droppable plugins needs to override few gwt classes to open the API of CellTree and CellBrowser widget. So ensure that the gquery-dnd-bundle.jar are set before the gwt jar files in your compilation classpath. 
 
@@ -463,7 +463,7 @@ To add drag-and-drop support in a `CellTable` :
     table.addColumn(nameColumn,"Adress");
 }}}
 
-Example : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/CellTableSample/CellTableSample.html
+Example : http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/CellTableSample/CellTableSample.html
 
 == !DraggableOptions and !DroppableOptions ==
 As you can see in the examples above, we use [http://code.google.com/p/gwtquery-plugins/wiki/DraggablePluginGettingStarted#DraggableOptions_Object `DraggableOptions`] and [http://code.google.com/p/gwtquery-plugins/wiki/DroppablePluginGettingStarted#DroppableOptions_Object `DroppableOptions`] objects in order to configure respectively the drag and the drop behavior.
@@ -510,7 +510,7 @@ All drag events provide useful methods to retrieve the data associated with the 
 
 = Examples =
 ----
-To illustrate what we talked in this article, examples are available at : http://gwtquery-plugins.googlecode.com/svn/trunk/droppable/demo/GwtSimpleSample/GwtSimpleSample.html
+To illustrate what we talked in this article, examples are available at : http://gwtquery-plugins.googlecode.com/svn/branches/droppable_1_0/demo/GwtSimpleSample/GwtSimpleSample.html
 
 All examples are tested on Internet explore 6, 7 and 8, Firefox 3.6, Google Chrome 4, Opera 10 and Safari 5. 
 
