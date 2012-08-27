@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    
+    <name>Chosen plugin project</name>
+    <groupId>com.watopi</groupId>
+    <artifactId>gwtchosen-project</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.1</version>
+
+    <properties>
+      <maven.compiler.source>1.5</maven.compiler.source>
+      <maven.compiler.target>1.5</maven.compiler.target>
+      <gQueryVersion>1.2.0</gQueryVersion>
+      <gwtversion>2.4.0</gwtversion>
+    </properties>
+
+    <repositories>
+       <repository>
+         <id>central</id>
+         <url>http://repo1.maven.org/maven2</url>
+       </repository>
+       <repository>
+         <id>site</id>
+         <url>http://gwtquery.googlecode.com/svn/mavenrepo</url>
+       </repository>
+       <repository>
+         <id>m.g.o</id>
+         <url>http://maven.glassfish.org/content/groups/public/</url>
+       </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>gcupload</id>
+            <name>Repository for gcupload plugin</name>
+            <url>http://gwtupload.googlecode.com/svn/mavenrepo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/jdramaix/gwtchosen/issues</url>
+    </issueManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwtversion}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwtversion}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.gwtquery</groupId>
+            <artifactId>gwtquery</artifactId>
+            <scope>provided</scope>
+            <version>${gQueryVersion}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.jvnet.wagon-svn</groupId>
+                <artifactId>wagon-svn</artifactId>
+                <version>1.8</version>
+            </extension>
+        </extensions>
+    </build>
+
+    <distributionManagement>
+        <repository>
+          <uniqueVersion>false</uniqueVersion>
+          <id>googlecode</id>
+          <url>svn:https://gwtquery-plugins.googlecode.com/svn/mavenrepo/</url>
+        </repository>
+        <snapshotRepository>
+          <uniqueVersion>false</uniqueVersion>
+          <id>localfolder</id>
+          <url>file:mavenrepo</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+  <modules>
+    <module>plugin</module>
+    <module>sample</module>
+  </modules>
+</project>
