@@ -5,8 +5,8 @@
 ----
 
 || *Plugin name* ||Draggable||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=draggable-plugin-1.0.3.jar 1.0.3]||
-|| *Latest release date* ||April 27 2011||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=draggable-plugin-1.0.4.jar 1.0.4]||
+|| *Latest release date* ||May 2011||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADraggable Open issues]||
 
@@ -16,7 +16,7 @@ The Draggable plugin enables draggable functionality on any DOM element and GWT 
 
 =Changelog=
 ----
-==v1.0.3==
+==v1.0.4==
   * Compliant with first release of GwtQuery
   * Remove dependency with CommoUi plugin
 ==v1.0.2==
@@ -50,7 +50,7 @@ If you use maven, you have to add these blocks to your pom.xml
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>draggable-plugin</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
