@@ -5,8 +5,8 @@
 ----
 
 || *Plugin name* ||Droppable||
-|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=droppable-plugin-1.0.7.jar 1.0.7]||
-|| *Latest release date* ||November 18 2011||
+|| *Latest release* ||[http://code.google.com/p/gwtquery-plugins/downloads/detail?name=droppable-plugin-1.0.8.jar 1.0.8]||
+|| *Latest release date* ||October 29 2012||
 || *Maintainer* ||[http://code.google.com/u/julien.dramaix/ Julien Dramaix]||
 || *Issues tracking* || [http://code.google.com/p/gwtquery-plugins/issues/list?can=2&q=label%3ADroppable Open issues]||
 
@@ -17,6 +17,9 @@ The Droppable plugin enables any DOM element and GWT widget to be droppable or i
 
 =Changelog=
 ----
+==v1.0.8==
+  * Release compatible for GWT 2.5
+
 ==v1.0.7==
   * Release compatible for GWT 2.4
 
