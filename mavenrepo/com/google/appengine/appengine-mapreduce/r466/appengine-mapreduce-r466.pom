@@ -33,12 +33,6 @@
         <configuration>
           <allowSnapshots>true</allowSnapshots>
           <projectName>gwtquery-plugins</projectName>
-          <uploads>
-            <upload>
-              <extensions>jar</extensions>
-              <labels>Featured</labels>
-            </upload>
-          </uploads>
         </configuration>
       </plugin>
 
