@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <name>map-reduce</name>
+  <description>map-reduce for AppEngine</description>
+  <groupId>com.google.appengine</groupId>
+  <artifactId>appengine-mapreduce</artifactId>
+  <packaging>jar</packaging>
+  <version>r466-2</version>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>gcupload</id>
+      <name>Repository for gcupload plugin</name>
+      <url>http://gwtupload.googlecode.com/svn/mavenrepo</url>
+    </pluginRepository>
+  </pluginRepositories>
+
+  <build>
+    <plugins>     
+      <plugin>
+        <groupId>org.riedelcastro</groupId>
+        <artifactId>gcupload-maven-plugin</artifactId>
+        <version>0.9</version>
+        <executions>
+          <execution>
+            <phase>deploy</phase>
+            <goals>
+              <goal>gcupload</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <allowSnapshots>true</allowSnapshots>
+          <projectName>gwtquery-plugins</projectName>
+        </configuration>
+      </plugin>
+
+    </plugins>
+    
+    <extensions>
+      <extension>
+        <groupId>org.jvnet.wagon-svn</groupId>
+        <artifactId>wagon-svn</artifactId>
+        <version>1.8</version>
+       </extension>
+    </extensions>
+  </build>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>googlecode</id>
+      <url>svn:https://gwtquery-plugins.googlecode.com/svn/mavenrepo/</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>localfolder</id>
+      <url>file:mavenrepo</url>
+    </snapshotRepository>
+ </distributionManagement>
+</project>
