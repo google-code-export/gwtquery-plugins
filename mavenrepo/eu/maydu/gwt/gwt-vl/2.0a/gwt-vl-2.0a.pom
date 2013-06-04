@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <name>gwt-vle</name>
+  <groupId>eu.maydu.gwt</groupId>
+  <artifactId>gwt-vl</artifactId>
+  <packaging>jar</packaging>
+  <version>2.0a</version>
+
+  <build>
+    <extensions>
+      <extension>
+        <groupId>org.jvnet.wagon-svn</groupId>
+        <artifactId>wagon-svn</artifactId>
+        <version>1.8</version>
+       </extension>
+    </extensions>
+  </build>
+  <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>googlecode</id>
+      <url>svn:https://gwtquery-plugins.googlecode.com/svn/mavenrepo/</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>localfolder</id>
+      <url>file:mavenrepo</url>
+    </snapshotRepository>
+ </distributionManagement>
+</project>

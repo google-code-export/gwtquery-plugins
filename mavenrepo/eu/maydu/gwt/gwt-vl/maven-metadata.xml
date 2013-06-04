@@ -3,10 +3,11 @@
   <groupId>eu.maydu.gwt</groupId>
   <artifactId>gwt-vl</artifactId>
   <versioning>
-    <release>0.9a</release>
+    <release>2.0a</release>
     <versions>
       <version>0.9a</version>
+      <version>2.0a</version>
     </versions>
-    <lastUpdated>20120321083736</lastUpdated>
+    <lastUpdated>20130604165050</lastUpdated>
   </versioning>
 </metadata>
