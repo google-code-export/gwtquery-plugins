@@ -18,7 +18,7 @@
 
   <build>
     <plugins>     
-      <plugin>
+      <!--plugin>
         <groupId>org.riedelcastro</groupId>
         <artifactId>gcupload-maven-plugin</artifactId>
         <version>0.9</version>
@@ -34,7 +34,7 @@
           <allowSnapshots>true</allowSnapshots>
           <projectName>gwtquery-plugins</projectName>
         </configuration>
-      </plugin>
+      </plugin-->
 
     </plugins>
     
