@@ -20,6 +20,8 @@ The Ratings plugin is a plugin for the [http://code.google.com/p/gwtquery/ GwtQu
  * All widgets in this plugins are available as standard gwt plugins as well.
 
 =Changelog=
+==v1.0.4==
+ * Upgrade to gwt-2.4.0 gwt-2.5.1
 ==v1.0.2==
  * Upgrade to gwt-2.2.0 and many fixes
 ==v1.0.0==
@@ -49,7 +51,7 @@ First of all you have to include the library in the classpath of your project.
             <groupId>com.googlecode.gwtquery.plugins</groupId>
             <artifactId>enhance-plugin</artifactId>
             <scope>provided</scope>
-            <version>1.0.0</version>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
    </build>
