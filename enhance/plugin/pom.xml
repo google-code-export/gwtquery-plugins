@@ -13,12 +13,6 @@
     <artifactId>enhance-plugin</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-      <gQueryVersion>1.1.0</gQueryVersion>
-      <gwtversion>2.5.1</gwtversion>
-      <gwtmaven>2.5.1</gwtmaven>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.googlecode.gwtquery.plugins</groupId>

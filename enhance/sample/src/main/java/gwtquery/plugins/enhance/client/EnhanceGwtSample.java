@@ -15,8 +15,8 @@
  */
 package gwtquery.plugins.enhance.client;
 
-import static com.google.gwt.query.client.GQuery.$;
-import static gwtquery.plugins.enhance.client.Enhance.Enhance;
+import static com.google.gwt.query.client.GQuery.*;
+import static gwtquery.plugins.enhance.client.Enhance.*;
 import gwtquery.plugins.enhance.client.gwt.ListBoxWidgetFactory.ListBoxOptions;
 import gwtquery.plugins.enhance.client.gwt.SuggestBoxWidgetFactory.SuggestBoxOptions;
 import gwtquery.plugins.enhance.client.gwt.TabPanelWidgetFactory.TabPanelOptions;
@@ -29,9 +29,10 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.plugins.widgets.WidgetInitializer;
+import com.google.gwt.query.client.plugins.widgets.WidgetsUtils;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DisclosurePanel;
-import com.google.gwt.user.client.ui.GqUi;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -95,7 +96,7 @@ public class EnhanceGwtSample implements EntryPoint {
   private void displayWidgetHierarchy() {
     DisclosurePanel disclosurePanel = $("#disclosure").widget();
     Tree widgetHierarchy = new Tree();
-    TreeItem rootItem = new TreeItem(disclosurePanel.getClass().getName());
+    TreeItem rootItem = new TreeItem(SafeHtmlUtils.fromString(disclosurePanel.getClass().getName()));
     widgetHierarchy.addItem(rootItem);
     widgetHierarchy.setAnimationEnabled(true);
     addChildren(rootItem, disclosurePanel);
@@ -105,11 +106,11 @@ public class EnhanceGwtSample implements EntryPoint {
   }
 
   private void addChildren(TreeItem item, Widget w) {
-    Iterator<Widget> children = GqUi.getChildren(w);
+    Iterator<Widget> children = WidgetsUtils.getChildren(w);
     if (children != null) {
       while (children.hasNext()) {
         Widget child = children.next();
-        TreeItem subItem = new TreeItem(child.getClass().getName());
+        TreeItem subItem = new TreeItem(SafeHtmlUtils.fromString(child.getClass().getName()));
         item.addItem(subItem);
 
         addChildren(subItem, child);

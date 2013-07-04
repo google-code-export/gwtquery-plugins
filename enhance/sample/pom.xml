@@ -34,6 +34,10 @@
                     <gwtVersion>${gwtversion}</gwtVersion>
                     <compileReport>true</compileReport>
                     <soycDetailed>true</soycDetailed>
+                    <enableClosureCompiler>false</enableClosureCompiler>
+                    <optimizationLevel>9</optimizationLevel>
+                    <disableClassMetadata>true</disableClassMetadata>
+                    <disableCastChecking>true</disableCastChecking>
                     <runTarget>Enhance/EnhanceSample.html</runTarget>
                     <hostedWebapp>src/main/webapp</hostedWebapp>
                 </configuration>
