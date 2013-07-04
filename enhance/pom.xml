@@ -6,14 +6,14 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>enhance</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 
     <properties>
       <maven.compiler.source>1.5</maven.compiler.source>
       <maven.compiler.target>1.5</maven.compiler.target>
       <gQueryVersion>1.1.0</gQueryVersion>
-      <gwtversion>2.4.0</gwtversion>
-      <gwtmaven>2.4.0</gwtmaven>
+      <gwtversion>2.5.1</gwtversion>
+      <gwtmaven>2.5.1</gwtmaven>
       <gwtcolorpicker>2.1</gwtcolorpicker>
     </properties>
 
@@ -37,11 +37,6 @@
          <url>http://oss.sonatype.org/content/repositories/snapshots</url>
          <snapshots><enabled>true</enabled></snapshots>
          <releases><enabled>false</enabled></releases>
-       </repository>
-       <repository>
-         <id>m.g.o</id>
-         <url>http://maven.glassfish.org/content/groups/public/</url>
-         <snapshots><enabled>false</enabled></snapshots>
        </repository>
        <repository>
          <id>plugins</id>
