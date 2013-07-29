@@ -62,7 +62,6 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
       
       ((HasValue<String>)p).addValueChangeHandler(new ValueChangeHandler<String>() {
         public void onValueChange(ValueChangeEvent<String> value) {
-          System.err.println("handler 1");
           ret.setValue(value.getValue(), true);
           setColor(value.getValue(), ret.getElement());
           p.hide();
