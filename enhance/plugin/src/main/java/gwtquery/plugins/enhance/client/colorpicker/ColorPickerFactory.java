@@ -1,17 +1,15 @@
 package gwtquery.plugins.enhance.client.colorpicker;
 
-import static com.google.gwt.query.client.GQuery.$;
+import static com.google.gwt.query.client.GQuery.*;
+import gwtquery.plugins.enhance.client.common.TextBoxWrapper;
 
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.Effects;
 import com.google.gwt.query.client.plugins.widgets.WidgetFactory;
 import com.google.gwt.query.client.plugins.widgets.WidgetsUtils;
 import com.google.gwt.user.client.Window;
@@ -43,7 +41,7 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
       if ($(e).widget() != null) {
         ret = $(e).widget();
       } else {
-        ret = TextBox.wrap(e);
+        ret = new TextBoxWrapper(e);
       }
       val = ret.getValue();
     } else if (WidgetsUtils.matchesTags(e, "div", "span")) {
@@ -58,13 +56,14 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
       final PopupPanel p = type == ColorPickerType.ADVANCED ? new ColorPickerFull() : new ColorPicker();
       String value = val.replaceAll("[^\\da-fA-F]", "");
       if (!value.isEmpty()) {
-        ret.setValue("#" + value);
+        ret.setValue("#" + value, true);
       }
       setColor(ret.getValue(), ret.getElement());
       
       ((HasValue<String>)p).addValueChangeHandler(new ValueChangeHandler<String>() {
         public void onValueChange(ValueChangeEvent<String> value) {
-          ret.setValue(value.getValue());
+          System.err.println("handler 1");
+          ret.setValue(value.getValue(), true);
           setColor(value.getValue(), ret.getElement());
           p.hide();
         }
@@ -75,7 +74,7 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
           ((HasValue<String>)p).setValue(ret.getValue());
           p.setPopupPosition(e.getAbsoluteLeft(), e.getAbsoluteTop() + e.getClientHeight());
           p.show();
-          $(p).stop(true).hide().as(Effects.Effects).clipAppear(new Function(){
+          $(p).stop(true).hide().as(Effects).clipAppear(new Function(){
             // Move the popup if it is out of the window limits
             public void f(Element e) {
               GQuery g = $(e);
@@ -103,9 +102,10 @@ public class ColorPickerFactory implements WidgetFactory<TextBox> {
           });
         }
       });
-      ret.addChangeHandler(new ChangeHandler() {
-        public void onChange(ChangeEvent event) {
-          setColor(ret.getValue(), ret.getElement());
+      ret.addValueChangeHandler(new ValueChangeHandler<String>() {
+        public void onValueChange(ValueChangeEvent<String> val) {
+          ((HasValue<String>)p).setValue(val.getValue(), true);
+          setColor(val.getValue(), ret.getElement());
         }
       });
     }
