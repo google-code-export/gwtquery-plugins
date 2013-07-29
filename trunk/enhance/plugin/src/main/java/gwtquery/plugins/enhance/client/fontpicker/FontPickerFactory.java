@@ -1,6 +1,7 @@
 package gwtquery.plugins.enhance.client.fontpicker;
 
 import static com.google.gwt.query.client.GQuery.$;
+import gwtquery.plugins.enhance.client.common.TextBoxWrapper;
 import gwtquery.plugins.enhance.client.fontpicker.FontPicker.FontPickerType;
 
 import com.google.gwt.dom.client.Element;
@@ -29,7 +30,7 @@ public class FontPickerFactory implements WidgetFactory<TextBox> {
     String val = "";
     if ($(e).filter("input[type='text']").get(0) != null) {
       val = $(e).attr("value");
-      ret = TextBox.wrap(e);
+      ret = new TextBoxWrapper(e);
     } else if (WidgetsUtils.matchesTags(e, "div", "span")) {
       ret = new TextBox();
       val = e.getInnerText();
