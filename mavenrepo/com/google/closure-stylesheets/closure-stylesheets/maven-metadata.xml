@@ -3,10 +3,11 @@
   <groupId>com.google.closure-stylesheets</groupId>
   <artifactId>closure-stylesheets</artifactId>
   <versioning>
-    <release>v20131127</release>
+    <release>v20140404</release>
     <versions>
       <version>v20131127</version>
+      <version>v20140404</version>
     </versions>
-    <lastUpdated>20131027213232</lastUpdated>
+    <lastUpdated>20140404154843</lastUpdated>
   </versioning>
 </metadata>
