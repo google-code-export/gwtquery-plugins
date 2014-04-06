@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.googlecode.gwtquery.plugins</groupId>
         <artifactId>enhance</artifactId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -104,6 +104,7 @@
                     <!-- <includeArtifactIds>gwt-colorpicker</includeArtifactIds> -->
                     <excludeTransitive>true</excludeTransitive>
                     <includes>**/*.java,**/*.class,**/*.xml,**/*.html,**/*.css,**/*.jpg,**/*.png,**/*.gif</includes>
+                    <excludes>com/google/gwt/**</excludes>
                     <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
                   </configuration>
                 </execution>
