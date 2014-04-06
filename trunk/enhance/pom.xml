@@ -15,6 +15,7 @@
       <gwtversion>2.5.1</gwtversion>
       <gwtmaven>2.5.1</gwtmaven>
       <gwtcolorpicker>2.1</gwtcolorpicker>
+
     </properties>
 
     <developers>
