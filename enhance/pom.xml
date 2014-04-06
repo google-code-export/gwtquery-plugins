@@ -6,14 +6,14 @@
     <groupId>com.googlecode.gwtquery.plugins</groupId>
     <artifactId>enhance</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
 
     <properties>
       <maven.compiler.source>1.6</maven.compiler.source>
       <maven.compiler.target>1.6</maven.compiler.target>
-      <gQueryVersion>1.3.3</gQueryVersion>
-      <gwtversion>2.5.1</gwtversion>
-      <gwtmaven>2.5.1</gwtmaven>
+      <gQueryVersion>1.4.1</gQueryVersion>
+      <gwtversion>2.6.0</gwtversion>
+      <gwtmaven>2.6.0</gwtmaven>
       <gwtcolorpicker>2.1</gwtcolorpicker>
 
     </properties>
